@@ -1,12 +1,14 @@
+import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import * as decode from 'jwt-decode';
 import { ICurrentPatient } from './ICurrentPatient.interface';
-import { Subscription } from 'rxjs';
+import { timer } from 'rxjs/observable/timer';
+import { Subject, Subscription } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -114,49 +116,83 @@ export class AuthService {
     );
   }
 
-  signin2FA(email,password,deviceId,deviceInformation){
-    this.cancelWaitingAuthy=false;
-    return Observable.create(subject => {
-      var body = {
-        "email": email,
-        "password": password,
-        "deviceInformation": deviceInformation,
-        "deviceId":deviceId
+  sendApprovalRequest(email:any,device:any){
+    var deviceInformation={deviceInformation:device.info}
+    var params=email;
+    return this.http.post(environment.api+'/api/signin/requestApproval/'+params,deviceInformation)
+    .map( (res : any) => {
+      if(res.type=="2FA approved"){
+        return {logged:this.isloggedIn,reason:"2FA request approved",token:res.token};
       }
-      this.http.post(environment.api+'/api/signin2FA',body).timeout(60000).catch(err => {
-          this.isloggedIn=false;
-          this.setMessage("Authy time out");
-          subject.next(false);
-          subject.complete();
-          return Observable.throw(err);
-        }).subscribe( (response:any) => {
-        if(response.message == "You have successfully logged in"){
-          if (response.token!=null){
-            this.setLang(response.lang);
-            sessionStorage.setItem('lang', response.lang)
-            this.setEnvironment(response.token);
-            this.setMessage(response.message);
-            this.isloggedIn=true;
-            subject.next(true);
-            subject.complete();
-          }
-          
-        }
-        else if(response.message == "Authentication denied"){
-          this.isloggedIn=false;
-          this.setMessage("Authy access denied");
-          subject.next(false);
-          subject.complete();
-        }
-        else if(this.cancelWaitingAuthy==true){
-          this.isloggedIn=false;
-          this.setMessage("Cancel Authy");
-          this.subscription.unsubscribe();
-          subject.next(false);
-          subject.complete();
-        }
-      });
+
+
+    }, (err) => {
+      console.log(err);
+      //this.isLoginFailed = true;
+      this.setMessage("Login failed");
+      this.isloggedIn = false;
+      //return this.isloggedIn;
+      return {logged:this.isloggedIn,reason:"Response error"};
     });
+  }
+
+  secondFactor(token: string,email:string,device:any, password:any) {
+    this.cancelWaitingAuthy=false;
+    const tick: Observable<number> = timer(1000, 1000);
+    return Observable.create(subject => {
+      this.tock = 0;
+      const timerSubscription = tick.subscribe(() => {
+        let params=token+"-code-"+email+"-code-"+device.id;
+        this.http.get(environment.api+'/api/signin/status2FA/'+params).subscribe( (response:any) => {
+          this.tock++;
+          if (response.status == 'approved') {
+            var data = {email: email, password: password};
+            this.http.post(environment.api+'/api/signin/isLogged2FA/', data).subscribe( (res:any) => {
+              if(res.message=='You have successfully logged in'){
+                this.setLang(res.lang);
+                sessionStorage.setItem('lang', res.lang)
+                this.setEnvironment(res.token);
+                this.setMessage(res.message);
+                this.isloggedIn=true;
+                this.closeSecondFactorObservables(subject, true, timerSubscription);
+              }else{
+                this.isloggedIn=false;
+                this.setMessage("Login failed");
+                this.closeSecondFactorObservables(subject, false, timerSubscription);
+              }
+
+            });
+
+          }
+          else if (response.status == 'denied') {
+            this.isloggedIn=false;
+            this.setMessage("Authy access denied");
+            this.closeSecondFactorObservables(subject, false, timerSubscription);
+          }
+          else if (this.tock == 60) {
+            this.isloggedIn=false;
+            this.setMessage("Authy time out");
+            this.closeSecondFactorObservables(subject, false, timerSubscription);
+          }
+          else if(this.cancelWaitingAuthy==true){
+            this.isloggedIn=false;
+            this.setMessage("Cancel Authy");
+            this.closeSecondFactorObservables(subject, false, timerSubscription);
+          }
+        });
+      });
+
+    });
+  }
+  closeSecondFactorObservables(subject: Subject<any>, result: boolean, timerSubscription: Subscription) {
+    subject.next(result);
+    subject.complete();
+    timerSubscription.unsubscribe();
+    this.tock=0;
+  }
+
+  getTock(){
+    return this.tock;
   }
 
   stopPetition(){
