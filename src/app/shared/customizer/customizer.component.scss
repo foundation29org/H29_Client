@@ -1,0 +1,157 @@
+//@import '../../../../node_modules/botframework-webchat/botchat.css';
+.customizer{
+	width: 360px;
+    right: -360px;
+	padding: 0;
+    background-color: #FFF;
+	z-index: 1051;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    height: 100vh;
+    transition: right 0.4s cubic-bezier(0.05, 0.74, 0.2, 0.99);
+    backface-visibility: hidden;
+    border-left: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+
+	&.open{
+		right: 0;
+	}
+
+	.customizer-content{
+		position: relative;
+    	height: 100%;
+	}
+
+	a.customizer-toggle{
+		background: #FFF;
+		color:theme-color('primary');
+		display: block;
+    	box-shadow: -3px 0px 8px rgba(0, 0, 0, 0.1);
+	}
+	a.customizer-close {
+    	color: #000;
+	}
+	.customizer-close{
+		position: absolute;
+	    right: 10px;
+	    top: 10px;
+	    padding: 7px;
+	    width: auto;
+	    z-index: 10;
+	}
+	.customizer-toggle{
+		position: absolute;
+	    top: 85%;
+	    width: 25%;
+	    height: 50px;
+	    left: -25%;
+	    text-align: center;
+	    line-height: 50px;
+	    cursor: pointer;
+	}
+	.color-options{
+		a{
+			white-space:pre;
+		}
+	}
+
+	.customizer-maximize{
+		position: absolute;
+			left: 10px;
+			top: 10px;
+			padding: 7px;
+			width: auto;
+			z-index: 10;
+	}
+
+	.customizer-minimize{
+		position: absolute;
+			left: 10px;
+			top: 10px;
+			padding: 7px;
+			width: auto;
+			z-index: 10;
+	}
+
+	.customizer-toggle > i{
+		margin-top: 0.2em;
+	}
+
+	.customizer-reload{
+			position: absolute;
+			left: 88%;
+			top: 15px;
+			padding: 7px;
+			width: auto;
+			z-index: 10;
+	}
+	//#classBot #botContainer .wc-message.wc-message-from-bot .wc-message-content{
+	//	color:red !important;
+	//}
+}
+/*Message from bot*/
+::ng-deep .wc-message-from-bot .wc-message-content {
+	color: black !important;
+	white-space: normal !important;
+
+}
+::ng-deep  .wc-card button {
+	color: #FF586B !important;
+	background-color: white !important;
+}
+::ng-deep  .wc-card button:hover {
+	color: #FF586B !important;
+	border-color: #FF586B !important;
+	background-color: transparent !important;
+}
+::ng-deep  .wc-card button:active {
+	background-color: #FF586B !important;
+	border-color: #FF586B !important;
+	color: white !important;
+}
+::ng-deep .ac-pushButton{
+	white-space: normal !important;
+}
+::ng-deep .wc-adaptive-card{
+	width: 100% !important;
+}
+/* Message from me*/
+::ng-deep  .wc-message-from-me .wc-message-content {
+	background-color: #FF586B !important;
+}
+::ng-deep  .wc-message-from-me svg.wc-message-callout path {
+	fill: #FF586B !important;
+}
+
+/* Header*/
+::ng-deep .wc-header {
+	background-color: white !important;
+	color: black !important;
+	height: 40px !important;
+}
+::ng-deep  .wc-header > span {
+	margin-left: 45% !important;
+}
+/* Console */
+::ng-deep .wc-console .wc-upload {
+	display: none;
+}
+::ng-deep  .wc-console.has-text .wc-send svg {
+	fill: #FF586B !important;
+}
+::ng-deep  .wc-console .wc-textbox {
+	left: 15px !important;
+}
+::ng-deep  .wc-console.has-text .wc-send svg {
+	fill: #FF586B !important;
+}
+
+@media ( max-width: 380px ){
+
+	::ng-deep .customizer{
+		width: 100% !important;
+	}
+
+
+}

@@ -1,0 +1,98 @@
+.profile-menu{
+    .active{
+        border-bottom: 2px solid;
+        margin-bottom: -2px;
+    }
+}
+
+.modalPDF > div{
+    display: grid;
+}
+
+.modalPDF > div > div > a{
+    margin-right: 10px;
+    color: #009DA0;
+}
+
+.modalPDF > div > div :nth-child(2) {
+    margin-top: 10px;
+}
+
+.card{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    min-height: 75px;
+}
+
+.card > .row > div{
+    margin-left: 15px;
+}
+
+.modalPDF > div > div > input {
+    margin-right: 5px;
+}
+
+.modalPDF > div > div > a > i {
+    margin-right: 2px;
+    position: relative;
+    bottom: 1px;
+}
+
+#filterButton:disabled{
+    cursor: default;
+}
+
+.modalPDF > p{
+    font-weight: bolder;
+}
+
+span#notificationText {
+    margin-left: 1rem;
+    //margin-right: 1rem;
+    line-height: 1rem;
+    //padding-top: 5%;
+    //font-size: 0.8rem;
+    
+  }
+  
+  button#notificationText {
+    margin-left: 1rem;
+    //margin-right: 5rem;
+    line-height: 1rem;
+    font-size: 0.8rem;
+    //margin-top: 8%;
+    
+  }
+  a#notificationText {
+    margin-left: 1rem;
+    //margin-right: 5rem;
+    line-height: 1rem;
+    font-size: 0.8rem;
+    //margin-top: 8%;
+    
+  }
+
+  #notificationsMenu{
+    width: max-content; 
+    max-width: 500rem; 
+    max-height: 100rem; 
+    overflow-y: scroll;
+  }
+
+  #notificationActions{
+    margin-top: 3%;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+   
+  }
+
+  ::ng-deep .md-class .modal-dialog { 
+    max-width: 50%;
+    width: 50%;
+  }   
+
+  .inputRadio{
+      margin-right: 3%;
+  }
+  

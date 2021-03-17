@@ -1,0 +1,250 @@
+<section id="listMeditationSection">
+	<div class="row">
+      <div class="col-sm-12">
+          <div class="content-header">{{'clinicalinfo.Other Drugs or Supplements' | translate }}</div>
+      </div>
+
+  </div>
+<div class="row">
+	<div class="col-sm-10">
+		<label class="question">{{'stats.otherDrugsQuestion' | translate }}</label>
+		<input id="yesAnswer" type="checkbox" (change)="setAnswer($event)"><label class="answer ml-1 mr-1">{{'generics.Yes' | translate }}</label>
+      	<input id="noAnswer" type="checkbox" (change)="setAnswer($event)"><label class="answer ml-1">{{'generics.No' | translate }}</label>
+	</div>
+	<div class="col-sm-2">
+			<button *ngIf="!loading && !addedDrug && !savingDrug && !showOnlyQuestion" type="button" class="mt-2 float-right btn btn-outline-primary" (click)="newDrug()"><i class="fa fa-plus"></i> {{'generics.New' | translate }}</button>
+	</div>
+</div>
+<!-- Drugs -->
+<div class="row" >
+	<div class="col-lg-12 col-12" *ngIf="!addedDrug && !savingDrug && !showOnlyQuestion">
+		<div class="card">
+			<div class="card-body table-responsive" *ngIf="drugs.length > 0">
+				<table class="table text-center">
+					<thead>
+						<tr>
+							<th>{{'generics.Name' | translate }}</th>
+							<th>{{'social.Type' | translate }}</th>
+							<th>{{'medication.Dose' | translate }} ({{'medication.mg/day' | translate }})</th>
+							<th>{{'medication.Schedule' | translate }}</th>
+							<th>{{'generics.Start Date' | translate }}</th>
+							<th>{{'generics.End Date' | translate }}</th>
+							<th>{{'generics.notes' | translate }}</th>
+							<th>{{'generics.Edit' | translate }}</th>
+							<th>{{'generics.Delete' | translate }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let drug of drugs ; let i = index">
+							<td>{{drug.name}}</td>
+							<td>{{drug.type}}</td>
+							<td>{{drug.dose}}</td>
+							<td *ngIf="drug.schedule">
+								<select class="select-no-style" disabled [(ngModel)]="drug.schedule">
+									<option value="Daily">{{'medication.Daily' | translate }}</option>
+									<option value="10 on / 10 off">{{'medication.10 on / 10 off' | translate }}</option>
+									<option value="Other">{{'generics.Other' | translate }}</option>
+								</select>
+							</td>
+							<td *ngIf="!drug.schedule">
+								-
+							</td>
+							<td>{{drug.startDate | date: timeformat}}</td>
+							<td>{{drug.endDate | date: timeformat}}</td>
+							<td>{{drug.notes}}</td>
+							<td><a class="success" (click)="editDrug(i)" href="javascript:void(0)"><i class="ft ft-edit-2"></i></a></td>
+							<td>
+								<a class="danger" data-original-title="" title="" (click)="confirmDeleteDrug(i)">
+									<i class="ft-x"></i>
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="row col-md-12" *ngIf="drugs.length == 0">
+				{{'vaccinations.No saved vaccines' | translate }}
+			</div>
+		</div>
+	</div>
+  <div class="col-md-12" *ngIf="drugs && addedDrug && !savingDrug">
+		<div class="row">
+	      <div class="col-sm-12">
+	        <button type="button" class="float-right btn btn-raised btn-danger" (click)="cancelNewDrug()">{{'generics.Back' | translate }}</button>
+	      </div>
+
+	  </div>
+		<form class="form" (ngSubmit)="submitDrug()" #f="ngForm">
+			<div class="card-header">
+				{{'generics.fieldsRequired' | translate }}
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="type">{{'social.Type' | translate }}</label>
+						<select id="type" name="type" class="form-control"  [(ngModel)]="drug.type" required type #type="ngModel" (change)="changeDrugType($event)">
+							<option value="Supplements">{{'otherdrugs.Supplements' | translate }}</option>
+							<option value="Psychopharmaceuticals">{{'otherdrugs.Psychopharmaceuticals' | translate }}</option>
+							<option value="Pain medication">{{'otherdrugs.Pain medication' | translate }}</option>
+							<option value="Laxative">{{'otherdrugs.Laxative' | translate }}</option>
+							<option value="Gastroprotective drugs">{{'otherdrugs.Gastroprotective drugs' | translate }}</option>
+							<option value="Other">{{'generics.Other' | translate }}</option>
+						</select>
+						<small class="form-text text-muted danger" *ngIf="!type.valid && (type.dirty || type.touched)">{{'generics.required' | translate }}</small>
+					</div>
+				</div>
+				<div class="col-md-3" *ngIf="drug.type=='Supplements'">
+					<div class="form-group">
+						<label for="drugref">{{'generics.Name' | translate }}</label>
+						<select id="drugref" name="drugref" class="form-control"  [(ngModel)]="drug.name" required drugref #drugref="ngModel">
+							<option value="Calcium">{{'otherdrugs.Calcium' | translate }}</option>
+							<option value="Vitamin D">{{'otherdrugs.Vitamin D' | translate }}</option>
+							<option value="Green Tea Extract">{{'otherdrugs.Green Tea Extract' | translate }}</option>
+							<option value="Coenzyme Q10">{{'otherdrugs.Coenzyme Q10' | translate }}</option>
+							<option value="Creatine">{{'otherdrugs.Creatine' | translate }}</option>
+							<option value="Arginine">{{'otherdrugs.Arginine' | translate }}</option>
+							<option value="Taurine">{{'otherdrugs.Taurine' | translate }}</option>
+							<option value="Carnitine">{{'otherdrugs.Carnitine' | translate }}</option>
+							<option value="Glutamine">{{'otherdrugs.Glutamine' | translate }}</option>
+							<option value="Leucine">{{'otherdrugs.Leucine' | translate }}</option>
+							<option value="Fish oil">{{'otherdrugs.Fish oil' | translate }}</option>
+							<option value="Vitamin E">{{'otherdrugs.Vitamin E' | translate }}</option>
+							<option value="Multivitamin">{{'otherdrugs.Multivitamin' | translate }}</option>
+							<option value="Herbs or plant extracts">{{'otherdrugs.Herbs or plant extracts' | translate }}</option>
+							<option value="N-acetylcysteine">{{'otherdrugs.N-acetylcysteine' | translate }}</option>
+							<option value="Protandim">{{'otherdrugs.Protandim' | translate }}</option>
+							<option value="Resveratrol">{{'otherdrugs.Resveratrol' | translate }}</option>
+							<option value="Quercetin">{{'otherdrugs.Quercetin' | translate }}</option>
+							<option value="Other">{{'generics.Other' | translate }}</option>
+						</select>
+						<small class="form-text text-muted danger" *ngIf="!drugref.valid && (drugref.dirty || drugref.touched)">{{'generics.required' | translate }}</small>
+					</div>
+				</div>
+				<div class="col-md-3" *ngIf="drug.type=='Gastroprotective drugs'">
+					<div class="form-group">
+						<label for="drugref">{{'generics.Name' | translate }}</label>
+						<select id="drugref" name="drugref" class="form-control"  [(ngModel)]="drug.name" required drugref #drugref="ngModel">
+							<option value="Omeprazol">{{'otherdrugs.Omeprazol' | translate }}</option>
+							<option value="Pantoprazol">{{'otherdrugs.Pantoprazol' | translate }}</option>
+							<option value="Esomeprazol / Nexium">{{'otherdrugs.Esomeprazol / Nexium' | translate }}</option>
+							<option value="Zantac / Ranitidine">{{'otherdrugs.Zantac / Ranitidine' | translate }}</option>
+							<option value="Famotidine">{{'otherdrugs.Famotidine' | translate }}</option>
+							<option value="Gaviscon">{{'otherdrugs.Gaviscon' | translate }}</option>
+							<option value="Other">{{'generics.Other' | translate }}</option>
+						</select>
+						<small class="form-text text-muted danger" *ngIf="!drugref.valid && (drugref.dirty || drugref.touched)">{{'generics.required' | translate }}</small>
+					</div>
+				</div>
+				<div class="col-md-3"  *ngIf="drug.type!='Supplements' && drug.type!='Gastroprotective drugs'">
+			    <div class="form-group">
+			      <label for="drugref">{{'generics.Name' | translate }}</label>
+						<input type="text" id="drugref" class="form-control"  name="drugref" [(ngModel)]="drug.name" required drugref #drugref="ngModel">
+						<small class="form-text text-muted danger" *ngIf="!drugref.valid && (drugref.dirty || drugref.touched)">{{'generics.required' | translate }}</small>
+		    	</div>
+				</div>
+				<div class="col-md-2">
+					<div class="form-group">
+						<label for="dose">* {{'medication.Dose' | translate }} ({{'medication.mg/day' | translate }})</label>
+						<input type="text" id="dose" class="form-control"  name="dose" [(ngModel)]="drug.dose" required dose #dose="ngModel" pattern="[0-9]+([,.][0-9]+)?$">
+						<small class="form-text text-muted danger" *ngIf="dose.errors?.pattern">{{'medication.Invalid dose' | translate }}</small>
+						<small class="form-text text-muted danger" *ngIf="!dose.valid && (dose.dirty || dose.touched)">{{'generics.required' | translate }}</small>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div class="form-group">
+						<label for="startDate">{{'generics.Start Date' | translate }}</label>
+						<!--<div *ngIf="!isSafari && !isIeOrEdge">
+							<input type="date" id="startDate" class="form-control" name="startDate" [(ngModel)]="drug.startDate" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required startDate #startDate="ngModel">
+							<small class="form-text text-muted danger" *ngIf="!startDate.valid && (startDate.dirty || startDate.touched)">{{'generics.required' | translate }}</small>
+						</div>
+						<div *ngIf="isSafari || isIeOrEdge">
+							<input  class="form-control w-75 d-inline" id="startDate" name="startDate"  matInput [matDatepicker]="picker" [(ngModel)]="drug.startDate" required startDate #startDate="ngModel">
+							<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+							<mat-datepicker touchUi="true" #picker></mat-datepicker>
+							<small class="form-text text-muted danger" *ngIf="!startDate.valid && (startDate.dirty || startDate.touched)">{{'generics.required' | translate }}</small>
+						</div>-->
+						<div>
+							<input  class="form-control w-75 d-inline" id="startDate" name="startDate"  matInput [matDatepicker]="picker" [(ngModel)]="drug.startDate" required startDate #startDate="ngModel" (dateChange)="fieldchanged()">
+							<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+							<mat-datepicker touchUi="true" #picker></mat-datepicker>
+							<small class="form-text text-muted danger" *ngIf="!startDate.valid && (startDate.dirty || startDate.touched)">{{'generics.required' | translate }}</small>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div class="form-group">
+						<label for="endDate">{{'generics.End Date' | translate }}</label> <a *ngIf="drug.endDate" class="ml-1" (click)="deleteEndDate()" title="{{'generics.Delete' | translate }}"><i class="fa fa-trash red"></i></a>
+						<!--<div *ngIf="!isSafari && !isIeOrEdge">
+							<input type="date" id="endDate" class="form-control" name="endDate" [(ngModel)]="drug.endDate" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened">
+						</div>
+						<div *ngIf="isSafari || isIeOrEdge">
+							<input  class="form-control w-75 d-inline" id="endDate" name="endDate" matInput [matDatepicker]="picker2" [(ngModel)]="drug.endDate">
+							<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+							<mat-datepicker touchUi="true" #picker2></mat-datepicker>
+						</div>-->
+						<div>
+							<input  class="form-control w-75 d-inline" id="endDate" name="endDate" matInput [matDatepicker]="picker2" [(ngModel)]="drug.endDate" [min]="drug.startDate" (dateChange)="fieldchanged()">
+							<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+							<mat-datepicker touchUi="true" #picker2></mat-datepicker>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2">
+					<div class="form-group">
+						<label for="schedule">{{'medication.Schedule' | translate }}</label>
+						<select id="schedule" name="schedule" class="form-control"  [(ngModel)]="drug.schedule">
+						<option value="Daily">{{'medication.Daily' | translate }}</option>
+						<option value="10 on / 10 off">{{'medication.10 on / 10 off' | translate }}</option>
+						<option value="Other">{{'generics.Other' | translate }}</option>
+					</select>
+					</div>
+				</div>
+				<div class="col-md-5" *ngIf="drug.schedule=='Other'">
+					<div class="form-group">
+						<label for="otherSchedule">{{'medication.Schedule' | translate }}: {{'generics.Free text' | translate }}</label>
+						<input type="text" class="form-control"  name="drug.otherSchedule" [(ngModel)]="drug.otherSchedule">
+					</div>
+				</div>
+					<div class="col-md-5">
+						<div class="form-group">
+							<label for="freesideEffects">{{'medication.Side Effect' | translate }}</label>
+							<input type="text" id="freesideEffects" class="form-control"  name="freesideEffects" [(ngModel)]="drug.freesideEffects">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label for="compassionateUse">{{'medication.Compassionate Use' | translate }}</label>
+							<p class="font-small-2" >{{'medication.Compassionate Use Description' | translate }}</p>
+							<select id="compassionateUse" name="compassionateUse" class="form-control col-md-3"  [(ngModel)]="drug.compassionateUse">
+							<option value="yes">{{'generics.Yes' | translate }}</option>
+							<option value="no">{{'generics.No' | translate }}</option>
+							<option value="Don't know">{{'generics.Dont know' | translate }}</option>
+						</select>
+						</div>
+					</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<label for="notes">{{'generics.notes' | translate }}</label>
+						<textarea name="notes" class="autoajustable form-control" [(ngModel)]="drug.notes"  name="notes"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div *ngIf="f.valid;then formValid else formError"></div>
+				<ng-template #formValid><button class="btn btn-raised btn-primary" type="submit" ><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+				<ng-template #formError><button class="btn btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+
+			</div>
+		</form>
+  </div>
+
+	<div class="col-lg-12 col-12 form-group" *ngIf="savingDrug">
+		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+	</div>
+</div>
+</section>

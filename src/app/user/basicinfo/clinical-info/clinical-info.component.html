@@ -1,0 +1,193 @@
+<!--User Profile Starts-->
+<section id="basic-form-layouts">
+	<div class="row">
+        <div class="col-sm-12">
+            <div class="content-header">Información Clínica</div>
+        </div>
+    </div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="px-3">
+						<form class="form" (ngSubmit)="onSubmit()" #f="ngForm" *ngIf="patient">
+							<div class="form-body">
+								<h4 class="form-section"><i class="ft-user danger"></i> Generales</h4>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="edad">Edad (De 15 a 110 años)</label>
+											<input type="text" id="edad" class="form-control"  name="edad" [(ngModel)]="patient.edad" required edad #edad="ngModel" min="15" max="110">
+											<small class="form-text text-muted danger" *ngIf="edad.errors?.min || edad.errors?.max">De 15 a 110 años</small>
+											<small class="form-text text-muted danger" *ngIf="!edad.valid && (edad.dirty || edad.touched)">{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="sexo">{{'personalinfo.Gender' | translate }}</label>
+											<select id="sexo" name="sexo" class="form-control"  [(ngModel)]="patient.sexo" required sexo #sexo="ngModel">
+												<option value="male">Varón</option>
+												<option value="female">Hembra</option>
+											</select>
+											<small class="form-text text-muted danger" *ngIf="!sexo.valid && (sexo.dirty || sexo.touched)">{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="peso">Peso (De 60 a 180 kg)</label>
+											<input type="text" id="peso" class="form-control"  name="peso" [(ngModel)]="patient.peso" required peso #peso="ngModel" min="60" max="180">
+											<small class="form-text text-muted danger" *ngIf="peso.errors?.min || peso.errors?.max">De 60 a 180 kg</small>
+											<small class="form-text text-muted danger" *ngIf="!peso.valid && (peso.dirty || peso.touched)">{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="altura">Altura (De 100 a 230 cm)</label>
+											<input type="text" id="altura" class="form-control"  name="altura" [(ngModel)]="patient.altura" required altura #altura="ngModel" min="100" max="230">
+											<small class="form-text text-muted danger" *ngIf="altura.errors?.min || altura.errors?.max">De 100 a 230 cm</small>
+											<small class="form-text text-muted danger" *ngIf="!altura.valid && (altura.dirty || altura.touched)">{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+								</div>
+                <div class="row">
+                </div>
+								<h4 class="form-section"><i class="ft-map-pin warning"></i> Otros</h4>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="cantidadejercicio">Cantidad de ejercicio que realiza a la semana en minutos</label>
+											<select id="cantidadejercicio" name="cantidadejercicio" class="form-control"  [(ngModel)]="patient.cantidadejercicio" required cantidadejercicio #cantidadejercicio="ngModel">
+												<option value="bajo">Ninguno/0-60 min</option>
+												<option value="medio">60-150 min</option>
+												<option value="alto">Más de 150 min</option>
+											</select>
+											<small class="form-text text-muted danger" *ngIf="!cantidadejercicio.valid && (cantidadejercicio.dirty || cantidadejercicio.touched)">{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="gradomovilidad">Grado de movilidad</label>
+											<select id="gradomovilidad" name="gradomovilidad" class="form-control"  [(ngModel)]="patient.gradomovilidad" required gradomovilidad #gradomovilidad="ngModel">
+												<option value="Normal">Normal</option>
+												<option value="reducida">Reducida</option>
+												<option value="muyreducida">Muy reducida</option>
+											</select>
+											<small class="form-text text-muted danger" *ngIf="!gradomovilidad.valid && (gradomovilidad.dirty || gradomovilidad.touched)">{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="episodioshipoglucemia">Episodios de hipoglucemia (Seleccione la cantidad de episodios de hipoglucemia previos)</label>
+											<select id="episodioshipoglucemia" name="episodioshipoglucemia" class="form-control"  [(ngModel)]="patient.episodioshipoglucemia" required episodioshipoglucemia #episodioshipoglucemia="ngModel">
+												<option value="0">0</option>
+												<option value="1-4">De 1 a 4</option>
+												<option value="masde4">Más de 4</option>
+											</select>
+											<small class="form-text text-muted danger" *ngIf="!episodioshipoglucemia.valid && (episodioshipoglucemia.dirty || episodioshipoglucemia.touched)">{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="enfermedades">Indique si ha sufrido alguna de estas enfermedades</label>
+											<select id="enfermedades" name="enfermedades" class="form-control" multiple="multiple" [(ngModel)]="patient.enfermedades">
+												<option value="parent">Infarto de corazón</option>
+												<option value="institution">Ictus</option>
+												<option value="partner">Problemas de circulación en extremidades</option>
+												<option value="friend">Problemas de heridas en los pies</option>
+												<option value="independent">Enfermedad/insuficiencia renal</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="estadoanimo">Estado de ánimo</label>
+											<div>
+												<div class="btn-group" ngbRadioGroup name="radioBasic" [(ngModel)]="patient.estadoanimo">
+														<label ngbButtonLabel class="btn-raised btn-danger">
+																<input ngbButton type="radio" value="Muy triste"> <img src="assets/img/icons/muytriste.png">
+														</label>
+														<label ngbButtonLabel class="btn-raised btn-warning">
+																<input ngbButton type="radio" value="Triste"> <img src="assets/img/icons/triste.png">
+														</label>
+														<label ngbButtonLabel class="btn-raised btn-secondary">
+																<input ngbButton type="radio" value="Normal"> <img src="assets/img/icons/normal.png">
+														</label>
+														<label ngbButtonLabel class="btn-raised btn-primary">
+																<input ngbButton type="radio" value="Feliz"> <img src="assets/img/icons/feliz.png">
+														</label>
+														<label ngbButtonLabel class="btn-raised btn-success">
+																<input ngbButton type="radio" value="Muy feliz"> <img src="assets/img/icons/muyfeliz.png">
+														</label>
+												</div>
+												<p>{{patient.estadoanimo}}</p>
+											</div>
+										</div>
+									</div>
+								</div>
+                <div class="row" *ngFor="let sibling of patient.tratamientos ; let i=index">
+                  <div class="col-md-12">
+                    <label class="text-bold-500 primary">Tratamiento {{i+1}}</label><a class="btn danger mb-0 float-right" (click)="deleteSibling(i)" href="javascript:void(0)"><i class="fa fa-times"></i></a>
+                  </div>
+                  <div class="col-md-4">
+										<div class="form-group">
+											<label for="sibling.nombre">Nombre del medicamento</label>
+                      <select id="sibling.nombre" name="sibling.nombre{{i}}" class="form-control"  [(ngModel)]="sibling.nombre">
+												<option value="acetohexamida">Acetohexamida</option>
+												<option value="buformina">Buformina</option>
+												<option value="clorpropamida">Clorpropamida</option>
+												<option value="exenatida">Exenatida</option>
+												<option value="fenformina">Fenformina</option>
+												<option value="gliburida">Gliburida</option>
+												<option value="gliclazida">Gliclazida</option>
+												<option value="glimepirida">Glimepirida</option>
+												<option value="glipizida">Glipizida</option>
+												<option value="insulina">Insulina</option>
+												<option value="Metformina ">Metformina</option>
+												<option value="Nateglinida">Nateglinida</option>
+												<option value="Pioglitazona">Pioglitazona</option>
+												<option value="pramlintida">Pramlintida</option>
+												<option value="Repaglinida">Repaglinida</option>
+												<option value="Rosiglitazona">Rosiglitazona</option>
+												<option value="tolazamida">Tolazamida</option>
+												<option value="tolbutamida">Tolbutamida</option>
+												<option value="Troglitazona">Troglitazona</option>
+                      </select>
+										</div>
+									</div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="sibling.dosis">Pastillas o unidades de insulina</label>
+											<input type="text" id="sibling.dosis" class="form-control"  name="sibling.dosis{{i}}" [(ngModel)]="sibling.dosis">
+                    </div>
+                  </div>
+									<div class="col-md-4">
+                    <div class="form-group">
+                      <label for="sibling.hora">Franja del día</label>
+                      <select id="sibling.hora" name="sibling.hora{{i}}" class="form-control"  [(ngModel)]="sibling.hora">
+                        <option value="yes">Desayuno</option>
+                        <option value="no">Comida</option>
+												<option value="no">Cena</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <a (click)="addSibling()" class="btn btn-outline-primary" href="javascript:void(0)"><i class="fa fa-plus"></i>Añadir tratamiento</a>
+                </div>
+							</div>
+							<span *ngIf="!f.valid" class="form-text text-muted danger">{{'generics.requiredfieldsmissing' | translate }}</span>
+							<div class="form-actions center">
+								<button type="button" (click)="resetForm()" class="btn btn-raised btn-raised btn-warning mr-1">
+									<i class="ft-x"></i> {{'generics.Cancel' | translate }}
+								</button>
+								<div *ngIf="f.valid;then formValid else formError"></div>
+								<ng-template #formValid><button class="btn btn-raised btn-raised btn-primary" type="submit"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+								<ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+</section>

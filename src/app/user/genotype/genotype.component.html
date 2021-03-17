@@ -1,0 +1,469 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="content-header">
+      {{'menu.Genotype' | translate }}
+    </div>
+    <div *ngIf="!uploadingGenotype">
+      <br>
+      <p *ngIf="group==duchennenetherlands || group==duchenneinternational" class="content-sub-header">{{'genotype.explanation of genotype 1 Duchenne' | translate }}</p>
+      <p *ngIf="group!=duchennenetherlands && group!=duchenneinternational" class="content-sub-header">{{'genotype.explanation of genotype 1' | translate }}</p>
+      <ol *ngIf="group!=duchennenetherlands && group!=duchenneinternational">
+        <li> <p class="content-sub-header">{{'genotype.explanation of genotype 1a' | translate }}</p> </li>
+        <li><p class="content-sub-header">{{'genotype.explanation of genotype 1b' | translate }}</p> </li>
+      </ol>
+      <p class="content-sub-header">{{'genotype.explanation of genotype 2' | translate }}&nbsp;
+        <a href="https://rareuniversity.com/p/genetic-concepts-for-rare-disease-patients-and-families" target="_blank">https://rareuniversity.com/p/genetic-concepts-for-rare-disease-patients-and-families</a>
+      </p>
+      <p class="content-sub-header">
+        <a class="primary" (click)="showInfo()">
+          <i *ngIf="!showinformation" class="ft-chevron-down"></i>
+          <i *ngIf="showinformation" class="ft-chevron-up"></i>
+          {{'genotype.Click to display/hide information about genomics' | translate }}
+        </a>
+      </p>
+      <ngb-accordion *ngIf="showinformation" class="content-sub-header" [closeOthers]="true">
+        <ngb-panel id="genome">
+          <ng-template ngbPanelTitle>
+              <p><i class="icon-question mr-2"></i> {{'genotype.What is the genome' | translate}}</p>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="card-block">
+              <p class="content-sub-header" id="genome">{{'genotype.Answer genome' | translate}}</p>
+            </div>
+          </ng-template>
+        </ngb-panel>
+        <ngb-panel id="dna">
+          <ng-template ngbPanelTitle>
+            <p><i class="icon-question mr-2"></i> {{'genotype.What is DNA' | translate}}</p>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="card-block">
+              <p id="dna">{{'genotype.Answer DNA' | translate}}</p>
+            </div>
+          </ng-template>
+        </ngb-panel>
+        <ngb-panel id="genes">
+          <ng-template ngbPanelTitle>
+            <p><i class="icon-question mr-2"></i> {{'genotype.What are genes' | translate}}</p>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="card-block">
+              <p id="genes">{{'genotype.Answer genes' | translate}}</p>
+            </div>
+          </ng-template>
+        </ngb-panel>
+        <ngb-panel id="chromosomes">
+          <ng-template ngbPanelTitle>
+            <p><i class="icon-question mr-2"></i> {{'genotype.What are chromosomes' | translate}}</p>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="card-block">
+              <p id="chromosomes">{{'genotype.Answer chromosomes' | translate}}</p>
+            </div>
+          </ng-template>
+        </ngb-panel>
+        <ngb-panel id="geneticVariant">
+          <ng-template ngbPanelTitle>
+            <p><i class="icon-question mr-2"></i> {{'genotype.What is a genetic variant' | translate}}</p>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="card-block">
+              <p id="geneticVariant">{{'genotype.Answer genetic variant' | translate}}</p>
+            </div>
+          </ng-template>
+        </ngb-panel>
+        <ngb-panel id="mutation">
+          <ng-template ngbPanelTitle>
+            <p><i class="icon-question mr-2"></i> {{'genotype.What is a mutation' | translate}}</p>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="card-block">
+              <p id="mutation">{{'genotype.Answer mutation' | translate}}</p>
+            </div>
+          </ng-template>
+        </ngb-panel>
+        <ngb-panel id="geneticTest">
+          <ng-template ngbPanelTitle>
+            <p><i class="icon-question mr-2"></i> {{'genotype.What is a genetic test' | translate}}</p>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="card-block">
+              <p id="geneticTest">{{'genotype.Answer genetic test' | translate}}</p>
+            </div>
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+      <br>
+      <label class="question">{{'stats.geneticFileQuestion' | translate }}</label>
+      <input id="yesAnswer" type="checkbox" (change)="setAnswer($event)" style="margin-left: 0.2rem"><label class="answer ml-1 mr-1" style="margin-left: 0.2rem">{{'generics.Yes' | translate }}</label>
+      <input id="noAnswer" type="checkbox" (change)="setAnswer($event)" style="margin-left: 0.3rem"><label class="answer ml-1" style="margin-left: 0.2rem">{{'generics.No' | translate }}</label>
+      <!--<ui-switch id="answer" (change)="setAnswer($event)"></ui-switch>-->
+      <div class="right-elements" *ngIf="genotype.data.length>0 || editingGenotype || filesOnBlob.length > 0">
+        <button type="button" *ngIf="!editingGenotype && group != duchennenetherlands && group != duchenneinternational" class="btn btn-raised btn-primary" (click)="editGenotype()">{{'genotype.Modify' | translate }}</button>
+        <!--<button type="button" *ngIf="!editingGenotype && group == duchennenetherlands" class="btn btn-raised btn-primary" (click)="editGenotype()">{{'generics.Upload' | translate }}</button>-->
+        <div *ngIf="!editingGenotype && (group == duchennenetherlands || group == duchenneinternational)">
+          <label *ngIf="!uploadingGenotype && !isApp && !showOnlyQuestion" class="btn btn-raised btn-primary">
+              {{'generics.Upload' | translate }} <input type="file" (change)="onFileChange($event)" style="display: none;">
+          </label>
+          <label *ngIf="!uploadingGenotype && isApp && !showOnlyQuestion" class="btn btn-raised btn-primary">
+              {{'generics.Upload' | translate }} <input type="file" (change)="onFileChange($event)" style="display: none;">
+          </label>
+          <h4 *ngIf="uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+        </div>
+        <button type="button"  *ngIf="editingGenotype && !selectedOption && group != duchennenetherlands && group != duchenneinternational" class="btn btn-raised btn-danger" (click)="cancelEditGenotype()">{{'generics.Cancel edition' | translate }}</button>
+        <button type="button"  *ngIf="editingGenotype && !selectedOption && (group == duchennenetherlands || group == duchenneinternational)" class="btn btn-raised btn-danger" (click)="cancelEditGenotype()">{{'generics.Cancel' | translate }}</button>
+        <button type="button"  *ngIf="editingGenotype && selectedOption" class="btn btn-raised btn-danger" (click)="back()">>{{'generics.Back' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<section id="empty-genotype" *ngIf="genotype.data.length==0 && !editingGenotype && !loading && filesOnBlob.length == 0 && !showOnlyQuestion">
+  <div class="center-elements">
+    <button type="button" class="btn btn-lg btn-raised btn-primary" (click)="editGenotype()">{{'genotype.Start' | translate }}</button>
+  </div>
+</section>
+<!--<section id="noempty-genotype" *ngIf="(genotype.data.length>0 || filesOnBlob.length > 0) &&  (!editingGenotype && !loading) ">
+  <div class="center-elements">
+    <img alt="Card image cap" src="assets/img/gen.jpg"  class="mx-auto d-block img-thumbnail">
+  </div>
+</section>-->
+
+<section id="panel-editing-genotype" *ngIf="editingGenotype">
+	<div class="row">
+		<div class="col-md-12 content-sub-header">
+
+      <!--INICIO SECCIONES<-->
+      <div class="row" id="sectionsOfGenotype" matchHeight ="card">
+        <!--<div class="card-body">
+            <div class="card-block">
+                <ngb-alert type="secondary" [dismissible]="false">
+                    {{'genotype.Genetic information is important for patients...' | translate }}
+                </ngb-alert>
+            </div>
+        </div>-->
+        <!--<div *ngIf="group != duchennenetherlands && group != duchenneinternational" class="col-lg-12 col-md-12">
+          <p>{{'genotype.You can complete the genotype in several ways' | translate }}</p>
+        </div>-->
+
+        <div class="col-lg-6 col-md-12" style="margin: 0 auto">
+          <div class="card">
+              <div class="card-header text-center pb-0">
+                <span *ngIf="group != duchennenetherlands && group != duchenneinternational" class="font-medium-2 primary">{{'generics.Option' | translate }} 1</span>
+              </div>
+              <div class="card-body height-150">
+                  <div id="donut-chart2" class="center-elements">
+                    <i class="ft-file-text fa-4x primary"></i>
+                  </div>
+                  <div class="card-block text-center">
+                      <span class="font-medium-1 grey darken-1 text-bold-400">{{'genotype.Upload your genetic information here' | translate }}</span>
+                  </div>
+              </div>
+              <div class="card-footer bt-n">
+                <label *ngIf="!uploadingGenotype && !isApp" class="btn btn-outline-primary btn-lg btn-block btn-round">
+                    {{'generics.Upload' | translate }} <input type="file" (change)="onFileChange($event)" style="display: none;">
+                </label>
+                <label *ngIf="!uploadingGenotype && isApp" class="btn btn-outline-primary btn-lg btn-block btn-round">
+                    {{'generics.Upload' | translate }} <input type="file" (change)="onFileChange($event)" style="display: none;">
+                </label>
+                <h4 *ngIf="uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+              </div>
+          </div>
+        </div>
+        <div  *ngIf="group != duchennenetherlands && group != duchenneinternational" class="col-lg-6 col-md-12">
+            <div class="card">
+                <div class="card-header text-center pb-0">
+                  <span class="font-medium-2 danger">{{'generics.Option' | translate }} 2</span>
+                </div>
+                <div class="card-body height-150">
+                    <div id="donut-chart3" class="center-elements">
+                      <i class="ft-edit fa-4x danger"></i>
+                    </div>
+                    <div class="card-block text-center">
+                        <span class="font-medium-1 grey darken-1 text-bold-400">{{'genotype.If you want to complete the data manually, you can access here' | translate }}</span>
+                    </div>
+                </div>
+                <div class="card-footer bt-n">
+                  <button type="button" class="btn btn-outline-danger btn-lg btn-block btn-round" (click)="showPanelManual()">{{'generics.View' | translate }}</button>
+                </div>
+            </div>
+        </div>
+        <!--
+        <div class="col-lg-6 col-md-12">
+            <div class="card">
+                <div class="card-header text-center pb-0">
+                  <span class="font-medium-2 primary">{{'generics.Option' | translate }} 1</span>
+                </div>
+                <div class="card-body height-200">
+                    <div id="donut-chart2" class="center-elements">
+                      <i class="ft-file-text fa-4x primary"></i>
+                    </div>
+                    <div class="card-block text-center">
+                        <span class="font-medium-1 grey darken-1 text-bold-400">{{'genotype.explanation of genotype 3' | translate }}</span>
+                    </div>
+                </div>
+                <div class="card-footer bt-n">
+                  <label *ngIf="!uploadingGenotype && !isApp" class="btn btn-outline-primary btn-lg btn-block btn-round">
+                      {{'generics.Upload' | translate }} <input type="file" (change)="onFileChange($event)" accept=".bam , .fq.gz" style="display: none;">
+                  </label>
+                  <label *ngIf="!uploadingGenotype && isApp" class="btn btn-outline-primary btn-lg btn-block btn-round">
+                      {{'generics.Upload' | translate }} <input type="file" (change)="onFileChange($event)" style="display: none;">
+                  </label>
+                  <h4 *ngIf="uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12">
+            <div class="card">
+                <div class="card-header text-center pb-0">
+                  <span class="font-medium-2 warning">{{'generics.Option' | translate }} 2</span>
+                </div>
+                <div class="card-body height-200">
+                    <div id="donut-chart3" class="center-elements">
+                      <i class="ft-filter fa-4x warning"></i>
+                    </div>
+                    <div class="card-block text-center">
+                        <span class="font-medium-1 grey darken-1 text-bold-400">{{'genotype.Upload VCF' | translate }} (Variant Call Format)</span>
+                    </div>
+                </div>
+                <div class="card-footer bt-n">
+                  <label *ngIf="!uploadingGenotype  && !isApp" class="btn btn-outline-warning btn-lg btn-block btn-round">
+                      {{'genotype.Upload VCF' | translate }} <input type="file" (change)="onFileChangeVCF($event)" accept=".vcf" style="display: none;">
+                  </label>
+                  <label *ngIf="!uploadingGenotype  && isApp" class="btn btn-outline-warning btn-lg btn-block btn-round">
+                      {{'genotype.Upload VCF' | translate }} <input type="file" (change)="onFileChangeVCF($event)" style="display: none;">
+                  </label>
+                  <h4 *ngIf="uploadingGenotypeVCF" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgressVCF | async}}%</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12">
+            <div class="card">
+                <div class="card-header text-center pb-0">
+                  <span class="font-medium-2 danger">{{'generics.Option' | translate }} 3</span>
+                </div>
+                <div class="card-body height-150">
+                    <div id="donut-chart3" class="center-elements">
+                      <i class="ft-edit fa-4x danger"></i>
+                    </div>
+                    <div class="card-block text-center">
+                        <span class="font-medium-1 grey darken-1 text-bold-400">{{'genotype.If you do not have any file ...' | translate }}</span>
+                    </div>
+                </div>
+                <div class="card-footer bt-n">
+                  <button type="button" class="btn btn-outline-danger btn-lg btn-block btn-round" (click)="showPanelManual()">{{'generics.Select' | translate }}</button>
+                </div>
+            </div>
+        </div>
+      -->
+      </div>
+      <div id="panel-bam-fastq" style="display:none;">
+        <p class="content-sub-header">{{'genotype.explanation of genotype 3' | translate }}</p>
+        <div class="right-elements">
+          <label *ngIf="!uploadingGenotype" class="btn btn-raised btn-raised btn-primary">
+              {{'generics.Upload' | translate }} <input type="file" (change)="onFileChange($event)" accept=".bam , .fq.gz" style="display: none;">
+          </label>
+          <h4 *ngIf="uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+        </div>
+
+      </div>
+
+      <div id="panel-vcf" style="display:none;">
+        <p class="content-sub-header">{{'genotype.explanation of genotype 3' | translate }}</p>
+        <div class="right-elements">
+          <label *ngIf="!uploadingGenotype" class="btn btn-raised btn-raised btn-primary">
+              {{'generics.Upload' | translate }} <input type="file" (change)="onFileChange($event)" accept=".vcf" style="display: none;">
+          </label>
+          <h4 *ngIf="uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+        </div>
+      </div>
+
+      <div id="panel-manual" style="display:none;" >
+        <form class="form" (ngSubmit)="onSubmit()" #f="ngForm">
+          <div class="form-body">
+            <h4 *ngIf="genotype.data.length>0" class="form-section"><i class="ft-users"></i> {{'genotype.Variants' | translate }}</h4>
+            <div class="row" *ngFor="let variant of genotype.data ; let i=index">
+              <div class="col-md-12">
+                <label class="text-bold-500 primary">{{'genotype.Variant' | translate }} {{i+1}}</label><a class="btn danger mb-0 float-right" (click)="deleteVariant(i)" href="javascript:void(0)"><i class="fa fa-times"></i></a>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="variant.gen">{{'genotype.Search Gen' | translate }}</label>
+                  <div class="position-relative has-icon-left">
+										<input type="text" id="variant.geninput" class="form-control" name="variant.geninput{{i}}"  [(ngModel)]="variant.geninput" #textgen (ngModelChange)="onChangeGen($event, textgen.value, i)" placeholder="Search gen">
+										<div class="form-control-position">
+											<i class="ft-search info"></i>
+										</div>
+									</div>
+                  <small class="form-text text-muted danger" *ngIf="!variant.geninput && !genname.valid && (genname.dirty || genname.touched)">{{'genotype.Write something to find the gene' | translate }}</small>
+                </div>
+              </div>
+              <div class="col-md-3" >
+                <div class="form-group">
+                  <label for="variant.gen">{{'genotype.Select gen' | translate }}</label>
+                  <select id="variant.gen" name="variant.gen{{i}}" class="form-control"  [(ngModel)]="variant.gen" required genname #genname="ngModel">
+                      <option [ngValue]="null" disabled selected>--{{'generics.Please select' | translate }}--</option>
+                    <option *ngFor="let gen of genlist[i]" [ngValue]="gen.name"> {{gen.name}}</option>
+                  </select>
+                  <small class="form-text text-muted danger" *ngIf="!genname.valid && (genname.dirty || genname.touched)">{{'generics.required' | translate }}</small>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="variant.mutation">{{'genotype.Type of mutation' | translate }}</label>
+                  <select id="variant.mutation" name="variant.mutation{{i}}" class="form-control"  [(ngModel)]="variant.mutation">
+                    <option value="nonsense">Nonsense</option>
+                    <option value="insertion">{{'genotype.Insertion' | translate }}</option>
+                    <option value="deletion">{{'genotype.Deletion' | translate }}</option>
+                    <option value="duplication">{{'genotype.Duplication' | translate }}</option>
+                    <option value="frameshift">Frame-shift</option>
+                    <option value="splicesite">Splice site</option>
+                    <option value="repeatexpansion">{{'genotype.Repeat expansion' | translate }}</option>
+                    <option value="other">{{'generics.Other' | translate }}</option>
+                    <option value="unknown">{{'clinicaltrials.Unknown' | translate }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6 moreinfo{{i}}" style="display:none;">
+                <div class="form-group">
+                  <label for="variant.codingsequencechange">{{'genotype.DNA sequence change' | translate }}</label>
+                  <input type="text" id="variant.codingsequencechange" class="form-control" name="variant.codingsequencechange{{i}}" [(ngModel)]="variant.codingsequencechange">
+                </div>
+              </div>
+              <div class="col-md-6 moreinfo{{i}}" style="display:none;">
+                <div class="form-group">
+                  <label for="variant.aminoacidchange">{{'genotype.Amino acid change' | translate }}</label>
+                  <input type="text" id="variant.aminoacidchange" class="form-control" name="variant.aminoacidchange{{i}}" [(ngModel)]="variant.aminoacidchange">
+                </div>
+              </div>
+              <div class="col-md-6 moreinfo{{i}}" style="display:none;">
+                <div class="form-group">
+                  <label for="variant.isoform">{{'genotype.Isoform/Transcript' | translate }}</label>
+                  <input type="text" id="variant.isoform" class="form-control" name="variant.isoform{{i}}" [(ngModel)]="variant.isoform">
+                </div>
+              </div>
+              <div class="col-md-6 moreinfo{{i}}" style="display:none;">
+                <div class="form-group">
+                  <label for="variant.genomiccoordinates">{{'genotype.Genomic coordinates' | translate }}</label>
+                  <input type="text" id="variant.genomiccoordinates" class="form-control" name="variant.genomiccoordinates{{i}}" [(ngModel)]="variant.genomiccoordinates">
+                </div>
+              </div>
+              <div class="col-md-12 center-elements">
+                <div class="form-group bottominfo{{i}}">
+                  <a (click)="moreInfo(i)" class="btn btn-outline-primary" href="javascript:void(0)"><i class="fa fa-plus"></i> {{'genotype.More Info of this variant' | translate }}</a>
+                </div>
+                <div class="form-group moreinfo{{i}}" style="display:none;">
+                  <a (click)="hideInfo(i)" class="btn btn-outline-primary" href="javascript:void(0)"><i class="fa fa-minus"></i> {{'genotype.Hide Info' | translate }}</a>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <a (click)="addVariant()" class="btn btn-outline-primary" href="javascript:void(0)"><i class="fa fa-plus"></i> {{'genotype.Add new variant' | translate }}</a>
+              <div *ngIf="f.valid;then formValid else formError"></div>
+              <ng-template #formValid><button *ngIf="genotype.data.length>0" class="btn btn-outline-green" type="submit">{{'generics.Save' | translate }}</button></ng-template>
+              <ng-template #formError><button class="btn btn-outline-green" type="button" (click)="submitInvalidForm()"> {{'generics.Save' | translate }}</button></ng-template>
+              <!--<a *ngIf="genotype.data.length>0 || genotypeCopy.data.length !=genotype.data.length" (click)="onSubmit()" class="btn btn-outline-green" href="javascript:void(0)"><i class="fa fa-plus"></i> Save Variants</a>-->
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section *ngIf="!editingGenotype">
+  <div class="col-md-12 center-elements" *ngIf="uploadingGenotype">
+    <div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+  </div>
+
+  <div class="row" *ngIf="filesOnBlob.length > 0 && !uploadingGenotype && !showOnlyQuestion">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="form-section">{{'genotype.Files on our repository' | translate }}</h4>
+        </div>
+        <div class="card-body">
+          <div class="px-3">
+            <div class="table-responsive">
+              <table class="table text-center">
+                <thead>
+                  <tr>
+                    <th>{{'generics.Name' | translate }}</th>
+                    <th>{{'generics.Date' | translate }}</th>
+                    <th>{{'genotype.Size' | translate }}</th>
+                    <th>{{'generics.Delete' | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let file of filesOnBlob ; let i = index">
+                    <td>{{file.name}}
+                      <a *ngIf="!isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{file.name}}{{accessToken.sasToken}}" download target="_blank"><i class="fa ft-download-cloud"></i></a>
+                      <span *ngIf="isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,file.name)"><i class="fa ft-download-cloud"></i></span>
+                    </td>
+                    <td>{{file.lastModified | date: timeformat}}</td>
+                    <td>{{file.contentLength/1024/1024 | number}} MB</td>
+                    <td>
+                      <a class="danger" data-original-title="" title="" (click)="confirmDeleteFile(i)">
+                        <i class="ft-x"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <small>{{'genotype.Total size' | translate }}: {{totalSize | number}} MB</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-md-12 center-elements" *ngIf="loading">
+    <div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+  </div>
+  <div *ngIf="genotype.data.length>0">
+    <div class="row" *ngIf="!uploadingGenotype">
+      <div class="col-md-12" *ngIf="!loading">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="form-section">{{'genotype.My genotype' | translate }}</h4>
+          </div>
+          <div class="card-body">
+            <div class="px-3">
+              <div class="table-responsive">
+                <table class="table text-center">
+                  <thead>
+                    <tr>
+                      <th>{{'genotype.Gene' | translate }}</th>
+                      <th>{{'genotype.Type of mutation' | translate }}</th>
+                      <th>{{'genotype.DNA sequence change' | translate }}</th>
+                      <th>{{'genotype.Amino acid change' | translate }}</th>
+                      <th>{{'genotype.Isoform/Transcript' | translate }}</th>
+                      <th>{{'genotype.Genomic coordinates' | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let variant of genotype.data ; let i = index">
+                      <td>{{variant.gen}}</td>
+                      <td>{{variant.mutation}}</td>
+                      <td>{{variant.codingsequencechange}}</td>
+                      <td>{{variant.aminoacidchange}}</td>
+                      <td>{{variant.isoform}}</td>
+                      <td>{{variant.genomiccoordinates}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

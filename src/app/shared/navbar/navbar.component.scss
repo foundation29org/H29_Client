@@ -1,0 +1,34 @@
+.navbar-expand-lg .navbar-nav .nav-link {
+  padding-right: .5rem;
+  padding-left: .5rem;
+}
+span#notificationText {
+  margin-left: 1rem;
+  line-height: 1rem;
+  font-size: 0.8rem;
+  
+}
+
+a#notificationText {
+  margin-left: 1rem;
+  line-height: 1rem;
+  font-size: 0.6rem;
+  
+}
+#notificationsMenu{
+  width: max-content; 
+  max-width: 600rem; 
+  min-width: 20rem;
+  max-height: 100rem; 
+  overflow-y: scroll;
+}
+
+.snooze{
+  font-size: 0.6rem;
+  margin-left: 5px;
+}
+
+select.snooze{
+  height: 1.8rem !important;
+  width: 120px;
+}

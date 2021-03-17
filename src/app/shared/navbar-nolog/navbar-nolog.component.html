@@ -1,0 +1,28 @@
+<!-- Navbar (Header) Starts -->
+<nav class="navbar navbar-expand-lg navbar-light bg-faded damemarger">
+    <div class="container-fluid">
+        <div class="navbar-header">
+          <img *ngIf="title._doc.location.pathname!='/error'" style="cursor:pointer;" class="logo-img" src='assets/img/health29-medium.png' routerLink="/login"/>
+          <img *ngIf="title._doc.location.pathname=='/error'" class="logo-img" src='assets/img/health29-medium.png'>
+        </div>
+        <div class="navbar-container">
+            <div class="navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav m-r-0">
+                    <li class="nav-item" ngbDropdown placement="bottom-right">
+                        <a class="nav-link position-relative colorlink" id="dropdownLang" ngbDropdownToggle>
+                            <i class="ft-flag font-medium-3 blue-grey darken-4 iconcolor"></i>
+                            <p class="d-none">{{'generics.Lang' | translate }}</p>
+                        </a>
+                        <div ngbDropdownMenu aria-labelledby="dropdownLang" class="dropdownLang">
+                            <a *ngFor="let lang of langs" class="dropdown-item py-1 lang" href="javascript:;" (click)="ChangeLanguage(lang.code)">
+                                <span>{{lang.name}}</span>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Navbar (Header) Ends -->

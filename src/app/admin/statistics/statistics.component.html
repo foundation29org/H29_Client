@@ -1,0 +1,146 @@
+<div class="row" *ngIf="!addedlang && !working">
+	<div class="col-lg-12 col-12">
+		<div class="card" *ngIf="!viewUserSection">
+			<div class="card-header">
+				<h4 class="card-title">{{'stats.Users statistics' | translate}}</h4>
+			</div>
+			<div class="center-elements" *ngIf="loadingUsers">
+				<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+			</div>
+			<div class="card-body table-responsive" *ngIf="!loadingUsers && users.length>0">
+
+				<ngx-datatable
+				class="bootstrap fullscreen"
+				[columnMode]="'flex'"
+				[headerHeight]="50"
+				[footerHeight]="50"
+				[rowHeight]="'auto'"
+				[rows]="users"
+				>
+					<ngx-datatable-column name="{{'menu.User Profile' | translate }}" prop="userName" [flexGrow]="2.7" [sortable]="true" >
+						<ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+										<span>
+											<a class="username" (click)="userStatistics(row)">{{value}}</a>
+										</span>
+						</ng-template>
+					</ngx-datatable-column>
+					<ngx-datatable-column name="{{'generics.Email' | translate }}" prop="email" [flexGrow]="2.7" [sortable]="true">
+						<ng-template let-value="value" ngx-datatable-cell-template>
+									<span>
+										{{value}}
+									</span>
+						</ng-template>
+					</ngx-datatable-column>
+					<ngx-datatable-column name="{{'stats.Last login' | translate }}" prop="lastLogin" [flexGrow]="2.7" [sortable]="true">
+						<ng-template let-value="value" ngx-datatable-cell-template>
+										<span>
+											{{value | date:timeformat}}
+										</span>
+						</ng-template>
+					</ngx-datatable-column>
+					<ngx-datatable-column name="{{'stats.Percentage' | translate }}" prop="totalStats" [flexGrow]="2.7" [sortable]="true">
+						<ng-template let-value="value" ngx-datatable-cell-template>
+										<span>
+											{{value}} %
+										</span>
+						</ng-template>
+					</ngx-datatable-column>
+				</ngx-datatable>
+			</div>
+
+			<div class="card-body table-responsive" *ngIf="!loadingUsers && users.length==0">
+				No users
+			</div>
+
+		</div>
+
+		<div class="card" *ngIf="viewUserSection">
+			<div class="card-header">
+				<h4 class="card-title">{{'stats.Statistics of' | translate }} {{userSelected}}</h4>
+				<button type="button" class="btn btn-secondary btn-raised" (click)="back()">{{'generics.Back' | translate }}</button>
+			</div>
+			<div class="center-elements" *ngIf="loadingUsers">
+				<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+			</div>
+			<div class="card-body table-responsive" *ngIf="!loadingUsers && users.length>0">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th></th>
+							<th>{{'stats.Question Answered' | translate }}</th>
+							<th>#</th>
+						</tr>
+					</thead>
+					<tbody *ngFor="let contentData of sectionsContent">
+						<tr>
+							<td class="titulo">{{contentData.name}}</td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr *ngFor="let data of contentData.content">
+							<td>{{data.name}}</td>
+							<td> {{data.answer}}</td>
+							<td>{{data.stats}} <span *ngIf="contentData.isPercentage==true">%</span></td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+			<div class="card-body table-responsive" *ngIf="!loadingUsers && users.length==0">
+				No users
+			</div>
+
+		</div>
+
+	</div>
+</div>
+<div class="col-lg-12 col-12 form-group" *ngIf="working">
+	<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+	<div>{{'generics.Sending' | translate }}...</div>
+</div>
+<ng-template #content let-c="close" let-d="dismiss">
+	<form class="form" (ngSubmit)="onSubmitDateDeath()" #f="ngForm">
+		<div class="modal-header">
+				<h4 class="modal-title">{{'admin.death' | translate }}</h4>
+				<button type="button" class="close" aria-label="Close" (click)="closePanel()">
+				<span aria-hidden="true">&times;</span>
+				</button>
+		</div>
+		<div class="modal-body">
+			<div class="px-3">
+
+					<div class="form-body">
+						<div class="row">
+							<div class="col-md-10">
+								<div class="form-group">
+									<label for="death">* {{'generics.Date' | translate }}</label>
+									<div *ngIf="user">
+										{{user.death | date:timeformat}}
+										<input  class="form-control w-75 d-none" id="death" name="death"  matInput [matDatepicker]="picker3" [min]="minDateChangeDose" [max]="today" [(ngModel)]="user.death" death #death="ngModel">
+										<mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+										<mat-datepicker touchUi="true" #picker3></mat-datepicker>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2" *ngIf="user.death">
+								<div class="form-group">
+									<button class="btn btn-raised btn-raised btn-primary" type="button" (click)="removeDate()">{{'generics.Delete' | translate }}</button>
+								</div>
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<span *ngIf="!f.valid" class="form-text text-muted danger">{{'generics.requiredfieldsmissing' | translate }}</span>
+				<div class="form-actions center" *ngIf="!sending">
+						<button type="button" class="btn btn-secondary btn-raised" (click)="closePanel()">{{'generics.Cancel' | translate }}</button>
+					<div *ngIf="f.valid;then formValid else formError"></div>
+					<button class="btn btn-raised btn-raised btn-primary" type="submit">{{'generics.Save' | translate }}</button>
+				</div>
+				<div class="col-md-12 center-elements" *ngIf="sending">
+					<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+				</div>
+		</div>
+		</form>
+</ng-template>

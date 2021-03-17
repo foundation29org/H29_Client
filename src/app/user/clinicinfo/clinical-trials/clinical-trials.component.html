@@ -1,0 +1,140 @@
+<section id="listMeditationSection">
+	<div class="row">
+      <div class="col-sm-12">
+          <div class="content-header">
+				<span *ngIf="!addedClinicalTrial && !saving">{{'clinicalinfo.Clinical Trials' | translate }}</span>
+				<span *ngIf="listClinicalTrials && addedClinicalTrial && !saving">{{'clinicaltrials.New Clinical Trial' | translate }}</span>
+			</div>
+      </div>
+  </div>
+  <div class="row" *ngIf="!addedClinicalTrial && !saving">
+		<div class="col-sm-12">
+  			<label class="question">{{'stats.clinicalTrialsQuestion' | translate }}</label>
+  			<input id="yesAnswer" type="checkbox" (change)="setAnswer($event)" style="margin-left: 0.3rem;"><label class="answer ml-1 mr-1">{{'stats.Yes' | translate }}</label>
+      		<input id="noAnswer" type="checkbox" (change)="setAnswer($event)" style="margin-left: 0.3rem;"><label class="answer ml-1">{{'stats.No' | translate }}</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<button *ngIf="!loading && !addedClinicalTrial && !saving && !showOnlyQuestion" type="button" class="float-right btn btn-outline-primary" (click)="newClinicalTrial()"><i class="fa fa-plus"></i> {{'clinicaltrials.New Clinical Trial' | translate }}</button>
+		</div>
+	</div>
+  <!-- ClinicalTrials -->
+<div class="row" >
+	<div class="col-lg-12 col-12" *ngIf="!addedClinicalTrial && !saving && !showOnlyQuestion">
+		<div class="card">
+			<div class="card-body table-responsive" *ngIf="listClinicalTrials.length > 0">
+				<table class="table text-center">
+					<thead>
+						<tr>
+							<th>{{'clinicaltrials.Name of the clinical trial' | translate }}</th>
+							<th>{{'clinicaltrials.Currently involved' | translate }}</th>
+							<th>{{'clinicaltrials.Name of the drug being tested' | translate }}</th>
+							<th>{{'clinicaltrials.In which center / hospital?' | translate }}</th>
+							<th>{{'generics.Date' | translate }}</th>
+							<th>{{'generics.Edit' | translate }}</th>
+							<th>{{'generics.Delete' | translate }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let clinicalTrial of listClinicalTrials ; let i = index">
+							<td>{{clinicalTrial.nameClinicalTrial}}</td>
+							<td>
+								<span *ngIf="clinicalTrial.takingClinicalTrial == null"></span>
+								<span *ngIf="clinicalTrial.takingClinicalTrial == 'Yes, currently'">{{'clinicaltrials.Yes, currently' | translate }}</span>
+								<span *ngIf="clinicalTrial.takingClinicalTrial == 'No, but previously'">{{'clinicaltrials.No, but previously' | translate }}</span>
+								<!--<span *ngIf="clinicalTrial.takingClinicalTrial == 'Never'">{{'clinicaltrials.Never' | translate }}</span>
+								<span *ngIf="clinicalTrial.takingClinicalTrial == 'Unknown'">{{'clinicaltrials.Unknown' | translate }}</span>-->
+							</td>
+							<td>{{clinicalTrial.drugName}}</td>
+							<td>{{clinicalTrial.center}}</td>
+							<td>{{clinicalTrial.date | date: timeformat}}</td>
+							<td>
+								<a class="primary" data-original-title="" title="" (click)="editClinicalTrial(i)">
+									<i class="ft-edit"></i>
+								</a>
+							</td>
+							<td>
+								<a class="danger" data-original-title="" title="" (click)="confirmDeleteClinicalTrial(i)">
+									<i class="ft-x"></i>
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="row col-md-12" *ngIf="listClinicalTrials.length == 0">
+				{{'vaccinations.No saved vaccines' | translate }}
+			</div>
+		</div>
+	</div>
+  <div class="mt-4 col-md-12" *ngIf="listClinicalTrials && addedClinicalTrial && !saving">
+		<form class="row form" (ngSubmit)="submitNewClinicalTrial()" #f="ngForm">
+			<div class="col-md-6">
+		    <div class="form-group">
+		      <label for="nameClinicalTrial">{{'clinicaltrials.Name of the clinical trial' | translate }}</label>
+			  <input type="text" class="form-control"  name="nameClinicalTrial" [(ngModel)]="clinicalTrial.nameClinicalTrial" ngModel required #clinicalTrialName="ngModel" >
+			  <small class="form-text text-muted danger" *ngIf="!clinicalTrialName.valid && (clinicalTrialName.dirty || clinicalTrialName.touched)">{{'generics.required' | translate }}</small>
+
+	    	</div>
+			</div>
+			<div class="col-md-6">
+		    <div class="form-group">
+		      <label for="clinicalTrialref">{{'clinicaltrials.Are you currently taking part in a clinical trial' | translate }}</label>
+		      <select id="clinicalTrialref" name="clinicalTrialref" class="form-control"  [(ngModel)]="clinicalTrial.takingClinicalTrial"  ngModel required #clinicalTrialref="ngModel">
+						<!--<option [ngValue]="null" disabled selected>--{{'registration.Please select a group' | translate }}--</option>-->
+						<option value="Yes, currently">{{'clinicaltrials.Yes, currently' | translate }}</option>
+						<option value="No, but previously">{{'clinicaltrials.No, but previously' | translate }}</option>
+						<!--<option value="Never">{{'clinicaltrials.Never' | translate }}</option>
+						<option value="Unknown">{{'clinicaltrials.Unknown' | translate }}</option>-->
+		      </select>
+					<small class="form-text text-muted danger" *ngIf="!clinicalTrialref.valid && (clinicalTrialref.dirty || clinicalTrialref.touched)">{{'generics.required' | translate }}</small>
+	    	</div>
+			</div>
+			<div class="col-md-6">
+		    <div class="form-group">
+		      <label for="drugName">{{'clinicaltrials.Name of the drug being tested' | translate }}</label>
+			  <input type="text" class="form-control"  name="drugName" [(ngModel)]="clinicalTrial.drugName" ngModel required #clinicalTrialDrug="ngModel" >
+			  <small class="form-text text-muted danger" *ngIf="!clinicalTrialDrug.valid && (clinicalTrialDrug.dirty || clinicalTrialDrug.touched)">{{'generics.required' | translate }}</small>
+
+	    	</div>
+			</div>
+			<div class="col-md-6">
+		    <div class="form-group">
+		      <label for="center">{{'clinicaltrials.In which center / hospital?' | translate }}</label>
+					<input type="text" class="form-control"  name="center" [(ngModel)]="clinicalTrial.center" >
+	    	</div>
+			</div>
+			<div class="col-md-6">
+				<label for="multidisciplanary">{{'generics.Start date (or approximate)' | translate }}</label>
+				<!--<div *ngIf="!isSafari && !isIeOrEdge">
+					<input type="date" class="form-control" name="clinicalTrial.date" [(ngModel)]="clinicalTrial.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel">
+					<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+				</div>
+				<div *ngIf="isSafari || isIeOrEdge">
+					<input  class="form-control w-75 d-inline" name="clinicalTrial.date"  matInput [matDatepicker]="picker" [(ngModel)]="clinicalTrial.date" dateTime #dateTime="ngModel">
+					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+					<mat-datepicker touchUi="true" #picker></mat-datepicker>
+					<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+				</div>-->
+				<div>
+					<input  class="form-control w-75 d-inline" name="clinicalTrial.date"  matInput [matDatepicker]="picker" [(ngModel)]="clinicalTrial.date" dateTime #dateTime="ngModel">
+					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+					<mat-datepicker touchUi="true" #picker></mat-datepicker>
+					<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+				</div>
+			</div>
+			<div class="col-md-12 mt-4">
+				<div *ngIf="f.valid;then formValid else formError"></div>
+				<ng-template #formValid><button class="btn btn-raised btn-primary" type="submit" ><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+				<ng-template #formError><button class="btn btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+				<button class="btn btn-raised btn-secondary" type="button" (click)="cancelNewClinicalTrial()">{{'generics.Cancel' | translate }}</button>
+			</div>
+		</form>
+  </div>
+
+	<div class="col-lg-12 col-12 form-group" *ngIf="saving">
+		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+	</div>
+</div>
+</section>

@@ -1,0 +1,23 @@
+.w-10{
+  width: 10%;
+}
+
+.w-15{
+  width: 15%;
+}
+.w-5{
+  width: 5%;
+}
+
+
+
+@media ( max-width: 680px ){
+  .card .card-block {
+      padding: 0 !important;
+  }
+  ngb-accordion [role="tabpanel"] {
+      padding: 0 !important;
+  }
+}
+
+

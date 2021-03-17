@@ -1,0 +1,208 @@
+<!--Registration Page Starts-->
+<section id="regestration">
+    <div class="container-fluid gradient-red-pink">
+        <div class="row full-height">
+            <div class="col-12 d-flex align-items-center justify-content-center">
+                <div class="card" style="max-width: 930px;">
+                    <div class="card-body">
+                        <div class="row d-flex">
+                            <div class="col-12 col-sm-12 d-flex align-items-center">
+                                <div *ngIf="!isVerifyemail && !isFailEmail" class="card-block mx-auto">
+                                  <h2 class="card-title font-large-1 text-center content-header mb-3">{{'registration.Registration' | translate }}</h2>
+                                    <form   (ngSubmit)="onSubmit()" #f="ngForm">
+                                      <div class="form-group">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">
+                                                <i class="icon-user"></i>
+                                            </span>
+                                            <input type="text" class="form-control" name="userName" id="userName" placeholder="{{'generics.Name' | translate }}" ngModel required #userName="ngModel">
+                                        </div>
+                                        <small class="form-text text-muted danger" *ngIf="!userName.valid && (userName.dirty || userName.touched)">{{'generics.required' | translate }}</small>
+                                      </div>
+                                      <div class="form-group">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">
+                                                <i class="ft-mail"></i>
+                                            </span>
+                                            <input type="email" class="form-control" name="email" id="email" placeholder="{{'generics.Email' | translate }}" ngModel required email #email="ngModel">
+                                        </div>
+                                        <small class="form-text text-muted danger" *ngIf="!email.valid && (email.dirty || email.touched)">{{'generics.entervalidemail' | translate }}</small>
+                                      </div>
+                                      <div class="form-group">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">
+                                                <i class="ft-mail"></i>
+                                            </span>
+                                            <input type="email" class="form-control" name="emai2l" id="email2" placeholder="{{'registration.Repeat email' | translate }}" ngModel required email2 #email2="ngModel" [equalTo]="email">
+                                        </div>
+                                        <small class="form-text text-muted danger" *ngIf="email2.errors?.equalTo">{{'registration.The email do not match' | translate }}</small>
+                                      </div>
+                                      <div class="form-group">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">
+                                                <i class="ft-lock"></i>
+                                            </span>
+                                            <input type="password" class="form-control" name="password" id="password" placeholder="{{'generics.Password' | translate }}" ngModel required #password="ngModel" minlength="8" maxlength="24" validatePassword="password">
+                                        </div>
+                                        <small *ngIf="password.invalid && (password.dirty || password.touched)" class="form-text text-muted danger">
+                                          <div *ngIf="password.errors.invalidPassword">
+                                            {{'recoverpass.Password must have' | translate }} {{'(!@#$%^&*(),.?\":{}|<>)'}}
+                                          </div>
+                                          <div *ngIf="password.errors.required">
+                                            {{'recoverpass.Password is required' | translate }}
+                                          </div>
+                                          <div *ngIf="(password.errors.minlength || password.errors.maxlength) && !password.errors.required">
+                                            {{'generics.Passwordlength' | translate }}
+                                          </div>
+                                        </small>
+
+                                        <!--<small class="form-text text-muted danger" *ngIf="!password.valid && (password.dirty || password.touched)">{{'generics.Passwordlength' | translate }}</small>-->
+                                      </div>
+                                      <div class="form-group">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">
+                                                <i class="ft-lock"></i>
+                                            </span>
+                                            <input type="password" class="form-control" name="password2" id="password2" placeholder="{{'generics.Repeat password' | translate }}" ngModel required  #password2="ngModel" [equalTo]="password">
+                                        </div>
+                                        <small class="form-text text-muted danger" *ngIf="password2.errors?.equalTo">{{'generics.Passwordnomatch' | translate }}</small>
+                                      </div>
+                                      <div class="row">
+                                        <div class="col-sm-6">
+                                          <div class="input-group mb-0">
+                                            <span class="input-group-text">
+                                                <i class="icon-globe-alt"></i>
+                                            </span>
+                                              <select [required]="group==duchennenetherlands || group==duchenneinternational ? true : false" class="form-control" id="countryselectedPhoneCode" name="countryselectedPhoneCode" [(ngModel)]="seleccionado" ngModel #countryselectedPhoneCode="ngModel" (change)="codePhoneChange($event, countryselectedPhoneCode.value)">
+                                                <option [ngValue]="null" disabled selected>--{{'registration.Please select a code' | translate }}--</option>
+                                                <option *ngFor="let phoneCode of phoneCodes; let i=index" [ngValue]="phoneCode.countryPhoneCode">
+                                                  <label style="color:blue !important">{{phoneCode.countryCode}}</label>/
+                                                  <label>{{phoneCode.countryPhoneCode}}</label>
+                                                </option>
+                                              </select>
+                                          </div>
+                                          <div class="col-md-12">
+                                            <p><small class="form-text text-muted danger" *ngIf="(group==duchennenetherlands || group==duchenneinternational) && !countryselectedPhoneCode.valid && (countryselectedPhoneCode.dirty || countryselectedPhoneCode.touched)">{{'registration.Please select a code' | translate }}</small></p>
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                          <div class="input-group mb-0">
+                                          <span class="input-group-text">
+                                              <i class="ft-smartphone"></i>
+                                          </span>
+                                          <input type="phone" [required]="group==duchennenetherlands || group==duchenneinternational ? true : false" class="form-control" name="phone" id="phone" placeholder="{{'generics.Phone number' | translate }}" ngModel #phone="ngModel">
+                                          </div>
+                                          <div class="col-md-12">
+                                            <p><small class="form-text text-muted danger" *ngIf="(group==duchennenetherlands || group==duchenneinternational) && !phone.valid && (phone.dirty || phone.touched)">{{'registration.Enter your phone number' | translate }}</small></p>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="form-group" *ngIf="role=='User'">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">
+                                                <i class="ft-users"></i>
+                                            </span>
+                                            <select id="group" name="group" class="form-control" ngModel required #groupm="ngModel" [(ngModel)]="group">
+                                              <option [ngValue]="null" disabled selected>--{{'registration.Please select a group' | translate }}--</option>
+                                  		        <option *ngFor="let group of groups" [ngValue]="group.name">
+                                                <span *ngIf="group.name == duchennenetherlands">Duchenne Parent Project Netherlands</span>
+                                                <span *ngIf="group.name == 'Stop Sanfilippo'">Stop Sanfilippo</span>
+                                                <span *ngIf="group.name == 'Epilepsy'">{{'registration.Patients with epilepsy' | translate }}</span>
+                                                <span *ngIf="group.name != 'Stop Sanfilippo' && group.name != 'Epilepsy'  && group.name != 'Undiagnosed'  && group.name != 'None' && group.name != duchennenetherlands">{{group.name}}</span>
+                                                <span *ngIf="group.name == 'Undiagnosed'">{{'registration.I dont have a diagnosis' | translate }}</span>
+                                                <span *ngIf="group.name == 'None'">{{'registration.I dont belong to a patient group' | translate }}</span>
+
+                                                <!--{{group.name}}-->
+                                              </option>
+                                  		      </select>
+                                        </div>
+                                        <small class="form-text text-muted danger" *ngIf="!groupm.valid && (groupm.dirty || groupm.touched)">{{'generics.required' | translate }}</small>
+                                      </div>
+                                      <div class="form-group" *ngIf="group==duchenneinternational">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">
+                                                <i class="ft-users"></i>
+                                            </span>
+                                            <select id="subgroup" name="subgroup" class="form-control" ngModel required #subgroupm="ngModel" [(ngModel)]="subgroup">
+                                              <option [ngValue]="null" disabled selected>--{{'registration.Please select a organization' | translate }}--</option>
+                                  		        <option *ngFor="let subgroup of subgroups" [ngValue]="subgroup.id">
+                                                <span *ngIf="subgroup.id==9980">{{'generics.I can’t find' | translate }}</span>
+                                                <span *ngIf="subgroup.id==9990">{{'generics.I don’t belong to any' | translate }}</span>
+                                                <span *ngIf="subgroup.id!=9980 && subgroup.id!=9990">{{subgroup.country}} - {{subgroup.name}}</span>
+                                              </option>
+                                  		      </select>
+                                        </div>
+                                        <small class="form-text text-muted danger" *ngIf="!subgroupm.valid && (subgroupm.dirty || subgroupm.touched)">{{'generics.required' | translate }}</small>
+                                      </div>
+
+                                      <div class="form-group" *ngIf="group==duchennenetherlands || group==duchenneinternational">
+                                        <p class="font-small-2">
+                                          {{'registration.duchennepolicy' | translate }}
+                                        </p>
+                                      </div>
+                                      <p *ngIf="!openedTerms" class="font-small-2">
+                                        {{'registration.IMPORTANT NOTE' | translate }} <a (click)="openTerms()" class="btn-flat btn-primary"><small class="text-lowercase" style="margin-top: 1em;white-space: normal;letter-spacing: 0px;">{{'registration.Privacy Policy' | translate }}</small> <i class="ft-external-link"></i></a> {{'registration.IMPORTANT NOTE2' | translate }}
+                                      </p>
+                                        <div class="form-group col-sm-offset-1">
+                                          <mat-checkbox title="{{'registration.msgactivateterms' | translate }}"
+                                              class="example-margin"
+                                              [(indeterminate)]="indeterminate"
+                                              [disabled]="!openedTerms" name="terms" ngModel required #terms="ngModel" id="terms">
+
+                                          </mat-checkbox>
+                                          <label>
+                                            <a (click)="openTerms()" class="btn-flat btn-primary"><small style="margin-top: 1em;white-space: normal;text-transform: none;letter-spacing: 0px;">{{'registration.I have read and understood the' | translate }}</small>
+
+                                          <i class="ft-external-link"></i></a>
+                                          </label>
+                                            <small class="form-text text-muted danger" *ngIf="!terms.valid && (terms.dirty || terms.touched) && openedTerms">{{'generics.required' | translate }}</small>
+                                            <small class="form-text text-muted danger" *ngIf="!terms.valid && (terms.dirty || terms.touched) && !openedTerms">{{'registration.It is mandatory to read the privacy policy before continuing' | translate }}</small>
+                                            <p *ngIf="group==duchennenetherlands || group==duchenneinternational">
+                                              <mat-checkbox
+                                                  class="example-margin"
+                                                  [(indeterminate)]="indeterminate"
+                                                  [disabled]="!openedTerms" name="terms2" ngModel required #terms2="ngModel" id="terms2">
+                                                <label style="margin-top: 1em;white-space: normal;text-transform: none;letter-spacing: 0px;">{{'registration.consent' | translate }} {{'registration.DDP' | translate }}</label>
+                                              </mat-checkbox>
+                                              <small class="form-text text-muted danger" *ngIf="!terms2.valid && (terms2.dirty || terms2.touched) && openedTerms">{{'generics.required' | translate }}</small>
+                                              <small class="form-text text-muted danger" *ngIf="!terms2.valid && (terms2.dirty || terms2.touched) && !openedTerms">{{'registration.It is mandatory to read the privacy policy before continuing' | translate }}</small>
+                                            </p>
+
+
+                                        </div>
+                                        <div class="form-group text-center">
+                                            <button (click)="goToLogin()" type="button" class="btn btn-grey btn-outline-grey">{{'generics.Cancel' | translate }}</button>
+                                            <span *ngIf="!sending">
+                                              <div *ngIf="f.valid && openedTerms;then formValid else formError"></div>
+                              								<ng-template #formValid><button class="btn btn-primary btn-outline-primary" type="submit"> {{'registration.Get Started' | translate }}</button></ng-template>
+                              								<ng-template #formError><button class="btn btn-primary btn-outline-primary" type="button" (click)="submitInvalidForm()"> {{'registration.Get Started' | translate }}</button></ng-template>
+                                            </span>
+                                            <span *ngIf="sending">
+                                              <i class="fa fa-spinner fa-spin fa-3x fa-fw white"></i>
+                                            </span>
+                                        </div>
+                                        <div *ngIf="isEmailBusy" class="form-group text-center">
+                                            <span class="pl-2 text-muted danger">{{'registration.email already exists' | translate }}</span>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div *ngIf="isVerifyemail" class="card-block mx-auto">
+                                  <div class="col-md-12 mb-2">
+                                    <span class="pl-2 text-muted white">{{'registration.Check the email' | translate }}</span>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <button (click)="goToLogin()" type="button" class="btn btn-orange btn-block btn-raised">{{'menu.Login' | translate }}</button>
+                                  </div>
+                                </div>
+                                <div *ngIf="isFailEmail" class="card-block mx-auto">
+                                  <span class="pl-2 text-muted danger">{{'registration.could not be sent to activate' | translate }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Registration Page Ends-->

@@ -1,0 +1,18 @@
+@media ( max-width: 680px ){
+  .card .card-block {
+      padding: 0.5rem 0rem 1.5rem !important;
+  }
+  ngb-accordion [role="tablist"] {
+      padding: 0 !important;
+  }
+
+  .p-4{
+    padding: 0 !important;
+  }
+
+  .col-12{
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+  }
+
+}

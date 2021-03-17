@@ -1,0 +1,89 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="content-header"><div class="content-header">{{'menu.Phenotype' | translate }}</div></div>
+		<p class="content-sub-header">Subheader</p>
+  </div>
+</div>
+<div class="row">
+<div class="col-md-6">
+  <div class="form-group">
+    <label for="lang">{{'groups.Groups' | translate }}</label>
+    <select id="lang" name="lang" class="form-control"  [(ngModel)]="groupSelected" #groupselected (ngModelChange)="onChangeGroup(groupSelected)">
+      <option *ngFor="let group of groups" [ngValue]="group"> {{group.name}}</option>
+    </select>
+  </div>
+</div>
+</div>
+<div *ngIf="groupSelected._id">
+  <div class="row">
+    <div class="col-sm-12" *ngIf="!addingsymptom">
+      <div class="form-group">
+        <a (click)="newSymptom()" class="btn btn-outline-primary" href="javascript:void(0)"><i class="fa fa-plus"></i> {{'phenotype.New Symptom' | translate }}</a>
+      </div>
+    </div>
+    <div class="col-md-12" *ngIf="addingsymptom">
+      <form class="form" (ngSubmit)="submitSymptom()" #f="ngForm">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="name">{{'generics.Name' | translate }}</label>
+              <input type="text" id="name" class="form-control"  name="name" [(ngModel)]="symptom.name" required #name="ngModel" placeholder="Write the corresponding name in English">
+              <small class="form-text text-muted danger" *ngIf="!name.valid && (name.dirty || name.touched)">{{'generics.required' | translate }}</small>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="id">ID</label>
+              <input type="text" id="id" class="form-control"  name="id" [(ngModel)]="symptom.id" required #id="ngModel" placeholder="Write an HPO code. Ex: HP:0001250">
+              <small class="form-text text-muted danger" *ngIf="!id.valid && (id.dirty || id.touched)">{{'generics.required' | translate }}</small>
+            </div>
+          </div>
+        </div>
+        <div class="form-actions center">
+          <div *ngIf="f.valid;then formValid else formError"></div>
+          <ng-template #formValid><button class="btn btn-raised btn-raised btn-primary" type="submit" ><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+          <ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidForm()">{{'generics.Add' | translate }}</button></ng-template>
+          <button class="btn btn-raised btn-raised btn-secondary" type="button" (click)="cancelNewGroup()">{{'generics.Cancel' | translate }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row" *ngIf="phenotype.length > 0 ">
+    <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="card-block" class="table-responsive">
+                <table class="table text-center">
+    							<thead>
+    								<tr>
+    									<th>{{'generics.Name' | translate }}</th>
+                      <th>ID</th>
+    									<th>{{'generics.Delete' | translate }}</th>
+    								</tr>
+    							</thead>
+    							<tbody>
+    								<tr *ngFor="let hpo of phenotype ; let i = index">
+                      <td>{{hpo.name}}</td>
+    									<td>{{hpo.id}}</td>
+    									<td>
+    										<a class="danger" data-original-title="" title="" (click)="confirmDeletePhenotype(i)">
+    											<i class="ft-x"></i>
+    										</a>
+    									</td>
+    								</tr>
+    							</tbody>
+    						</table>
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="phenotype.length == 0 ">
+    <div class="col-12">
+      {{'phenotype.No symptoms' | translate }}
+    </div>
+  </div>
+  <!--<div class="center-elements">
+    <button type="button" class="btn btn-raised btn-raised btn-primary" (click)="savePhenotype()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button>
+  </div>-->
+</div>

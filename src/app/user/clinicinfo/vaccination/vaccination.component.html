@@ -1,0 +1,168 @@
+<section id="listMeditationSection">
+	<div class="row">
+      <div class="col-sm-12">
+          <div class="content-header">{{'clinicalinfo.Vaccinations' | translate }}</div>
+      </div>
+  </div>
+  <div class="row">
+	<div class="col-sm-12">
+		<label class="question">{{'stats.vaccinationQuestion' | translate }}</label>
+		<input id="yesAnswer" type="checkbox" (change)="setAnswer($event)"><label class="answer ml-1 mr-1">{{'generics.Yes' | translate }}</label>
+      	<input id="noAnswer" type="checkbox" (change)="setAnswer($event)"><label class="answer ml-1">{{'generics.No' | translate }}</label>
+	</div>
+</div>
+<div class="row">
+		<div class="col-sm-12">
+			<button *ngIf="!loading && !addedVaccination && !savingVaccination && !showOnlyQuestion" type="button" class="float-right btn btn-outline-primary" (click)="newVaccination()"><i class="fa fa-plus"></i> {{'vaccinations.New vaccine' | translate }}</button>
+		</div>
+	</div>
+<!-- Vaccinations -->
+<div class="row" >
+	<div class="col-xl-8 col-lg-12 col-12" *ngIf="!addedVaccination && !savingVaccination && !showOnlyQuestion">
+		<div class="card">
+			<div class="card-body table-responsive" *ngIf="vaccinations.length > 0">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>{{'generics.Name' | translate }}</th>
+							<th>{{'generics.Date' | translate }}</th>
+							<th>{{'generics.Delete' | translate }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let vaccination of vaccinations ; let i = index">
+							<td *ngIf="lang!='nl' && vaccination.name!='Other' && vaccination.name!='COVID-19'"> <select class="select-no-style" disabled [(ngModel)]="vaccination.name">
+								<option value="Flue">Flue</option>
+								<option value="D.K.T.P.">D.K.T.P. (Diphtheria Whooping Tetanus Polio)</option>
+								<option value="D.T.P.">D.T.P. (Diphtheria Whooping Cough Polio)</option>
+								<option value="H.I.B.">H.I.B. (Haemophilus influenzae type b)</option>
+								<option value="B.M.R.">B.M.R. (Mumps, measles, rubella)</option>
+								<option value="Pneumococcal">Pneumococcal</option>
+								<option value="Chicken-pox">Chicken-pox</option>
+								<option value="Meningococcal">Meningococcal</option>
+								<option value="Hepatitis A">Hepatitis A</option>
+								<option value="Hepatitis B">Hepatitis B</option>
+								<option value="HPV">HPV (human papillomavirus)</option>
+								<option value="COVID-19">COVID-19</option>
+								<option value="Other">{{'generics.Other' | translate }}</option>
+		 		      </select></td>
+							<td *ngIf="lang=='nl' && vaccination.name!='Other' && vaccination.name!='COVID-19'"> <select class="select-no-style" disabled [(ngModel)]="vaccination.name">
+		 						<option value="Flue">Griepvaccin</option>
+		 						<option value="D.K.T.P.">D.K.T.P. (Difterie Kinkhoest Tetanus Polio)</option>
+		 						<option value="D.T.P.">D.T.P. (Difterie Kinkhoest Polio)</option>
+		 						<option value="H.I.B.">H.I.B. (Haemophilus influenzae type b)</option>
+		 						<option value="B.M.R.">B.M.R. (Bof Mazelen Rodehond)</option>
+		 						<option value="Pneumococcal">Pneumokokken</option>
+		 						<option value="Chicken-pox">Waterpokken</option>
+								<option value="Meningococcal">Meningokokken ACW(Y)</option>
+		 						<option value="Hepatitis A">Hepatitis A</option>
+		 						<option value="Hepatitis B">Hepatitis B</option>
+		 						<option value="HPV">HPV (humaan papillomavirus)</option>
+								<option value="COVID-19">COVID-19</option>
+								<option value="Other">{{'generics.Other' | translate }}</option>
+		 		      </select></td>
+							<td *ngIf="vaccination.name=='Other' || vaccination.name=='COVID-19'" class="text-muted">
+								<span *ngIf="vaccination.name!='Other'" style="margin-left: 0.25rem !important;">{{vaccination.name}}</span>
+								<span *ngIf="vaccination.name=='Other'" style="margin-left: 0.25rem !important;">{{'generics.Other' | translate }}</span>
+								: {{vaccination.freetext}}
+							</td>
+							<td>{{vaccination.date | date: timeformat}}</td>
+							<td>
+								<a class="danger" data-original-title="" title="" (click)="confirmDeleteVaccination(i)">
+									<i class="ft-x"></i>
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="row col-md-12" *ngIf="vaccinations.length == 0">
+				{{'vaccinations.No saved vaccines' | translate }}
+			</div>
+		</div>
+	</div>
+  <div class="col-md-12" *ngIf="vaccinations && addedVaccination && !savingVaccination">
+		<div class="row">
+	      <div class="col-sm-12">
+	        <button type="button" class="float-right btn btn-raised btn-danger" (click)="cancelNewVaccination()">{{'generics.Back' | translate }}</button>
+	      </div>
+
+	  </div>
+		<form class="row form" (ngSubmit)="submitNewVaccination()" #f="ngForm">
+			<div class="col-md-4" *ngIf="lang!='nl'">
+		    <div class="form-group">
+		      <label for="vaccinationref">{{'generics.Name' | translate }}</label>
+		      <select id="vaccinationref" name="vaccinationref" class="form-control"  [(ngModel)]="vaccination.name"  ngModel required #vaccinationref="ngModel">
+						<option [ngValue]="null" disabled selected>--{{'registration.Please select a group' | translate }}--</option>
+						<option value="Flue">Flue</option>
+						<option value="D.K.T.P.">D.K.T.P. (Diphtheria Whooping Tetanus Polio)</option>
+						<option value="D.T.P.">D.T.P. (Diphtheria Whooping Cough Polio)</option>
+						<option value="H.I.B.">H.I.B. (Haemophilus influenzae type b)</option>
+						<option value="B.M.R.">B.M.R. (Mumps, measles, rubella)</option>
+						<option value="Pneumococcal">Pneumococcal</option>
+						<option value="Chicken-pox">Chicken-pox</option>
+						<option value="Meningococcal">Meningococcal</option>
+						<option value="Hepatitis A">Hepatitis A</option>
+						<option value="Hepatitis B">Hepatitis B</option>
+						<option value="HPV">HPV (human papillomavirus)</option>
+						<option value="COVID-19">COVID-19</option>
+						<option value="Other">{{'generics.Other' | translate }}</option>
+		      </select>
+					<small class="form-text text-muted danger" *ngIf="!vaccinationref.valid && (vaccinationref.dirty || vaccinationref.touched)">{{'generics.required' | translate }}</small>
+	    	</div>
+			</div>
+			<div class="col-md-4" *ngIf="lang=='nl'">
+		    <div class="form-group">
+		      <label for="vaccinationref">{{'generics.Name' | translate }}</label>
+		      <select id="vaccinationref" name="vaccinationref" class="form-control"  [(ngModel)]="vaccination.name"  ngModel required #vaccinationref="ngModel">
+						<option [ngValue]="null" disabled selected>--{{'registration.Please select a group' | translate }}--</option>
+						<option value="Flue">Griepvaccin</option>
+						<option value="D.K.T.P.">D.K.T.P. (Difterie Kinkhoest Tetanus Polio)</option>
+						<option value="D.T.P.">D.T.P. (Difterie Kinkhoest Polio)</option>
+						<option value="H.I.B.">H.I.B. (Haemophilus influenzae type b)</option>
+						<option value="B.M.R.">B.M.R. (Bof Mazelen Rodehond)</option>
+						<option value="Pneumococcal">Pneumokokken</option>
+						<option value="Chicken-pox">Waterpokken</option>
+						<option value="Meningococcal">Meningokokken ACW(Y)</option>
+						<option value="Hepatitis A">Hepatitis A</option>
+						<option value="Hepatitis B">Hepatitis B</option>
+						<option value="HPV">HPV (humaan papillomavirus)</option>
+						<option value="COVID-19">COVID-19</option>
+						<option value="Other">{{'generics.Other' | translate }}</option>
+		      </select>
+					<small class="form-text text-muted danger" *ngIf="!vaccinationref.valid && (vaccinationref.dirty || vaccinationref.touched)">{{'generics.required' | translate }}</small>
+	    	</div>
+			</div>
+			<div *ngIf="vaccination.name=='Other' || vaccination.name=='COVID-19'" class="col-md-3">
+				<div class="form-group">
+					<label for="freetext">{{'vaccinations.Type' | translate }}</label>
+					<input type="text" class="form-control"  name="vaccination.freetext" [(ngModel)]="vaccination.freetext"  ngModel required #freetextref="ngModel">
+					<small class="form-text text-muted danger" *ngIf="!freetextref.valid && (freetextref.dirty || freetextref.touched)">{{'generics.required' | translate }}</small>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="form-group">
+					<label for="startDate">{{'generics.Date' | translate }}</label>
+					<div>
+						{{vaccination.date|date: timeformat}}
+						<input  class="form-control w-75 d-none" id="startDate" name="startDate" [max]="today" matInput [matDatepicker]="picker2" required startDate #startDate="ngModel" [(ngModel)]="vaccination.date" >
+						<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+						<mat-datepicker touchUi="true" #picker2></mat-datepicker>
+						<small class="form-text text-muted danger" *ngIf="!startDate.valid && (startDate.dirty || startDate.touched)">{{'generics.required' | translate }}</small>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div *ngIf="f.valid;then formValid else formError"></div>
+				<ng-template #formValid><button class="btn btn-raised btn-primary" type="submit" ><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+				<ng-template #formError><button class="btn btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+
+			</div>
+		</form>
+  </div>
+
+	<div class="col-lg-12 col-12 form-group" *ngIf="savingVaccination">
+		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+	</div>
+</div>
+</section>

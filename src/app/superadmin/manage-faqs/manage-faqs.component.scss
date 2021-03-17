@@ -1,0 +1,8 @@
+@media ( max-width: 680px ){
+  .card .card-block {
+      padding: 0 !important;
+  }
+  ngb-accordion [role="tabpanel"] {
+      padding: 0 !important;
+  }
+}

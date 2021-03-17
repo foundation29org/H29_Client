@@ -1,0 +1,63 @@
+/* You can add global styles to this file, and also import other style files */
+
+footer{
+  margin-top: 1em;
+}
+
+.fijado{
+  position: sticky;
+  top: 80px;
+  height: 100%;
+}
+
+.labelLower{
+  text-transform: lowercase;
+}
+.modal-dialog {
+    max-width: 90% !important;
+}
+.smart-table-container{
+    overflow-x: scroll;
+}
+
+.center-elements{
+  text-align: center;
+}
+
+.right-elements{
+  text-align: right;
+}
+.left-elements{
+  text-align: left;
+}
+
+.almost-full-height-vh{
+  height: 84vh !important;
+}
+
+@media ( max-height: 550px ){
+  .full-height-vh{
+  	height: 100% !important;
+  }
+  .almost-full-height-vh{
+    height: 100% !important;
+  }
+}
+
+.form .form-actions {
+    border-top: none;
+  }
+
+.bt-n{
+  border-top: none;
+}
+.inactiveLink {
+   pointer-events: none;
+   cursor: default;
+}
+
+@media ( max-width: 380px ){
+  .swal2-actions-padding{
+    padding: 10px !important;
+  }
+}

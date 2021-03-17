@@ -1,0 +1,461 @@
+<div class="row" *ngIf="!addedlang && !working">
+	<div class="col-lg-12 col-12">
+		<div class="card" *ngIf="!createNotification && !loadingNotifications && !editNotification">
+			<div class="card-header">
+				<h4 class="card-title primary">{{'menu.Notifications' | translate}}</h4>
+			</div>
+			<div class="center-elements" *ngIf="loadingNotifications">
+				<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+			</div>
+			<div class="col-md-12" *ngIf="!loadingNotifications">
+				<p><label for="lang2">{{'faqs.Languages saved' | translate }}</label></p>
+				<select id="lang2" name="lang2" class="form-control "  [(ngModel)]="actualLang" (ngModelChange)="onChangeLang(actualLang)">
+				  <option *ngFor="let lang of langs" [ngValue]="lang.code"> {{lang.name}}</option>
+				</select>
+			</div>
+			<br>
+			<div class="card-body table-responsive" *ngIf="!loadingNotifications && notifications.length>0">
+
+				<div class="col-md-12 mt-2">
+					<a (click)="openCreateNotification()" class="btn btn-outline-primary"><i class="fa fa-plus"></i> {{'notifications.Create Notifications' | translate }}</a>
+				</div>
+
+				<ngx-datatable
+				class="bootstrap fullscreen"
+				[columnMode]="'flex'"
+				[headerHeight]="50"
+				[footerHeight]="50"
+				[rowHeight]="'auto'"
+				[rows]="notificationsShow"
+				>
+					<!-- BROADCAST -->
+					<ngx-datatable-column name="{{'notifications.broadcast' | translate}}" prop="receiver" [flexGrow]="2.7" [sortable]="true" >
+						<ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+							<span *ngIf='value.type=="broadcast"' >{{value.data}}</span>
+							<!--<span *ngIf='value.type=="selectUsers"' [innerHTML]="value.data"></span>-->
+							<span *ngIf='value.type=="selectUsers"'>
+								{{value.data}}
+								<a (click)="openUserPanel(userPanel,value)" title="{{'notifications.View List' | translate}}"><i class="ft-external-link primary"></i></a>
+
+							</span>
+							<span *ngIf='value.type=="organization"'>
+								{{value.nameSubgroup}}
+							</span>
+						</ng-template>
+					</ngx-datatable-column>
+
+					<!-- TYPE OF NOTIFICATION -->
+					<ngx-datatable-column name="{{'notifications.Tittle' | translate}}" prop="title" [flexGrow]="2.7" [sortable]="true" >
+						<ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+							<span>{{value}}</span>
+						</ng-template>
+					</ngx-datatable-column>
+
+					<!-- TEXT OF NOTIFICATION -->
+					<ngx-datatable-column name="{{'notifications.text' | translate}}" prop="translation" [flexGrow]="2.7" [sortable]="true" >
+						<ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+							<span>{{value}}</span>
+						</ng-template>
+					</ngx-datatable-column>
+
+					<!-- URL -->
+					<ngx-datatable-column name="{{'notifications.url' | translate}}" prop="url" [flexGrow]="2.7" [sortable]="true" >
+						<ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+							<span [innerHTML]="value"></span>
+						</ng-template>
+					</ngx-datatable-column>
+
+					<!-- LAUNCH DATE -->
+					<ngx-datatable-column name="{{'notifications.Launch Date' | translate }}" prop="launchDate" [flexGrow]="2.7" [sortable]="true">
+						<ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+							<span>
+								{{value | date:timeformat}}
+							</span>
+						</ng-template>
+					</ngx-datatable-column>
+
+					<!-- LANGUAGES-->
+					<ngx-datatable-column name="{{'menu.Translations' | translate }}" prop="translations" [flexGrow]="2.7" [sortable]="true">
+						<ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+							<div *ngIf="value.done!=[]">
+								<h6> {{'notifications.Translations done' | translate }}: </h6>
+								<div *ngFor="let translation of value.done" style="display:inline-flex; padding-left: 5%;">
+									<span>{{translation}}</span>
+								</div>
+							</div>
+							<div *ngIf="value.notDone!=[]">
+								<div class="dropdown-divider"></div>
+								<h6> {{'notifications.Translations not done' | translate }}: </h6>
+								<div *ngFor="let translation of value.notDone" style="display:inline-flex; padding-left: 5%;">
+									<button class="btn-outline-primary" (click)="updateAlert(translation,row)">{{translation}}</button>
+								</div>
+							</div>
+						</ng-template>
+					</ngx-datatable-column>
+
+					<!-- DELETE NOTIFICATION -->
+					<ngx-datatable-column name="{{'generics.Delete' | translate }}" prop="delete" [flexGrow]="1.7" [sortable]="true">
+						<ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+							<a (click)="deleteAlert(row)" title="Delete alert"><i class="fa fa-trash primary"></i></a>
+						</ng-template>
+					</ngx-datatable-column>
+				</ngx-datatable>
+			</div>
+
+			<div class="card-body" *ngIf="!loadingNotifications && notifications.length==0">
+				<div class="form-group col-md-12 mt-2">
+					<a (click)="openCreateNotification()" class="btn btn-outline-primary"><i class="fa fa-plus"></i> {{'notifications.Create Notifications' | translate }}</a>
+				</div>
+				<div class="col-md-12 mt-2">{{'notifications.No Notifications' | translate }}</div>
+			</div>
+
+		</div>
+
+		<div class="card" *ngIf="createNotification&&!editNotification">
+			<div class="card-header">
+				<h4 class="card-title primary">{{'notifications.Create Notifications' | translate }}</h4>
+				<!--<button type="button" class="btn btn-secondary btn-raised" (click)="back()">{{'generics.Back' | translate }}</button>-->
+			</div>
+			<div class="center-elements" *ngIf="loadingNotifications">
+				<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+			</div>
+			<div class="card-body" *ngIf="!loadingNotifications">
+				<div class="px-3">
+					<form class="form" (ngSubmit)="onSubmit()" #f="ngForm">
+						<div class="form-body">
+							<p>{{'generics.fieldsRequired' | translate }}</p>
+							<!--<div class ="row">
+								<div class="col-md-12">
+									<i class="ft-alert-circle danger">{{'notificationsMenu.requieredLangs' | translate }}</i>
+								</div>
+							</div>-->
+							<!-- LAUNCH DATE -->
+							<div class="row" style="display: flex;">
+								<div class="col-md-2" style="margin-top: 0.3rem">
+									<label for="launchDate">* {{'notifications.Launch Date' | translate }}</label>
+								</div>
+								<div class ="col-md-4">
+									<input class="form-control d-inline" id="launchDate" name="launchDate"  matInput [matDatepicker]="pickerLaunchDate" [(ngModel)]="alert.launchDate" required launchDate #launchDate="ngModel">
+								</div>
+								<div class="col-md-1 pull-left" style="margin-left: -2%">
+									<mat-datepicker-toggle matSuffix [for]="pickerLaunchDate"></mat-datepicker-toggle>
+									<mat-datepicker touchUi="true" #pickerLaunchDate></mat-datepicker>
+								</div>
+							</div>
+							<div class="row" *ngIf="!launchDate.valid && (launchDate.dirty || launchDate.touched)">
+								<div class="col-md-2">
+								</div>
+								<div class="col-md-4">
+									<small class="form-text text-muted danger" >{{'generics.required' | translate }}</small>
+								</div>
+							</div>
+							<br>
+
+							<div class="row">
+								<!-- TITLE AND TEXT FOR NOTIFICATIONS -->
+								<!--<div class="col-md-12">
+									<div class="form-group">
+										<h4 class="primary">{{'notifications.Add notification info' | translate }}</h4>
+										<a (click)="addTranslations()" class="btn btn-outline-primary"><i class="fa fa-plus"></i> {{'notifications.Add translations' | translate }}</a>
+										<div><label *ngIf="selectingLanguages" for="choiseset">{{'notifications.Select languages' | translate }}</label></div>
+										<mat-select *ngIf="selectingLanguages" class="form-control" id="choiseset" name="choiseset"  [(ngModel)]="langsSelected" multiple (selectionChange)="languagesSelected()">
+											<mat-option *ngFor="let lang of langs" id="{{lang.code}}" value="{{lang.code}},{{lang.name}}">{{lang.name}}</mat-option>
+										</mat-select>
+										<div *ngFor="let lang of langs;let j = index" >
+											<label *ngIf="langsShow[j].value == true" for="{{lang.code}}{{j}}">{{lang.name}}</label>
+											<h6 *ngIf="(langsShow[j].value == true)">{{'notifications.Tittle' | translate }}</h6>
+											<input *ngIf="(langsShow[j].value == true)" type="text" id="{{lang.code}}{{j}}" class="form-control"  name="translationsTitle{{j}}" [(ngModel)]="alertTranslationsTitle[j]">
+											<h6 *ngIf="(langsShow[j].value == true)">{{'notifications.Bot text' | translate }}</h6>
+											<input *ngIf="langsShow[j].value == true" type="text" id="{{lang.code}}{{j}}" class="form-control"  name="translations{{j}}" [(ngModel)]="alertTranslations[j]">
+										</div>
+									</div>
+								</div>-->
+								<div class="col-md-12">
+									<div class="row" style="display: flex;">
+										<div class="col-md-2" style="margin-top: 0.3rem">
+											<label for="alertTitle">* {{'notifications.Tittle' | translate }}</label>
+										</div>
+										<div class ="col-md-4">
+											<input class="form-control d-inline" id="alertTitle" name="alertTitle" [(ngModel)]="alertTranslationsTitle" required>
+										</div>
+									</div>
+									<div class="row" *ngIf="alertTitle==''">
+										<div class="col-md-2">
+										</div>
+										<div class="col-md-4">
+											<small class="form-text text-muted danger" >{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+									<br>
+									<div class="row" style="display: flex;">
+										<div class="col-md-2" style="margin-top: 0.3rem">
+											<label for="alertText">* {{'notifications.text' | translate }}</label>
+										</div>
+										<div class ="col-md-8">
+											<textarea class="form-control d-inline" id="alertText" name="alertText" rows="5" [(ngModel)]="alertTranslations" required></textarea>
+										</div>
+									</div>
+									<div class="row" *ngIf="alertText==''">
+										<div class="col-md-2">
+										</div>
+										<div class="col-md-4">
+											<small class="form-text text-muted danger" >{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+								</div>
+								<br>
+
+								<!-- URL -->
+								<div class="col-md-12 mt-2">
+									<div class="row" style="display: flex;">
+										<div class="col-xl-2">
+											<label for="url"> {{'notifications.url' | translate}} </label>
+										</div>
+										<!--<div class="col-md-4">
+											<a (click)="addUrl()" class="btn btn-outline-primary" href="javascript:void(0)"><i class="fa fa-plus"></i></a>
+											<a *ngIf="alert.url!=undefined && alert.url.length>0" (click)="deleteUrl()" class="btn btn-outline-primary" href="javascript:void(0)"><i class="fa fa-minus"></i></a>
+										</div>
+									</div>
+									<div class="row" style="display: flex;" *ngFor="let url of alert.url; let i=index">
+										<div class="col-md-2">
+										</div>-->
+										<div class="col-xl-10 row" *ngFor="let url of alert.url; let i=index">
+											<div class ="col-xl-4">
+												<label for="urlName{{i}}"> {{'notifications.Url Name identifier' | translate}}  </label>
+												<input type="text" id="urlName{{i}}" class="form-control" name="urlName{{i}}" [(ngModel)]="alertTranslationsUrl[i]">
+											</div>
+											<div class ="col-xl-8">
+												<label for="url{{i}}"> {{'notifications.Url Address' | translate}} </label>
+												<br>
+												<div>
+													<input type="text" id="url{{i}}" class="form-control" name="url{{i}}" [(ngModel)]="alertAddressUrl[i]" placeholder="/user/clinicinfo/anthropometry">
+													<small>If is a internal URL, do not type https://health29.org. Ex: /user/clinicinfo/anthropometry</small>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+								<br>
+								<!-- SELECT TYPE: BROADCAST OR SELECT LIST OF USERS -->
+								<div class="col-md-12" style="margin-top: 2%;">
+									<div class="row" style="display: flex;">
+										<div class="col-md-2" style="margin-top: 0.3rem">
+											<label for="type">* {{'notifications.Selecciona destinatarios' | translate }} </label>
+										</div>
+										<div class="col-md-8" style="display: flex;margin-top: 1rem; margin-left: -1%;">
+											<div class="col-md-4">
+												<input class="radio-selection" type="radio" name="selection" [(ngModel)]="choiseUsers" (change)="selectType(choiseUsers)" value="all">&nbsp;{{'notifications.All community' | translate}}
+											</div>
+											<div class="col-md-4" >
+												<input class="radio-selection" type="radio" name="selection" [(ngModel)]="choiseUsers" (change)="selectType(choiseUsers)" value="selected">&nbsp;{{'notifications.Selected users' | translate}}
+											</div>
+											<div class="col-md-4" *ngIf="currentGroup==nameduchenneInter">
+												<input class="radio-selection" type="radio" name="selection" [(ngModel)]="choiseUsers" (change)="selectType(choiseUsers)" value="organization">&nbsp;{{'generics.Select organization' | translate}}
+											</div>
+										</div>
+									</div>
+									<div class="row" *ngIf="(currentGroup!=nameduchenneInter && choiseUsers!='all' && choiseUsers!='selected') || (currentGroup==nameduchenneInter && choiseUsers!='all' && choiseUsers!='selected' && choiseUsers!='organization')">
+										<div class="col-md-2">
+										</div>
+										<div class="col-md-4">
+											<small class="form-text text-muted danger" >{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+									<br>
+									<div class ="row col-md-12">
+										<div class="card-body table-responsive" *ngIf="(choiseUsers=='selected')">
+											<ngx-datatable
+											class="bootstrap fullscreen"
+											[columnMode]="'flex'"
+											[headerHeight]="50"
+											[footerHeight]="50"
+											[rowHeight]="'auto'"
+											[rows]="users"
+											>
+												<!-- CHECK -->
+												<ngx-datatable-column name="{{'generics.Select' | translate}}" prop="userId" [flexGrow]="2.7" [sortable]="true" >
+													<ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+														<input type="checkbox" value="userId" (change)="isAnswerProvided($event, value)">
+													</ng-template>
+												</ngx-datatable-column>
+												<!-- USER NAME -->
+												<ngx-datatable-column name="{{'notifications.User name' | translate}}" prop="userName" [flexGrow]="2.7" [sortable]="true" >
+													<ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+														<span>{{value}}</span>
+													</ng-template>
+												</ngx-datatable-column>
+												<!-- EMAIL -->
+												<ngx-datatable-column name="{{'notifications.Email' | translate}}" prop="email" [flexGrow]="2.7" [sortable]="true" >
+													<ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+														<span>{{value}}</span>
+													</ng-template>
+												</ngx-datatable-column>
+											</ngx-datatable>
+										</div>
+										<div class="form-group" *ngIf="choiseUsers=='organization'">
+											<div class="input-group mb-3">
+													<span class="input-group-text">
+															<i class="ft-users"></i>
+													</span>
+													<select id="subgroup" name="subgroup" class="form-control" ngModel required #subgroupm="ngModel" [(ngModel)]="subgroup">
+														<option [ngValue]="null" disabled selected>--{{'registration.Please select a organization' | translate }}--</option>
+														<option *ngFor="let subgroup of subgroups" [ngValue]="subgroup.id">
+															<span><span *ngIf="subgroup.country">{{subgroup.country}} - </span>{{subgroup.name}}</span>
+														</option>
+													</select>
+											</div>
+											<small class="form-text text-muted danger" *ngIf="!subgroupm.valid && (subgroupm.dirty || subgroupm.touched)">{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="form-actions center" *ngIf="!sending">
+							<button type="button" (click)="back()" class="btn btn-raised btn-raised btn-warning mr-1">
+								<i class="ft-x"></i> {{'generics.Cancel' | translate }}
+							</button>
+							<button type="button" type="submit" [disabled]="(!f.valid || (alertTitle=='') || (alertText=='') || (choiseUsers==null ))" class="btn btn-raised btn-raised btn-primary">
+								<i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}
+							</button>
+						</div>
+						<div class="col-md-12 center-elements" *ngIf="sending">
+							<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="card" *ngIf="editNotification&&!createNotification">
+			<div class="card-header">
+				<h4 class="card-title primary">{{'notifications.Edit Notifications for language' | translate }} {{langSelectedToEdit}}</h4>
+				<!--<button type="button" class="btn btn-secondary btn-raised" (click)="back()">{{'generics.Back' | translate }}</button>-->
+			</div>
+			<div class="center-elements" *ngIf="loadingNotifications">
+				<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+			</div>
+			<div class="card-body" *ngIf="!loadingNotifications">
+				<div class="px-3">
+					<form class="form" (ngSubmit)="onSubmitUpdate()" #f="ngForm">
+						<div class="form-body">
+							<!-- LAUNCH DATE -->
+							<div class="row" style="display: flex;">
+								<div class="col-md-2" style="margin-top: 0.3rem">
+									<label for="launchDate">{{'notifications.Launch Date' | translate }}</label>
+								</div>
+								<div class="col-md-4">
+									<span>{{alert.launchDate|date:timeformat}}</span>
+								</div>
+							</div>
+
+							<br>
+
+							<div class="row">
+								<!-- TITLE AND TEXT FOR NOTIFICATIONS -->
+								<div class="col-md-12">
+									<div class="row" style="display: flex;">
+										<div class="col-md-2" style="margin-top: 0.3rem">
+											<label for="alertTitle">{{'notifications.Tittle' | translate }}</label>
+										</div>
+										<div class ="col-md-4">
+											<input class="form-control d-inline" id="alertTitle" name="alertTitle" [(ngModel)]="alertTranslationsTitleUpdate" required>
+										</div>
+									</div>
+									<div class="row" *ngIf="alertTitle==''">
+										<div class="col-md-2">
+										</div>
+										<div class="col-md-4">
+											<small class="form-text text-muted danger" >{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+									<br>
+									<div class="row" style="display: flex;">
+										<div class="col-md-2" style="margin-top: 0.3rem">
+											<label for="alertText">{{'notifications.text' | translate }}</label>
+										</div>
+										<div class ="col-md-8">
+											<textarea class="form-control d-inline" id="alertText" name="alertText" rows="5" [(ngModel)]="alertTranslationsUpdate" required></textarea>
+										</div>
+									</div>
+									<div class="row" *ngIf="alertText==''">
+										<div class="col-md-2">
+										</div>
+										<div class="col-md-4">
+											<small class="form-text text-muted danger" >{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+								</div>
+								<br>
+
+								<!-- URL -->
+								<div *ngIf="alert.url!='<br>'" class="col-md-12" style="margin-top: 2%;">
+									<div class="row" style="display: flex;">
+										<div class="col-md-2" style="margin-top: 0.3rem">
+											<label for="url"> {{'notifications.url' | translate}} </label>
+										</div>
+										<div style="display: flex;" *ngFor="let url of alert.url.split('<br>'); let i=index">
+											<div class ="col-md-6" *ngIf="url!=''">
+												<label for="urlName{{i}}" style="margin-top: 2%;"> {{'notifications.Url Name identifier' | translate}}  </label>
+												<input type="text" id="urlName{{i}}" class="form-control" name="urlName{{i}}" [(ngModel)]="alertTranslationsUrlUpdate[i]">
+											</div>
+											<div class ="col-md-8" *ngIf="url!=''">
+												<label for="url{{i}}" style="margin-top: 2%;"> {{'notifications.Url Address' | translate}} </label>
+												<br>
+												<div style="display: inline-flex;margin-top:6%;">
+													<!--<div style="position:relative;margin-top:3%">https//: </div>-->
+													<!--<input type="text" id="url{{i}}" class="form-control" name="url{{i}}" [(ngModel)]="alertAddressUrl[i]" style="margin-left: 2%;">-->
+													<span id="url{{i}}" style="margin-left: 2%;">{{url}}</span>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+								<br>
+							</div>
+
+						</div>
+
+						<div class="form-actions center" *ngIf="!sending">
+							<button type="button" (click)="back()" class="btn btn-raised btn-raised btn-warning mr-1">
+								<i class="ft-x"></i> {{'generics.Cancel' | translate }}
+							</button>
+							<button type="button" type="submit" [disabled]="(!f.valid || (alertTitle=='') || (alertText==''))" class="btn btn-raised btn-raised btn-primary">
+								<i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}
+							</button>
+						</div>
+						<div class="col-md-12 center-elements" *ngIf="sending">
+							<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+</div>
+<div class="col-lg-12 col-12 form-group" *ngIf="working">
+	<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+	<div>{{'generics.Sending' | translate }}...</div>
+</div>
+
+
+<ng-template #userPanel let-c="close" let-d="dismiss" appendTo="body">
+	<div class="modal-header" id="idHeader">
+			<h4 class="modal-title">{{'notifications.Selected users' | translate }}</h4>
+	</div>
+	<div class="modal-body" responsive>
+		<span  [innerHTML]="listOfUsers"></span>
+	</div>
+	<div class="modal-footer" >
+		<div class="form-actions center" *ngIf="!sending">
+			<button type="button" class="btn btn-secondary btn-raised" (click)="c('Close click')">{{'generics.Close' | translate }}</button>
+		</div>
+	</div>
+</ng-template>

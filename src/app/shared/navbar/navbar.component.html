@@ -1,0 +1,96 @@
+<!-- Navbar (Header) Starts -->
+<nav class="navbar navbar-expand-lg navbar-light bg-faded">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle d-lg-none float-left" data-toggle="collapse">
+                <span class="sr-only">{{'navbar.Toggle navigation' | translate }}</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-container">
+            <div class="navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <li *ngIf="!loading && alertsLoaded" class="nav-item" placement="bottom-right">
+                        <a class="nav-link" id="dropdownBasic4" (click)="notificationsEvent()">
+                            <i class="ft-bell font-medium-3 blue-grey darken-4"></i>
+                            <span *ngIf="alertsNotRead.length>0" class="notification badge badge-pill badge-danger pull-top">{{alertsNotRead.length}}</span>
+                        </a>
+                        <!--<div ngbDropdownMenu  aria-labelledby="dropdownBasic4" id="notificationsMenu">
+                            <div *ngFor="let alert of alertsNotRead">
+                                <span class="form-text danger" id="notificationText" style="display:flex;">{{alert.name}}</span>
+                                <a *ngIf="(alert.res2.url!='')&&(alert.res2.url!=undefined)&&(alert.res2.url!=null)" id="notificationText" routerLink={{alert.res2.url}}>
+                                    <i class="ft-external-link primary"></i>
+                                    {{'navbar.Go to' | translate }}
+                                </a>
+                                <div *ngIf="alert.res2.type == '12months' || alert.res2.type == '6months'">
+                                    <button type="button" class="snooze btn btn-raised btn-primary" (click)="snooze()">{{'notifications.Snooze' | translate }}</button>
+                                    <select id="snoozeSelect" name="snoozeSelect" class="snooze form-control" onchange="snoozeSelect($event)">
+                                        <option selected="selected" value="1">1 {{'Course Of The disease.Months' | translate }}</option>
+                                        <option value="2">2 {{'Course Of The disease.Months' | translate }}</option>
+                                        <option value="3">3 {{'Course Of The disease.Months' | translate }}</option>
+                                        <option *ngIf="alert.res2.type == '12months'" value="6">6 {{'Course Of The disease.Months' | translate }}</option>
+                                    </select>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                            </div>
+                            <div *ngFor="let alert of alertsRead">
+                                <span class="form-text" id="notificationText" style="display:flex;">{{alert.name}}</span>
+                                <a *ngIf="(alert.res2.url!='')&&(alert.res2.url!=undefined)&&(alert.res2.url!=null)" id="notificationText" routerLink={{alert.res2.url}}>
+                                    <i class="ft-external-link primary"></i>
+                                    {{'navbar.Go to' | translate }}
+                                </a>
+                                <div class="row" *ngIf="alert.res2.type == '12months' || alert.res2.type == '6months'">
+                                    <button type="button" class="snooze btn btn-raised btn-primary" (click)="snooze()">{{'notifications.Snooze' | translate }}</button>
+                                    <select id="snooze" name="snooze" class="snooze form-control" (onChange)="snoozeSelect($event)">
+                                        <option selected="selected" value="1">1 {{'Course Of The disease.Months' | translate }}</option>
+                                        <option value="2">2 {{'Course Of The disease.Months' | translate }}</option>
+                                        <option value="3">3 {{'Course Of The disease.Months' | translate }}</option>
+                                        <option *ngIf="alert.res2.type == '12months'" value="6">6 {{'Course Of The disease.Months' | translate }}</option>
+                                    </select>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                            </div>
+
+                            <div *ngIf="(alertsNotRead.length==0) && (alertsRead.length==0)">
+                                <p>{{'navbar.No alertas' | translate }}</p>
+                            </div>
+
+                        </div>-->
+
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/support">
+                          <i class="ft-mail font-medium-3 blue-grey darken-4"></i>
+                          <p class="d-none">{{'support.support' | translate }}</p>
+                        </a>
+                    </li>
+                    <li class="nav-item" ngbDropdown placement="bottom-right">
+                        <a class="nav-link position-relative" id="dropdownBasic3" ngbDropdownToggle>
+                            <i class="ft-user font-medium-3 blue-grey darken-4"></i>
+                            <p class="d-none">{{'navbar.User Settings' | translate }}</p>
+                        </a>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic3">
+                            <a class="dropdown-item py-1" routerLink="/profile">
+                                <i class="ft-edit mr-2"></i>
+                                <span>{{'navbar.My Profile' | translate }}</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="javascript:;" (click)="logout()">
+                                <i class="ft-power mr-2"></i>
+                                <span>{{'navbar.Logout' | translate }}</span>
+                            </a>
+                            <div *ngIf="isApp && isAndroid" class="dropdown-divider"></div>
+                            <a *ngIf="isApp && isAndroid" class="dropdown-item" href="javascript:;" (click)="exit()">
+                                <i class="ft-log-out mr-2"></i>
+                                <span>{{'navbar.Exit' | translate }}</span>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- Navbar (Header) Ends -->

@@ -1,0 +1,211 @@
+<!--Login Page Starts-->
+<section id="login" *ngIf="!showInstructions">
+    <div class="container-fluid gradient-red-pink" >
+        <div class="row almost-full-height-vh">
+            <div class="col-12 d-flex align-items-center justify-content-center">
+                <div class="card bg-blue-grey bg-darken-3 text-center width-400">
+                    <div class="card-body">
+                        <div class="card-block">
+                           <h2 style="margin-bottom: 1rem;" class="card-title font-large-1 text-center white mt-3">{{'login.Login' | translate }}</h2>
+                           <button id="openTrickButton" [hidden]="true">.</button>
+                            <form  (ngSubmit)="onSubmit(panelAddPhone)" #f="ngForm">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <input type="email" class="form-control" name="email" id="email" placeholder="{{'generics.Email' | translate }}" ngModel required email #email="ngModel">
+                                        <small class="form-text text-muted danger" *ngIf="!email.valid && (email.dirty || email.touched)">{{'generics.entervalidemail' | translate }}</small>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <input type="password" class="form-control" name="password" id="password" placeholder="{{'generics.Password' | translate }}" ngModel required #password="ngModel">
+                                        <small class="form-text text-muted danger" *ngIf="!password.valid && (password.dirty || password.touched)">{{'generics.required' | translate }}</small>
+                                    </div>
+                                </div>
+                                <div class="form-group" *ngIf="!sending">
+                                    <div class="col-md-12">
+                                      <div *ngIf="f.valid;then formValid else formError"></div>
+                                      <ng-template #formValid><button class="btn btn-pink btn-block btn-foursquare" type="submit"> {{'login.Login' | translate }}</button></ng-template>
+                                      <ng-template #formError><button class="btn btn-pink btn-block btn-foursquare" type="button" (click)="submitInvalidForm()"> {{'login.Login' | translate }}</button></ng-template>
+                                    </div>
+                                    <!--<a class="white" (click)="launchDemo()">Demo</a>-->
+                                </div>
+                                <div  class="form-group" *ngIf="sending">
+                                  <i class="fa fa-spinner fa-spin fa-3x fa-fw white"></i>
+                                </div>
+                                <div *ngIf="isBlockedAccount" class="form-group">
+                                    <div class="col-md-12 danger">
+                                      {{'login.Account is temporarily locked' | translate }}
+                                    </div>
+                                </div>
+                                <div *ngIf="isLoginFailed" class="form-group">
+                                    <div class="col-md-12 danger">
+                                      {{'login.Login failed' | translate }}
+                                    </div>
+                                </div>
+                                <div *ngIf="authyFail" class="form-group">
+                                    <div class="col-md-12 danger">
+                                      {{'login.Authy failed' | translate }}
+                                    </div>
+                                </div>
+                                <div *ngIf="authyTimeout" class="form-group">
+                                    <div class="col-md-12 danger">
+                                      {{'login.Authy timeout' | translate }}
+                                    </div>
+                                </div>
+                                <div *ngIf="authyWaiting" class="form-group">
+                                    <div class="col-md-12 primary">
+                                      {{'login.Waiting for authorization in Authy' | translate }}
+                                    </div>
+                                    <button (click)="cancelAuthyWaiting()" type="button" class="btn btn-grey btn-outline-grey">{{'generics.Cancel' | translate }}</button>
+                                </div>
+                                <div *ngIf="isAccountActivated" class="form-group">
+                                    <div class="col-md-12 success">
+                                      {{'login.Account activated' | translate }}
+                                    </div>
+                                </div>
+                                <div *ngIf="errorAccountActivated" class="form-group">
+                                    <div class="col-md-12 danger">
+                                      {{'login.could not be activated' | translate }}
+                                    </div>
+                                </div>
+                                <div *ngIf="isActivationPending" class="form-group">
+                                    <div class="col-md-12 danger">
+                                      {{'login.The account is not activated' | translate }}
+                                    </div>
+                                </div>
+                                <div *ngIf="isBlocked" class="form-group">
+                                    <div class="col-md-12 danger">
+                                      {{'login.The account is blocked by an administrator' | translate }}
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-footer" style="background: none;">
+                        <div class="float-left white centerdiv"><a (click)="onForgotPassword()">{{'login.Recover Password' | translate }}</a></div>
+                        <div class="float-right white centerdiv"><a (click)="onRegister()">{{'login.Create User' | translate }}</a></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="instructions" *ngIf="showInstructions">
+  <div class="modal-header">
+    <h4 class="modal-title">{{'login.Instructions Tittle' | translate }}</h4>
+  </div>
+  <div class="modal-body">
+    <br>
+    <label style="text-align: left">
+      <span [innerHTML]="textIntroInstructions | safe: 'html'"></span>
+    </label>
+
+    <ol style="text-align: left">
+      <li>
+        <span [innerHTML]="'login.Instructions to download the app 1' | translate | safe: 'html'"></span>
+        <br>
+        <span [innerHTML]="'login.Instructions to download the app 1a' | translate | safe: 'html'"></span>
+        <br>
+        <span [innerHTML]="'login.Instructions to download the app 1b' | translate | safe: 'html'"></span>
+      </li>
+      <li>
+        <span [innerHTML]="'login.Instructions to download the app 2' | translate | safe: 'html'"></span>
+      </li>
+      <li>
+        <span [innerHTML]="'login.Instructions to download the app 3' | translate | safe: 'html'"></span>
+      <br>
+        <label><a (click)="goToExternalUrl('https://play.google.com/store/apps/details?id=com.authy.authy')" href="javascript:void(0)"> Android </a></label>
+        <br>
+        <label><a (click)="goToExternalUrl('https://apps.apple.com/us/app/authy/id494168017')" href="javascript:void(0)"> iOS </a></label>
+      </li>
+      <li>
+        <span [innerHTML]="'login.Instructions to download the app 4' | translate | safe: 'html'"></span>
+      </li>
+      <li>
+        <span [innerHTML]="'login.Instructions to download the app 5' | translate | safe: 'html'"></span>
+        <br>
+        <span [innerHTML]="'login.Instructions to download the app 5a' | translate | safe: 'html'"></span>
+          <br>
+          <span [innerHTML]="'login.Instructions to download the app 5b' | translate | safe: 'html'"></span>
+          <br>
+          <span [innerHTML]="'login.Instructions to download the app 5c' | translate | safe: 'html'"></span>
+      </li>
+      <li>
+        <span [innerHTML]="textInstruction6 | safe: 'html'"></span>
+      </li>
+      <li>
+        <span [innerHTML]="'login.Instructions to download the app 7' | translate | safe: 'html'"></span>
+      </li>
+    </ol>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-pink btn-foursquare" (click)="backToLogin()"> {{'login.Login' | translate }}</button>
+  </div>
+</section>
+
+<ng-template #panelAddPhone let-c="close" let-d="dismiss" appendTo="body">
+    <div class="modal-header" id="idHeader">
+            <h4 class="modal-title">{{'login.Add phone number' | translate }}</h4>
+    </div>
+    <form #fPhone="ngForm" (ngSubmit)="updatePhoneInfo(seleccionado,phone)">
+      <div class="modal-body">
+          <label> {{'login.Add phone number requiered text' | translate }}</label>
+          <div class="row d-flex col-12 col-sm-12 d-flex">
+            <div class="form-group col-md-6 mb-0">
+              <div class="input-group mb-0">
+                  <span class="input-group-text">
+                      <i class="icon-globe-alt"></i>
+                  </span>
+                  <select class="form-control" id="countryselectedPhoneCode" name="countryselectedPhoneCode" [(ngModel)]="seleccionado" #countryselectedPhoneCode="ngModel" ngModel [required]="true">
+                      <option [ngValue]="null" disabled selected>--{{'registration.Please select a code' | translate }}--</option>
+                      <option *ngFor="let phoneCode of phoneCodes; let i=index" value="{{phoneCode.countryPhoneCode}}">
+                          <label style="color:blue !important">{{phoneCode.countryCode}}</label>
+                          /
+                          <label>{{phoneCode.countryPhoneCode}}</label>
+                      </option>
+                  </select>
+              </div>
+              <div class="col-md-12">
+                <p><small class="form-text text-muted danger" *ngIf=" !countryselectedPhoneCode.valid && (countryselectedPhoneCode.dirty || countryselectedPhoneCode.touched)">{{'registration.Please select a code' | translate }}</small></p>
+
+              </div>
+            </div>
+
+            <div class="form-group col-md-6 mb-0">
+              <div class="input-group mb-0">
+                  <span class="input-group-text">
+                      <i class="ft-smartphone"></i>
+                  </span>
+                  <input type="phone" class="form-control" name="phone2" id="phone2" placeholder="{{'generics.Phone number' | translate }}" [(ngModel)]="phone" ngModel #phone2="ngModel" [required]="true">
+              </div>
+              <div class="col-md-12">
+                <p><small class="form-text text-muted danger" *ngIf="!phone2.valid && (phone2.dirty || phone2.touched)">{{'registration.Enter your phone number' | translate }}</small></p>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer" >
+          <div class="center">
+            <span *ngIf="!sending">
+              <div *ngIf="fPhone.valid;then formValid else formError"></div>
+              <ng-template #formValid>
+                <button class="btn btn-primary btn-outline-primary" type="submit"> {{'generics.Save' | translate }}</button>
+              </ng-template>
+              <ng-template #formError>
+                <!--<p><small class="form-text text-muted danger">{{'generics.Complete the fields' | translate }}</small></p>-->
+                <button class="btn btn-primary btn-outline-primary" type="button" (click)="submitInvalidFormPhone()"> {{'generics.Save' | translate }}</button>
+              </ng-template>
+            </span>
+            <span *ngIf="sending">
+              <i class="fa fa-spinner fa-spin fa-3x fa-fw white"></i>
+            </span>
+              <button type="button" class="btn btn-secondary btn-raised" (click)="c('Close click')">{{'generics.Close' | translate }}</button>
+          </div>
+      </div>
+    </form>
+</ng-template>
+
+<!--Login Page Ends-->

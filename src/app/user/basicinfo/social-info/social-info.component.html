@@ -1,0 +1,247 @@
+<!--User Profile Starts-->
+<section id="basic-form-layouts">
+	<div class="row">
+      <div class="col-sm-12">
+          <div class="content-header">{{'social.Social patient information' | translate }}</div>
+      </div>
+  </div>
+	<div class="center-elements" *ngIf="loading">
+		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+	</div>
+	<div class="row" *ngIf="!loading">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header">
+				</div>
+				<div class="card-body">
+					<div class="px-3">
+						<form class="form" (ngSubmit)="onSubmit()" #f="ngForm" *ngIf="socialInfo">
+							<div class="form-body">
+								<h4 class="form-section"><i class="icon-graduation danger"></i> {{'social.Education' | translate }}</h4>
+								<div class="row">
+									<div class="col-md-4">
+										<div class="form-group" *ngIf="nameduchenneInter != group">
+											<label for="education">{{'social.Type' | translate }}</label>
+												<select id="education" name="education" class="form-control"  [(ngModel)]="socialInfo.education">
+												<option value="regularEducation">{{'social.Regular education' | translate }}</option>
+												<option value="specialEducation">{{'social.Special education' | translate }}</option>
+											</select>
+										</div>
+										<div class="form-group" *ngIf="nameduchenneInter == group">
+											<label for="education">{{'social.Type' | translate }}</label>
+												<select id="education" name="education" class="form-control"  [(ngModel)]="socialInfo.education">
+												<option value="regularEducation">{{'social.Regular education' | translate }}</option>
+												<option value="mainstreamEducation">{{'social.Mainstream education' | translate }}</option>
+												<option value="specialEducation">{{'social.Special education' | translate }}</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-4" *ngIf="nameduchenne != group && nameduchenneInter != group">
+										<div class="form-group">
+											<label for="currentEducation">{{'social.Current Education' | translate }}  <small>(<a href="https://en.wikipedia.org/wiki/International_Standard_Classification_of_Education" target="_blank">ISCED</a>)</small></label>
+											<select id="currentEducation" name="currentEducation" class="form-control"  [(ngModel)]="socialInfo.currentEducation">
+												<option value="0">{{'education.Early childhood Education' | translate }}</option>
+												<option value="1">{{'education.Primary education' | translate }}</option>
+												<option value="2">{{'education.Lower secondary education' | translate }}</option>
+												<option value="3">{{'education.Upper secondary education' | translate }}</option>
+												<option value="4">{{'education.Post-secondary non-tertiary education' | translate }}</option>
+												<option value="5">{{'education.Short-cycle tertiary education' | translate }}</option>
+												<option value="6">{{'education.Bachelor or equivalent' | translate }}</option>
+												<option value="7">{{'education.Master or equivalent' | translate }}</option>
+												<option value="8">{{'education.Doctoral or equivalent' | translate }}</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-4" *ngIf="nameduchenneInter == group">
+                    <div class="form-group">
+                      <label for="currentEducation">{{'social.Current Education' | translate }}</label>
+                      <select id="currentEducation" name="currentEducation" class="form-control"  [(ngModel)]="socialInfo.currentEducation">
+												<option value="0int">{{'education.Primary education:' | translate }}</option>
+												<option value="1int">{{'education.Secondary education:' | translate }}</option>
+												<option value="2int">{{'education.Vocational education' | translate }}</option>
+                      </select>
+                    </div>
+                  </div>
+									<div class="col-md-4" *ngIf="nameduchenne == group">
+										<div class="form-group">
+											<label for="currentEducation">{{'social.Current Education' | translate }}</label>
+											<select id="currentEducation" name="currentEducation" class="form-control"  [(ngModel)]="socialInfo.currentEducation">
+												<option value="BASISONDERWIJS">BASISONDERWIJS</option>
+												<option value="VMBO">VMBO</option>
+                        <option value="MBO">MBO</option>
+                        <option value="HAVO">HAVO</option>
+                        <option value="VWO">VWO</option>
+                        <option value="HBO">HBO</option>
+                        <option value="WO">WO</option>
+                      </select>
+										</div>
+									</div>
+									<div class="col-md-4" *ngIf="nameduchenne != group && nameduchenneInter != group">
+										<div class="form-group">
+											<label for="completedEducation">{{'social.Completed Education' | translate }} <small>(<a href="https://en.wikipedia.org/wiki/International_Standard_Classification_of_Education" target="_blank">ISCED</a>)</small></label>
+											<select id="completedEducation" name="completedEducation" class="form-control"  [(ngModel)]="socialInfo.completedEducation">
+												<option value="0">{{'education.Early childhood Education' | translate }}</option>
+												<option value="1">{{'education.Primary education' | translate }}</option>
+												<option value="2">{{'education.Lower secondary education' | translate }}</option>
+												<option value="3">{{'education.Upper secondary education' | translate }}</option>
+												<option value="4">{{'education.Post-secondary non-tertiary education' | translate }}</option>
+												<option value="5">{{'education.Short-cycle tertiary education' | translate }}</option>
+												<option value="6">{{'education.Bachelor or equivalent' | translate }}</option>
+												<option value="7">{{'education.Master or equivalent' | translate }}</option>
+												<option value="8">{{'education.Doctoral or equivalent' | translate }}</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-4" *ngIf="nameduchenneInter == group">
+                    <div class="form-group">
+                      <label for="completedEducation">{{'social.Completed Education' | translate }}</label>
+                      <select id="completedEducation" name="completedEducation" class="form-control"  [(ngModel)]="socialInfo.completedEducation">
+												<option value="0int">{{'education.Primary education:' | translate }}</option>
+												<option value="1int">{{'education.Secondary education:' | translate }}</option>
+												<option value="2int">{{'education.Vocational education' | translate }}</option>
+                      </select>
+                    </div>
+                  </div>
+									<div class="col-md-4" *ngIf="nameduchenne == group">
+										<div class="form-group">
+											<label for="completedEducation">{{'social.Completed Education' | translate }}</label>
+											<select id="completedEducation" name="completedEducation" class="form-control"  [(ngModel)]="socialInfo.completedEducation">
+												<option value="BASISONDERWIJS">BASISONDERWIJS</option>
+												<option value="VMBO">VMBO</option>
+                        <option value="MBO">MBO</option>
+                        <option value="HAVO">HAVO</option>
+                        <option value="VWO">VWO</option>
+                        <option value="HBO">HBO</option>
+                        <option value="WO">WO</option>
+                      </select>
+										</div>
+									</div>
+								</div>
+                <h4 class="form-section"><i class="icon-briefcase primary"></i> {{'social.Work' | translate }}</h4>
+                <div class="row">
+									<div class="col-md-4">
+										<div class="form-group">
+											<label for="work">{{'social.Work' | translate }}</label>
+											<!--<mat-form-field>
+											  <mat-select id="work" name="work" [(ngModel)]="socialInfo.work">
+											    <mat-option value="volunteer">{{'social.Volunteer' | translate }}</mat-option>
+													<mat-option value="paid">{{'social.Paid' | translate }}</mat-option>
+													<mat-option value="no">{{'generics.No' | translate }}</mat-option>
+											  </mat-select>
+											</mat-form-field>-->
+
+											<select id="work" name="work" class="form-control"  [(ngModel)]="socialInfo.work">
+												<option value="volunteer">{{'social.Volunteer' | translate }}</option>
+												<option value="paid">{{'social.Paid' | translate }}</option>
+												<option value="no">{{'generics.No' | translate }}</option>
+											</select>
+										</div>
+									</div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="hoursWork">{{'social.Hours Work' | translate }}</label>
+											<!--<mat-form-field>
+										    <input matInput id="hoursWork" name="hoursWork" [(ngModel)]="socialInfo.hoursWork">
+										  </mat-form-field>-->
+                      <input type="text" id="hoursWork" class="form-control"  name="hoursWork" [(ngModel)]="socialInfo.hoursWork">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="profession">{{'personalinfo.Profession' | translate }}</label>
+											<!--<mat-form-field>
+										    <input matInput id="profession" name="profession" [(ngModel)]="socialInfo.profession">
+										  </mat-form-field>-->
+                      <input type="text" id="profession" class="form-control" name="profession" [(ngModel)]="socialInfo.profession">
+                    </div>
+                  </div>
+                </div>
+								<h4 class="form-section"><i class="icon-users warning"></i> {{'social.LivingSupport' | translate }}</h4>
+                <div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="sports">{{'social.Living Situation' | translate }}</label>
+                      <mat-select class="form-control" id="livingSituation" name="livingSituation" [formControl]="livingSituation" [(ngModel)]="socialInfo.livingSituation" multiple>
+                        <mat-option value="parent">{{'social.WithParentCaregivers' | translate }}</mat-option>
+												<mat-option value="institution">{{'social.In an institution' | translate }}</mat-option>
+												<mat-option value="institution">{{'social.Self-employed with helpers' | translate }}</mat-option>
+												<mat-option value="partner">{{'social.With partner' | translate }}</mat-option>
+												<mat-option value="friend">{{'social.WithFriend' | translate }}</mat-option>
+												<mat-option value="independent">{{'social.Independent' | translate }}</mat-option>
+												<mat-option value="other">{{'generics.Other' | translate }}</mat-option>
+                      </mat-select>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="sports">{{'social.Support' | translate }}</label>
+                      <mat-select class="form-control" id="support" name="support" [formControl]="support" [(ngModel)]="socialInfo.support" multiple>
+                        <mat-option value="parent">{{'social.Parents' | translate }}</mat-option>
+												<mat-option value="sibling">{{'social.Siblings' | translate }}</mat-option>
+												<mat-option value="otherFamilyMembers">{{'social.Other family members' | translate }}</mat-option>
+												<mat-option value="helpers">{{'social.Helpers' | translate }}</mat-option>
+												<mat-option value="friends">{{'social.Friends' | translate }}</mat-option>
+												<mat-option value="helperdog">{{'social.Helperdog' | translate }}</mat-option>
+												<mat-option value="other">{{'generics.Other' | translate }}</mat-option>
+                      </mat-select>
+										</div>
+									</div>
+								</div>
+								<h4 class="form-section"><i class="icon-game-controller primary"></i> {{'social.SportsInterests' | translate }}</h4>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label for="sports">{{'social.Sports' | translate }}</label>
+                      <mat-select class="form-control" id="sports" name="sports" [formControl]="sports" [(ngModel)]="socialInfo.sports" multiple>
+                        <mat-option value="swimming">{{'social.Swimming' | translate }}</mat-option>
+												<mat-option value="wheelchairHockey">{{'social.Wheelchair hockey' | translate }}</mat-option>
+												<mat-option value="soccer">{{'social.Soccer' | translate }}</mat-option>
+												<mat-option value="hourseRiding">{{'social.Horse riding' | translate }}</mat-option>
+												<mat-option value="other">{{'generics.Other' | translate }}</mat-option>
+												<mat-option value="none">{{'generics.None' | translate }}</mat-option>
+                      </mat-select>
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label for="interests">{{'social.Interests' | translate }}</label>
+                      <mat-select class="form-control" id="interests" name="interests" [formControl]="interests" [(ngModel)]="socialInfo.interests" multiple>
+                        <mat-option value="gaming">{{'social.Gaming' | translate }}</mat-option>
+												<mat-option value="music">{{'social.Music' | translate }}</mat-option>
+												<mat-option value="sports">{{'social.Sports' | translate }}</mat-option>
+												<mat-option value="movies">{{'social.Movies' | translate }}</mat-option>
+												<mat-option value="mindgames">{{'social.Mindgames' | translate }}</mat-option>
+												<mat-option value="scouting">{{'social.Scouting' | translate }}</mat-option>
+												<mat-option value="other">{{'generics.Other' | translate }}</mat-option>
+												<mat-option value="none">{{'generics.None' | translate }}</mat-option>
+                      </mat-select>
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label for="moreInterests">{{'generics.More information' | translate }}</label>
+											<input type="text" id="moreInterests" class="form-control"  name="moreInterests" [(ngModel)]="socialInfo.moreInterests">
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+							<div class="form-actions center" *ngIf="!sending">
+								<button type="button" (click)="resetForm()" class="btn btn-raised btn-raised btn-warning mr-1">
+									<i class="ft-x"></i> {{'generics.Cancel' | translate }}
+								</button>
+								<button type="button" type="submit" [disabled]="!f.valid" class="btn btn-raised btn-raised btn-primary">
+									<i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}
+								</button>
+							</div>
+							<div class="col-md-12 center-elements" *ngIf="sending">
+								<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+</section>

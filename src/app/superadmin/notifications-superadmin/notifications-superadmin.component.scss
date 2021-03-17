@@ -1,0 +1,57 @@
+.centerSpinner{
+  margin: auto;
+  width: 50%;
+}
+.mat-form-field {
+  width: 100%;
+}
+
+::ng-deep .cdk-overlay-container {
+  z-index: 9999 !important;
+}
+
+.card-body > .form-group{
+  margin-left: 25px;
+  margin-right: 25px;
+}
+
+.setmargin{
+  margin-left: 25px;
+}
+
+:host /deep/ .datatable-header-cell {
+      font-weight: bold;
+}
+
+.card-header{
+  display: flex;
+}
+.card-header > .btn{
+  margin: 0 0 0 auto;
+  position: relative;
+  bottom: 8px;
+}
+.table{
+  border-top: white 1.9px solid !important;
+}
+
+thead > tr > th{
+  white-space: nowrap;
+}
+
+.username{
+  color: #009DA0 !important;
+}
+
+.titulo{
+  background-color: #495057 !important;
+  color: white  ,
+}
+
+.titulo ~ td{
+  background-color: #495057 !important;
+}
+
+//tbody > tr{
+//  height: 50px !important;
+//}

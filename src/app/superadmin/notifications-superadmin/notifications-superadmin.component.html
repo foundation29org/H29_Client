@@ -1,0 +1,224 @@
+<div class="row" *ngIf="!addedlang && !working">
+		<div class="col-lg-12 col-12">
+
+			<!-- TABLA DE NOTIFICACIONES YA HECHAS-->
+			<div class="card" *ngIf="!createNotification">
+				<div class="card-header">
+					<h4 class="card-title">{{'notifications.Notifications Menu' | translate}}</h4>
+				</div>
+				<div class="card-body">
+					<div class="form-group">
+						<label for="selectGroup">{{'groups.Groups' | translate }}</label>
+						<select id="selectGroup" name="selectGroup" class="form-control"  [(ngModel)]="groupSelected" #groupselected (ngModelChange)="onChangeGroup(groupSelected)">
+							<option *ngFor="let group of groups" [ngValue]="group"> {{group.name}}</option>
+						</select>
+					</div>
+					<div class="center-elements" *ngIf="loadingNotifications">
+						<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+					</div>
+					<div *ngIf="groupSelected!=''">
+
+						<!-- TABLA DE ALERTAS -->
+						<div class="table-responsive" *ngIf="!loadingNotifications && notifications.length>0">
+
+							<div class="col-md-12 mt-2">
+								<a (click)="openCreateNotification()" class="btn btn-outline-primary"><i class="fa fa-plus"></i> {{'notifications.Create Notifications' | translate }}</a>
+							</div>
+
+							<ngx-datatable
+							class="bootstrap fullscreen"
+							[columnMode]="'flex'"
+							[headerHeight]="50"
+							[footerHeight]="50"
+							[rowHeight]="'auto'"
+							[rows]="notifications"
+							>
+								<ngx-datatable-column name="{{'notificationsMenu.identifier' | translate }}" prop="identifier" [flexGrow]="2.7" [sortable]="true" >
+									<ng-template let-row="row" let-rowIndex="rowIndex"  let-value="value" ngx-datatable-cell-template>
+										<span>
+											<a class="username" (click)="openEditNotification(row)">{{value}}</a>
+										</span>
+										<br>
+										<div *ngIf="row.type=='6months'">
+											{{translateName6Months[value]}}
+										</div>
+										<div *ngIf="row.type=='12months'">
+											{{translateName12Months[value]}}
+										</div>
+										<div *ngIf="row.type==groupSelected.name" id="alertGroupType">
+											{{translateNameGroup[rowIndex]}}
+										</div>
+									</ng-template>
+								</ngx-datatable-column>
+								<ngx-datatable-column name="{{'social.Type' | translate }}" prop="type" [flexGrow]="2.7" [sortable]="true">
+									<ng-template let-value="value" ngx-datatable-cell-template>
+												<span>
+													{{value}}
+												</span>
+									</ng-template>
+								</ngx-datatable-column>
+								<ngx-datatable-column name="{{'notifications.Launch Date' | translate }}" prop="launchDate" [flexGrow]="2.7" [sortable]="true">
+									<ng-template let-value="value" ngx-datatable-cell-template>
+										<span>
+											{{value | date:timeformat}}
+										</span>
+									</ng-template>
+								</ngx-datatable-column>
+								<ngx-datatable-column name="{{'generics.Delete' | translate }}" prop="delete" [flexGrow]="1.7" [sortable]="true">
+									<ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+										<a (click)="deleteAlert(row)" title="Delete alert"><i class="fa fa-trash primary"></i></a>
+									</ng-template>
+								</ngx-datatable-column>
+							</ngx-datatable>
+						</div>
+
+						<!-- BOTON CREAR NUEVA NOTIFICACION O EDITAR UNA EXISTENTE-->
+						<div *ngIf="!loadingNotifications && notifications.length==0">
+							<div class="col-md-12 mt-2">
+								<a (click)="openCreateNotification()" class="btn btn-outline-primary"><i class="fa fa-plus"></i> {{'notifications.Create Notifications' | translate }}</a>
+							</div>
+							<div class="col-md-12 mt-2">{{'notifications.No Notifications' | translate }}</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+			<!-- CREAR NUEVA NOTIFICACION O EDITAR UNA EXISTENTE-->
+			<div class="card" *ngIf="createNotification || editNotification">
+				<div class="card-header">
+					<h4 *ngIf="!editNotification" class="card-title">{{'notifications.Create Notifications' | translate }}</h4>
+					<h4 *ngIf="editNotification" class="card-title">{{'notifications.Edit Notifications' | translate }}</h4>
+					<!--<button type="button" class="btn btn-secondary btn-raised" (click)="back()">{{'generics.Back' | translate }}</button>-->
+				</div>
+				<div class="center-elements" *ngIf="loadingNotifications">
+					<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+				</div>
+				<div class="card-body" *ngIf="!loadingNotifications">
+					<div class="px-3">
+						<form class="form" (ngSubmit)="onSubmit()" #f="ngForm">
+							<div class="form-body">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label for="type">{{'social.Type' | translate }}</label>
+												<select id="type" name="type" class="form-control"  [(ngModel)]="alert.type">
+												<option value="{{currentGroup}}">{{currentGroup}}</option>
+												<option value="6months">6 {{'Course Of The disease.Months' | translate }}</option>
+												<option value="12months">12 {{'Course Of The disease.Months' | translate }}</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-4"></div>
+								</div>
+								<div class="row">
+									<div class="col-md-6">
+										<!-- LAUNCH DATE -->
+										<div class="form-group">
+											<label for="launchDate">{{'notifications.Launch Date' | translate }}</label>
+											<div>
+												<input  class="form-control w-75 d-inline" id="launchDate" name="launchDate"  matInput [matDatepicker]="pickerLaunchDate" [(ngModel)]="alert.launchDate" required launchDate #launchDate="ngModel">
+												<mat-datepicker-toggle matSuffix [for]="pickerLaunchDate"></mat-datepicker-toggle>
+												<mat-datepicker touchUi="true" #pickerLaunchDate></mat-datepicker>
+												<small class="form-text text-muted danger" *ngIf="!launchDate.valid && (launchDate.dirty || launchDate.touched)">{{'generics.required' | translate }}</small>
+											</div>
+										</div>
+									</div>
+									<!--<div class="col-md-6">
+										<div class="form-group">
+											<label for="endDate">{{'generics.End Date' | translate }}</label>
+											<div>
+												<input class="form-control w-75 d-inline" id="endDate" name="endDate"  matInput [matDatepicker]="pickerEndDate" [(ngModel)]="alert.endDate" required endDate #endDate="ngModel">
+												<mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
+												<mat-datepicker touchUi="true" #pickerEndDate></mat-datepicker>
+												<small class="form-text text-muted danger" *ngIf="!endDate.valid && (endDate.dirty || endDate.touched)">{{'generics.required' | translate }}</small>
+											</div>
+										</div>
+									</div>-->
+								</div>
+								<!-- Identifier -->
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label for="identifier">{{'notificationsMenu.identifier' | translate }}</label>
+											<input type="text" id="identifier" class="form-control"  name="identifier" [(ngModel)]="alert.identifier" required originalName #originalName="ngModel">
+											<!--<small class="form-text text-muted danger" *ngIf="!identifier.valid && (identifier.dirty || identifier.touched)">{{'generics.required' | translate }}</small>-->
+										</div>
+									</div>
+									<!-- TITLE AND TEXT FOR NOTIFICATIONS -->
+									<div class="col-md-12">
+										<div class="form-group">
+											<a (click)="addTranslations()" class="btn btn-outline-primary"><i class="fa fa-plus"></i> {{'notifications.Add translations' | translate }}</a>
+											<div><label *ngIf="selectingLanguages" for="choiseset">{{'notifications.Select languages' | translate }}</label></div>
+											<mat-select *ngIf="selectingLanguages" class="form-control" id="choiseset" name="choiseset"  [(ngModel)]="langsSelected" multiple (selectionChange)="languagesSelected()">
+												<mat-option *ngFor="let lang of langs" id="{{lang.code}}" value="{{lang.code}},{{lang.name}}">{{lang.name}}</mat-option>
+											</mat-select>
+											<div *ngFor="let lang of langs;let j = index" >
+												<label *ngIf="langsShow[j].value == true" for="{{lang.code}}{{j}}">{{lang.name}}</label>
+												<h6 *ngIf="(langsShow[j].value == true)">{{'notifications.Tittle' | translate }}</h6>
+												<input *ngIf="(langsShow[j].value == true)" type="text" id="{{lang.code}}{{j}}" class="form-control"  name="translationsTitle{{j}}" [(ngModel)]="alertTranslationsTitle[j]">
+												<h6 *ngIf="(langsShow[j].value == true)">{{'notifications.text' | translate }}</h6>
+												<input *ngIf="langsShow[j].value == true" type="text" id="{{lang.code}}{{j}}" class="form-control"  name="translations{{j}}" [(ngModel)]="alertTranslations[j]">
+											</div>
+										</div>
+									</div>
+									<!-- URL -->
+									<div class="col-md-12">
+										<div class="row" style="display: flex;">
+											<div class="col-md-2" style="margin-top: 0.3rem">
+												<label for="url"> {{'notifications.url' | translate}} </label>
+											</div>
+											<div class="col-12">
+												<a (click)="addUrl()" class="btn btn-outline-primary" href="javascript:void(0)"><i class="fa fa-plus"></i></a>
+												<a *ngIf="alert.url!=undefined && alert.url.length>0" (click)="deleteUrl()" class="btn btn-outline-primary" href="javascript:void(0)"><i class="fa fa-minus"></i></a>
+											</div>
+											<div class="col-md-12">
+												<h6 class="danger">To add anchors/marker of a page put # followed by the name of the section at the end of the url address</h6>
+											</div>
+											<div class="col-md-12">
+												<div style="display: flex;" *ngFor="let url of alert.url; let i=index">
+													<div class ="col-md-6">
+														<div *ngFor="let lang of langs;let j = index" >
+															<div *ngIf="langsShow[j].value == true" >
+																<label for="urlName{{j}}{{i}}" style="margin-top: 2%; font-size: 0.6rem;"> {{'notifications.Url Name identifier' | translate}} {{lang.code}} </label>
+																<input type="text" id="urlName{{j}}{{i}}" class="form-control" name="urlName{{j}}{{i}}" [(ngModel)]="alertTranslationsUrl[j].data[i]">
+															</div>
+														</div>
+													</div>
+													<div class ="col-md-6">
+														<label for="url{{i}}" style="margin-top: 2%;font-size: 0.6rem;"> {{'notifications.Url Address' | translate}} </label>
+														<input type="text" id="url{{i}}" class="form-control" name="url{{i}}" [(ngModel)]="alertAddressUrl[i]">
+													</div>
+
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+							<div class="form-actions center" *ngIf="!sending">
+								<button type="button" (click)="back()" class="btn btn-raised btn-raised btn-warning mr-1">
+									<i class="ft-x"></i> {{'generics.Cancel' | translate }}
+								</button>
+								<button type="button" type="submit" [disabled]="!f.valid || (alert._id && (alert.type=='6months' || alert.type=='12months' || alert.type=='currentGroup'))" class="btn btn-raised btn-raised btn-primary">
+									<i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}
+								</button>
+							</div>
+							<div class="col-md-12 center-elements" *ngIf="sending">
+								<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+							</div>
+						</form>
+					</div>
+				</div>
+
+			</div>
+
+
+		</div>
+	</div>
+	<div class="col-lg-12 col-12 form-group" *ngIf="working">
+		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+		<div>{{'generics.Sending' | translate }}...</div>
+	</div>

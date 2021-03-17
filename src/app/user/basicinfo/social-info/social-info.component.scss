@@ -1,0 +1,20 @@
+:host /deep/ .mat-form-field-infix {
+  //font-size: 0.8em !important;
+  padding: 0;
+  border-top: 0;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+:host /deep/ .mat-select-value-text {
+  color: #75787d;
+}
+
+:host /deep/ .mat-input-element {
+  color: #75787d;
+}
+
+/*.form-section{
+  border-bottom: none;
+}*/

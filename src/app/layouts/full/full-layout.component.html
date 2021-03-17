@@ -1,0 +1,22 @@
+<div class="wrapper">
+    <div class="app-sidebar" data-active-color="white" data-background-color="white" >
+        <app-sidebar></app-sidebar>
+        <div class="sidebar-background"></div>
+    </div>
+    <app-navbar></app-navbar>
+    <div class="main-panel">
+        <div class="main-content">
+            <div class="content-wrapper">
+                <div class="container-fluid">
+                    <ngb-alert type="warning" [dismissible]="false" *ngIf="isIeOrEdge">
+                        <h4>{{'others.browsers not supported' | translate }}</h4>
+                        <a href="https://www.microsoftedgeinsider.com/en-us/" target="_blank">{{'generics.Download' | translate }} Microsoft Edge Insider</a>
+                    </ngb-alert>
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!isApp"><app-footer></app-footer></div>
+    </div>
+    <app-customizer id="customizer" *ngIf="showCustomizer"></app-customizer>
+</div>

@@ -1,0 +1,274 @@
+<section id="basic-form-layouts">
+	<div class="row">
+      <div class="col-sm-12">
+          <div class="content-header">{{'menu.Notifications' | translate }}</div>
+      </div>
+  </div>
+</section>
+<section id="basic-form-layouts" style="margin-top:1em;">
+	<div class="row">
+
+		<div class="col-md-3" style="margin-bottom:1em;">
+			<span (click)="toggleMenu()" class="chat-app-sidebar-toggle ft-align-justify font-large-1 mr-2 d-none d-block d-sm-block d-md-none"></span>
+			<div class="chat-sidebar d-none d-sm-none d-md-block d-lg-block">
+				<a class="list-group-item bg-blue-grey bg-lighten-5 border-right-primary border-right-2" (click)="SetActive($event, 'PanelNotifications')">
+					{{tittleNotifications}}
+				</a>
+				<a class="list-group-item no-border" (click)="SetActive($event, 'PanelSubscriptions')">
+					{{tittleSubscriptions}}
+				</a>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div class="chat-name p-2 bg-white" style="border-bottom: 1px solid #e4e7ed;">
+				<div class="media-body">
+					<h4 class="form-section">
+						<i [ngClass]="{'ft-bell success': activeTittleMenu=='Notifications'}"></i>
+						<i [ngClass]="{'ft-user primary': activeTittleMenu=='Subscriptions'}"></i>
+						{{ msgActiveTittleMenu }}
+					</h4>
+				</div>
+			</div>
+			<div *ngIf="activeTittleMenu == 'Notifications'">
+
+				<div class="center-elements" *ngIf="loading||loadingSubscription">
+					<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+				</div>
+				<div class="row" *ngIf="!loading&&!loadingSubscription">
+					<div class="col-md-12">
+						<div class="card" style="margin-top:0px;" *ngIf="(alertsNotRead!=undefined)||(alertsRead!=undefined)">
+							<div class="card-body">
+								<div *ngFor="let alert of alertsNotRead">
+									<!-- Pintar la lista de alertas NO leidas-->
+									<div class="row">
+										<div class="col-md-11">
+											<span class="form-text danger" id="notificationText" style="display:flex;">{{alert.name}}</span>
+										</div>
+									</div>
+									<div class="row" id="notificationActions">
+										<div *ngIf="((alert.urlName.length>0)&&(alert.urlName!=''))">
+											<div *ngFor = "let url of alert.alertFound.url; let i=index" style="display: inline-flex;">
+												<div *ngIf="alert.urlName[i]!=undefined">
+													<!-- URL Interna y sin marker-->
+													<button  *ngIf="(url.url.indexOf('http')==-1) && (url.url.indexOf('#')==-1)" class="btn btn-outline-primary" id="notificationText" routerLink={{url.url}}>
+														<i class="ft-external-link primary"></i>{{alert.urlName[i]}}
+													</button>
+													<!-- URL Interna y con marker-->
+													<button *ngIf="(url.url.indexOf('http')==-1) && (url.url.indexOf('#')>-1)" class="btn btn-outline-primary" id="notificationText" (click)="navigateWithParams(url.url.split('#')[0],url.url.split('#')[1])">
+														<i class="ft-external-link primary"></i>{{alert.urlName[i]}}
+													</button>
+													<a *ngIf="url.url.indexOf('http')>-1" class="btn btn-outline-primary" id="notificationText" href={{url.url}} target="_blank">
+														<i class="ft-external-link primary"></i>{{alert.urlName[i]}}
+													</a>
+												</div>
+											</div>
+										</div>
+										<div *ngIf="(alert.alertFound.type == '6months')">
+											<button  class="btn btn-outline-primary"  id="notificationText" (click)="OpenPanelSelecSnooze6(selectSnooze6,alert)">
+												<i class="ft-rotate-cw primary"></i>
+												{{'notificationsMenu.Snooze' | translate }}
+											</button>
+										</div>
+										<div *ngIf="(alert.alertFound.type == '12months') ">
+											<button class="btn btn-outline-primary"  id="notificationText" (click)="OpenPanelSelecSnooze12(selectSnooze12,alert)">
+												<i class="ft-rotate-cw primary"></i>
+												{{'notificationsMenu.Snooze' | translate }}
+											</button>
+										</div>
+									</div>
+									<div class="dropdown-divider"></div>
+								</div>
+								<div *ngFor="let alert of alertsRead">
+									<!--Pintar la lista de alertas SI leidas-->
+									<div class="row">
+										<div class="col-md-11">
+											<span class="form-text" id="notificationText" style="display:flex;">{{alert.name}}</span>
+										</div>
+									</div>
+									<div class="row" id="notificationActions">
+										<div *ngIf="((alert.urlName.length>0)&&(alert.urlName!=''))">
+											<div *ngFor = "let url of alert.alertFound.url; let i=index" style="display: inline-flex;">
+												<div *ngIf="alert.urlName[i]!=undefined">
+													<!-- URL Interna y sin marker-->
+													<button  *ngIf="(url.url.indexOf('http')==-1) && (url.url.indexOf('#')==-1)" class="btn btn-outline-primary" id="notificationText" routerLink={{url.url}}>
+														<i class="ft-external-link primary"></i>{{alert.urlName[i]}}
+													</button>
+													<!-- URL Interna y con marker-->
+													<button *ngIf="(url.url.indexOf('http')==-1) && (url.url.indexOf('#')>-1)" class="btn btn-outline-primary" id="notificationText" (click)="navigateWithParams(url.url.split('#')[0],url.url.split('#')[1])">
+														<i class="ft-external-link primary"></i>{{alert.urlName[i]}}
+													</button>
+													<a *ngIf="url.url.indexOf('http')>-1" class="btn btn-outline-primary" id="notificationText" href={{url.url}} target="_blank">
+														<i class="ft-external-link primary"></i>{{alert.urlName[i]}}
+													</a>
+												</div>
+											</div>
+										</div>
+										<div *ngIf="(alert.alertFound.type == '6months')">
+											<button  class="btn btn-outline-primary"  id="notificationText" (click)="OpenPanelSelecSnooze6(selectSnooze6,alert)">
+												<i class="ft-rotate-cw primary"></i>
+												{{'notificationsMenu.Snooze' | translate }}
+											</button>
+										</div>
+										<div *ngIf="(alert.alertFound.type == '12months') ">
+											<button class="btn btn-outline-primary"  id="notificationText" (click)="OpenPanelSelecSnooze12(selectSnooze12,alert)">
+												<i class="ft-rotate-cw primary"></i>
+												{{'notificationsMenu.Snooze' | translate }}
+											</button>
+										</div>
+									</div>
+									<div class="dropdown-divider"></div>
+								</div>
+							</div>
+							<div class="card" style="margin-top:0px;" *ngIf="!loading && !loadingSubscription && (alertsRead.length==0) && (alertsNotRead==0)">
+								<div class="card-body">
+									<div class="ml-2 mt-2">{{'notificationsMenu.No Notifications' | translate }}</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+				<div *ngIf="activeTittleMenu == 'Subscriptions'">
+					<!-- Menu de Subscripciones con Toogle para unsubscribe-->
+					<div class="center-elements" *ngIf="loading||loadingSubscription">
+						<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+					</div>
+					<div class="row" *ngIf="!loading&&!loadingSubscription">
+						<div class="col-md-12">
+							<div class="card" style="margin-top:0px;">
+								<div class="card-header" style="padding-top: 1%;">
+									<a class="primary" (click)="selectSubscriptions('select')"><i class="fa fa-check" style="padding-right: 1%;"></i>{{'notificationsMenu.Subscribe All' | translate }}</a>
+									<a class="primary" style="padding-left: 5%;" (click)="selectSubscriptions('deselect')"><i class="fa fa-trash" style="padding-right: 1%;"></i>{{'notificationsMenu.Unsubscribe All' | translate }}</a>
+								</div>
+								<div class="card-body">
+									<div class="px-3">
+										<form class="form" (ngSubmit)="onSubmitAlerts()" #f="ngForm" >
+											<div class="form-body">
+												<div class="form-group">
+													<!-- Alerts Type = 6months-->
+													<label class="danger" style="padding-bottom: 2%;"> {{'notificationsMenu.Alerts every 6 months' | translate }}</label>
+													<div *ngIf="listOfAlertsForThisUserType6.length>0">
+														<div *ngFor="let eachAlertAndState of listOfAlertsForThisUserType6">
+															<div class="row" style="display: flex;">
+																<div class="col-md-10">
+																	<p style="padding-left: 2%;display: flex;">{{eachAlertAndState.name}}</p>
+																</div>
+																<div class="col-md- center-elements">
+																	<ui-switch id="enabled" (change)="subscriptionchangedEvent(eachAlertAndState, $event)" name="{{eachAlertAndState.name}}" [(ngModel)]="eachAlertAndState.subscription"></ui-switch>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div *ngIf="listOfAlertsForThisUserType6.length==0">
+														<p style="padding-left: 2%;display: flex;">{{'profile.NoSubscriptions' | translate }}</p>
+													</div>
+													<!-- Alerts Type = 12months-->
+													<label class="danger" style="padding-bottom: 2%;"> {{'notificationsMenu.Alerts every 12 months' | translate }}</label>
+													<div *ngIf="listOfAlertsForThisUserType12.length>0">
+														<div *ngFor="let eachAlertAndState of listOfAlertsForThisUserType12">
+															<div class="row" style="display: flex;">
+																<div class="col-md-10">
+																	<p style="padding-left: 2%;display: flex;">{{eachAlertAndState.name}}</p>
+																</div>
+																<div class="col-md- center-elements">
+																	<ui-switch id="enabled" (change)="subscriptionchangedEvent(eachAlertAndState, $event)" name="{{eachAlertAndState.name}}" [(ngModel)]="eachAlertAndState.subscription"></ui-switch>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div *ngIf="listOfAlertsForThisUserType12.length==0">
+														<p style="padding-left: 2%;display: flex;">{{'profile.NoSubscriptions' | translate }}</p>
+													</div>
+													<!-- Alerts Type = GroupName-->
+													<label class="danger" style="padding-bottom: 1%;"> {{groupName}}</label>
+													<div *ngIf="listOfAlertsForThisUserTypeGroup.length>0">
+														<div *ngFor="let eachAlertAndState of listOfAlertsForThisUserTypeGroup">
+															<div class="row" style="display: flex;">
+																<div class="col-md-10">
+																	<p style="padding-left: 2%;display: flex;">{{eachAlertAndState.name}}</p>
+																</div>
+																<div class="col-md- center-elements">
+																	<ui-switch id="enabled" (change)="subscriptionchangedEvent(eachAlertAndState, $event)" name="{{eachAlertAndState.name}}" [(ngModel)]="eachAlertAndState.subscription"></ui-switch>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div *ngIf="groupName==duchennenetherlands || groupName==duchenneinternational" style="margin-top:5%;">
+														<p><i class="ft-info primary" style="margin-right: 1%;"></i>{{'notificationsMenu.The visit calendar is based on' | translate }}
+															<a href="https://duchenne.nl/duchenne-standards-of-care/" target="_blank">
+																{{'notificationsMenu.Duchenne international standards of care' | translate }}
+															</a>
+														</p>
+													</div>
+													<div *ngIf="listOfAlertsForThisUserTypeGroup.length==0">
+														<p style="padding-left: 2%;display: flex;">{{'profile.NoSubscriptions' | translate }}</p>
+													</div>
+												</div>
+											</div>
+											<div class="form-actions center">
+												<button type="button" (click)="resetAlertsSubscriptions()" class="btn btn-raised btn-raised btn-warning mr-1">
+													<i class="ft-x"></i> {{'generics.Cancel' | translate }}
+												</button>
+												<div *ngIf="f.valid;then formValid else formError"></div>
+												<ng-template #formValid><button class="btn btn-raised btn-raised btn-primary" type="submit"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+												<ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+											</div>
+											<div class="col-md-12 center-elements" *ngIf="sending">
+												<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<span id="content"></span>
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+	<ng-template #selectSnooze6 let-c="close" let-d="dismiss" appendTo="body">
+		<div class="modal-header" id="idHeader">
+				<label class="modal-title">{{'notificationsMenu.Snoozing' | translate }}: "{{snoozeAlertSelected.name}}"</label>
+		</div>
+		<div class="modal-body" responsive>
+			<form name = "timesnooze6">
+				<input class= "inputRadio" type="radio" name="snooze6" value="1" checked [(ngModel)]="snooze6value">1 {{'notifications.Month' | translate }}<br>
+				<input  class= "inputRadio" type="radio" name="snooze6" value="2" [(ngModel)]="snooze6value">2 {{'Course Of The disease.Months' | translate }}<br>
+				<input  class= "inputRadio" type="radio" name="snooze6" value="3" [(ngModel)]="snooze6value">3 {{'Course Of The disease.Months' | translate }}
+			</form>
+
+		</div>
+		<div class="modal-footer" >
+			<div class="form-actions center" *ngIf="!sending">
+				<button *ngIf="snooze6value!=undefined" type="submit" class="btn btn-primary btn-raised" (click)="snoozeClick('6',snooze6value)">{{'notificationsMenu.Snooze and hide' | translate }}</button>
+				<button type="button" class="btn btn-secondary btn-raised" (click)="c('Close click')">{{'generics.Close' | translate }}</button>
+			</div>
+		</div>
+	</ng-template>
+
+	<ng-template #selectSnooze12 let-c="close" let-d="dismiss" appendTo="body">
+		<div class="modal-header" id="idHeader">
+			<label class="modal-title">{{'notificationsMenu.Snoozing' | translate }}: "{{snoozeAlertSelected.name}}"</label>
+		</div>
+		<div class="modal-body" responsive>
+			<form name = "timesnooze12">
+				<input  class= "inputRadio" type="radio" id="snooze12" name="snooze" value="1" checked [(ngModel)]="snooze12value">1 {{'Course Of The disease.Month' | translate }}<br>
+				<input  class= "inputRadio" type="radio" id="snooze12" name="snooze" value="2" [(ngModel)]="snooze12value">2 {{'Course Of The disease.Months' | translate }}<br>
+				<input  class= "inputRadio" type="radio" id="snooze12" name="snooze" value="3" [(ngModel)]="snooze12value">3 {{'Course Of The disease.Months' | translate }}<br>
+				<input  class= "inputRadio" type="radio" id="snooze12" name="snooze" value="6" [(ngModel)]="snooze12value">6 {{'Course Of The disease.Months' | translate }}
+			</form>
+
+		</div>
+		<div class="modal-footer" >
+			<div class="form-actions center" *ngIf="!sending">
+				<button *ngIf="snooze12value!=undefined" type="submit" class="btn btn-primary btn-raised" (click)="snoozeClick('12',snooze12value)">{{'notificationsMenu.Snooze and hide' | translate }}</button>
+				<button type="button" class="btn btn-secondary btn-raised" (click)="c('Close click')">{{'generics.Close' | translate }}</button>
+			</div>
+		</div>
+	</ng-template>

@@ -1,0 +1,413 @@
+<section id="basic-form-layouts">
+	<div class="row">
+      <div class="col-sm-12">
+          <div class="content-header">{{'Course Of The disease.Course Of The disease' | translate }}</div>
+      </div>
+  </div>
+	<div class="center-elements" *ngIf="loading">
+		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+	</div>
+	<div class="row" *ngIf="!loading && sectionsAndProms.length>0">
+		<div *ngIf="!isApp" class="col-md-2 mt-4 fijado">
+			<div *ngFor="let info of sectionsAndProms">
+				<p *ngIf="info.section.enabled">
+					<a (click)="goTo(info.section.name)" title="{{info.section.name}}" [ngClass]="{'info': info.section.visible==true}">{{info.section.name}}</a>
+				</p>
+			</div>
+		</div>
+		<div *ngIf="isApp" class="col-md-12 mt-2 mb-2">
+			<label  class="col-md-2 d-inline">{{'generics.Section' | translate }}</label>
+			<select class="col-md-10 d-inline form-control" #t (change)="goTo($event.target.value)">
+				<option *ngFor="let info of sectionsAndProms"> {{info.section.name}}</option>
+			</select>
+		</div>
+
+		<div [ngClass]="(isApp==true)?'col-md-12':'col-md-10'">
+			<div class="card-block" *ngIf="!loading  && listPromsChanged.length > 0 && !sending">
+					<ngb-alert type="warning" [dismissible]="false">
+							{{'generics.You have unsaved changes' | translate }}
+							<button type="button" class="pull-right btn btn-sm btn-raised btn-raised btn-primary" (click)="onSubmit()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button>
+					</ngb-alert>
+			</div>
+			<div class="card col-12">
+				<div class="card-header">
+
+				</div>
+				<div class="card-body">
+					<div class="px-3">
+						<form class="form" #f="ngForm">
+							<div class="form-body">
+								<div *ngFor="let info of sectionsAndProms ; let i=index">
+									<div *ngIf="info.section.enabled && info.section.visible">
+										<a name="{{info.section.name}}"></a>
+										<h4 class="form-section" style="font-weight: bold;">{{info.section.name}} <small class="font-small-2 d-inline-block">{{info.section.description}}</small></h4>
+										<div class="row">
+											<div *ngFor="let eachprom of info.promsStructure ; let j = index" class="col-md-{{eachprom.structure.width}}">
+												<div *ngFor="let eachprom2 of info.promsStructure ; let k = index">
+													<span *ngIf="((eachprom2.structure._id==eachprom.structure.relatedTo) && ((info.promsStructure[k].data)&&(enableQuestion[i]))) ||
+													((eachprom2.structure._id!=eachprom.structure.relatedTo) && j==k && eachprom.structure.relatedTo==null)"><div  [ngClass]="{'mt-4': eachprom.structure.marginTop==true}">
+														<label for="question" *ngIf="!eachprom.structure.hideQuestion && eachprom.structure.enabled && eachprom.structure.responseType!='Title' && eachprom.structure.responseType!='Label' && eachprom.structure.responseType!='ChoiseAndDate'&& eachprom.structure.responseType!='ChoiseAndRangeDate'&& eachprom.structure.responseType!='TextAndDoubleChoiseAndRangeDate' && eachprom.structure.responseType!='NumberChoiseAndDate'">
+															<span *ngIf="eachprom.structure.isRequired">*</span>
+															{{eachprom.structure.question}}</label>
+
+														<!--Title-->
+														<span *ngIf="!eachprom.structure.hideQuestion && eachprom.structure.enabled && eachprom.structure.responseType=='Title'">
+															<h6 class="mt-2" style="font-weight: bold;">{{eachprom.structure.question}}</h6>
+														</span>
+
+														<!--Label-->
+														<p class="text-muted" style="text-transform: none;" *ngIf="!eachprom.structure.hideQuestion && eachprom.structure.enabled && eachprom.structure.responseType=='Label'">
+															{{eachprom.structure.question}}
+														</p>
+
+														<!--Text-->
+														<span *ngIf="eachprom.structure.responseType=='Text' && eachprom.structure.enabled" >
+															<input type="text" class="form-control"  name="eachprom.data{{j}}" [(ngModel)]="eachprom.data" (change)="promchanged(eachprom)">
+														</span>
+														<!--Number-->
+														<span *ngIf="eachprom.structure.responseType=='Number' && eachprom.structure.enabled">
+															<input  type="text" class="form-control" id="numericos" name="numericos{{j}}" [(ngModel)]="eachprom.data" digits #numericos="ngModel" (change)="promchanged(eachprom, numericos)">
+															<small class="form-text text-muted danger" *ngIf="eachprom.structure.responseType=='Number' && numericos.errors?.digits">{{'generics.Only integers are allowed' | translate }}</small>
+														</span>
+														<!--Date-->
+														<span *ngIf="eachprom.structure.responseType=='Date' && eachprom.structure.enabled">
+															<!--<div *ngIf="!isSafari && !isIeOrEdge">
+																<input type="date" (change)="promchanged(eachprom)" class="form-control" name="dateTime{{j}}" [(ngModel)]="eachprom.data" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" dateTime #dateTime="ngModel">
+															</div>
+															<div *ngIf="isSafari || isIeOrEdge">
+															<input  class="form-control w-75 d-inline" name="dateTime{{j}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachprom.data" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
+															<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+															<mat-datepicker touchUi="true" #picker></mat-datepicker>
+															</div>-->
+															<div>
+																<input  class="form-control w-75 d-inline" name="dateTime{{j}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachprom.data" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
+																<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+																<mat-datepicker touchUi="true" #picker></mat-datepicker>
+															</div>
+														</span>
+
+														<!--Time-->
+														<p *ngIf="eachprom.structure.responseType=='Time' && eachprom.structure.enabled">
+														</p>
+
+														<!--Toogle-->
+														<p *ngIf="eachprom.structure.responseType=='Toogle' && eachprom.structure.enabled">
+															<ui-switch id="enabled" (change)="promchangedEvent(eachprom, $event)" name="eachprom.data{{j}}" [(ngModel)]="eachprom.data"></ui-switch>
+														</p>
+														<!--choise-->
+														<p *ngIf="eachprom.structure.responseType=='Choise' && eachprom.structure.enabled">
+															<select name="eachprom.data{{j}}" class="form-control"  [(ngModel)]="eachprom.data" (change)="promchanged(eachprom)">
+																<option *ngFor="let value of eachprom.structure.values" [ngValue]="value.original" > {{value.translation}}</option>
+															</select>
+														</p>
+														<!--Choise set-->
+														<p *ngIf="eachprom.structure.responseType=='ChoiseSet' && eachprom.structure.enabled">
+															<mat-select class="form-control" id="choiseset" name="choiseset{{j}}"  [(ngModel)]="eachprom.data" multiple (selectionChange)="promchanged(eachprom)">
+																<mat-option *ngFor="let value of eachprom.structure.values" value="{{value.original}}">{{value.translation}}</mat-option>
+															</mat-select>
+														</p>
+														<!--Radio buttons-->
+														<form>
+															<p *ngIf="eachprom.structure.responseType=='RadioButtons' && eachprom.structure.enabled" (change)="promchanged(eachprom)">
+																<span class="col-md-12 pl-0 d-block" style="color:#75787d" *ngFor="let value of eachprom.structure.values; let j= index">
+																	<input type="radio" name="radiogroup{{i}}{{j}}" #radiogroup{{i}}{{j}}="ngModel" value="{{value.original}}" [(ngModel)]="eachprom.data"><span class="ml-1">{{value.translation}}</span>
+																</span>
+															</p>
+														</form>
+														<!--Checkbox List-->
+														<p *ngIf="eachprom.structure.responseType=='CheckboxList' && eachprom.structure.enabled" (change)="promchanged(eachprom)">
+															<span class="col-md-6 pl-0 d-inline-block" style="color:#75787d" *ngFor="let value of eachprom.structure.values; let j = index" >
+																<input type="checkbox" name="categories{{i}}{{j}}" #categories="ngModel" value="{{value.original}}" [(ngModel)]="eachprom.data[j]" /> {{value.translation}}
+															</span>
+														</p>
+														<!-- ChoiseAndDate -->
+														<div *ngIf="eachprom.structure.responseType=='ChoiseAndDate' && eachprom.structure.enabled">
+															<div class="row" *ngFor="let eachpromdata of eachprom.data ; let k = index" >
+																<div class="mt-2 col-md-1">
+																	<h4>{{k+1}}.</h4>
+																</div>
+																<div class="mt-2 col-md-5">
+																	<label for="question">{{eachprom.structure.question}}</label>
+																	<mat-select class="form-control" id="ChoiseAndDate" name="ChoiseAndDate{{j}}{{k}}"  [(ngModel)]="eachpromdata.choise" (selectionChange)="promchanged(eachprom)">
+																		<mat-option *ngFor="let value of eachprom.structure.values" value="{{value.original}}">{{value.translation}}</mat-option>
+																	</mat-select>
+																</div>
+																<!--<div *ngIf="!isSafari && !isIeOrEdge" class="mt-2 col-md-5">
+																	<label for="date">{{'generics.Date' | translate }}</label>
+																	<input type="date" (change)="promchanged(eachprom)" class="form-control" name="dateTime{{j}}{{k}}" [(ngModel)]="eachpromdata.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel">
+																	<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+																</div>
+																<div *ngIf="isSafari || isIeOrEdge" class="mt-2 col-md-5">
+																	<label style="display:block !important;" for="date">{{'generics.Date' | translate }}</label>
+																<input  class="form-control w-75 d-inline-block" name="dateTime{{j}}{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachpromdata.date" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
+																<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+																<mat-datepicker touchUi="true" #picker></mat-datepicker>
+																	<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+																</div>-->
+																<div class="mt-2 col-md-5">
+																	<label style="display:block !important;" for="date">{{'generics.Date' | translate }}</label>
+																	<input  class="form-control w-75 d-inline-block" name="dateTime{{j}}{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachpromdata.date" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+																	<mat-datepicker touchUi="true" #picker></mat-datepicker>
+																	<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+																</div>
+
+																<div class="mt-4 col-md-1">
+																	<a class="btn btn-outline-danger mb-0 float-right" (click)="deletechoisedate(i,j,k)" href="javascript:void(0)"><i class="fa fa-times"></i></a>
+																	<!--{{'generics.Delete' | translate }}-->
+																</div>
+																<div class="mt-2 col-md-12">
+																	<br>
+																	<br>
+																</div>
+															</div>
+
+															<button type="button" class="mt-2 btn btn-sm btn-raised btn-raised btn-primary" (click)="newchoisedate(i, j)"> {{'generics.Add' | translate }}</button>
+														</div>
+
+														<!-- NumberChoiseAndDate -->
+														<div *ngIf="eachprom.structure.responseType=='NumberChoiseAndDate' && eachprom.structure.enabled">
+															<div class="row" *ngFor="let eachpromdata of eachprom.data ; let k = index" >
+																<div class="mt-2 col-md-1">
+																	<h4>{{k+1}}.</h4>
+																</div>
+																<div class="mt-2 col-md-3">
+																	<label style="display:block !important;">{{'Course Of The disease.IQ Score' | translate }}</label>
+																	<span >
+																			<input  type="text" class="form-control" id="numericos{{k}}" name="numericos{{j}}{{k}}" [(ngModel)]="eachpromdata.number" digits #numericos="ngModel" (change)="promchanged(eachprom, numericos)">
+																			<small class="form-text text-muted danger" *ngIf="eachprom.structure.responseType=='Number' && numericos.errors?.digits">{{'generics.Only integers are allowed' | translate }}</small>
+
+																	</span>
+																</div>
+																<div class="mt-2 col-md-4">
+																	<label for="question">{{eachprom.structure.question}}</label>
+																	<mat-select class="form-control" id="NumberChoiseAndDate{{k}}" name="NumberChoiseAndDate{{j}}{{k}}"  [(ngModel)]="eachpromdata.choise" (selectionChange)="promchanged(eachprom)">
+																		<mat-option *ngFor="let value of eachprom.structure.values" value="{{value.original}}">{{value.translation}}</mat-option>
+																	</mat-select>
+																</div>
+																<div class="mt-2 col-md-3">
+																	<label style="display:block !important;" for="date">{{'generics.Date' | translate }}</label>
+																	<input  class="form-control w-75 d-inline-block" name="date{{j}}{{k}}"  matInput [matDatepicker]="date" [(ngModel)]="eachpromdata.date" dateTime #date="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+																	<mat-datepicker touchUi="true" #date></mat-datepicker>
+																	<small class="form-text text-muted danger" *ngIf="!date.valid && (date.dirty || date.touched)">{{'generics.Invalid' | translate }}</small>
+																</div>
+																<div class="mt-4 col-md-1">
+																	<a class="btn btn-outline-danger mb-0 float-right" (click)="deletenumberchoisedate(i,j,k)" href="javascript:void(0)"><i class="fa fa-times"></i></a>
+																	<!--{{'generics.Delete' | translate }}-->
+																</div>
+																<div class="mt-2 col-md-1" *ngIf="(eachpromdata.choise == 'Other')"></div>
+																<div class="mt-4 col-md-10" *ngIf="(eachpromdata.choise == 'Other')">
+																	<label style="display:block !important;" for="date">{{'generics.Other' | translate }}</label>
+																	<span >
+																		<input type="text" class="form-control"  id="Other{{k}}" name="eachprom.data{{j}}{{k}}" [(ngModel)]="eachpromdata.other" (change)="promchanged(eachprom)">
+																	</span>
+																</div>
+																<div class="mt-2 col-md-12">
+																	<br>
+																	<br>
+																</div>
+															</div>
+															<button type="button" class="mt-2 btn btn-sm btn-raised btn-raised btn-primary" (click)="newnumberchoisedate(i, j)"> {{'generics.Add' | translate }}</button>
+														</div>
+
+														<!-- ChoiseAndRangeDate -->
+														<div *ngIf="eachprom.structure.responseType=='ChoiseAndRangeDate' && eachprom.structure.enabled">
+															<div class="row" *ngFor="let eachpromdata of eachprom.data ; let k = index" >
+																<!-- Fila 1-->
+																<div class="mt-2 col-md-1">
+																	<h4>{{k+1}}.</h4>
+																</div>
+
+																<div class="mt-2 col-md-3">
+																	<label for="question">{{eachprom.structure.question}}</label>
+																	<mat-select class="form-control" id="ChoiseAndRangeDate{{k}}" name="ChoiseAndRangeDate{{j}}{{k}}"  [(ngModel)]="eachpromdata.choise" (selectionChange)="promchanged(eachprom, eachpromdata)">
+																		<mat-option *ngFor="let value of eachprom.structure.values" value="{{value.original}}">{{value.translation}}</mat-option>
+																	</mat-select>
+																</div>
+																<!--<div *ngIf="!isSafari && !isIeOrEdge" class="mt-2 col-md-5">
+																	<label for="date">{{'generics.Date' | translate }}</label>
+																	<input type="date" (change)="promchanged(eachprom)" class="form-control" name="dateTime{{j}}{{k}}" [(ngModel)]="eachpromdata.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel">
+																	<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+																</div>
+																<div *ngIf="isSafari || isIeOrEdge" class="mt-2 col-md-5">
+																<label style="display:block !important;" for="date">{{'generics.Date' | translate }}</label>
+																<input  class="form-control w-75 d-inline-block" name="dateTime{{j}}{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachpromdata.date" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
+																<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+																<mat-datepicker touchUi="true" #picker></mat-datepicker>
+																<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+																</div>-->
+																<div class="mt-2 col-md-3">
+																	<label style="display:block !important;" for="startDate">{{'generics.Start Date' | translate }}</label>
+																	<input  class="form-control w-75 d-inline-block" name="startDate{{j}}{{k}}"  matInput [matDatepicker]="pickerStartDate" [(ngModel)]="eachpromdata.startDate" dateTime #startDate="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
+																	<mat-datepicker touchUi="true" #pickerStartDate></mat-datepicker>
+																	<small class="form-text text-muted danger" *ngIf="!startDate.valid && (startDate.dirty || startDate.touched)">{{'generics.Invalid' | translate }}</small>
+																</div>
+																<div class="mt-2 col-md-3">
+																	<label style="display:block !important;" for="endDate">{{'generics.End Date' | translate }}</label>
+																	<input  class="form-control w-75 d-inline-block" name="endDate{{j}}{{k}}"  matInput [matDatepicker]="pickerEndDate" [(ngModel)]="eachpromdata.endDate" dateTime #endDate="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
+																	<mat-datepicker touchUi="true" #pickerEndDate></mat-datepicker>
+																	<small class="form-text text-muted danger" *ngIf="!endDate.valid && (endDate.dirty || endDate.touched)">{{'generics.Invalid' | translate }}</small>
+																</div>
+																<div class="mt-4 col-md-1">
+																		<a class="btn btn-outline-danger mb-0 pull-right" (click)="deletechoiserangedate(i,j,k)" href="javascript:void(0)"><i class="fa fa-times"></i></a>
+																	<!--{{'generics.Delete' | translate }}-->
+																</div>
+																<div class="mt-4 col-md-1"></div>
+
+																<!-- Fila 2-->
+																<div class="mt-2 col-md-1" *ngIf="(eachpromdata.choise == 'Other')"></div>
+																<div class="mt-2 col-md-10" *ngIf="(eachpromdata.choise == 'Other')">
+																	<label style="display:block !important;" for="date">{{'generics.Other' | translate }}</label>
+																	<span >
+																		<input type="text" class="form-control"  id="Other{{k}}" name="eachprom.data{{j}}{{k}}" [(ngModel)]="eachpromdata.other" (change)="promchanged(eachprom)">
+																	</span>
+																</div>
+																<!-- Salto de linea -->
+																<div class="mt-2 col-md-12">
+																	<br>
+																	<br>
+																</div>
+															</div>
+															<!-- Fila boton add -->
+															<button type="button" class="mt-2 btn btn-sm btn-raised btn-raised btn-primary" (click)="newchoiserangedate(i, j)"> {{'generics.Add' | translate }}</button>
+														</div>
+														<!-- TextAndDoubleChoiseAndRangeDate -->
+														<div *ngIf="eachprom.structure.responseType=='TextAndDoubleChoiseAndRangeDate' && eachprom.structure.enabled">
+															<div class="row" *ngFor="let eachpromdata of eachprom.data ; let k = index" >
+																<!-- Fila 1-->
+																<div class="mt-2 col-md-1">
+																	<h4>{{k+1}}.</h4>
+																</div>
+
+																<div class="mt-4 col-md-10">
+																	<label style="display:block !important;" for="date">{{'Course Of The disease.Cause of pain' | translate }}</label>
+																	<span >
+																		<input type="text" class="form-control"  id="CauseOfPain{{k}}" name="eachprom.data{{j}}{{k}}" [(ngModel)]="eachpromdata.CauseOfPain" (change)="promchanged(eachprom)">
+																	</span>
+																</div>
+																<div class="mt-2 col-md-1">
+																</div>
+
+																<!-- Fila 2-->
+																<div class="mt-2 col-md-1">
+																</div>
+																<div class="mt-2 col-md-5">
+																	<label for="question">{{'Course Of The disease.Grade' | translate }}</label>
+																	<mat-select class="form-control" id="TextAndDoubleChoiseAndRangeDate_Grade{{k}}" name="TextAndDoubleChoiseAndRangeDate_Grade{{j}}{{k}}"  [(ngModel)]="eachpromdata.grade" (selectionChange)="promchanged(eachprom)">
+																		<mat-option *ngFor="let value of gradeList" value="{{value}}">{{value}}</mat-option>
+																	</mat-select>
+																</div>
+
+																<div class="mt-2 col-md-5">
+																	<label for="question">{{'Course Of The disease.Area' | translate }}</label>
+																	<mat-select class="form-control" id="TextAndDoubleChoiseAndRangeDate_Area{{k}}" name="TextAndDoubleChoiseAndRangeDate_Area{{j}}{{k}}"  [(ngModel)]="eachpromdata.area" (selectionChange)="promchanged(eachprom)">
+																		<mat-option *ngFor="let value of eachprom.structure.values" value="{{value.original}}">{{value.translation}}</mat-option>
+																	</mat-select>
+																</div>
+
+																<!--<div *ngIf="!isSafari && !isIeOrEdge" class="mt-2 col-md-5">
+																	<label for="date">{{'generics.Date' | translate }}</label>
+																	<input type="date" (change)="promchanged(eachprom)" class="form-control" name="dateTime{{j}}{{k}}" [(ngModel)]="eachpromdata.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel">
+																	<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+																</div>
+																<div *ngIf="isSafari || isIeOrEdge" class="mt-2 col-md-5">
+																<label style="display:block !important;" for="date">{{'generics.Date' | translate }}</label>
+																<input  class="form-control w-75 d-inline-block" name="dateTime{{j}}{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachpromdata.date" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
+																<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+																<mat-datepicker touchUi="true" #picker></mat-datepicker>
+																<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+																</div>-->
+																<div class="mt-2 col-md-1">
+																</div>
+
+																<!-- Fila 3-->
+																<div class="mt-2 col-md-1">
+																</div>
+
+																<div class="mt-2 col-md-3">
+																	<label style="display:block !important;" for="startDate">{{'generics.Start Date' | translate }}</label>
+																	<input  class="form-control w-75 d-inline-block" name="startDate{{j}}{{k}}"  matInput [matDatepicker]="pickerStartDate" [(ngModel)]="eachpromdata.startDate" dateTime #startDate="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
+																	<mat-datepicker touchUi="true" #pickerStartDate></mat-datepicker>
+																	<small class="form-text text-muted danger" *ngIf="!startDate.valid && (startDate.dirty || startDate.touched)">{{'generics.Invalid' | translate }}</small>
+																</div>
+																<div class="mt-2 col-md-3">
+																	<label style="display:block !important;" for="endDate">{{'generics.End Date' | translate }}</label>
+																	<input  class="form-control w-75 d-inline-block" name="endDate{{j}}{{k}}"  matInput [matDatepicker]="pickerEndDate" [(ngModel)]="eachpromdata.endDate" dateTime #endDate="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
+																	<mat-datepicker touchUi="true" #pickerEndDate></mat-datepicker>
+																	<small class="form-text text-muted danger" *ngIf="!endDate.valid && (endDate.dirty || endDate.touched)">{{'generics.Invalid' | translate }}</small>
+																</div>
+																<div class="mt-4 col-md-4">
+																		<a class="btn btn-outline-danger mb-0 pull-right" (click)="deleteTextAndDoubleChoiseAndRangeDate(i,j,k)" href="javascript:void(0)"><i class="fa fa-times"></i></a>
+																	<!--{{'generics.Delete' | translate }}-->
+																</div>
+
+																<!-- Salto de linea -->
+																<div class="mt-2 col-md-12">
+																	<br>
+																	<br>
+																</div>
+
+															</div>
+															<!-- Fila boton add -->
+															<button type="button" class="mt-2 btn btn-sm btn-raised btn-raised btn-primary" (click)="newTextAndDoubleChoiseAndRangeDate(i, j)"> {{'generics.Add' | translate }}</button>
+														</div>
+
+													</div>
+												</span>
+												</div>
+												<!--<span  *ngIf="(sectionsAndProms[i].promsStructure[j-1].structure._id==eachprom.structure.relatedTo) && (info.promsStructure[j-1].data)">
+
+												</span>
+												<span  *ngIf="sectionsAndProms[i].promsStructure[j-1].structure._id!=eachprom.structure.relatedTo">
+
+												</span>-->
+
+
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+							<div class="mt-4">
+									<button *ngIf="!this.sectionsAndProms[0].section.visible" type="button" (click)="goPrevious()" class="ml-1 btn btn-raised btn-primary mr-1">
+										<i class="ft-chevron-left"></i> {{'generics.Previous' | translate }}
+									</button>
+									<button class=" mr-1 pull-right btn btn-raised btn-primary" *ngIf="!this.sectionsAndProms[this.sectionsAndProms.length-1].section.visible" type="button" (click)="goNext()">
+									 {{'generics.Next' | translate }} <i class="ft-chevron-right"></i>
+									</button>
+									<button class=" mr-1 pull-right btn btn-raised btn-primary" *ngIf="this.sectionsAndProms[this.sectionsAndProms.length-1].section.visible" type="button" (click)="goFinish()">
+									 {{'generics.Finish' | translate }}
+									</button>
+							</div>
+							<!--<span *ngIf="!f.valid" class="form-text text-muted danger">{{'generics.requiredfieldsmissing' | translate }}</span>-->
+							<div class="col-md-12 center-elements" *ngIf="sending">
+								<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="card-block" *ngIf="!loading && listPromsChanged.length > 0  && !sending">
+					<ngb-alert type="warning" [dismissible]="false">
+							{{'generics.You have unsaved changes' | translate }}
+							<button type="button" class="pull-right btn btn-sm btn-raised btn-raised btn-primary" (click)="onSubmit()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button>
+					</ngb-alert>
+			</div>
+		</div>
+  </div>
+	<div class="row" *ngIf="!loading && sectionsAndProms.length==0">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header">
+					{{'generics.No data' | translate }}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

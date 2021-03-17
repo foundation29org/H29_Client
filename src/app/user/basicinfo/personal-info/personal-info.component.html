@@ -1,0 +1,291 @@
+<!--User Profile Starts-->
+<section id="basic-form-layouts">
+	<div class="row">
+      <div class="col-sm-12">
+          <div class="content-header">{{'personalinfo.Personal patient information' | translate }}</div>
+      </div>
+  </div>
+	<div class="center-elements" *ngIf="loading">
+		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+	</div>
+	<div class="row" *ngIf="!loading">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header">
+					{{'generics.fieldsRequired' | translate }}
+				</div>
+				<div class="card-body">
+					<div class="px-3">
+						<form class="form" (ngSubmit)="onSubmit()" #f="ngForm" *ngIf="patient">
+							<div class="form-body">
+								<h4 class="form-section"><i class="ft-user danger"></i> {{'generics.Basic Data' | translate }}</h4>
+								<div class="row">
+									<div class="col-md-4">
+										<div class="form-group">
+											<label for="patientName">* {{'personalinfo.First Name' | translate }}</label>
+											<input type="text" id="patientName" class="form-control"  name="patientName" [(ngModel)]="patient.patientName" required patientName #patientName="ngModel">
+											<small class="form-text text-muted danger" *ngIf="!patientName.valid && (patientName.dirty || patientName.touched)">{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label for="surname">* {{'personalinfo.Last Name' | translate }}</label>
+											<input type="text" id="surname" class="form-control" name="surname" [(ngModel)]="patient.surname" required surname #surname="ngModel">
+											<small class="form-text text-muted danger" *ngIf="!surname.valid && (surname.dirty || surname.touched)">{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label for="gender">* {{'personalinfo.Gender' | translate }}</label>
+											<select id="gender" name="gender" class="form-control"  [(ngModel)]="patient.gender" required gender #gender="ngModel">
+												<option value="male">{{'personalinfo.Male' | translate }}</option>
+												<option value="female">{{'personalinfo.Female' | translate }}</option>
+											</select>
+											<small class="form-text text-muted danger" *ngIf="!gender.valid && (gender.dirty || gender.touched)">{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+								</div>
+                <div class="row">
+                </div>
+								<h4 class="form-section"><i class="ft-map-pin warning"></i> {{'personalinfo.Date and place of birth' | translate }}</h4>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="birthDate">* {{'personalinfo.Birth Date' | translate }}</label>
+											<!--<div *ngIf="!isSafari && !isIeOrEdge">
+												<input type="date" id="birthDate" class="form-control" name="birthDate" [(ngModel)]="patient.birthDate" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required birthDate #birthDate="ngModel">
+												<small class="form-text text-muted danger" *ngIf="!birthDate.valid && (birthDate.dirty || birthDate.touched)">{{'generics.required' | translate }}</small>
+											</div>
+											<div *ngIf="isSafari || isIeOrEdge">
+											  <input  class="form-control w-75 d-inline" id="birthDate" name="birthDate"  matInput [matDatepicker]="picker" [(ngModel)]="patient.birthDate" required birthDate #birthDate="ngModel">
+											  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+											  <mat-datepicker touchUi="true" #picker></mat-datepicker>
+												<small class="form-text text-muted danger" *ngIf="!birthDate.valid && (birthDate.dirty || birthDate.touched)">{{'generics.required' | translate }}</small>
+											</div>-->
+											<div>
+												<input  class="form-control w-75 d-inline" id="birthDate" name="birthDate"  matInput [matDatepicker]="picker" [(ngModel)]="patient.birthDate" required birthDate #birthDate="ngModel">
+												<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+												<mat-datepicker touchUi="true" #picker></mat-datepicker>
+												<small class="form-text text-muted danger" *ngIf="!birthDate.valid && (birthDate.dirty || birthDate.touched)">{{'generics.required' | translate }}</small>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="countrybirth">* {{'personalinfo.Country' | translate }}</label>
+											<select id="countrybirth" name="countrybirth" class="form-control"  [(ngModel)]="patient.countrybirth" #countryselectedBirth (ngModelChange)="onChangeCountryBirth($event, countryselectedBirth.value)" required countrybirth #countrybirth="ngModel">
+												<option *ngFor="let countrybirth of countries" [ngValue]="countrybirth.code"> {{countrybirth.name}}</option>
+											</select>
+											<small class="form-text text-muted danger" *ngIf="!countrybirth.valid && (countrybirth.dirty || countrybirth.touched)">{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div [hidden]="!patient.countrybirth || !provincesbirth" class="col-md-6">
+										<div class="form-group">
+											<label for="provincebirth">* {{'personalinfo.ProvinceStateRegion' | translate }}</label> <!--<label  class="labelLower" *ngIf="!provincesbirth">(No provincesbirth)</label>-->
+											<select [disabled]="!patient.countrybirth || !provincesbirth" id="provprovincebirthince" name="provincebirth" class="form-control"  [(ngModel)]="patient.provincebirth"  required provincebirth #provincebirth="ngModel">
+												<option *ngFor="let provincebirth of provincesbirth" [ngValue]="provincebirth.name"> {{provincebirth.name}}</option>
+											</select>
+											<small class="form-text text-muted danger" *ngIf="!provincebirth.valid && (provincebirth.dirty || provincebirth.touched)">{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+									<div [hidden]="!patient.countrybirth " class="col-md-6">
+										<div class="form-group">
+											<label for="citybirth">* {{'personalinfo.City' | translate }}</label>
+											<!--<input style="display: none;" type="text" id="citybirth" class="form-control"  name="citybirthince" [(ngModel)]="patient.citybirth" required citybirth #citybirth="ngModel">
+											<div *ngIf="!citiesListSet; else citiesListIsSet">
+												<input type="text" id="citybirth" class="form-control"  name="citybirthince" [(ngModel)]="patient.citybirth" required citybirth #citybirth="ngModel">
+											</div>-->
+											<!--<input *ngIf="citiesListSet" type="text" id="citybirth" class="form-control"  name="citybirthince" list="dinamicCitiesBirthId" autocomplete = "off" [(ngModel)]="patient.citybirth" required citybirth #citybirth="ngModel">
+											<datalist *ngIf="citiesListSet" id="dinamicCitiesBirthId">
+												<option *ngFor="let citybirth of citiesBirth" [ngValue]="citybirth"> {{citybirth}}</option>
+											</datalist>-->
+											<!--<ng-template #citiesListIsSet>-->
+											<input type="text" id="citybirth" class="form-control"  name="citybirthince" list="dinamicCitiesBirthId" [(ngModel)]="patient.citybirth" required citybirth #citybirth="ngModel">
+											<datalist id="dinamicCitiesBirthId">
+												<option *ngFor="let citybirth of citiesBirth" [ngValue]="citybirth"> {{citybirth}}</option>
+											</datalist>
+											<!--/ng-template>-->
+											<small class="form-text text-muted danger" *ngIf="!citybirth.valid && (citybirth.dirty || citybirth.touched)">{{'generics.required' | translate }}</small>
+										</div>
+									</div>
+								</div>
+								<h4 class="form-section"><i class="ft-map-pin warning"></i> {{'personalinfo.Place of residence' | translate }}</h4>
+                <div class="row">
+					<!--Aqui estaba street y postal code-->
+					<div class="col-md-6">
+							<div class="form-group">
+								<label for="country">* {{'personalinfo.Country' | translate }}</label>
+								<select id="country" name="country" class="form-control"  [(ngModel)]="patient.country" #countryselected (ngModelChange)="onChangeCountry($event, countryselected.value)" required country #country="ngModel">
+								<option *ngFor="let country of countries" [ngValue]="country.code"> {{country.name}}</option>
+								</select>
+								<small class="form-text text-muted danger" *ngIf="!country.valid && (country.dirty || country.touched)">{{'generics.required' | translate }}</small>
+							</div>
+					</div>
+					<div [hidden]="!patient.country || !provinces" class="col-md-6">
+						<div class="form-group">
+							<label for="province">* {{'personalinfo.ProvinceStateRegion' | translate }}</label> <!--<label  class="labelLower" *ngIf="!provinces">(No provinces)</label>-->
+							<select [disabled]="!patient.country || !provinces" id="province" name="province" class="form-control"  [(ngModel)]="patient.province"  required province #province="ngModel">
+								<option *ngFor="let province of provinces" [ngValue]="province.name"> {{province.name}}</option>
+							</select>
+							<small class="form-text text-muted danger" *ngIf="!province.valid && (province.dirty || province.touched)">{{'generics.required' | translate }}</small>
+						</div>
+					</div>
+				</div>
+								<div [hidden]="!patient.country "class="form-group">
+									<label for="city">* {{'personalinfo.City Residence' | translate }}</label>
+									<input type="text" id="city" class="form-control"  name="city" list="dinamicCitiesId" [(ngModel)]="patient.city" required city #city="ngModel">
+									<datalist id="dinamicCitiesId">
+											<option *ngFor="let cityactual of cities" [ngValue]="cityactual"> {{cityactual}}</option>
+										</datalist>
+									<small class="form-text text-muted danger" *ngIf="!city.valid && (city.dirty || city.touched)">{{'generics.required' | translate }}</small>
+								</div>
+                <div class="row">
+						<div class="col-md-6">
+								<div class="form-group">
+									<label for="street">{{'personalinfo.Street' | translate }}</label>
+									<input type="text" id="street" class="form-control"  name="street" [(ngModel)]="patient.street">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="postalCode">{{'personalinfo.Postal Code' | translate }}</label>
+									<input type="text" id="postalCode" class="form-control"  name="postalCode" [(ngModel)]="patient.postalCode">
+								</div>
+							</div>
+				</div>
+								<h4 class="form-section"><i class="ft-smartphone primary"></i> {{'personalinfo.Telephone numbers' | translate }}</h4>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="phone1">{{'personalinfo.Phone' | translate }} 1</label>
+											<input type="text" id="phone1" class="form-control"  name="phone1" [(ngModel)]="patient.phone1">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="phone2">{{'personalinfo.Phone' | translate }} 2</label>
+											<input type="text" id="phone2" class="form-control" name="phone2" [(ngModel)]="patient.phone2">
+										</div>
+									</div>
+								</div>
+                <!--<h4 class="form-section"><i class="ft-users"></i> {{'personalinfo.Family' | translate }}</h4>
+                <div class="row" *ngFor="let sibling of patient.siblings ; let i=index">
+                  <div class="col-md-12">
+                    <label class="text-bold-500 primary">{{'personalinfo.Sibling' | translate }} {{i+1}}</label><a class="btn danger mb-0 float-right" (click)="deleteSibling(i)" href="javascript:void(0)"><i class="fa fa-times"></i></a>
+                  </div>
+                  <div class="col-md-6">
+										<div class="form-group">
+											<label for="sibling.gender">{{'personalinfo.Gender' | translate }}</label>
+                      <select id="sibling.gender" name="sibling.gender{{i}}" class="form-control"  [(ngModel)]="sibling.gender">
+                        <option value="male">{{'personalinfo.Male' | translate }}</option>
+                        <option value="female">{{'personalinfo.Female' | translate }}</option>
+                      </select>
+										</div>
+									</div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="sibling.affected">{{'personalinfo.Affected' | translate }}</label>
+                      <select id="sibling.affected" name="sibling.affected{{i}}" class="form-control"  [(ngModel)]="sibling.affected">
+                        <option value="yes">{{'generics.Yes' | translate }}</option>
+                        <option value="no">{{'generics.No' | translate }}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <a (click)="addSibling()" class="btn btn-outline-primary" href="javascript:void(0)"><i class="fa fa-plus"></i> {{'personalinfo.Add sibling' | translate }}</a>
+                </div>
+							-->
+                <h4 class="form-section"><i class="ft-info"></i> {{'personalinfo.ParentsCaregivers' | translate }}</h4>
+                <div class="row" *ngFor="let parent of patient.parents ; let i=index">
+                  <div class="col-md-12">
+                    <label class="text-bold-500 primary">{{'personalinfo.ParentCaregiver' | translate }} {{i+1}}</label> <a class="btn btn-outline-danger mb-0 float-right" (click)="deleteParentCaregiver(i)" href="javascript:void(0)"><i class="fa fa-times"></i></a>
+                  </div>
+									<div class="col-md-6">
+                    <div class="form-group">
+                      <label for="parent.nameCaregiver">{{'personalinfo.First Name' | translate }}</label>
+											<input type="text" id="parent.nameCaregiver" class="form-control"  name="parent.nameCaregiver{{i}}" [(ngModel)]="parent.nameCaregiver">
+                    </div>
+                  </div>
+									<div class="col-md-6">
+                    <div class="form-group">
+                      <label for="parent.relationship">{{'personalinfo.Relationship' | translate }}</label>
+                      <select id="parent.relationship" name="parent.relationship{{i}}" class="form-control"  [(ngModel)]="parent.relationship">
+												<option value="father">{{'personalinfo.Father' | translate }}</option>
+												<option value="mother">{{'personalinfo.Mother' | translate }}</option>
+												<option value="other">{{'generics.Other' | translate }}</option>
+                      </select>
+                    </div>
+                  </div>
+									<div class="col-md-6" *ngIf="nameduchenne == group">
+                    <div class="form-group">
+                      <label for="parent.highEducation">{{'personalinfo.High Education' | translate }}</label>
+                      <select id="parent.highEducation" name="parent.highEducation{{i}}" class="form-control"  [(ngModel)]="parent.highEducation">
+												<option value="BASISONDERWIJS">BASISONDERWIJS</option>
+												<option value="VMBO">VMBO</option>
+                        <option value="MBO">MBO</option>
+                        <option value="HAVO">HAVO</option>
+                        <option value="VWO">VWO</option>
+                        <option value="HBO">HBO</option>
+                        <option value="WO">WO</option>
+                      </select>
+                    </div>
+                  </div>
+									<div class="col-md-6" *ngIf="nameduchenneInter == group">
+                    <div class="form-group">
+                      <label for="parent.highEducation">{{'personalinfo.High Education' | translate }}</label>
+                      <select id="parent.highEducation" name="parent.highEducation{{i}}" class="form-control"  [(ngModel)]="parent.highEducation">
+												<option value="0int">{{'education.Primary education:' | translate }}</option>
+												<option value="1int">{{'education.Secondary education:' | translate }}</option>
+												<option value="2int">{{'education.Vocational education' | translate }}</option>
+                      </select>
+                    </div>
+                  </div>
+									<div class="col-md-6" *ngIf="nameduchenne != group && nameduchenneInter != group">
+                    <div class="form-group">
+                      <label for="parent.highEducation">{{'personalinfo.High Education' | translate }}  <small>(<a href="https://en.wikipedia.org/wiki/International_Standard_Classification_of_Education" target="_blank">ISCED</a>)</small></label>
+                      <select id="parent.highEducation" name="parent.highEducation{{i}}" class="form-control"  [(ngModel)]="parent.highEducation">
+												<option value="0">{{'education.Early childhood Education' | translate }}</option>
+												<option value="1">{{'education.Primary education' | translate }}</option>
+												<option value="2">{{'education.Lower secondary education' | translate }}</option>
+												<option value="3">{{'education.Upper secondary education' | translate }}</option>
+												<option value="4">{{'education.Post-secondary non-tertiary education' | translate }}</option>
+												<option value="5">{{'education.Short-cycle tertiary education' | translate }}</option>
+												<option value="6">{{'education.Bachelor or equivalent' | translate }}</option>
+												<option value="7">{{'education.Master or equivalent' | translate }}</option>
+												<option value="8">{{'education.Doctoral or equivalent' | translate }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="parent.profession">{{'personalinfo.Profession' | translate }}</label>
+                      <input type="text" id="parent.profession" class="form-control"  name="parent.profession{{i}}" [(ngModel)]="parent.profession">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <a (click)="addParentCaregiver()" class="btn btn-outline-primary" href="javascript:void(0)"><i class="fa fa-plus"></i> {{'personalinfo.AddParentCaregiver' | translate }}</a>
+                </div>
+							</div>
+							<span *ngIf="!f.valid" class="form-text text-muted danger">{{'generics.requiredfieldsmissing' | translate }}</span>
+							<div class="form-actions center" *ngIf="!sending">
+								<button type="button" (click)="resetForm()" class="btn btn-raised btn-raised btn-warning mr-1">
+									<i class="ft-x"></i> {{'generics.Cancel' | translate }}
+								</button>
+								<div *ngIf="f.valid;then formValid else formError"></div>
+								<ng-template #formValid><button class="btn btn-raised btn-raised btn-primary" type="submit"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+								<ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+							</div>
+							<div class="col-md-12 center-elements" *ngIf="sending">
+								<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+</section>

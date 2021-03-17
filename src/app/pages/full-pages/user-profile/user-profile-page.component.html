@@ -1,0 +1,256 @@
+<!--User Profile Starts-->
+<section id="basic-form-layouts">
+	<div class="row">
+      <div class="col-sm-12">
+          <div class="content-header">{{'generics.My Profile' | translate }}</div>
+      </div>
+  </div>
+</section>
+<section id="basic-form-layouts" style="margin-top:1em;" *ngIf="role!=''">
+	<div class="row">
+
+		<div class="col-md-3" style="margin-bottom:1em;">
+			<span (click)="toggleMenu()" class="chat-app-sidebar-toggle ft-align-justify font-large-1 mr-2 d-none d-block d-sm-block d-md-none"></span>
+			<div class="chat-sidebar d-none d-sm-none d-md-block d-lg-block">
+				<a class="list-group-item bg-blue-grey bg-lighten-5 border-right-primary border-right-2" (click)="SetActive($event, 'panelGeneral')">
+						{{tittleGeneral}}
+				</a>
+				<a class="list-group-item no-border" (click)="SetActive($event, 'panelPassword')">
+						{{tittlePassword}}
+				</a>
+				<a *ngIf="role=='User'" class="list-group-item no-border" (click)="SetActive($event, 'PanelExportData')">
+						{{tittleExportData}}
+				</a>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div class="chat-name p-2 bg-white" style="border-bottom: 1px solid #e4e7ed;">
+				<div class="media-body">
+					<h4 class="form-section">
+						<i [ngClass]="{'ft-user success': activeTittleMenu=='General'}"></i>
+						<i [ngClass]="{'ft-lock danger': activeTittleMenu=='Password'}"></i>
+						<i *ngIf="role=='User'" [ngClass]="{'ft-lock danger': activeTittleMenu=='ExportData'}"></i>
+						{{ msgActiveTittleMenu }}
+					</h4>
+				</div>
+			</div>
+				<div *ngIf="activeTittleMenu == 'General'">
+					<div class="center-elements" *ngIf="loading">
+						<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+					</div>
+					<div class="row" *ngIf="!loading">
+						<div class="col-md-12">
+							<div class="card" style="margin-top:0px;">
+								<div class="card-header">
+								</div>
+								<div class="card-body">
+									<div class="px-3">
+										<form class="form" (ngSubmit)="onSubmit()" #f="ngForm" *ngIf="user">
+											<div class="form-body">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="userName">{{'generics.Name' | translate }}</label>
+															<input type="text" id="userName" class="form-control"  name="userName" [(ngModel)]="user.userName" required #userName="ngModel">
+															<small class="form-text text-muted danger" *ngIf="!userName.valid && (userName.dirty || userName.touched)">{{'generics.required' | translate }}</small>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="lang">{{'generics.Lang' | translate }}</label>
+															<select id="lang" name="lang" class="form-control"  [(ngModel)]="user.lang" #langselected (ngModelChange)="onChangeLang($event, langselected.value)">
+																<option *ngFor="let lang of langs" [ngValue]="lang.code"> {{lang.name}}</option>
+															</select>
+															<span *ngIf="user.lang != userCopy.lang" class="text-danger">{{'profile.Save the changes' | translate }}</span>
+														</div>
+													</div>
+												</div>
+												<h4 *ngIf="role=='User'" class="form-section"><i class="ft-settings warning"></i> {{'profile.Settings' | translate }}</h4>
+												<div *ngIf="role=='User'" class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="massunit">{{'profile.Mass unit' | translate }}</label>
+															<select id="massunit" name="massunit" class="form-control"  [(ngModel)]="user.massunit">
+																<option value="kg">{{'profile.Kilogram' | translate }}</option>
+																<option value="lb">{{'profile.Pound' | translate }}</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="lengthunit">{{'profile.Length unit' | translate }}</label>
+															<select id="lengthunit" name="lengthunit" class="form-control"  [(ngModel)]="user.lengthunit">
+																<option value="cm">{{'profile.Centimetre' | translate }}</option>
+																<option value="ft">{{'profile.Foot' | translate }}</option>
+															</select>
+														</div>
+													</div>
+												</div>
+												<h4 *ngIf="role=='User'" class="form-section"><i class="icon-layers primary"></i> Modules</h4>
+												<div *ngIf="role=='User'" class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<mat-select class="form-control" id="modules" name="modules"  [(ngModel)]="user.modules" multiple>
+																<mat-option value="epilepsy">{{'modules.epilepsy' | translate }}</mat-option>
+															</mat-select>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="form-actions center" *ngIf="!sending">
+												<button type="button" (click)="resetForm()" class="btn btn-raised btn-raised btn-warning mr-1">
+													<i class="ft-x"></i> {{'generics.Cancel' | translate }}
+												</button>
+												<div *ngIf="f.valid;then formValid else formError"></div>
+												<ng-template #formValid><button class="btn btn-raised btn-raised btn-primary" type="submit"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+												<ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+											</div>
+											<div class="col-md-12 center-elements" *ngIf="sending">
+												<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="activeTittleMenu == 'Password'">
+					<div class="row" *ngIf="!loading">
+						<div class="col-md-12">
+							<div class="card" style="margin-top:0px;">
+								<div class="card-header">
+								</div>
+								<div class="card-body">
+									<div class="px-3">
+										<form class="form" (ngSubmit)="onSubmitPass()" #fPass="ngForm" *ngIf="user">
+											<div class="form-group">
+												<div class="input-group mb-3">
+														<span class="input-group-text">
+																<i class="ft-lock"></i>
+														</span>
+														<input type="password" class="form-control" name="actualpassword" id="actualpassword" placeholder="{{'profile.Current password' | translate }}" [(ngModel)]="credentials.actualpassword" required #actualpassword="ngModel" minlength="8" maxlength="24">
+												</div>
+												<small class="form-text text-muted danger" *ngIf="!actualpassword.valid && (actualpassword.dirty || actualpassword.touched)">{{'generics.Passwordlength' | translate }}</small>
+											</div>
+											<div class="form-group">
+												<div class="input-group mb-3">
+														<span class="input-group-text">
+																<i class="ft-lock"></i>
+														</span>
+														<input type="password" class="form-control" name="password" id="password" placeholder="{{'menu.New Password' | translate }}" [(ngModel)]="credentials.password" required #password="ngModel" minlength="8" maxlength="24">
+												</div>
+												<small class="form-text text-muted danger" *ngIf="!password.valid && (password.dirty || password.touched)">{{'generics.Passwordlength' | translate }}</small>
+											</div>
+											<div class="form-group">
+												<div class="input-group mb-3">
+														<span class="input-group-text">
+																<i class="ft-lock"></i>
+														</span>
+														<input type="password" class="form-control" name="password2" id="password2" placeholder="{{'profile.Repeat the new password' | translate }}" [(ngModel)]="credentials.password2" required #password2="ngModel" [equalTo]="password">
+												</div>
+												<small class="form-text text-muted danger" *ngIf="password2.errors?.equalTo">{{'generics.Passwordnomatch' | translate }}</small>
+											</div>
+												<div class="form-group" *ngIf="!sending">
+														<div class="text-center mt-3">
+															<div *ngIf="fPass.valid;then formValid else formError"></div>
+															<ng-template #formValid><button class="btn btn-danger btn-raised btn-block" type="submit">{{'generics.Submit' | translate }}</button></ng-template>
+															<ng-template #formError><button class="btn btn-danger btn-raised btn-block" type="button" (click)="submitInvalidPassForm()">{{'generics.Submit' | translate }}</button></ng-template>
+														</div>
+												</div>
+												<div class="form-group pt-2 text-center" *ngIf="sending">
+													<span>
+														<i class="fa fa-spinner fa-spin fa-3x fa-fw white"></i>
+													</span>
+												</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="activeTittleMenu == 'ExportData' && role=='User'">
+					<div class="row" >
+						<div class="col-md-12">
+							<div class="card" style="margin-top:0px;">
+								<div class="card-header">
+								</div>
+								<div class="card-body">
+									<div class="px-3">
+										<button class="btn btn-danger btn-raised btn-block" type="button" (click)="exportData('json')">{{'profile.Export to JSON' | translate }}</button>
+										<button class="btn btn-danger btn-raised btn-block" type="button" (click)="openPDFModal(modalPDF)">{{'profile.Export to PDF' | translate }}</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="isApp">
+					<!--<span *ngIf="isApp" id="content"></span>-->
+					<span id="content" (click)="goToExternalUrl(openurl)"></span>
+				</div>
+				<div *ngIf="!isApp">
+					<!--<span *ngIf="isApp" id="content"></span>-->
+					<span id="content"></span>
+				</div>
+				<div class="form-group pt-2 text-center" *ngIf="loading && activeTittleMenu == 'ExportData'">
+					<span>
+						<i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i>
+					</span>
+					<br>
+					<div style="margin-top: 2%;">
+						<span *ngIf="generatingPDF">{{'profile.Your file is being generated' | translate }}</span>
+					</div>
+				</div>
+				<!--<div class="form-group pt-2 text-center" *ngIf="!loading && exportPDFSelected && activeTittleMenu == 'ExportData'">
+					<span class="pull-left" *ngIf="pdfGenerated">{{'profile.File created' | translate }}</span>
+				</div>-->
+
+		</div>
+	</div>
+</section>
+
+<ng-template #modalPDF let-c="close" let-d="dismiss" appendTo="body"  expanded="true" hideToggle="true" class="scrolling_data">
+    <div class="modal-header" id="idHeader">
+      <h4 class="modal-title">{{'profile.Sections filter' | translate }}</h4>
+    </div>
+    <div class="modalPDF modal-body">
+		<p>{{'profile.Select which sections you want to be written in the report.' | translate }}</p>
+		<div><!-- (change)="setAnswer($event)"-->
+			<div>
+				<a (click)="selectSections('select')"><i class="fa fa-check"></i>{{'profile.Select all' | translate }}</a>
+				<a (click)="selectSections('deselect')"><i class="fa fa-trash"></i>{{'profile.Deselect all' | translate }}</a>
+			</div>
+			<div *ngIf="loadingModalPDF">
+				<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+			</div>
+			<div *ngIf="!loadingModalPDF">
+				<div>
+					<input id="socialInfo" name="socialInfo" type="checkbox" (change)="setFilter($event)"><label class="ml-1 answer">{{'menu.Social Info' | translate }}</label>
+				</div>
+				<div>
+					<input id="anthropometry" name="anthropometry" type="checkbox" (change)="setFilter($event)"><label class="ml-1 answer">{{'clinicalinfo.Anthropometry' | translate }}</label>
+				</div>
+				<div>
+					<input id="medication" name="medication" type="checkbox" (change)="setFilter($event)"><label class="ml-1 answer">{{'clinicalinfo.Medication' | translate }}</label>
+				</div>
+				<div *ngIf="promsTraducidos!=undefined">
+					<input id="courseOfTheDisease" name="courseOfTheDisease" type="checkbox" (change)="setFilter($event)"><label class="ml-1 answer">{{'Course Of The disease.Course Of The disease' | translate }}</label>
+				</div>
+				<div>
+					<input id="medicalCare" name="medicalCare" type="checkbox" (change)="setFilter($event)"><label class="ml-1 answer">{{'clinicalinfo.Medical Care' | translate }}</label>
+				</div>
+				<div>
+					<input id="clinicalTrials" name="clinicalTrials" type="checkbox" (change)="setFilter($event)"><label class="ml-1 answer">{{'clinicalinfo.Clinical Trials' | translate }}</label>
+				</div>
+			</div>
+		</div>
+    </div>
+    <div class="modal-footer" >
+        <div class="form-actions center" *ngIf="!sending">
+            <button type="button" class="btn btn-secondary btn-raised" (click)="c('Close click')">{{'generics.Close' | translate }}</button>
+            <button type="button" id="filterButton" disabled class="btn btn-primary btn-raised" (click)="selectSections('filter')">{{'profile.Export to PDF' | translate }}</button>
+        </div>
+    </div>
+</ng-template>

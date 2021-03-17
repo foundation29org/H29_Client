@@ -1,0 +1,1383 @@
+<script type="text/javascript">
+    $(function () {
+		$('[data-toggle="tooltip"]').tooltip()
+	})
+</script>
+
+<section id="listMeditationSection">
+	<div class="row">
+      <div class="col-sm-12">
+          <div class="content-header">{{'clinicalinfo.Medical Care' | translate }}</div>
+      </div>
+  </div>
+	<div class="row" *ngIf="medicalCareSections.length>0">
+		<div class="d-none d-sm-none d-md-none d-lg-none d-xl-block col-xl-3 mt-2 fijado" >
+      <div class="p-2 border" style="background-color: #fff;">
+        <h5>{{'medicalcare.Sections' | translate }}</h5>
+  			<div *ngFor="let section of medicalCareSections">
+  				<p>
+  					<a (click)="goTo(section.name)" title="{{section.name}}" href="javascript:void(0)">{{section.tranlation}}</a>
+  				</p>
+  			</div>
+      </div>
+		</div>
+		<div class="d-none d-block d-sm-block d-md-block d-lg-block d-xl-none col-lg-12 mt-2 mb-2" >
+			<label  class="col-lg-2 d-inline">{{'generics.Section' | translate }}</label>
+			<select class="col-lg-10 d-inline form-control" #t (change)="goTo(namesection)" [(ngModel)]="namesection">
+				<option *ngFor="let section of medicalCareSections" [ngValue]="section.name"> {{section.tranlation}}</option>
+			</select>
+		</div>
+
+		<div class="col-lg-12 col-xl-9 border mt-2" style="background-color: #fff;">
+			<div class="card-block" id="savingRequest" *ngIf="!loading  && !savingVisit && hasChanges">
+				<ngb-alert type="warning" [dismissible]="false">
+						<span>{{'generics.You have unsaved changes' | translate }}</span>
+						<button type="button" class="pull-right btn btn-sm btn-raised btn-raised btn-primary mb-0" (click)="submitNewVisit()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button>
+				</ngb-alert>
+			</div>
+			<div class="card" style="box-shadow: none !important;">
+				<div class="card-body">
+					<div class="">
+						<form class="form" #f="ngForm" >
+							<div class="form-body">
+									<!--Clinician -->
+									<a class="linkindex" id="general"></a>
+									<h4  class="form-section mt-1" style="font-weight: bold;" [ngClass]="(medicalCareSections[0].data.length>0 && clinicalActivation)?'border-bottom-0':''">
+										<div class="row" style="display: flex;line-height: 1rem;">
+											<div class="col-sm-10 col-12" [ngClass]="(medicalCareSections[0].data.length>0)?'':'inactiveLink'">
+												<a (click)="setSection('general')" [ngClass]="(medicalCareSections[0].data.length>0 && clinicalActivation)?'primary':''">
+													{{medicalCareSections[0].tranlation}}
+												</a>
+                        <i *ngIf="!clinicalActivation && medicalCareSections[0].data.length>0" class="pointer ft-chevron-down" (click)="setSection('general')"></i>
+												<i *ngIf="clinicalActivation && medicalCareSections[0].data.length>0" class="pointer ft-chevron-up primary"(click)="setSection('general')"></i>
+											</div>
+											<div class="col-sm-2 col-12">
+												<button type="button" class="mt-1 mb-1 btn-sm btn-raised btn-raised btn-primary" (click)="newData(0, general)"> {{'generics.Add' | translate }}</button>
+											</div>
+										</div>
+										<div class="row pt-2" style="display: flex;line-height: 1rem;">
+											<div class="col-md-12"></div>
+										</div>
+									</h4>
+									<div *ngIf="clinicalActivation" style="background: #f7f7f7;">
+										<div class="row col-md-12" *ngFor="let general of medicalCareSections[0].data ; let k = index" >
+											<div class="mt-2 col-md-1">
+												<h4>{{k+1}}.</h4>
+											</div>
+											<div class="mt-2 col-md-5">
+												<label for="visitref">{{'medicalcare.Clinician' | translate }}</label>
+												<mat-select class="form-control" id="ChoiseAndDate" name="general.ChoiseAndDate{{k}}"  [(ngModel)]="general.clinician" (change)="fieldchanged()">
+													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+													<mat-option value="Pediatrician">{{'medicalcare.Pediatrician' | translate }}</mat-option>
+													<mat-option value="Neurologist">{{'medicalcare.Neurologist' | translate }}</mat-option>
+													<mat-option value="Neuro-psychologist">{{'medicalcare.Neuro-psychologist' | translate }}</mat-option>
+													<mat-option value="Cardiologist">{{'medicalcare.Cardiologist' | translate }}</mat-option>
+													<mat-option value="Pulmonologist">{{'medicalcare.Pulmonologist' | translate }}</mat-option>
+													<mat-option value="Endocrinologist">{{'medicalcare.Endocrinologist' | translate }}</mat-option>
+													<mat-option value="Nutritionist/Dietician">{{'medicalcare.Nutritionist/Dietician' | translate }}</mat-option>
+													<mat-option value="Physiotherapist">{{'medicalcare.Physiotherapist' | translate }}</mat-option>
+													<mat-option value="Family doctor">{{'medicalcare.Family doctor' | translate }}</mat-option>
+													<mat-option value="Center for Homeventilation">{{'medicalcare.Center for Homeventilation' | translate }}</mat-option>
+													<mat-option value="Dentist/orthodontist">{{'medicalcare.Dentist/orthodontist' | translate }}</mat-option>
+													<mat-option value="Ophthalmologist">{{'medicalcare.Ophthalmologist' | translate }}</mat-option>
+													<mat-option value="Orthopeed">{{'medicalcare.Orthopeed' | translate }}</mat-option>
+													<mat-option value="Rehabilitation doctor">{{'medicalcare.Rehabilitation doctor' | translate }}</mat-option>
+													<mat-option value="Gastroenterologist specialist">{{'medicalcare.Gastroenterologist specialist' | translate }}</mat-option>
+													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+												</mat-select>
+											</div>
+											<div [ngClass]="(general.hospital=='Other')?'mt-2 col-md-3':'mt-2 col-md-5'" *ngIf="actualGroup==duchennenetherlands">
+												<label for="visitref">{{'medicalcare.Hospital' | translate }}</label>
+												<mat-select class="form-control" id="ChoiseAndDate" name="general.ChoiseAndDate2{{k}}"  [(ngModel)]="general.hospital" (change)="fieldchanged()">
+													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+													<mat-option value="LUMC (Leiden)">LUMC (Leiden)</mat-option>
+													<mat-option value="UMCG (Groningen)">UMCG (Groningen)</mat-option>
+													<mat-option value="RadboudUMC (Nijmegen)">RadboudUMC (Nijmegen)</mat-option>
+													<mat-option value="Erasmus UMC (Rotterdam)">Erasmus UMC (Rotterdam)</mat-option>
+													<mat-option value="MUMC  (Maastricht)">MUMC  (Maastricht)</mat-option>
+													<mat-option value="UMCU  (Utrecht)">UMCU  (Utrecht)</mat-option>
+													<mat-option value="AMC (Amsterdam)">AMC (Amsterdam)</mat-option>
+													<mat-option value="VUMC  (Amsterdam)">VUMC  (Amsterdam)</mat-option>
+													<mat-option value="Kempenhaeghe (Heeze)">Kempenhaeghe (Heeze)</mat-option>
+													<mat-option value="UZ Gasthuisberg (Leuven, België)">UZ Gasthuisberg (Leuven, België)</mat-option>
+													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+												</mat-select>
+											</div>
+											<div *ngIf="general.hospital=='Other'" class="mt-2 offset-md-1 col-md-6">
+												<label for="otherHospital">{{'medicalcare.Write the name of the hospital' | translate }}</label>
+												<input type="text" class="form-control"  name="general.otherHospital" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
+											</div>
+											<div [ngClass]="(general.hospital=='Other')?'mt-2 col-md-4':'mt-2 offset-md-1 col-md-4'">
+												<label for="multidisciplanary{{k}}">{{'medicalcare.Multidisciplinary' | translate }}</label>
+												<p>
+													<ui-switch id="enabled" name="general.multidisciplanary{{k}}" [(ngModel)]="general.multidisciplanary" (change)="fieldchanged()"></ui-switch>
+												</p>
+											</div>
+											<div [ngClass]="(general.hospital=='Other')?'mt-2 offset-md-1 col-md-6':'mt-2 col-md-6'">
+												<label for="distance{{k}}">{{'medicalcare.Distance' | translate }}</label>
+												<input type="text" class="form-control"  name="general.distance{{k}}" [(ngModel)]="general.distance" (change)="fieldchanged()">
+											</div>
+											<div class="row col-md-12">
+												<div class="mt-2 col-md-1"></div>
+												<div class="mt-2 col-md-4">
+													<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
+													<p style="margin: 0;"></p>
+													<input type="text" class="form-control"  hidden name="cardiotest.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+													<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
+														<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 0, k);fieldchanged()" style="display: none;">
+													</label>
+													<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+													<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
+													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(0,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+												</div>
+											</div>
+											<div class="col-md-11 offset-md-1 mt-2">
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteData(0,k);fieldchanged()" href="javascript:void(0)">
+                          <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
+                        </button>
+											</div>
+											<div class="mt-2 col-md-12">
+												<hr>
+											</div>
+
+										</div>
+									</div>
+
+									<!-- FIN Clinician -->
+
+									<!--Epecific visit -->
+									<a class="linkindex" id="specificVisit"></a>
+									<h4 class="form-section mt-3" style="font-weight: bold;" [ngClass]="(medicalCareSections[1].data.length>0 && specificVisitActivation)?'border-bottom-0':''">
+										<div class="row" style="display: flex;line-height: 1rem;">
+                      <div class="col-sm-10 col-12" [ngClass]="(medicalCareSections[1].data.length>0)?'':'inactiveLink'">
+												<a (click)="setSection('specificVisit')" [ngClass]="(medicalCareSections[1].data.length>0 && specificVisitActivation)?'primary':''">
+													{{medicalCareSections[1].tranlation}}
+												</a>
+                        <i *ngIf="!specificVisitActivation && medicalCareSections[1].data.length>0" class="pointer ft-chevron-down" (click)="setSection('specificVisit')"></i>
+												<i *ngIf="specificVisitActivation && medicalCareSections[1].data.length>0" class="pointer ft-chevron-up primary"(click)="setSection('specificVisit')"></i>
+											</div>
+											<div class="col-sm-2 col-12">
+												<button type="button" class="mt-1 mb-1 btn-sm btn-raised btn-raised btn-primary" (click)="newData(1, visitdata)"> {{'generics.Add' | translate }}</button>
+											</div>
+										</div>
+										<div class="row" style="display: flex;line-height: 1rem;">
+											<div class="col-md-12">
+												<label class="question">{{'stats.specificVisitQuestion' | translate }}</label>
+												<input class="checkboxQuestion" id="yesAnswerspecificVisit" name="specificVisit" type="checkbox" (change)="setAnswer($event)" style="margin-left: 0.7rem;"><label class="answer ml-1 mr-1">{{'stats.Yes' | translate }}</label>
+												<input class="checkboxQuestion" id="noAnswerspecificVisit" name="specificVisit" type="checkbox" (change)="setAnswer($event)"><label class="answer ml-1">{{'stats.No' | translate }}</label>
+											</div>
+										</div>
+
+
+									</h4>
+									<div *ngIf="specificVisitActivation" style="background: #f7f7f7;">
+										<div class="row col-md-12" *ngFor="let general of medicalCareSections[1].data ; let k = index" >
+											<div class="mt-2 col-md-1">
+												<h4>{{k+1}}.</h4>
+											</div>
+											<div class="mt-2 col-md-5">
+												<label for="visitref">{{'medicalcare.Specific visit' | translate }}</label>
+												<mat-select class="form-control" id="ChoiseAndDate" name="specificVisit.ChoiseAndDate{{k}}"  [(ngModel)]="general.clinician" (change)="fieldchanged()">
+													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+													<mat-option value="Pediatrician">{{'medicalcare.Pediatrician' | translate }}</mat-option>
+													<mat-option value="Neurologist">{{'medicalcare.Neurologist' | translate }}</mat-option>
+													<mat-option value="Neuro-psychologist">{{'medicalcare.Neuro-psychologist' | translate }}</mat-option>
+													<mat-option value="Cardiologist">{{'medicalcare.Cardiologist' | translate }}</mat-option>
+													<mat-option value="Pulmonologist">{{'medicalcare.Pulmonologist' | translate }}</mat-option>
+													<mat-option value="Endocrinologist">{{'medicalcare.Endocrinologist' | translate }}</mat-option>
+													<mat-option value="Nutritionist/Dietician">{{'medicalcare.Nutritionist/Dietician' | translate }}</mat-option>
+													<mat-option value="Physiotherapist">{{'medicalcare.Physiotherapist' | translate }}</mat-option>
+													<mat-option value="Family doctor">{{'medicalcare.Family doctor' | translate }}</mat-option>
+													<mat-option value="Center for Homeventilation">{{'medicalcare.Center for Homeventilation' | translate }}</mat-option>
+													<mat-option value="Dentist/orthodontist">{{'medicalcare.Dentist/orthodontist' | translate }}</mat-option>
+													<mat-option value="Ophthalmologist">{{'medicalcare.Ophthalmologist' | translate }}</mat-option>
+													<mat-option value="Orthopeed">{{'medicalcare.Orthopeed' | translate }}</mat-option>
+													<mat-option value="Rehabilitation doctor">{{'medicalcare.Rehabilitation doctor' | translate }}</mat-option>
+													<mat-option value="Gastroenterologist specialist">{{'medicalcare.Gastroenterologist specialist' | translate }}</mat-option>
+													<mat-option value="Orthopedics">{{'medicalcare.Orthopedics' | translate }}</mat-option>
+													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+												</mat-select>
+											</div>
+											<div [ngClass]="(general.hospital=='Other')?'mt-2 col-md-3':'mt-2 col-md-5'" *ngIf="actualGroup==duchennenetherlands">
+												<label for="visitref">{{'medicalcare.Hospital' | translate }}</label>
+												<mat-select class="form-control" id="ChoiseAndDate2" name="specificVisit.ChoiseAndDate2{{k}}"  [(ngModel)]="general.hospital" (change)="fieldchanged()">
+													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+													<mat-option value="LUMC (Leiden)">LUMC (Leiden)</mat-option>
+													<mat-option value="UMCG (Groningen)">UMCG (Groningen)</mat-option>
+													<mat-option value="RadboudUMC (Nijmegen)">RadboudUMC (Nijmegen)</mat-option>
+													<mat-option value="Erasmus UMC (Rotterdam)">Erasmus UMC (Rotterdam)</mat-option>
+													<mat-option value="MUMC  (Maastricht)">MUMC  (Maastricht)</mat-option>
+													<mat-option value="UMCU  (Utrecht)">UMCU  (Utrecht)</mat-option>
+													<mat-option value="AMC (Amsterdam)">AMC (Amsterdam)</mat-option>
+													<mat-option value="VUMC  (Amsterdam)">VUMC  (Amsterdam)</mat-option>
+													<mat-option value="Kempenhaeghe (Heeze)">Kempenhaeghe (Heeze)</mat-option>
+													<mat-option value="UZ Gasthuisberg (Leuven, België)">UZ Gasthuisberg (Leuven, België)</mat-option>
+													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+												</mat-select>
+											</div>
+											<div *ngIf="general.hospital=='Other'" class="mt-2 offset-md-1 col-md-6">
+												<label for="otherHospital">{{'medicalcare.Write the name of the hospital' | translate }}</label>
+												<input type="text" class="form-control"  name="specificVisit.otherHospital" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
+											</div>
+											<div [ngClass]="(general.hospital=='Other')?'mt-2 col-md-3':'mt-2 offset-md-1 col-md-3'">
+												<label for="multidisciplanary">{{'generics.Date' | translate }}</label>
+												<!--<div *ngIf="!isSafari && !isIeOrEdge">
+													<input type="date" class="form-control" name="specificVisit.dateTime{{k}}" [(ngModel)]="general.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>
+												<div *ngIf="isSafari || isIeOrEdge">
+													<input  class="form-control w-75 d-inline" name="specificVisit.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #picker></mat-datepicker>
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>-->
+												<div>
+													<input  class="form-control w-75 d-inline" name="specificVisit.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #picker></mat-datepicker>
+                          <mat-error *ngIf="dateTime.touched && dateTime.invalid">{{'generics.Invalid' | translate }}</mat-error>
+													<!--<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>-->
+												</div>
+											</div>
+											<div *ngIf="general.treatment" [ngClass]="(general.treatment=='')?'mt-2 col-md-1':'mt-2 offset-md-1 col-md-6'">
+												<label  for="distance">{{'medicalcare.Treatment' | translate }}</label>
+												<p>
+													<input type="text" class="form-control"  hidden name="specificVisit.treatment" [(ngModel)]="general.treatment">
+													<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(1, k)" [routerLink]="['/user/clinicinfo/medication', { newTreatment: true }]">{{'generics.New' | translate }}</button>-->
+													<!-- abrir panel para rellenar medicacion igual que en /user/clinicinfo/medication-->
+													<a class="btn btn-outline-primary" (click)="viewTreatment(1, k,contentTreatment)" href="javascript:void(0)">{{'generics.View' | translate }}</a>
+													<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="deleteTreatment(1, k);fieldchanged()">{{'generics.Delete' | translate }}</button>
+												</p>
+											</div>
+											<div *ngIf="!general.treatment" [ngClass]="(general.hospital=='Other')?'mt-2 offset-md-1 col-md-6':'mt-2 col-md-6'">
+												<p id="buttonInfo">
+													<input type="text" class="form-control"  hidden name="specificVisit.treatment" [(ngModel)]="general.treatment">
+													<!--<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(1, k, contentMedication)" data-title="A pop up screen will be open for you to enter information about the medication prescribed in this visit">{{'medicalcare.Treatment in visit' | translate }}</button>-->
+													<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(1, k, contentMedication)" style="margin-top: 2.1em;white-space: normal;">{{'medicalcare.Treatment in visit' | translate }}</button>
+													<span class="showTextInfo">
+														<i class="ft-alert-circle primary"></i>
+														{{'medicalcare.Info popup treatement' | translate }}
+													</span>
+												</p>
+											</div>
+											<div class="row col-md-12">
+												<div class="mt-2 col-md-1"></div>
+												<div class="mt-2 col-md-4">
+													<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
+													<p style="margin: 0;"></p>
+													<input type="text" class="form-control"  hidden name="cardiotest.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+													<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
+														<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 1, k);fieldchanged()" style="display: none;">
+													</label>
+													<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+													<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
+													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(1,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+												</div>
+											</div>
+                      <div class="col-md-11 offset-md-1 mt-2">
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteData(1,k);fieldchanged()" href="javascript:void(0)">
+                          <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
+                        </button>
+											</div>
+											<div class="mt-2 col-md-12">
+												<hr>
+											</div>
+										</div>
+									</div>
+									<!-- FIN Specific visit -->
+
+									<!--hospitalization -->
+									<a class="linkindex" id="hospitalization"></a>
+									<h4 class="form-section mt-3" style="font-weight: bold;" [ngClass]="(medicalCareSections[2].data.length>0 && hospitalizationActivation)?'border-bottom-0':''">
+										<div class="row" style="display: flex;line-height: 1rem;">
+                      <div class="col-sm-10 col-12" [ngClass]="(medicalCareSections[2].data.length>0)?'':'inactiveLink'">
+												<a (click)="setSection('hospitalization')" [ngClass]="(medicalCareSections[2].data.length>0 && hospitalizationActivation)?'primary':''">
+													{{medicalCareSections[2].tranlation}}
+												</a>
+                        <i *ngIf="!hospitalizationActivation && medicalCareSections[2].data.length>0" class="pointer ft-chevron-down" (click)="setSection('hospitalization')"></i>
+												<i *ngIf="hospitalizationActivation && medicalCareSections[2].data.length>0" class="pointer ft-chevron-up primary"(click)="setSection('hospitalization')"></i>
+											</div>
+											<div class="col-sm-2 col-12">
+												<button type="button" class="mt-1 mb-1 btn-sm btn-raised btn-raised btn-primary" (click)="newData(2, hospitalization)"> {{'generics.Add' | translate }}</button>
+											</div>
+										</div>
+										<div class="row" style="display: flex;line-height: 1rem;">
+											<div class="col-md-12">
+												<label class="question">{{'stats.hospitalizationQuestion' | translate }}</label>
+												<input class="checkboxQuestion" id="yesAnswerhospitalization" name="hospitalization" type="checkbox" (change)="setAnswer($event)" style="margin-left: 0.7rem;"><label class="answer ml-1 mr-1">{{'stats.Yes' | translate }}</label>
+												<input class="checkboxQuestion" id="noAnswerhospitalization" name="hospitalization" type="checkbox" (change)="setAnswer($event)"><label class="answer ml-1">{{'stats.No' | translate }}</label>
+											</div>
+										</div>
+									</h4>
+									<div *ngIf="hospitalizationActivation" style="background: #f7f7f7;">
+										<div class="row col-md-12" *ngFor="let general of medicalCareSections[2].data ; let k = index" >
+											<div class="mt-2 col-md-1">
+												<h4>{{k+1}}.</h4>
+											</div>
+											<div class="mt-2 col-md-5">
+												<label for="multidisciplanary">{{'medicalcare.Date of admission' | translate }}</label>
+												<!--<div *ngIf="!isSafari && !isIeOrEdge">
+													<input type="date" class="form-control" name="hospitalization.dateTime{{k}}" [(ngModel)]="general.startdate" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>
+												<div *ngIf="isSafari || isIeOrEdge">
+													<input  class="form-control w-75 d-inline" name="hospitalization.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.startdate" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #picker></mat-datepicker>
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>-->
+												<div>
+													<input  class="form-control w-75 d-inline" name="hospitalization.startDate{{k}}"  matInput [matDatepicker]="pickerStartDate" [(ngModel)]="general.startdate" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #pickerStartDate></mat-datepicker>
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>
+											</div>
+											<div class="mt-2 col-md-5">
+												<label for="multidisciplanary">{{'medicalcare.Discharge date' | translate }}</label>
+												<!--<div *ngIf="!isSafari && !isIeOrEdge">
+													<input type="date" class="form-control" name="hospitalization.dateTime{{k}}" [(ngModel)]="general.enddate" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>
+												<div *ngIf="isSafari || isIeOrEdge">
+													<input  class="form-control w-75 d-inline" name="hospitalization.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.enddate" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #picker></mat-datepicker>
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>-->
+												<div>
+													<input  class="form-control w-75 d-inline" name="hospitalization.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.enddate" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #picker></mat-datepicker>
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>
+											</div>
+											<div class="mt-2 offset-md-1 col-md-5">
+												<label for="icu">{{'medicalcare.Stay in ICU?' | translate }}</label>
+												<p>
+													<ui-switch id="enabled" name="hospitalization.icu{{j}}" [(ngModel)]="general.icu" (change)="fieldchanged()"></ui-switch>
+												</p>
+											</div>
+											<div class="mt-2 col-md-5">
+												<label for="days">{{'medicalcare.How many days in ICU?' | translate }}</label>
+												<input type="text" class="form-control"  name="hospitalization.days" [(ngModel)]="general.days" (change)="fieldchanged()">
+											</div>
+											<div [ngClass]="(general.hospital=='Other')?'col-md-4 offset-md-1':'col-md-5 offset-md-1'" *ngIf="actualGroup==duchennenetherlands">
+												<label for="visitref">{{'medicalcare.Hospital' | translate }}</label>
+												<mat-select class="form-control" id="ChoiseAndDate" name="hospitalization.ChoiseAndDate{{k}}"  [(ngModel)]="general.hospital" (change)="fieldchanged()">
+													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+													<mat-option value="LUMC (Leiden)">LUMC (Leiden)</mat-option>
+													<mat-option value="UMCG (Groningen)">UMCG (Groningen)</mat-option>
+													<mat-option value="RadboudUMC (Nijmegen)">RadboudUMC (Nijmegen)</mat-option>
+													<mat-option value="Erasmus UMC (Rotterdam)">Erasmus UMC (Rotterdam)</mat-option>
+													<mat-option value="MUMC  (Maastricht)">MUMC  (Maastricht)</mat-option>
+													<mat-option value="UMCU  (Utrecht)">UMCU  (Utrecht)</mat-option>
+													<mat-option value="AMC (Amsterdam)">AMC (Amsterdam)</mat-option>
+													<mat-option value="VUMC  (Amsterdam)">VUMC  (Amsterdam)</mat-option>
+													<mat-option value="Kempenhaeghe (Heeze)">Kempenhaeghe (Heeze)</mat-option>
+													<mat-option value="UZ Gasthuisberg (Leuven, België)">UZ Gasthuisberg (Leuven, België)</mat-option>
+													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+												</mat-select>
+											</div>
+											<div *ngIf="general.hospital=='Other'" class="col-md-7" [ngClass]="(actualGroup==duchennenetherlands)?'col-md-7':'offset-md-1 col-md-7'" >
+												<label for="otherHospital">{{'medicalcare.Write the name of the hospital' | translate }}</label>
+												<input type="text" class="form-control"  name="hospitalization.otherHospital" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
+											</div>
+											<div [ngClass]="(general.hospital=='Other')?'mt-2 offset-md-1 col-md-4':'col-md-5'">
+												<label for="visitref">{{'medicalcare.Reason' | translate }}</label>
+												<mat-select class="form-control" id="ChoiseAndDate" name="hospitalization.ChoiseAndDate2{{k}}"  [(ngModel)]="general.reason" (change)="fieldchanged()">
+													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+													<mat-option value="Cardiac">{{'medicalcare.Cardiac' | translate }}</mat-option>
+													<mat-option value="Respiratory">{{'medicalcare.Respiratory' | translate }}</mat-option>
+													<mat-option value="Fracture">{{'medicalcare.Fracture' | translate }}</mat-option>
+													<mat-option value="Kidney">{{'medicalcare.Kidney' | translate }}</mat-option>
+													<mat-option value="Gastrointestinal">{{'medicalcare.Gastrointestinal' | translate }}</mat-option>
+													<mat-option value="Orthopedic Surgery spine">{{'medicalcare.Orthopedic Surgery spine' | translate }}</mat-option>
+													<mat-option value="Orthopedic Surgery feet">{{'medicalcare.Orthopedic Surgery feet' | translate }}</mat-option>
+													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+												</mat-select>
+											</div>
+											<div *ngIf="general.reason=='Other'" [ngClass]="(general.hospital=='Other')?'mt-2 col-md-7':'mt-2 offset-md-1 col-md-7'">
+												<label for="otherReason">{{'medicalcare.Other reasons' | translate }}</label>
+												<input type="text" class="form-control"  name="hospitalization.otherReason" [(ngModel)]="general.otherReason" (change)="fieldchanged()">
+											</div>
+											<div *ngIf="general.treatment" [ngClass]="(general.treatment=='')?'mt-2 col-md-1':'mt-2 offset-md-1 col-md-3'">
+												<label for="distance">{{'medicalcare.Treatment' | translate }}</label>
+												<p>
+													<input type="text" class="form-control"  hidden name="hospitalization.treatment" [(ngModel)]="general.treatment">
+													<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(2, k);fieldchanged()" [routerLink]="['/user/clinicinfo/medication', { newTreatment: true }]">{{'generics.New' | translate }}</button>-->
+													<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(2, k,contentMedication)">{{'generics.New' | translate }}</button>-->
+													<a  class="btn btn-outline-primary" (click)="viewTreatment(2, k, contentTreatment)" href="javascript:void(0)">{{'generics.View' | translate }}</a>
+													<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="deleteTreatment(2, k);fieldchanged()">{{'generics.Delete' | translate }}</button>
+												</p>
+											</div>
+											<div *ngIf="!general.treatment" style="margin-left: 10%;">
+												<label for="distance">&nbsp;</label>
+												<p id="buttonInfo">
+													<input type="text" class="form-control"  hidden name="hospitalization.treatment" [(ngModel)]="general.treatment">
+													<!--<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(1, k, contentMedication)" data-title="A pop up screen will be open for you to enter information about the medication prescribed in this visit">{{'medicalcare.Treatment in visit' | translate }}</button>-->
+													<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(2, k, contentMedication)" style="margin-top: 5%;white-space: normal;">{{'medicalcare.Treatment in visit' | translate }}</button>
+													<span class="showTextInfo">
+														<i class="ft-alert-circle primary"></i>
+														{{'medicalcare.Info popup treatement' | translate }}
+													</span>
+												</p>
+											</div>
+											<div class="mt-2 col-md-4 offset-md-1">
+												<label  for="distance">{{'medicalcare.Hospital record' | translate }}</label>
+												<p style="margin: 0;"></p>
+												<input type="text" class="form-control"  hidden name="cardiotest.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
+													<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 2, k);fieldchanged()" style="display: none;">
+												</label>
+												<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+												<a  *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+												<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
+												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(2,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+											</div>
+                      <div class="col-md-11 offset-md-1 mt-2">
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteData(2,k);fieldchanged()" href="javascript:void(0)">
+                          <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
+                        </button>
+											</div>
+											<div class="mt-2 col-md-12">
+												<hr>
+											</div>
+										</div>
+									</div>
+
+									<!-- hospitalization -->
+
+									<!--emergencies -->
+									<a class="linkindex" id="emergencies"></a>
+									<h4 class="form-section mt-3" style="font-weight: bold;" [ngClass]="(medicalCareSections[3].data.length>0 && emergenciesActivation)?'border-bottom-0':''">
+										<div class="row" style="display: flex;line-height: 1rem;">
+                      <div class="col-sm-10 col-12" [ngClass]="(medicalCareSections[3].data.length>0)?'':'inactiveLink'">
+												<a (click)="setSection('emergencies')" [ngClass]="(medicalCareSections[3].data.length>0 && emergenciesActivation)?'primary':''">
+													{{medicalCareSections[3].tranlation}}
+												</a>
+                        <i *ngIf="!emergenciesActivation && medicalCareSections[3].data.length>0" class="pointer ft-chevron-down" (click)="setSection('emergencies')"></i>
+												<i *ngIf="emergenciesActivation && medicalCareSections[3].data.length>0" class="pointer ft-chevron-up primary"(click)="setSection('emergencies')"></i>
+											</div>
+											<div class="col-sm-2 col-12">
+												<button type="button" class="mt-1 mb-1 btn-sm btn-raised btn-raised btn-primary" (click)="newData(3, emergencies)"> {{'generics.Add' | translate }}</button>
+											</div>
+
+										</div>
+
+										<div class="row" style="display: flex;line-height: 1rem;">
+											<div class="col-md-12">
+												<label class="question">{{'stats.emergenciesQuestion' | translate }}</label>
+												<input class="checkboxQuestion" id="yesAnsweremergencies" name="emergencies" type="checkbox" (change)="setAnswer($event)" style="margin-left: 0.7rem;"><label class="answer ml-1 mr-1">{{'stats.Yes' | translate }}</label>
+												<input class="checkboxQuestion" id="noAnsweremergencies" name="emergencies" type="checkbox" (change)="setAnswer($event)"><label class="answer ml-1">{{'stats.No' | translate }}</label>
+											</div>
+										</div>
+									</h4>
+									<div *ngIf="emergenciesActivation" style="background: #f7f7f7;">
+										<div class="row col-md-12" *ngFor="let general of medicalCareSections[3].data ; let k = index" >
+											<div class="mt-2 col-md-1">
+												<h4>{{k+1}}.</h4>
+											</div>
+											<div class="mt-2 col-md-4" *ngIf="actualGroup==duchennenetherlands">
+												<label for="hospital">{{'medicalcare.Hospital' | translate }}</label>
+												<mat-select class="form-control" id="ChoiseAndDate" name="emergencies.ChoiseAndDate{{k}}"  [(ngModel)]="general.hospital" (change)="fieldchanged()">
+													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+													<mat-option value="LUMC (Leiden)">LUMC (Leiden)</mat-option>
+													<mat-option value="UMCG (Groningen)">UMCG (Groningen)</mat-option>
+													<mat-option value="RadboudUMC (Nijmegen)">RadboudUMC (Nijmegen)</mat-option>
+													<mat-option value="Erasmus UMC (Rotterdam)">Erasmus UMC (Rotterdam)</mat-option>
+													<mat-option value="MUMC  (Maastricht)">MUMC  (Maastricht)</mat-option>
+													<mat-option value="UMCU  (Utrecht)">UMCU  (Utrecht)</mat-option>
+													<mat-option value="AMC (Amsterdam)">AMC (Amsterdam)</mat-option>
+													<mat-option value="VUMC  (Amsterdam)">VUMC  (Amsterdam)</mat-option>
+													<mat-option value="Kempenhaeghe (Heeze)">Kempenhaeghe (Heeze)</mat-option>
+													<mat-option value="UZ Gasthuisberg (Leuven, België)">UZ Gasthuisberg (Leuven, België)</mat-option>
+													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+												</mat-select>
+											</div>
+											<div *ngIf="general.hospital=='Other'" class="mt-2 col-md-7">
+												<label for="otherHospital">{{'medicalcare.Write the name of the hospital' | translate }}</label>
+												<input type="text" class="form-control"  name="emergencies.otherHospital" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
+											</div>
+											<div [ngClass]="(general.hospital=='Other')?'mt-2 offset-md-1 col-md-4':'mt-2 col-md-4'">
+												<label for="reason">{{'medicalcare.Reason' | translate }}</label>
+												<mat-select class="form-control" id="ChoiseAndDate" name="emergencies.ChoiseAndDate2{{k}}"  [(ngModel)]="general.reason" (change)="fieldchanged()">
+													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+													<mat-option value="Cardiac">{{'medicalcare.Cardiac' | translate }}</mat-option>
+													<mat-option value="Respiratory">{{'medicalcare.Respiratory' | translate }}</mat-option>
+													<mat-option value="Fracture">{{'medicalcare.Fracture' | translate }}</mat-option>
+													<mat-option value="Kidney">{{'medicalcare.Kidney' | translate }}</mat-option>
+													<mat-option value="Gastrointestinal">{{'medicalcare.Gastrointestinal' | translate }}</mat-option>
+													<mat-option value="Trauma">{{'medicalcare.Trauma' | translate }}</mat-option>
+													<mat-option value="FES">{{'medicalcare.FES (Fat Embolism Syndrom)' | translate }}</mat-option>
+													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+												</mat-select>
+											</div>
+											<div *ngIf="general.reason=='Other'" [ngClass]="(general.hospital=='Other')?'mt-2 col-md-7':'mt-2 offset-md-1 col-md-7'">
+												<label for="otherReason">{{'medicalcare.Reason' | translate }}</label>
+												<input type="text" class="form-control"  name="emergencies.otherReason" [(ngModel)]="general.otherReason" (change)="fieldchanged()">
+											</div>
+											<div [ngClass]="(general.reason=='Other')?'mt-2 offset-md-1 col-md-3':'mt-2 col-md-3'">
+												<label for="date">{{'generics.Date' | translate }}</label>
+												<!--<div *ngIf="!isSafari && !isIeOrEdge">
+													<input type="date" class="form-control" name="emergencies.dateTime{{k}}" [(ngModel)]="general.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>
+												<div *ngIf="isSafari || isIeOrEdge">
+													<input  class="form-control w-75 d-inline" name="emergencies.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #picker></mat-datepicker>
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>-->
+												<div>
+													<input  class="form-control w-75 d-inline" name="emergencies.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #picker></mat-datepicker>
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>
+											</div>
+											<div *ngIf="general.treatment" [ngClass]="(general.treatment=='')?'mt-2 col-md-1':'mt-2 offset-md-1 col-md-3'">
+												<label for="distance">{{'medicalcare.Treatment' | translate }}</label>
+												<p>
+													<input type="text" class="form-control"  hidden name="emergencies.treatment" [(ngModel)]="general.treatment">
+													<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(3, k, contentMedication);fieldchanged()" [routerLink]="['/user/clinicinfo/medication', { newTreatment: true }]">{{'generics.New' | translate }}</button>-->
+													<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(3, k, contentMedication)">{{'generics.New' | translate }}</button>-->
+													<a class="btn btn-outline-primary" (click)="viewTreatment(3, k, contentTreatment)" href="javascript:void(0)">{{'generics.View' | translate }}</a>
+													<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="deleteTreatment(3, k);fieldchanged()">{{'generics.Delete' | translate }}</button>
+												</p>
+											</div>
+											<div *ngIf="!general.treatment" style="margin-left: 10%;">
+												<label for="distance">&nbsp;</label>
+												<p id="buttonInfo">
+													<input type="text" class="form-control"  hidden name="emergencies.treatment" [(ngModel)]="general.treatment">
+													<!--<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(1, k, contentMedication)" data-title="A pop up screen will be open for you to enter information about the medication prescribed in this visit">{{'medicalcare.Treatment in visit' | translate }}</button>-->
+													<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(3, k, contentMedication)" style="margin-top: 5%;white-space: normal;">{{'medicalcare.Treatment in visit' | translate }}</button>
+													<span class="showTextInfo">
+														<i class="ft-alert-circle primary"></i>
+														{{'medicalcare.Info popup treatement' | translate }}
+													</span>
+												</p>
+											</div>
+											<div class="mt-2 col-md-4 offset-md-1">
+												<div class="col-md-1"></div>
+												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
+												<p style="margin: 0;"></p>
+												<input type="text" class="form-control"  hidden name="cardiotest.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
+													<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 3, k);fieldchanged()" style="display: none;">
+												</label>
+												<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+												<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
+												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(3,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+											</div>
+                      <div class="col-md-11 offset-md-1 mt-2">
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteData(3,k);fieldchanged()" href="javascript:void(0)">
+                          <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
+                        </button>
+											</div>
+											<div class="mt-2 col-md-12">
+												<hr>
+											</div>
+										</div>
+									</div>
+									<!-- emergencies -->
+
+									<!--cardiotest -->
+									<a class="linkindex" id="cardiotest"></a>
+									<h4 class="form-section mt-3" style="font-weight: bold;" [ngClass]="(medicalCareSections[4].data.length>0 && cardiotestActivation)?'border-bottom-0':''">
+
+										<div class="row" style="display: flex;line-height: 1rem;">
+                      <div class="col-sm-10 col-12" [ngClass]="(medicalCareSections[4].data.length>0)?'':'inactiveLink'">
+												<a (click)="setSection('cardiotest')" [ngClass]="(medicalCareSections[4].data.length>0 && cardiotestActivation)?'primary':''">
+													{{medicalCareSections[4].tranlation}}
+												</a>
+                        <i *ngIf="!cardiotestActivation && medicalCareSections[4].data.length>0" class="pointer ft-chevron-down" (click)="setSection('cardiotest')"></i>
+												<i *ngIf="cardiotestActivation && medicalCareSections[4].data.length>0" class="pointer ft-chevron-up primary"(click)="setSection('cardiotest')"></i>
+											</div>
+											<div class="col-sm-2 col-12">
+												<button type="button" class="mt-1 mb-1 btn-sm btn-raised btn-raised btn-primary" (click)="newData(4, cardiotest)"> {{'generics.Add' | translate }}</button>
+											</div>
+										</div>
+
+										<div class="row" style="display: flex;line-height: 1rem;">
+											<div class="col-md-12">
+												<label class="question">{{'stats.cardioTestQuestion' | translate }}</label>
+												<input class="checkboxQuestion" id="yesAnswercardiotest" name="cardiotest" type="checkbox" (change)="setAnswer($event)" style="margin-left: 0.7rem;"><label class="answer ml-1 mr-1">{{'stats.Yes' | translate }}</label>
+												<input class="checkboxQuestion" id="noAnswercardiotest" name="cardiotest" type="checkbox" (change)="setAnswer($event)"><label class="answer ml-1">{{'stats.No' | translate }}</label>
+											</div>
+										</div>
+									</h4>
+
+									<div *ngIf="cardiotestActivation" style="background: #f7f7f7;">
+										<div class="row col-md-12" *ngFor="let general of medicalCareSections[4].data ; let k = index" >
+											<div class="mt-2 col-md-1">
+												<h4>{{k+1}}.</h4>
+											</div>
+											<div class="mt-2 col-md-4">
+												<label for="hospital">{{'medicalcare.Type of test' | translate }}</label>
+												<mat-select class="form-control" id="ChoiseAndDate" name="cardiotest.ChoiseAndDate{{k}}"  [(ngModel)]="general.typeoftest" (change)="fieldchanged()">
+													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+													<mat-option value="Ultrasound">{{'medicalcare.Ultrasound' | translate }}</mat-option>
+													<mat-option value="ECG">{{'medicalcare.Electrocardiogram' | translate }}</mat-option>
+													<mat-option value="24h holter">24h holter</mat-option>
+													<mat-option value="MRI">{{'medicalcare.Magnetic resonance imaging (MRI)' | translate }}</mat-option>
+												</mat-select>
+											</div>
+											<div class="mt-2 col-md-3">
+												<label for="date">{{'generics.Date' | translate }}</label>
+												<!--<div *ngIf="!isSafari && !isIeOrEdge">
+													<input type="date" class="form-control" name="cardiotest.dateTime{{k}}" [(ngModel)]="general.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>
+												<div *ngIf="isSafari || isIeOrEdge">
+													<input  class="form-control w-75 d-inline" name="cardiotest.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #picker></mat-datepicker>
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>-->
+												<div>
+													<input  class="form-control w-75 d-inline" name="cardiotest.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #picker></mat-datepicker>
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>
+											</div>
+											<div class="mt-2 col-md-4">
+												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
+												<p style="margin: 0;"></p>
+												<input type="text" class="form-control"  hidden name="cardiotest.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
+													<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 4, k);fieldchanged()" style="display: none;">
+												</label>
+												<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+												<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
+												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(4,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+											</div>
+											<div class="mt-2 offset-md-1 col-md-6">
+												<label for="pulse">{{'medicalcare.Pulse' | translate }}</label>
+												<input type="text" class="form-control"  name="cardiotest.pulse" [(ngModel)]="general.pulse" (change)="fieldchanged()">
+											</div>
+											<div class="mt-2 col-md-5">
+												<label for="bloodpressure" style="display: block;">{{'medicalcare.Blood pressure' | translate }}</label>
+												<input type="text" class="form-control"  style="width: 3em;display: inline;" name="cardiotest.bloodpressure" [(ngModel)]="general.bloodpressure" (change)="fieldchanged()"> /
+												<input type="text" class="form-control"  style="width: 3em;display: inline;" name="cardiotest.bloodpressure2" [(ngModel)]="general.bloodpressure2" (change)="fieldchanged()">
+											</div>
+											<div class="mt-2 offset-md-1 col-md-7">
+												<label for="lvef" style="display: block;">{{'medicalcare.Left Ventricle Ejection Fraction' | translate }}</label>
+												<input type="text" class="form-control" style="width: 4em;display: inline;" name="cardiotest.lvef" [(ngModel)]="general.lvef" (change)="fieldchanged()"> <span class="d-inline">%</span>
+											</div>
+                      <div class="col-md-11 offset-md-1 mt-2">
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteData(4,k);fieldchanged()" href="javascript:void(0)">
+                          <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
+                        </button>
+											</div>
+											<div class="mt-2 col-md-12">
+												<hr>
+											</div>
+										</div>
+									</div>
+
+									<!-- cardiotest -->
+
+									<!--respiratorytests -->
+									<a class="linkindex" id="respiratorytests"></a>
+									<h4 class="form-section mt-3" style="font-weight: bold;" [ngClass]="(medicalCareSections[5].data.length>0 && respiratorytestsActivation)?'border-bottom-0':''">
+										<div class="row" style="display: flex;line-height: 1rem;">
+                      <div class="col-sm-10 col-12" [ngClass]="(medicalCareSections[5].data.length>0)?'':'inactiveLink'">
+												<a (click)="setSection('respiratorytests')" [ngClass]="(medicalCareSections[5].data.length>0 && respiratorytestsActivation)?'primary':''">
+													{{medicalCareSections[5].tranlation}}
+												</a>
+                        <i *ngIf="!respiratorytestsActivation && medicalCareSections[5].data.length>0" class="pointer ft-chevron-down" (click)="setSection('respiratorytests')"></i>
+												<i *ngIf="respiratorytestsActivation && medicalCareSections[5].data.length>0" class="pointer ft-chevron-up primary"(click)="setSection('respiratorytests')"></i>
+											</div>
+											<div class="col-sm-2 col-12">
+												<button type="button" class="mt-1 mb-1 btn-sm btn-raised btn-raised btn-primary" (click)="newData(5, respiratorytests)"> {{'generics.Add' | translate }}</button>
+											</div>
+										</div>
+										<div class="row" style="display: flex;line-height: 1rem;">
+											<div class="col-md-12">
+												<label class="question">{{'stats.respiratoryTestsQuestion' | translate }}</label>
+												<input class="checkboxQuestion" id="yesAnswerrespiratorytests" name="respiratorytests" type="checkbox" (change)="setAnswer($event)" style="margin-left: 0.7rem;"><label class="answer ml-1 mr-1">{{'stats.Yes' | translate }}</label>
+												<input class="checkboxQuestion" id="noAnswerrespiratorytests" name="respiratorytests" type="checkbox" (change)="setAnswer($event)"><label class="answer ml-1">{{'stats.No' | translate }}</label>
+											</div>
+										</div>
+
+									</h4>
+									<div *ngIf="respiratorytestsActivation" style="background: #f7f7f7;">
+										<div class="row col-md-12" *ngFor="let general of medicalCareSections[5].data ; let k = index" >
+											<div class="mt-2 col-md-1">
+												<h4>{{k+1}}.</h4>
+											</div>
+											<div [ngClass]="(general.typeoftest=='Other')?'mt-2 col-md-3':'mt-2 col-md-4'">
+												<label for="hospital">{{'medicalcare.Type of test' | translate }}</label>
+												<mat-select class="form-control" id="ChoiseAndDate" name="respiratorytests.ChoiseAndDate{{k}}"  [(ngModel)]="general.typeoftest" (change)="fieldchanged()">
+													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+													<mat-option value="spirometry">{{'medicalcare.Spirometry' | translate }}</mat-option>
+													<mat-option value="sleep study">{{'medicalcare.Sleep study' | translate }}</mat-option>
+													<mat-option value="Blood gas test">{{'medicalcare.Blood gas test' | translate }}</mat-option>
+													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+													<!--<mat-option value="No test">{{'medicalcare.No test' | translate }}</mat-option>-->
+												</mat-select>
+											</div>
+											<div *ngIf="general.typeoftest=='Other'" class="mt-2 col-md-7">
+												<label for="otherTest">{{'medicalcare.Write the name of the test' | translate }}</label>
+												<input type="text" class="form-control"  name="respiratorytests.otherTest" [(ngModel)]="general.otherTest" (change)="fieldchanged()">
+											</div>
+											<div [ngClass]="(general.typeoftest=='Other')?'mt-2 offset-md-1 col-md-3':'mt-2 col-md-3'">
+												<label for="date">{{'generics.Date' | translate }}</label>
+												<!--<div *ngIf="!isSafari && !isIeOrEdge">
+													<input type="date" class="form-control" name="respiratorytests.dateTime{{k}}" [(ngModel)]="general.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>
+												<div *ngIf="isSafari || isIeOrEdge">
+													<input  class="form-control w-75 d-inline" name="respiratorytests.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #picker></mat-datepicker>
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>-->
+												<div>
+													<input  class="form-control w-75 d-inline" name="respiratorytests.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #picker></mat-datepicker>
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>
+											</div>
+											<div class="mt-2 col-md-4">
+												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
+												<p style="margin: 0;"></p>
+												<input type="text" class="form-control"  hidden name="respiratorytests.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
+								<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 5, k);fieldchanged()" style="display: none;">
+							</label>
+							<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+												<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
+												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(5,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+											</div>
+											<div [ngClass]="(general.typeoftest=='Other')?'mt-2 col-md-2':'mt-2 offset-md-1 col-md-2'">
+												<label for="days">FVC (%)</label>
+												<input type="text" class="form-control"  name="respiratorytests.days" [(ngModel)]="general.fvc" (change)="fieldchanged()">
+											</div>
+											<div [ngClass]="(general.typeoftest=='Other')?'mt-2 offset-md-1 col-md-4':'mt-2 col-md-4'">
+												<label for="days">PEF (L/min)</label>
+												<input type="text" class="form-control"  name="respiratorytests.days" [(ngModel)]="general.pef" (change)="fieldchanged()">
+											</div>
+											<div class="mt-2 col-md-4">
+												<label for="days">MIP/MEP (cmH2O)</label>
+												<input type="text" class="form-control"  name="respiratorytests.days" [(ngModel)]="general.mipmep" (change)="fieldchanged()">
+											</div>
+                      <div class="col-md-11 offset-md-1 mt-2">
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteData(5,k);fieldchanged()" href="javascript:void(0)">
+                          <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
+                        </button>
+											</div>
+											<div class="mt-2 col-md-12">
+												<hr>
+											</div>
+										</div>
+									</div>
+
+									<!-- respiratorytests -->
+
+									<!--bonehealthtest -->
+									<a class="linkindex" id="bonehealthtest"></a>
+									<h4 class="form-section mt-3" style="font-weight: bold;" [ngClass]="(medicalCareSections[6].data.length>0 && bonehealthtestActivation)?'border-bottom-0':''">
+
+										<div class="row" style="display: flex;line-height: 1rem;">
+                      <div class="col-sm-10 col-12" [ngClass]="(medicalCareSections[6].data.length>0)?'':'inactiveLink'">
+												<a (click)="setSection('bonehealthtest')" [ngClass]="(medicalCareSections[6].data.length>0 && bonehealthtestActivation)?'primary':''">
+													{{medicalCareSections[6].tranlation}}
+												</a>
+                        <i *ngIf="!bonehealthtestActivation && medicalCareSections[6].data.length>0" class="pointer ft-chevron-down" (click)="setSection('bonehealthtest')"></i>
+												<i *ngIf="bonehealthtestActivation && medicalCareSections[6].data.length>0" class="pointer ft-chevron-up primary"(click)="setSection('bonehealthtest')"></i>
+											</div>
+											<div class="col-sm-2 col-12">
+												<button type="button" class="mt-1 mb-1 btn-sm btn-raised btn-raised btn-primary" (click)="newData(6, bonehealthtest)"> {{'generics.Add' | translate }}</button>
+											</div>
+										</div>
+										<div class="row" style="display: flex;line-height: 1rem;">
+											<div class="col-md-12">
+												<label class="question">{{'stats.bonehealthTestQuestion' | translate }}</label>
+												<input class="checkboxQuestion" id="yesAnswerbonehealthtest" name="bonehealthtest" type="checkbox" (change)="setAnswer($event)" style="margin-left: 0.7rem;"><label class="answer ml-1 mr-1">{{'stats.Yes' | translate }}</label>
+												<input class="checkboxQuestion" id="noAnswerbonehealthtest" name="bonehealthtest" type="checkbox" (change)="setAnswer($event)"><label class="answer ml-1">{{'stats.No' | translate }}</label>
+											</div>
+										</div>
+									</h4>
+									<div *ngIf="bonehealthtestActivation" style="background: #f7f7f7;">
+										<div class="row col-md-12" *ngFor="let general of medicalCareSections[6].data ; let k = index" >
+											<div class="mt-2 col-md-1">
+												<h4>{{k+1}}.</h4>
+											</div>
+											<div class="mt-2 col-md-5">
+												<label for="hospital">{{'medicalcare.Type of test' | translate }}</label>
+												<mat-select class="form-control" id="ChoiseAndDate" name="bonehealthtest.ChoiseAndDate{{k}}"  [(ngModel)]="general.typeoftest" (change)="fieldchanged()">
+													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+													<mat-option value="Bone Densitometry (DEXA)">{{'medicalcare.Bone Densitometry (DEXA)' | translate }}</mat-option>
+													<mat-option value="Spinal X-Ray">{{'medicalcare.Spinal X-Ray' | translate }}</mat-option>
+													<mat-option value="Scoliosis X-ray">{{'medicalcare.Scoliosis X-ray' | translate }}</mat-option>
+												</mat-select>
+											</div>
+											<div class="mt-2 col-md-3">
+												<label for="date">{{'generics.Date' | translate }}</label>
+												<!--<div *ngIf="!isSafari && !isIeOrEdge">
+													<input type="date" class="form-control" name="bonehealthtest.dateTime{{k}}" [(ngModel)]="general.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>
+												<div *ngIf="isSafari || isIeOrEdge">
+													<input  class="form-control w-75 d-inline" name="bonehealthtest.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #picker></mat-datepicker>
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>-->
+												<div>
+													<input  class="form-control w-75 d-inline" name="bonehealthtest.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #picker></mat-datepicker>
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>
+											</div>
+											<div class="mt-2 col-md-3">
+												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
+												<p style="margin: 0;"></p>
+												<input type="text" class="form-control"  hidden name="bonehealthtest.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
+								<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 6, k);fieldchanged()" style="display: none;">
+							</label>
+							<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+												<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
+												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(6,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+											</div>
+                      <div class="col-md-11 offset-md-1 mt-2">
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteData(6,k);fieldchanged()" href="javascript:void(0)">
+                          <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
+                        </button>
+											</div>
+											<div class="mt-2 col-md-12">
+												<hr>
+											</div>
+										</div>
+									</div>
+
+									<!-- bonehealthtest -->
+
+									<!--bloodtest -->
+									<a class="linkindex" id="bloodtest"></a>
+									<h4 class="form-section mt-3" style="font-weight: bold;" [ngClass]="(medicalCareSections[7].data.length>0 && bloodtestActivation)?'border-bottom-0':''">
+
+										<div class="row" style="display: flex;line-height: 1rem;">
+                      <div class="col-sm-10 col-12" [ngClass]="(medicalCareSections[7].data.length>0)?'':'inactiveLink'">
+												<a (click)="setSection('bloodtest')" [ngClass]="(medicalCareSections[7].data.length>0 && bloodtestActivation)?'primary':''">
+													{{medicalCareSections[7].tranlation}}
+												</a>
+                        <i *ngIf="!bloodtestActivation && medicalCareSections[7].data.length>0" class="pointer ft-chevron-down" (click)="setSection('bloodtest')"></i>
+												<i *ngIf="bloodtestActivation && medicalCareSections[7].data.length>0" class="pointer ft-chevron-up primary"(click)="setSection('bloodtest')"></i>
+											</div>
+											<div class="col-sm-2 col-12">
+												<button type="button" class="mt-1 mb-1 btn-sm btn-raised btn-raised btn-primary" (click)="newData(7, bloodtest)"> {{'generics.Add' | translate }}</button>
+											</div>
+										</div>
+
+										<div class="row" style="display: flex;line-height: 1rem;">
+											<div class="col-md-12">
+												<label class="question">{{'stats.bloodTestQuestion' | translate }}</label>
+												<input class="checkboxQuestion" id="yesAnswerbloodtest" name="bloodtest" type="checkbox" (change)="setAnswer($event)" style="margin-left: 0.7rem;"><label class="answer ml-1 mr-1">{{'stats.Yes' | translate }}</label>
+												<input class="checkboxQuestion" id="noAnswerbloodtest" name="bloodtest" type="checkbox" (change)="setAnswer($event)"><label class="answer ml-1">{{'stats.No' | translate }}</label>
+											</div>
+										</div>
+
+									</h4>
+									<div *ngIf="bloodtestActivation" style="background: #f7f7f7;">
+										<div class="row col-md-12" *ngFor="let general of medicalCareSections[7].data ; let k = index" >
+											<div class="mt-2 col-md-1">
+												<h4>{{k+1}}.</h4>
+											</div>
+											<div class="mt-2 col-md-5">
+												<label for="date">{{'generics.Date' | translate }}</label>
+												<!--<div *ngIf="!isSafari && !isIeOrEdge">
+													<input type="date" class="form-control" name="bloodtest.dateTime{{k}}" [(ngModel)]="general.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>
+												<div *ngIf="isSafari || isIeOrEdge">
+													<input  class="form-control w-75 d-inline" name="bloodtest.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #picker></mat-datepicker>
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>-->
+												<div>
+													<input  class="form-control w-75 d-inline" name="bloodtest.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #picker></mat-datepicker>
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>
+											</div>
+											<div class="mt-2 col-md-4">
+												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
+												<p style="margin: 0;"></p>
+												<input type="text" class="form-control"  hidden name="bloodtest.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
+								<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 7, k);fieldchanged()" style="display: none;">
+							</label>
+							<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+												<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
+												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(7,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+											</div>
+                      <div class="col-md-11 offset-md-1 mt-2">
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteData(7,k);fieldchanged()" href="javascript:void(0)">
+                          <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
+                        </button>
+											</div>
+											<div class="mt-2 col-md-12">
+												<hr>
+											</div>
+										</div>
+									</div>
+
+									<!-- bloodtest -->
+
+									<!--surgery -->
+									<a class="linkindex" id="surgery"></a>
+									<h4 class="form-section mt-3" style="font-weight: bold;" [ngClass]="(medicalCareSections[8].data.length>0 && surgeryActivation)?'border-bottom-0':''">
+										<div class="row" style="display: flex;line-height: 1rem;">
+                      <div class="col-sm-10 col-12" [ngClass]="(medicalCareSections[8].data.length>0)?'':'inactiveLink'">
+												<a (click)="setSection('surgery')" [ngClass]="(medicalCareSections[8].data.length>0 && surgeryActivation)?'primary':''">
+													{{medicalCareSections[8].tranlation}}
+												</a>
+                        <i *ngIf="!surgeryActivation && medicalCareSections[8].data.length>0" class="pointer ft-chevron-down" (click)="setSection('surgery')"></i>
+												<i *ngIf="surgeryActivation && medicalCareSections[8].data.length>0" class="pointer ft-chevron-up primary"(click)="setSection('surgery')"></i>
+											</div>
+											<div class="col-sm-2 col-12">
+												<button type="button" class="mt-1 mb-1 btn-sm btn-raised btn-raised btn-primary" (click)="newData(8, surgery)"> {{'generics.Add' | translate }}</button>
+											</div>
+										</div>
+										<div class="row" style="display: flex;line-height: 1rem;">
+											<div class="col-md-12">
+												<label class="question">{{'stats.surgeryQuestion' | translate }}</label>
+												<input class="checkboxQuestion" id="yesAnswersurgery" name="surgery" type="checkbox" (change)="setAnswer($event)" style="margin-left: 0.7rem;"><label class="answer ml-1 mr-1">{{'stats.Yes' | translate }}</label>
+												<input class="checkboxQuestion" id="noAnswersurgery" name="surgery" type="checkbox" (change)="setAnswer($event)"><label class="answer ml-1">{{'stats.No' | translate }}</label>
+											</div>
+										</div>
+									</h4>
+									<div *ngIf="surgeryActivation" style="background: #f7f7f7;">
+										<div class="row col-md-12" *ngFor="let general of medicalCareSections[8].data ; let k = index" >
+											<div class="mt-2 col-md-1">
+												<h4>{{k+1}}.</h4>
+											</div>
+											<div class="mt-2 col-md-4">
+												<label for="hospital">{{'medicalcare.Type of surgery' | translate }}</label>
+												<mat-select class="form-control" id="ChoiseAndDate" name="surgery.ChoiseAndDate{{k}}"  [(ngModel)]="general.typeoftest" (change)="fieldchanged()">
+													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+													<mat-option value="Scoliosis surgery">{{'medicalcare.Scoliosis surgery' | translate }}</mat-option>
+													<mat-option value="Foot surgery">{{'medicalcare.Foot surgery' | translate }}</mat-option>
+													<mat-option value="Tendonectomy">{{'medicalcare.Tendonectomy' | translate }}</mat-option>
+													<mat-option value="Fixation or Fracture">{{'medicalcare.Fixation or Fracture' | translate }}</mat-option>
+													<mat-option value="Tracheostoma">{{'medicalcare.Tracheostoma' | translate }}</mat-option>
+													<mat-option value="Placing an ICD / pacemaker">{{'medicalcare.Placing an ICD / pacemaker' | translate }}</mat-option>
+													<mat-option value="PEG probe">{{'medicalcare.PEG probe' | translate }}</mat-option>
+													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+												</mat-select>
+											</div>
+											<div *ngIf="general.typeoftest=='Other'" class="mt-2 col-md-7">
+												<label for="otherTest">{{'medicalcare.Enter the name of the operation here' | translate }}</label>
+												<input type="text" class="form-control"  name="surgery.otherTest" [(ngModel)]="general.otherTest" (change)="fieldchanged()">
+											</div>
+											<div [ngClass]="(general.typeoftest=='Other')?'mt-2 offset-md-1 col-md-3':'mt-2 col-md-3'">
+												<label for="date">{{'generics.Date' | translate }}</label>
+												<!--<div *ngIf="!isSafari && !isIeOrEdge">
+													<input type="date" class="form-control" name="surgery.dateTime{{k}}" [(ngModel)]="general.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>
+												<div *ngIf="isSafari || isIeOrEdge">
+													<input  class="form-control w-75 d-inline" name="surgery.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #picker></mat-datepicker>
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>-->
+												<div>
+													<input  class="form-control w-75 d-inline" name="surgery.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+													<mat-datepicker touchUi="true" #picker></mat-datepicker>
+													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												</div>
+											</div>
+											<div class="mt-2 col-md-3">
+												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
+												<p style="margin: 0;"></p>
+												<input type="text" class="form-control"  hidden name="surgery.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
+								<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 8, k);fieldchanged()" style="display: none;">
+							</label>
+							<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+												<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
+												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(8,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+											</div>
+                      <div class="col-md-11 offset-md-1 mt-2">
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteData(8,k);fieldchanged()" href="javascript:void(0)">
+                          <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
+                        </button>
+											</div>
+											<div class="mt-2 col-md-12">
+												<hr>
+											</div>
+										</div>
+									</div>
+
+									<!-- surgery -->
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<ng-template #contentTreatment let-c="close" let-d="dismiss">
+		<div class="modal-header">
+				<h4 class="modal-title">{{'medicalcare.Treatment' | translate }}</h4>
+				<button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+				<span aria-hidden="true">&times;</span>
+				</button>
+		</div>
+		<div class="modal-body">
+			<div class="px-3">
+					<div class="form-body">
+						<div class="col-xl-12" *ngIf="treatment.drug != '' && !addedVisit && !savingVisit">
+							<div class="form-group">
+								<!--{{treatment | json}}-->
+								<p><strong>{{treatment.drug}}</strong></p>
+								<p><small>{{treatment.dose}} {{'medication.mg/day' | translate }}</small></p>
+								<p><small>{{treatment.startDate | date}}</small></p>
+								<p><small>{{treatment.endDate | date}}</small></p>
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<div class="form-actions center" *ngIf="!sending">
+					<button type="button" class="btn btn-secondary btn-raised" (click)="c('Close click')">{{'generics.Close' | translate }}</button>
+			</div>
+		</div>
+</ng-template>
+
+<ng-template #contentMedication let-c="close" let-d="dismiss" appendTo="body" expanded="true" hideToggle="true" class="scrolling_data">
+    <div class="modal-header" id="idHeader">
+            <h4 class="modal-title">{{'medication.Current drugs' | translate }}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="closeContentMedication()">
+    				<span aria-hidden="true">&times;</span>
+    				</button>
+    </div>
+    <div class="modal-body" responsive>
+		<div *ngIf="!viewOtherMedicationForm" class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="lang">{{'medication.Drug' | translate }}</label>
+					<select id="lang" name="lang" class="form-control"  [(ngModel)]="drugSelected" #groupselected (ngModelChange)="onChangeDrug()">
+							<option [ngValue]="null" disabled selected>--{{'generics.Select' | translate }}--</option>
+							<option *ngFor="let drug of drugsLang" [ngValue]="drug.name"> {{drug.translation}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="otherDrugss">&nbsp;</label>
+					<br>
+					<div class="">
+						<div class="center-elements">
+							<span id="otherDrugss"><a class="border btn-block btn btn-raised btn-raised primary" (click)="onChangeNewDrug()"><b>{{'clinicalinfo.Other Drugs or Supplements' | translate }}</b></a></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div *ngIf="viewOtherMedicationForm" class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="lang">{{'clinicalinfo.Other Drugs or Supplements' | translate }}</label>
+				</div>
+			</div>
+		</div>
+		<div *ngIf="viewMedicationForm && !viewOtherMedicationForm">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header">
+							{{'generics.fieldsRequired' | translate }}
+						</div>
+						<div class="card-body">
+							<div class="px-3">
+								<form class="form" #f="ngForm" *ngIf="medication">
+									<div class="form-body">
+										<div class="row">
+											<div class="col-md-2">
+												<div class="form-group">
+													<label for="dose">* {{'medication.Dose' | translate }} ({{'medication.mg/day' | translate }})</label>
+													<input type="text" id="dose" class="form-control"  name="dose" [(ngModel)]="medication.dose" required dose #dose="ngModel" pattern="[0-9]+([,.][0-9]+)?$">
+													<small class="form-text text-muted danger" *ngIf="dose.errors?.pattern">{{'medication.Invalid dose' | translate }}</small>
+													<small class="form-text text-muted danger" *ngIf="!dose.valid && (dose.dirty || dose.touched)">{{'generics.required' | translate }}</small>
+												</div>
+											</div>
+                      <div class="col-md-4 col-lg-3">
+      									<div class="form-group">
+      										<label for="startDate" class="d-block">* {{'generics.Start Date' | translate }}</label>
+    											<span *ngIf="medication.startDate">{{medication.startDate|date:timeformat}}</span>
+    											<input  class="form-control w-75 d-none" name="startDate"  matInput [matDatepicker]="picker" [(ngModel)]="medication.startDate" required dateTime #dateTime="ngModel" (dateChange)="fieldchanged2()">
+    											<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    											<mat-datepicker touchUi="true" #picker></mat-datepicker>
+    											<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+      											<!--{{medication.startDate|date:timeformat}}
+      											<input  class="form-control w-75 d-none" id="startDate" name="startDate"  matInput [value]="medication.startDate" [matDatepicker]="picker1" [max]="today" [(ngModel)]="medication.startDate" required startDate #startDate="ngModel">
+      											<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      											<mat-datepicker touchUi="true" #picker1></mat-datepicker>
+      											<small class="form-text text-muted danger" *ngIf="!startDate.valid && (startDate.dirty || startDate.touched)">{{'generics.required' | translate }}</small>-->
+      									</div>
+      								</div>
+                      <div class="col-md-6 col-lg-6">
+      									<div class="form-group">
+      										<label for="endDate">{{'generics.End Date' | translate }}</label>
+      										<div>
+      											<span *ngIf="medication.endDate">{{medication.endDate|date:timeformat}} <a (click)="deleteEndDate()" title="{{'generics.Delete' | translate }}"><i class="fa fa-trash red"></i></a></span>
+      											<input  class="col-md-6 col-lg-4 form-control w-75 d-none" name="endDate" [min]="startDate" [max]="today" matInput [matDatepicker]="picker2" [(ngModel)]="medication.endDate" (dateChange)="fieldchanged2()">
+      											<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      											<mat-datepicker touchUi="true" #picker2></mat-datepicker>
+      											<!--
+      											{{medication.endDate|date:timeformat}}
+      											<input  class="form-control w-75 d-none" id="endDate" name="endDate" [min]="medication.startDate" [max]="today" matInput [matDatepicker]="picker2" [(ngModel)]="medication.endDate" >
+      											<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      											<mat-datepicker touchUi="true" #picker2></mat-datepicker>-->
+      										</div>
+      										<small class="form-text text-muted">{{'medication.If you are currently taking the drug, do not select end date' | translate }}</small>
+      									</div>
+      								</div>
+                    </div>
+                    <div class="row">
+      								<div class="col-md-2">
+      									<div class="form-group">
+      										<label for="schedule">{{'medication.Schedule' | translate }}</label>
+      										<select id="schedule" name="schedule" class="form-control"  [(ngModel)]="medication.schedule">
+      										<option value="Daily">{{'medication.Daily' | translate }}</option>
+      										<option value="10 on / 10 off">{{'medication.10 on / 10 off' | translate }}</option>
+      										<option value="Other">{{'generics.Other' | translate }}</option>
+      									</select>
+      									</div>
+      								</div>
+      								<div class="col-md-6" *ngIf="medication.schedule=='Other'">
+      									<div class="form-group">
+      										<label for="otherSchedule">{{'medication.Schedule' | translate }}: {{'generics.Free text' | translate }}</label>
+      										<input type="text" class="form-control"  name="medication.otherSchedule" [(ngModel)]="medication.otherSchedule">
+      									</div>
+      								</div>
+                      <div class="col-md-6" *ngIf="sideEffectsLang.length>0">
+                        <div class="form-group">
+                          <label for="sideEffects">{{'medication.Side Effect' | translate }}</label>
+                          <mat-form-field class="mat-app-background">
+                            <mat-select id="sideEffects" name="sideEffects" multiple [(ngModel)]="medication.sideEffects">
+                              <mat-option *ngFor="let sideEffect of sideEffectsLang" [value]="sideEffect.name">{{sideEffect.translation}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-md-6" *ngIf="sideEffectsLang.length==0">
+                        <div class="form-group">
+                          <label for="freesideEffects">{{'medication.Side Effect' | translate }}</label>
+                          <input type="text" id="freesideEffects" class="form-control"  name="freesideEffects" [(ngModel)]="medication.freesideEffects">
+                        </div>
+                      </div>
+        						</div>
+                    <div class="row">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label for="compassionateUse">{{'medication.Compassionate Use' | translate }}</label>
+													<p class="font-small-2" >{{'medication.Compassionate Use Description' | translate }}</p>
+													<select id="compassionateUse" name="compassionateUse" class="form-control"  [(ngModel)]="medication.compassionateUse">
+													<option value="yes">{{'generics.Yes' | translate }}</option>
+													<option value="no">{{'generics.No' | translate }}</option>
+													<option value="Don't know">{{'generics.Dont know' | translate }}</option>
+												</select>
+												</div>
+											</div>
+											<div class="col-md-12">
+												<div class="form-group">
+													<label for="notes">{{'generics.notes' | translate }}</label>
+													<textarea name="notes" class="autoajustable form-control" [(ngModel)]="medication.notes"  name="notes"></textarea>
+												</div>
+											</div>
+										</div>
+									</div>
+									<span *ngIf="!f.valid" class="form-text text-muted danger">{{'generics.requiredfieldsmissing' | translate }}</span>
+
+                  <div class="modal-footer">
+                      <div class="form-actions center">
+                          <div *ngIf="f.valid;then formValid else formError"></div>
+                					<ng-template #formValid><button class="btn btn-raised btn-raised btn-primary" type="submit" (click)="onSubmit()">{{'generics.Save' | translate }}</button></ng-template>
+                					<ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+                  			<button type="button" class="btn btn-secondary btn-raised" (click)="closeContentMedication()">{{'generics.Close' | translate }}</button>
+                      </div>
+                  </div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div *ngIf="!viewMedicationForm && viewOtherMedicationForm">
+			<div class="">
+        <div class="card-header">
+          {{'generics.fieldsRequired' | translate }}
+        </div>
+				<div class="card-body">
+          <form class="form" #f="ngForm" *ngIf="drug">
+					<div class="row form-body">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label for="type">{{'social.Type' | translate }}</label>
+								<select id="type" name="type" class="form-control"  [(ngModel)]="drug.type" required type #type="ngModel">
+									<option value="Supplements">{{'otherdrugs.Supplements' | translate }}</option>
+									<option value="Psychopharmaceuticals">{{'otherdrugs.Psychopharmaceuticals' | translate }}</option>
+									<option value="Pain medication">{{'otherdrugs.Pain medication' | translate }}</option>
+									<option value="Laxative">{{'otherdrugs.Laxative' | translate }}</option>
+									<option value="Gastroprotective drugs">{{'otherdrugs.Gastroprotective drugs' | translate }}</option>
+									<option value="Other">{{'generics.Other' | translate }}</option>
+								</select>
+								<!--<small class="form-text text-muted danger" *ngIf="!type.valid && (type.dirty || type.touched)">{{'generics.required' | translate }}</small>-->
+							</div>
+						</div>
+						<div class="col-md-3" *ngIf="drug.type=='Supplements'">
+							<div class="form-group">
+								<label for="drugref">{{'generics.Name' | translate }}</label>
+								<select id="drugref" name="drugref" class="form-control"  [(ngModel)]="drug.name" required drugref #drugref="ngModel">
+									<option value="Calcium">{{'otherdrugs.Calcium' | translate }}</option>
+									<option value="Vitamin D">{{'otherdrugs.Vitamin D' | translate }}</option>
+									<option value="Green Tea Extract">{{'otherdrugs.Green Tea Extract' | translate }}</option>
+									<option value="Coenzyme Q10">{{'otherdrugs.Coenzyme Q10' | translate }}</option>
+									<option value="Creatine">{{'otherdrugs.Creatine' | translate }}</option>
+									<option value="Arginine">{{'otherdrugs.Arginine' | translate }}</option>
+									<option value="Taurine">{{'otherdrugs.Taurine' | translate }}</option>
+									<option value="Carnitine">{{'otherdrugs.Carnitine' | translate }}</option>
+									<option value="Glutamine">{{'otherdrugs.Glutamine' | translate }}</option>
+									<option value="Leucine">{{'otherdrugs.Leucine' | translate }}</option>
+									<option value="Fish oil">{{'otherdrugs.Fish oil' | translate }}</option>
+									<option value="Vitamin E">{{'otherdrugs.Vitamin E' | translate }}</option>
+									<option value="Multivitamin">{{'otherdrugs.Multivitamin' | translate }}</option>
+									<option value="Herbs or plant extracts">{{'otherdrugs.Herbs or plant extracts' | translate }}</option>
+									<option value="N-acetylcysteine">{{'otherdrugs.N-acetylcysteine' | translate }}</option>
+									<option value="Protandim">{{'otherdrugs.Protandim' | translate }}</option>
+									<option value="Resveratrol">{{'otherdrugs.Resveratrol' | translate }}</option>
+									<option value="Quercetin">{{'otherdrugs.Quercetin' | translate }}</option>
+									<option value="Other">{{'generics.Other' | translate }}</option>
+								</select>
+								<!--<small class="form-text text-muted danger" *ngIf="!drugref.valid && (drugref.dirty || drugref.touched)">{{'generics.required' | translate }}</small>-->
+							</div>
+						</div>
+						<div class="col-md-3"  *ngIf="drug.type!='Supplements'">
+						<div class="form-group">
+						<label for="drugref">* {{'generics.Name' | translate }}</label>
+								<input type="text" id="drugref" class="form-control"  name="drugref" [(ngModel)]="drug.name" required drugref #drugref="ngModel">
+								<small class="form-text text-muted danger" *ngIf="!drugref.valid && (drugref.dirty || drugref.touched)">{{'generics.required' | translate }}</small>
+						</div>
+						</div>
+						<div class="col-md-2">
+							<div class="form-group">
+								<label for="dose">* {{'medication.Dose' | translate }} ({{'medication.mg/day' | translate }})</label>
+								<input type="text" id="dose" class="form-control"  name="dose" [(ngModel)]="drug.dose" required dose #dose="ngModel" pattern="[0-9]+([\,\.][0-9]+)?$">
+								<small class="form-text text-muted danger" *ngIf="dose.errors?.pattern">{{'medication.Invalid dose' | translate }}</small>
+								<small class="form-text text-muted danger" *ngIf="!dose.valid && (dose.dirty || dose.touched)">{{'generics.required' | translate }}</small>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="form-group">
+								<label for="startDate">* {{'generics.Start Date' | translate }}</label>
+								<div>
+                  <span *ngIf="drug.startDate">{{drug.startDate|date:timeformat}}</span>
+									<input  class="form-control w-75 d-none" id="startDate" name="startDate"  matInput [matDatepicker]="picker" [(ngModel)]="drug.startDate" required startDate #startDate="ngModel">
+									<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+									<mat-datepicker touchUi="true" #picker></mat-datepicker>
+									<small class="form-text text-muted danger" *ngIf="!startDate.valid && (startDate.dirty || startDate.touched)">{{'generics.required' | translate }}</small>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="form-group">
+								<label for="endDate">{{'generics.End Date' | translate }}</label>
+								<div>
+                  <span *ngIf="drug.endDate">{{drug.endDate|date:timeformat}} <a (click)="deleteEndDate2()" title="{{'generics.Delete' | translate }}"><i class="fa fa-trash red"></i></a></span>
+									<input  class="form-control w-75 d-none" id="endDate" name="endDate" matInput [matDatepicker]="picker2" [(ngModel)]="drug.endDate">
+									<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+									<mat-datepicker touchUi="true" #picker2></mat-datepicker>
+								</div>
+							</div>
+						</div>
+					</div>
+          <div class="row">
+    				<div class="col-md-2">
+    					<div class="form-group">
+    						<label for="schedule">{{'medication.Schedule' | translate }}</label>
+    						<select id="schedule" name="schedule" class="form-control"  [(ngModel)]="drug.schedule">
+    						<option value="Daily">{{'medication.Daily' | translate }}</option>
+    						<option value="10 on / 10 off">{{'medication.10 on / 10 off' | translate }}</option>
+    						<option value="Other">{{'generics.Other' | translate }}</option>
+    					</select>
+    					</div>
+    				</div>
+    				<div class="col-md-5" *ngIf="drug.schedule=='Other'">
+    					<div class="form-group">
+    						<label for="otherSchedule">{{'medication.Schedule' | translate }}: {{'generics.Free text' | translate }}</label>
+    						<input type="text" class="form-control"  name="drug.otherSchedule" [(ngModel)]="drug.otherSchedule">
+    					</div>
+    				</div>
+    					<div class="col-md-5">
+    						<div class="form-group">
+    							<label for="freesideEffects">{{'medication.Side Effect' | translate }}</label>
+    							<input type="text" id="freesideEffects" class="form-control"  name="freesideEffects" [(ngModel)]="drug.freesideEffects">
+    						</div>
+    					</div>
+    				</div>
+    				<div class="row">
+    					<div class="col-md-12">
+    						<div class="form-group">
+    							<label for="compassionateUse">{{'medication.Compassionate Use' | translate }}</label>
+    							<p class="font-small-2" >{{'medication.Compassionate Use Description' | translate }}</p>
+    							<select id="compassionateUse" name="compassionateUse" class="form-control col-md-3"  [(ngModel)]="drug.compassionateUse">
+    							<option value="yes">{{'generics.Yes' | translate }}</option>
+    							<option value="no">{{'generics.No' | translate }}</option>
+    							<option value="Don't know">{{'generics.Dont know' | translate }}</option>
+    						</select>
+    						</div>
+    					</div>
+    				<div class="col-md-12">
+    					<div class="form-group">
+    						<label for="notes">{{'generics.notes' | translate }}</label>
+    						<textarea name="notes" class="autoajustable form-control" [(ngModel)]="drug.notes"  name="notes"></textarea>
+    					</div>
+    				</div>
+    			</div>
+          <span *ngIf="!f.valid" class="form-text text-muted danger">{{'generics.requiredfieldsmissing' | translate }}</span>
+          <div class="modal-footer">
+              <div class="form-actions center">
+                <div *ngIf="f.valid;then formValid else formError"></div>
+                <ng-template #formValid><button class="btn btn-raised btn-primary" type="submit" (click)="onSubmitOtherDrug()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+        				<ng-template #formError><button class="btn btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+          			<button type="button" class="btn btn-secondary btn-raised" (click)="closeContentMedication()">{{'generics.Close' | translate }}</button>
+              </div>
+          </div>
+          </form>
+				</div>
+			</div>
+
+			<!--<div class="col-md-12">
+				<div *ngIf="f.valid;then formValid else formError"></div>
+				<ng-template #formValid><button class="btn btn-raised btn-primary" type="submit" ><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+				<ng-template #formError><button class="btn btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+
+			</div>-->
+		</div>
+    </div>
+
+</ng-template>

@@ -1,0 +1,61 @@
+.centerSpinner{
+  margin: auto;
+  width: 50%;
+}
+
+form label{
+  text-transform: none;
+  letter-spacing: 0.5px;
+}
+
+.linkindex{
+  position: relative;
+  top: -3em;
+}
+
+.pointer{
+  cursor: pointer;
+}
+
+.question{
+  //font-family: "Rubik";
+  font-size: 0.6em;
+  //margin-left: 0.5rem;
+  //vertical-align: middle;
+}
+input.checkboxQuestion{
+  vertical-align: middle;
+}
+.answer{
+  //font-family: "Rubik";
+  font-size: 0.5em;
+  margin-left: 0.2rem;
+  //vertical-align: middle;
+}
+/*.form-section{
+  font-size: 0.8em;
+}*/
+
+.scrolling_data {
+  overflow-y: scroll !important;
+  max-height: 400px;
+}
+
+// Para que salgan los calendarios y los elementos popup en el modal de medication
+::ng-deep .cdk-overlay-container {
+  z-index: 1200 !important;
+}
+
+#buttonInfo:hover span {
+  display: block;
+}
+#buttonInfo span {
+  position:absolute;
+  display:none;
+  //width: 50%;
+  font-size: 0.8rem;
+  color: #545758;
+}
+#buttonInfo:hover{
+  margin-bottom:20% !important;
+}

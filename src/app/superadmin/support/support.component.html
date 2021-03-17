@@ -1,0 +1,77 @@
+<div *ngIf="msgList.length > 0">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="content-header">{{'support.Messages' | translate }}</div>
+    </div>
+  </div>
+  <section>
+    <div class="row">
+      <table class="table-bordered table-striped col-md-12 table text-center">
+				<thead>
+					<tr>
+            <th>ID</th>
+            <th>Email</th>
+						<th>{{'support.Subject' | translate }}</th>
+						<th>{{'support.Message' | translate }}</th>
+            <th>Files</th>
+						<th>Date</th>
+            <th>Status</th>
+            <th>Status Date</th>
+            <th>Issue type</th>
+            <th>Lang</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let msg of msgList ; let i = index">
+            <td>{{msg.id}}</td>
+            <td>{{msg.email}}</td>
+						<td>{{msg.subject}}</td>
+            <td>{{msg.description}}</td>
+            <td>
+              <div *ngIf="msg.files.length>0">
+                <p *ngFor="let file of msg.files ; let i = index">
+                  {{file}} <a class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/filessupport/{{file}}{{accessToken.sasToken}}" download="{{file}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+                </p>
+              </div>
+              <div *ngIf="msg.files.length==0">
+                -
+              </div>
+            </td>
+            <td>{{msg.date | date: timeformat}}</td>
+            <td>
+              <select id="status" name="status{{i}}" [(ngModel)]="msg.status" (change)="fieldStatusChanged(msg)">
+								<option value="unread">{{'support.Unread' | translate }}</option>
+								<option value="read">{{'support.Read' | translate }}</option>
+                <option value="pending">{{'support.Pending' | translate }}</option>
+                <option value="solved">{{'support.Solved' | translate }}</option>
+							</select>
+            </td>
+            <td>{{msg.statusDate | date: timeformat}}</td>
+            <td>
+              <select id="type" name="type" disabled [(ngModel)]="msg.type">
+                <option value="technical">{{'support.Technical error' | translate }}</option>
+                <option value="doubt">{{'support.I have a question' | translate }}</option>
+                <option value="another">{{'support.Another type' | translate }}</option>
+              </select>
+            </td>
+            <td>{{msg.lang}}</td>
+					</tr>
+				</tbody>
+			</table>
+    </div>
+  </section>
+</div>
+<div *ngIf="msgList.length == 0">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="content-header">{{'support.Messages' | translate }}</div>
+    </div>
+  </div>
+  <section>
+    <div class="row">
+      <div class="col-sm-12">
+        <p>{{'support.No messages' | translate }}</p>
+      </div>
+    </div>
+  </section>
+</div>

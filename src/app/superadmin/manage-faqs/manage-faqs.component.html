@@ -1,0 +1,210 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="content-header"><div class="content-header">{{'faqs.Manage FAQ' | translate }}</div></div>
+  </div>
+</div>
+<div class="row">
+<div class="col-md-6">
+  <div class="form-group">
+    <label for="lang">{{'groups.Groups' | translate }}</label>
+    <select id="lang" name="lang" class="form-control"  [(ngModel)]="groupSelected" #groupselected (ngModelChange)="onChangeGroup(groupSelected)">
+      <option *ngFor="let group of groups" [ngValue]="group.name"> {{group.name}}</option>
+    </select>
+  </div>
+</div>
+</div>
+<section *ngIf="!showPanelNewQnAPairs">
+  <div class="row card card-body" *ngIf="langs && !showNewKnowledgesLang && groupSelected!=''">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <a (click)="newKnowledgesLang()" class="btn btn-outline-primary" href="javascript:void(0)"><i class="fa fa-plus"></i> {{'lang.New Language' | translate }}</a>
+      </div>
+    </div>
+    <div class="col-md-12" *ngIf="!loadingFaqs && KnowledgesSaved.length > 0 && datadest">
+      <div class="form-group">
+        <p><label for="lang2">{{'faqs.Languages saved' | translate }}</label></p>
+        <select id="lang2" name="lang2" class="form-control "  [(ngModel)]="actualKnowledge" (ngModelChange)="onChangeLang2($event)">
+          <option *ngFor="let Knowledge of KnowledgesSaved" [ngValue]="Knowledge"> {{Knowledge.name}}</option>
+        </select>
+        <p *ngIf="datadest && !loadingFaqs"><small>{{datadest.length}} {{'faqs.frequently asked questions' | translate }}</small></p>
+      </div>
+      <div class="row mt-2 center-elements">
+        <div class="col-lg-4 col-md-12">
+        </div>
+
+        <div class="col-lg-4 col-md-12">
+          <div class="form-group">
+            <a class="btn btn-outline-success mb-0" (click)="publishKnowledgebase()" href="javascript:void(0)"><i class="fa fa-cloud-upload"></i>{{'faqs.Publish changes' | translate }}</a>
+            <p class="text-muted mb-0 font-small-1">{{'faqs.Published on' | translate }} {{lastPublishedTimestamp | date:'yyyy-MM-dd HH:mm a'}}</p>
+            <div class="col-md-12 center-elements" *ngIf="pendingOperation">
+              <div>
+                <p class="centerSpinner mb-0"><i class="fa fa-spinner fa-spin fa-fw pink"></i></p>
+                <p class="text-muted mb-0 font-small-1">{{'faqs.Publishing changes' | translate }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-12">
+        <a class="btn btn-outline-danger mb-0" (click)="deleteKnowledge()" href="javascript:void(0)"><i class="fa fa-times"></i>{{'generics.Delete' | translate }}</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row" *ngIf="langs">
+    <div class="col-md-12 card card-body" *ngIf="showNewKnowledgesLang">
+      <div class="row">
+        <div class="col-md-12">
+          <label for="newKnowledgeLang">{{'faqs.Available languages' | translate }}</label>
+          <select id="newKnowledgeLang" name="newKnowledgeLang" class="form-control" [(ngModel)]="newKnowledgeLang">
+            <option *ngFor="let Knowledge of KnowledgesNoSaved" [ngValue]="Knowledge"> {{Knowledge.name}}</option>
+          </select>
+        </div>
+        <div class="col-md-12 mt-2">
+          <button type="button" class="btn btn-raised btn-raised btn-secondary" (click)="cancelNewKnowledgesLang()">{{'generics.Cancel' | translate }}</button>
+          <button type="button" class="btn btn-raised btn-raised btn-primary" (click)="addKnowledgesLang()">{{'generics.Add' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="center-elements" *ngIf="loadingFaqs && KnowledgesSaved.length > 0">
+    <div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+  </div>
+  <div class="row mt-4" *ngIf="datadest && !loadingFaqs && !showNewKnowledgesLang && KnowledgesSaved.length > 0">
+    <div class="col-12">
+      <div class="row" *ngIf="!waiting">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <a (click)="newQuestion()" class="btn btn-outline-primary" href="javascript:void(0)"><i class="fa fa-plus"></i> {{'faqs.New frequently asked question' | translate }}</a>
+            <a *ngIf="categoriesInfo.length>0" (click)="showPanelCategories(panelShowCategories)" class="btn btn-outline-primary" href="javascript:void(0)"> {{'faqs.Categories' | translate }}</a>
+          </div>
+        </div>
+      </div>
+
+      <form class="form" #form="ngForm" *ngIf="!waiting">
+        <div class="col-md-12 card card-body" *ngFor="let line of datadest ; let i = index">
+          <div class="form-group">
+            <label>{{'faqs.frequently asked question' | translate }} {{i+1}}</label>
+            <a class="btn btn-outline-danger mb-0 float-right" (click)="deleteQuestion(line.id, i)" href="javascript:void(0)"><i class="fa fa-times"></i></a>
+            <a class="btn btn-outline-success mb-0 mr-2 float-right" (click)="updateQuestion(line.id, i)" href="javascript:void(0)"><i class="ft ft-edit-2"></i></a>
+            <!-- Question -->
+            <div class="form-group col-md-12" *ngFor="let question of datadest[i].questions ; let j=index">
+              <label>{{'faqs.Question' | translate }} {{j+1}}</label>
+              <p class="text-primary"><small>{{question}}</small></p>
+            </div>
+            <!-- Answer -->
+            <div class="form-group col-md-12">
+              <label>{{'faqs.Answer' | translate }}</label>
+              <p class="text-primary"><small>{{datadest[i].answer}}</small></p>
+            </div>
+            <!-- Category -->
+            <div class="form-group col-md-12">
+              <label>{{'faqs.Category' | translate }}</label>
+              <div *ngFor="let metadata of datadest[i].metadata">
+                <div *ngIf="metadata.name=='category'">
+                  <p class="text-primary"><small>{{metadata.value}}</small></p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </form>
+      <div class="col-md-12 center-elements" *ngIf="waiting">
+        <div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="icon-tabs" *ngIf="showPanelNewQnAPairs">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">{{'faqs.New frequently asked question' | translate }} ({{actualKnowledge.name}})</h4>
+        </div>
+        <div class="card-body">
+          <div class="card-block">
+            <form class="form" (ngSubmit)="onSubmitNewQnaPair()" #f="ngForm" *ngIf="!savingQnAPair">
+              <div class="form-group">
+                <a (click)="addQuestion()" class="btn btn-outline-primary" href="javascript:void(0)"><i class="fa fa-plus"></i> {{'faqs.Add alternative question' | translate }}</a>
+                <p><small>{{'faqs.There may be several questions for the same answer' | translate }}</small></p>
+              </div>
+              <fieldset>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group" *ngFor="let question of actualQna.questions ; let i=index">
+                      <label for="shortDescription2">{{'faqs.Question' | translate }} {{i+1}}</label> <span *ngIf="i!=0"><a class="btn btn-outline-danger mb-1 float-right" (click)="deleteAltQuestion(question, i)" href="javascript:void(0)"><i class="fa fa-times"></i></a></span>
+                      <textarea id="question.q{{i}}" name="question.q{{i}}" rows="4" class="form-control" [(ngModel)]="question.q" required></textarea>
+                      <!--<textarea id="question.q" name="question.q{{i}}" rows="4" class="form-control" [(ngModel)]="question.q" required question #question="ngModel"></textarea>
+                      <small class="form-text text-muted danger" *ngIf="!question.valid && (question.dirty || question.touched)">{{'generics.required' | translate }}</small>-->
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="answer">{{'faqs.Answer' | translate }}</label>
+                      <textarea name="answer" id="answer" rows="4" class="form-control" [(ngModel)]="actualQna.answer" required answer #answer="ngModel"></textarea>
+                      <small class="form-text text-muted danger" *ngIf="!answer.valid && (answer.dirty || answer.touched)">{{'generics.required' | translate }}</small>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="category">{{'faqs.Category' | translate }}</label>
+                      <!--<textarea name="answer" id="answer" rows="4" class="form-control" [(ngModel)]="actualQna.answer" required answer #answer="ngModel" >{{actualQna.answer}}</textarea>
+                      <small class="form-text text-muted danger" *ngIf="!answer.valid && (answer.dirty || answer.touched)">{{'generics.required' | translate }}</small>-->
+                      <input #input class="input" type="text" name="modelTemp" class="form-control mb-3" [(ngModel)]="modelTemp" [ngbTypeahead]="searchCategories" [resultTemplate]="rt" placeholder="{{'faqs.Search category' | translate }}" (selectItem)="selected($event)" (input)="onSearchChange()"/>
+                      <span class="btn btn-primary btn-sm selected" style="margin-right: 0.5em;" *ngFor="let item of selectedItems">
+                        <span style="color: black !important;">
+                          {{item}}
+                          <span class="close-selected" (click)="confirmDeleteItem(item)">&nbsp;x</span>
+                        </span>
+                      </span>
+                      <span *ngIf="!foundQna && modelTemp && !searchingFAQs">
+                        <span class="btn btn-danger btn-sm selected" style="margin-right: 0.5em;" *ngIf="modelTemp.length>0">
+                          <span style="color: black !important;" (click)="addCategory(modelTemp)">{{'faqs.Click to add the new category' | translate }}: {{modelTemp}}</span>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+              <div class="center-elements">
+                <button type="button" (click)="cancelNewQnaPair()" class="btn btn-raised btn-raised btn-warning mr-1">
+                  <i class="ft-x"></i> {{'generics.Cancel' | translate }}
+                </button>
+                <div *ngIf="f.valid;then formValid else formError"></div>
+								<ng-template #formValid><button class="btn btn-raised btn-raised btn-primary" type="submit"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+								<ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+              </div>
+            </form>
+            <div class="center-elements" *ngIf="savingQnAPair">
+              <div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<ng-template #panelShowCategories let-c="close" let-d="dismiss" appendTo="body">
+    <div class="modal-header" id="idHeader">
+        <h4 class="modal-title">{{'faqs.Categories' | translate }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="c('Close click')">
+					<span aria-hidden="true">&times;</span>
+				</button>
+    </div>
+    <div class="col-md-12 p-2">
+      <div class="row col-md-12">
+       <span class="col-md-4" *ngFor="let category of categoriesInfo ; let j = index">{{category}} <a class="btn btn-outline-danger mb-0 mr-4" (click)="deleteCategory(j)" href="javascript:void(0)"><i class="fa fa-times"></i></a></span>
+      </div>
+    </div>
+</ng-template>

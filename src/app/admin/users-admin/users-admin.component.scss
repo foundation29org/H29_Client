@@ -1,0 +1,16 @@
+.centerSpinner{
+  margin: auto;
+  width: 50%;
+}
+.mat-form-field {
+  width: 100%;
+}
+
+::ng-deep .cdk-overlay-container {
+  z-index: 9999 !important;
+}
+
+
+:host /deep/ .datatable-header-cell {
+      font-weight: bold;
+}

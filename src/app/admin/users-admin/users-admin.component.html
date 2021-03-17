@@ -1,0 +1,213 @@
+<div class="row" *ngIf="!addedlang && !working">
+	<div class="col-lg-12 col-12">
+		<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">Users</h4>
+			</div>
+			<div class="center-elements" *ngIf="loadingUsers">
+				<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+			</div>
+			<div class="card-body table-responsive" *ngIf="!loadingUsers && users.length>0">
+				<ngx-datatable
+	        class="bootstrap fullscreen"
+	        [columnMode]="'flex'"
+	        [headerHeight]="50"
+	        [footerHeight]="50"
+	        [rowHeight]="'auto'"
+	        [rows]="users"
+					> <!--[limit]="20"-->
+	        <ngx-datatable-column name="{{'menu.User Profile' | translate }}" prop="userName" [flexGrow]="3" [sortable]="true">
+	          <ng-template let-value="value" ngx-datatable-cell-template>
+							<span>
+								{{value}}
+							</span>
+	          </ng-template>
+	        </ngx-datatable-column>
+					<ngx-datatable-column name="{{'generics.Organization' | translate }}" prop="subgroup2" [flexGrow]="5" [sortable]="true" *ngIf="currentGroup==nameduchenneInter">
+						<ng-template let-value="value" ngx-datatable-cell-template let-row="row">
+							<span>
+								{{value}} <a (click)="changeSubgroup(row,contentSubgroup)" href="javascript:void(0)"><i class="ft ft-edit-2"></i></a>
+							</span>
+	          </ng-template>
+	        </ngx-datatable-column>
+					<ngx-datatable-column name="{{'personalinfo.Country' | translate }}" prop="country" [flexGrow]="3" [sortable]="true" *ngIf="currentGroup==nameduchenneInter">
+	          <ng-template let-value="value" ngx-datatable-cell-template>
+							<span>
+								{{value}}
+							</span>
+	          </ng-template>
+	        </ngx-datatable-column>
+					<ngx-datatable-column name="{{'generics.Email' | translate }}" prop="email" [flexGrow]="5" [sortable]="true">
+	          <ng-template let-value="value" ngx-datatable-cell-template>
+							<span>
+								{{value}}
+							</span>
+	          </ng-template>
+	        </ngx-datatable-column>
+					<ngx-datatable-column name="SignupDate" prop="signupDate" [flexGrow]="3" [sortable]="true">
+	          <ng-template let-value="value" ngx-datatable-cell-template>
+							<span>
+								{{value | date: timeformat}}
+							</span>
+	          </ng-template>
+	        </ngx-datatable-column>
+					<ngx-datatable-column name="{{'generics.Name' | translate }} ({{'menu.Patient' | translate }})" prop="patientName" [flexGrow]="3" [sortable]="true">
+	          <ng-template let-value="value" ngx-datatable-cell-template>
+							<span>
+								{{value}}
+							</span>
+	          </ng-template>
+	        </ngx-datatable-column>
+					<ngx-datatable-column name="{{'personalinfo.Last Name' | translate }}" prop="surname" [flexGrow]="3" [sortable]="true">
+	          <ng-template let-value="value" ngx-datatable-cell-template>
+							<span>
+								{{value}}
+							</span>
+	          </ng-template>
+	        </ngx-datatable-column>
+					<ngx-datatable-column name="{{'admin.death' | translate }}" prop="death" [flexGrow]="3" [sortable]="true">
+	          <ng-template let-value="value" ngx-datatable-cell-template let-row="row">
+							<span>
+								{{value | date:timeformat}} <a (click)="changeDeathDate(row,content)" href="javascript:void(0)"><i class="ft ft-edit-2"></i></a>
+
+							</span>
+	          </ng-template>
+	        </ngx-datatable-column>
+					<ngx-datatable-column name="Blocked account" prop="blockedaccount" [flexGrow]="3" [sortable]="true">
+						<ng-template let-value="value" ngx-datatable-cell-template let-row="row">
+							<span>
+								<ui-switch id="blockedaccount" (change)="userChangedEvent(row, $event)" name="row.blockedaccount{{row._id}}" [(ngModel)]="row.blockedaccount"></ui-switch>
+							</span>
+	          </ng-template>
+
+	        </ngx-datatable-column>
+	      </ngx-datatable>
+
+				<!--<table class="table text-center">
+					<thead>
+						<tr>
+							<th>{{'menu.User Profile' | translate }}</th>
+							<th>{{'generics.Email' | translate }}</th>
+							<th>SignupDate</th>
+							<th>{{'generics.Name' | translate }} ({{'menu.Patient' | translate }})</th>
+							<th>{{'personalinfo.Last Name' | translate }} ({{'menu.Patient' | translate }})</th>
+							<th>{{'admin.death' | translate }}</th>
+							<th>Blocked account</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let user of users ; let i = index">
+							<td>{{user.userName}}</td>
+							<td>{{user.email}}</td>
+							<td>{{user.signupDate | date}}</td>
+							<td>{{user.patientName}}</td>
+							<td>{{user.surname}}</td>
+							<td>{{user.death | date}} <p><a class="btn btn-outline-success" (click)="changeDeathDate(user,content)" href="javascript:void(0)"><i class="ft ft-edit-2"></i></a></p></td>
+							<td><ui-switch id="blockedaccount" (change)="userChangedEvent(user, $event)" name="user.blockedaccount{{j}}" [(ngModel)]="user.blockedaccount"></ui-switch></td>
+						</tr>
+					</tbody>
+				</table>-->
+			</div>
+			<div class="card-body table-responsive" *ngIf="!loadingUsers && users.length==0">
+				No users
+			</div>
+
+		</div>
+	</div>
+</div>
+<div class="col-lg-12 col-12 form-group" *ngIf="working">
+	<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+	<div>{{'generics.Sending' | translate }}...</div>
+</div>
+<ng-template #content let-c="close" let-d="dismiss">
+	<form class="form" (ngSubmit)="onSubmitUpdatePatient()" #f="ngForm">
+		<div class="modal-header">
+				<h4 class="modal-title">{{'admin.death' | translate }}</h4>
+				<button type="button" class="close" aria-label="Close" (click)="closePanel()">
+				<span aria-hidden="true">&times;</span>
+				</button>
+		</div>
+		<div class="modal-body">
+			<div class="px-3">
+
+					<div class="form-body">
+						<div class="row">
+							<div class="col-md-10">
+								<div class="form-group">
+									<label for="death">* {{'generics.Date' | translate }}</label>
+									<div *ngIf="user">
+										{{user.death | date:timeformat}}
+										<input  class="form-control w-75 d-none" id="death" name="death"  matInput [matDatepicker]="picker3" [min]="minDateChangeDose" [max]="today" [(ngModel)]="user.death" death #death="ngModel">
+										<mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+										<mat-datepicker touchUi="true" #picker3></mat-datepicker>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2" *ngIf="user.death">
+								<div class="form-group">
+									<button class="btn btn-raised btn-raised btn-primary" type="button" (click)="removeDate()">{{'generics.Delete' | translate }}</button>
+								</div>
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<span *ngIf="!f.valid" class="form-text text-muted danger">{{'generics.requiredfieldsmissing' | translate }}</span>
+				<div class="form-actions center" *ngIf="!sending">
+						<button type="button" class="btn btn-secondary btn-raised" (click)="closePanel()">{{'generics.Cancel' | translate }}</button>
+					<div *ngIf="f.valid;then formValid else formError"></div>
+					<button class="btn btn-raised btn-raised btn-primary" type="submit">{{'generics.Save' | translate }}</button>
+				</div>
+				<div class="col-md-12 center-elements" *ngIf="sending">
+					<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+				</div>
+		</div>
+		</form>
+</ng-template>
+
+<ng-template #contentSubgroup let-c="close" let-d="dismiss">
+	<form class="form" (ngSubmit)="onSubmitUpdateUser()" #f="ngForm">
+		<div class="modal-header">
+				<h4 class="modal-title">{{'admin.death' | translate }}</h4>
+				<button type="button" class="close" aria-label="Close" (click)="closePanel()">
+				<span aria-hidden="true">&times;</span>
+				</button>
+		</div>
+		<div class="modal-body">
+			<div class="px-3">
+
+					<div class="form-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="death">* {{'generics.Select organization' | translate }}</label>
+									<div *ngIf="user">
+										<select id="subgroup" name="subgroup" class="form-control" ngModel required #subgroupm="ngModel" [(ngModel)]="user.subgroup">
+											<option [ngValue]="null" disabled selected>--{{'registration.Please select a organization' | translate }}--</option>
+											<option *ngFor="let subgroup of subgroups" [ngValue]="subgroup.id">
+												<span *ngIf="subgroup.id==9980">{{'generics.I can’t find' | translate }}</span>
+												<span *ngIf="subgroup.id==9990">{{'generics.I don’t belong to any' | translate }}</span>
+												<span *ngIf="subgroup.id!=9980 && subgroup.id!=9990">{{subgroup.country}} - {{subgroup.name}}</span>
+											</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<span *ngIf="!f.valid" class="form-text text-muted danger">{{'generics.requiredfieldsmissing' | translate }}</span>
+				<div class="form-actions center" *ngIf="!sending">
+						<button type="button" class="btn btn-secondary btn-raised" (click)="closePanel()">{{'generics.Cancel' | translate }}</button>
+					<div *ngIf="f.valid;then formValid else formError"></div>
+					<button class="btn btn-raised btn-raised btn-primary" type="submit">{{'generics.Save' | translate }}</button>
+				</div>
+				<div class="col-md-12 center-elements" *ngIf="sending">
+					<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+				</div>
+		</div>
+		</form>
+</ng-template>
