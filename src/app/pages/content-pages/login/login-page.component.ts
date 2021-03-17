@@ -244,81 +244,74 @@ export class LoginPageComponent implements OnDestroy, OnInit {
                   // ya tengo la APP
                   if(result.value==true){
                     this.authyWaiting=true;
-                    // Send approval request
-                    this.authService.sendApprovalRequest(this.emailForUpdatePhone,{id:this.deviceId,info:this.deviceInformation}).subscribe((requestApprovalResponse)=>{
-                      if(requestApprovalResponse.reason=="2FA request approved"){
-                        this.authService.secondFactor(requestApprovalResponse.token,this.loginForm.value.email,{id:this.deviceId,info:this.deviceInformation}, this.loginForm.value.password).subscribe(
-                          (authenticated2FA:any) => {
-                            let message =  this.authService.getMessage();
-                            if(authenticated2FA==true){
-                              this.authyWaiting=false;
-                              this.loginForm.reset();
-                              this.translate.use(this.authService.getLang());
-                              let url =  this.authService.getRedirectUrl();
-                              if(this.authService.getRole()=='User'){
-                                //this.loadAlertsState();
-                                this.subscription.add( this.patientService.getPatientId()
-                                .subscribe( (res : any) => {
-                                  if(res==null){
-                                    swal(this.translate.instant("personalinfo.Welcome"), this.translate.instant("personalinfo.Fill personal info"), "info");
-                                    this.router.navigate(['/user/basicinfo/personalinfo']);
-                                  }else{
-                                    // Check alerts with type 6 or 12 months if showDate > X months in each case
-                                    // and update all userAlerts showdate, state=Not read and launch = false
-                                    var patientId=res.sub;
-                                    this.subscription.add( this.http.get(environment.api+'/api/alerts/patient/checkDateForUserAlerts/'+patientId)
-                                    .subscribe( (res2 : any) => {
-                                      this.router.navigate([ url ]);
-                                    }, (err) => {
-                                      console.log(err);
-                                    }));
-
-                                    }
-                                  this.sending = false;
-                                  }, (err) => {
-                                    console.log(err);
-                                    this.sending = false;
-                                  }));
-                              }else{
-                                this.sending = false;
+                    this.authService.signin2FA(this.emailForUpdatePhone,this.loginForm.value.password,this.deviceId,this.deviceInformation)
+                    .subscribe((authenticated2FA)=> {
+                      if(authenticated2FA==true){
+                        this.authyWaiting=false;
+                        this.loginForm.reset();
+                        this.translate.use(this.authService.getLang());
+                        let url =  this.authService.getRedirectUrl();
+                        if(this.authService.getRole()=='User'){
+                          //this.loadAlertsState();
+                          this.subscription.add( this.patientService.getPatientId()
+                          .subscribe( (res : any) => {
+                            if(res==null){
+                              swal(this.translate.instant("personalinfo.Welcome"), this.translate.instant("personalinfo.Fill personal info"), "info");
+                              this.router.navigate(['/user/basicinfo/personalinfo']);
+                            }else{
+                              // Check alerts with type 6 or 12 months if showDate > X months in each case
+                              // and update all userAlerts showdate, state=Not read and launch = false
+                              var patientId=res.sub;
+                              this.subscription.add( this.http.get(environment.api+'/api/alerts/patient/checkDateForUserAlerts/'+patientId)
+                              .subscribe( (res2 : any) => {
                                 this.router.navigate([ url ]);
+                              }, (err) => {
+                                console.log(err);
+                              }));
+
                               }
+                            this.sending = false;
+                            }, (err) => {
+                              console.log(err);
+                              this.sending = false;
+                            }));
+                        }else{
+                          this.sending = false;
+                          this.router.navigate([ url ]);
+                        }
 
 
-                            }
-                            else if(authenticated2FA==false){
-                              this.sending = false;
-                              this.authyWaiting=false;
-                              this.loginForm.reset();
-                              let message =  this.authService.getMessage();
-                              if(message == "Login failed" || message == "Not found"){
-                                  this.isLoginFailed = true;
-                              }else if(message == "Authy access denied"){
-                                this.authyFail = true;
-                              }else if(message == "Account is temporarily locked"){
-                                this.isBlockedAccount = true;
-                              }else if(message == "Account is unactivated"){
-                                this.isActivationPending = true;
-                              }else if(message == "Account is blocked"){
-                                this.isBlocked = true;
-                              }
-                              else if(message == "Authy time out"){
-                                this.authyTimeout=true
-                                this.authyWaiting=false;
-                                this.isAccountActivated=false;
-                                this.sending = false;
-                                this.loginForm.reset();
-                              }
-                            }
-                            else if(this.authyWaiting==false){
-                              this.authService.stopPetition();
-                              this.sending = false;
-                              this.loginForm.reset();
-                            }
-                        });
+                      }
+                      else if(authenticated2FA==false){
+                        this.sending = false;
+                        this.authyWaiting=false;
+                        this.loginForm.reset();
+                        let message =  this.authService.getMessage();
+                        if(message == "Login failed" || message == "Not found"){
+                            this.isLoginFailed = true;
+                        }else if(message == "Authy access denied"){
+                          this.authyFail = true;
+                        }else if(message == "Account is temporarily locked"){
+                          this.isBlockedAccount = true;
+                        }else if(message == "Account is unactivated"){
+                          this.isActivationPending = true;
+                        }else if(message == "Account is blocked"){
+                          this.isBlocked = true;
+                        }
+                        else if(message == "Authy time out"){
+                          this.authyTimeout=true
+                          this.authyWaiting=false;
+                          this.isAccountActivated=false;
+                          this.sending = false;
+                          this.loginForm.reset();
+                        }
+                      }
+                      else if(this.authyWaiting==false){
+                        this.authService.stopPetition();
+                        this.sending = false;
+                        this.loginForm.reset();
                       }
                     });
-
                   }
                   //quiero descargar la App: Ir a las instrucciones
                   else if(result.dismiss=="cancel"){
@@ -410,13 +403,13 @@ export class LoginPageComponent implements OnDestroy, OnInit {
     updatePhoneInfo(seleccionado,phone){
       this.sending = true;
       var email= this.loginForm.value.email;
-      this.loginForm.setValue({email:email,password:''})
-      var param={countryselectedPhoneCode:seleccionado,phone:phone,device:{id:this.deviceId,info:this.deviceInformation}};
+      var body={email:this.emailForUpdatePhone,password:this.loginForm.value.password,countryselectedPhoneCode:seleccionado,phone:phone,device:{id:this.deviceId,info:this.deviceInformation}};
       //Guardar para el usuario el numero de telefono y cuenta en authy
-      this.subscription.add( this.http.post(environment.api+'/api/signin/updatePhone/'+this.emailForUpdatePhone,param)
+      this.modalReference.close();
+      this.subscription.add( this.http.post(environment.api+'/api/signin/registerUserInAuthy/',body)
       .subscribe( (res : any) => {
-        this.modalReference.close();
         if(res.message=="User Registered in Authy"){
+          this.loginForm.setValue({email:email,password:''})
           swal('', this.translate.instant("login.Register in authy ok"), "success");
           this.sending = false;
         }
