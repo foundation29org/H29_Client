@@ -640,7 +640,7 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
   newData(index, info){
     this.setSectionToAddData(this.medicalCareSections[index].name);
     this.medicalCareSections[index].data.push({choise:'',date:null});
-    if(index==0||index==1||index==2||index==3){
+    if((index==0||index==1||index==2||index==3) && (this.actualGroup!=this.duchennenetherlands)){
       this.medicalCareSections[index].data[this.medicalCareSections[index].data.length-1].hospital='Other'
     }
     var yesAnswer=document.getElementById('yesAnswer'+this.medicalCareSections[index].name);
