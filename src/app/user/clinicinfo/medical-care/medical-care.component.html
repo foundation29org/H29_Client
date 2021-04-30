@@ -105,7 +105,7 @@
 											</div>
 											<div *ngIf="general.hospital=='Other'" class="mt-2 offset-md-1 col-md-6">
 												<label for="otherHospital">{{'medicalcare.Write the name of the hospital' | translate }}</label>
-												<input type="text" class="form-control"  name="general.otherHospital" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
+												<input type="text" class="form-control"  name="general.otherHospital{{k}}" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
 											</div>
 											<div [ngClass]="(general.hospital=='Other')?'mt-2 col-md-4':'mt-2 offset-md-1 col-md-4'">
 												<label for="multidisciplanary{{k}}">{{'medicalcare.Multidisciplinary' | translate }}</label>
@@ -122,7 +122,7 @@
 												<div class="mt-2 col-md-4">
 													<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
 													<p style="margin: 0;"></p>
-													<input type="text" class="form-control"  hidden name="cardiotest.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+													<input type="text" class="form-control"  hidden name="cardiotest.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
 													<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
 														<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 0, k);fieldchanged()" style="display: none;">
 													</label>
@@ -218,7 +218,7 @@
 											</div>
 											<div *ngIf="general.hospital=='Other'" class="mt-2 offset-md-1 col-md-6">
 												<label for="otherHospital">{{'medicalcare.Write the name of the hospital' | translate }}</label>
-												<input type="text" class="form-control"  name="specificVisit.otherHospital" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
+												<input type="text" class="form-control"  name="specificVisit.otherHospital{{k}}" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
 											</div>
 											<div [ngClass]="(general.hospital=='Other')?'mt-2 col-md-3':'mt-2 offset-md-1 col-md-3'">
 												<label for="multidisciplanary">{{'generics.Date' | translate }}</label>
@@ -243,7 +243,7 @@
 											<div *ngIf="general.treatment" [ngClass]="(general.treatment=='')?'mt-2 col-md-1':'mt-2 offset-md-1 col-md-6'">
 												<label  for="distance">{{'medicalcare.Treatment' | translate }}</label>
 												<p>
-													<input type="text" class="form-control"  hidden name="specificVisit.treatment" [(ngModel)]="general.treatment">
+													<input type="text" class="form-control"  hidden name="specificVisit.treatment{{k}}" [(ngModel)]="general.treatment">
 													<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(1, k)" [routerLink]="['/user/clinicinfo/medication', { newTreatment: true }]">{{'generics.New' | translate }}</button>-->
 													<!-- abrir panel para rellenar medicacion igual que en /user/clinicinfo/medication-->
 													<a class="btn btn-outline-primary" (click)="viewTreatment(1, k,contentTreatment)" href="javascript:void(0)">{{'generics.View' | translate }}</a>
@@ -252,7 +252,7 @@
 											</div>
 											<div *ngIf="!general.treatment" [ngClass]="(general.hospital=='Other')?'mt-2 offset-md-1 col-md-6':'mt-2 col-md-6'">
 												<p id="buttonInfo">
-													<input type="text" class="form-control"  hidden name="specificVisit.treatment" [(ngModel)]="general.treatment">
+													<input type="text" class="form-control"  hidden name="specificVisit.treatment{{k}}" [(ngModel)]="general.treatment">
 													<!--<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(1, k, contentMedication)" data-title="A pop up screen will be open for you to enter information about the medication prescribed in this visit">{{'medicalcare.Treatment in visit' | translate }}</button>-->
 													<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(1, k, contentMedication)" style="margin-top: 2.1em;white-space: normal;">{{'medicalcare.Treatment in visit' | translate }}</button>
 													<span class="showTextInfo">
@@ -266,7 +266,7 @@
 												<div class="mt-2 col-md-4">
 													<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
 													<p style="margin: 0;"></p>
-													<input type="text" class="form-control"  hidden name="cardiotest.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+													<input type="text" class="form-control"  hidden name="specificVisit.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
 													<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
 														<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 1, k);fieldchanged()" style="display: none;">
 													</label>
@@ -357,12 +357,14 @@
 											<div class="mt-2 offset-md-1 col-md-5">
 												<label for="icu">{{'medicalcare.Stay in ICU?' | translate }}</label>
 												<p>
-													<ui-switch id="enabled" name="hospitalization.icu{{j}}" [(ngModel)]="general.icu" (change)="fieldchanged()"></ui-switch>
+													<ui-switch id="enabled" name="hospitalization.icu{{k}}" [(ngModel)]="general.icu" (change)="fieldchanged()"></ui-switch>
 												</p>
 											</div>
-											<div class="mt-2 col-md-5">
-												<label for="days">{{'medicalcare.How many days in ICU?' | translate }}</label>
-												<input type="text" class="form-control"  name="hospitalization.days" [(ngModel)]="general.days" (change)="fieldchanged()">
+											<div class="mt-2 col-md-5" >
+                        <span *ngIf="general.icu">
+  												<label for="days">{{'medicalcare.How many days in ICU?' | translate }}</label>
+  												<input type="text" class="form-control"  name="hospitalization.days{{k}}" [(ngModel)]="general.days" (change)="fieldchanged()">
+                        </span>
 											</div>
 											<div [ngClass]="(general.hospital=='Other')?'col-md-4 offset-md-1':'col-md-5 offset-md-1'" *ngIf="actualGroup==duchennenetherlands">
 												<label for="visitref">{{'medicalcare.Hospital' | translate }}</label>
@@ -383,7 +385,7 @@
 											</div>
 											<div *ngIf="general.hospital=='Other'" class="col-md-7" [ngClass]="(actualGroup==duchennenetherlands)?'col-md-7':'offset-md-1 col-md-7'" >
 												<label for="otherHospital">{{'medicalcare.Write the name of the hospital' | translate }}</label>
-												<input type="text" class="form-control"  name="hospitalization.otherHospital" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
+												<input type="text" class="form-control"  name="hospitalization.otherHospital{{k}}" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
 											</div>
 											<div [ngClass]="(general.hospital=='Other')?'mt-2 offset-md-1 col-md-4':'col-md-5'">
 												<label for="visitref">{{'medicalcare.Reason' | translate }}</label>
@@ -401,12 +403,12 @@
 											</div>
 											<div *ngIf="general.reason=='Other'" [ngClass]="(general.hospital=='Other')?'mt-2 col-md-7':'mt-2 offset-md-1 col-md-7'">
 												<label for="otherReason">{{'medicalcare.Other reasons' | translate }}</label>
-												<input type="text" class="form-control"  name="hospitalization.otherReason" [(ngModel)]="general.otherReason" (change)="fieldchanged()">
+												<input type="text" class="form-control"  name="hospitalization.otherReason{{k}}" [(ngModel)]="general.otherReason" (change)="fieldchanged()">
 											</div>
 											<div *ngIf="general.treatment" [ngClass]="(general.treatment=='')?'mt-2 col-md-1':'mt-2 offset-md-1 col-md-3'">
 												<label for="distance">{{'medicalcare.Treatment' | translate }}</label>
 												<p>
-													<input type="text" class="form-control"  hidden name="hospitalization.treatment" [(ngModel)]="general.treatment">
+													<input type="text" class="form-control"  hidden name="hospitalization.treatment{{k}}" [(ngModel)]="general.treatment">
 													<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(2, k);fieldchanged()" [routerLink]="['/user/clinicinfo/medication', { newTreatment: true }]">{{'generics.New' | translate }}</button>-->
 													<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(2, k,contentMedication)">{{'generics.New' | translate }}</button>-->
 													<a  class="btn btn-outline-primary" (click)="viewTreatment(2, k, contentTreatment)" href="javascript:void(0)">{{'generics.View' | translate }}</a>
@@ -416,7 +418,7 @@
 											<div *ngIf="!general.treatment" style="margin-left: 10%;">
 												<label for="distance">&nbsp;</label>
 												<p id="buttonInfo">
-													<input type="text" class="form-control"  hidden name="hospitalization.treatment" [(ngModel)]="general.treatment">
+													<input type="text" class="form-control"  hidden name="hospitalization.treatment{{k}}" [(ngModel)]="general.treatment">
 													<!--<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(1, k, contentMedication)" data-title="A pop up screen will be open for you to enter information about the medication prescribed in this visit">{{'medicalcare.Treatment in visit' | translate }}</button>-->
 													<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(2, k, contentMedication)" style="margin-top: 5%;white-space: normal;">{{'medicalcare.Treatment in visit' | translate }}</button>
 													<span class="showTextInfo">
@@ -428,7 +430,7 @@
 											<div class="mt-2 col-md-4 offset-md-1">
 												<label  for="distance">{{'medicalcare.Hospital record' | translate }}</label>
 												<p style="margin: 0;"></p>
-												<input type="text" class="form-control"  hidden name="cardiotest.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+												<input type="text" class="form-control"  hidden name="hospitalization.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
 												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
 													<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 2, k);fieldchanged()" style="display: none;">
 												</label>
@@ -499,7 +501,7 @@
 											</div>
 											<div *ngIf="general.hospital=='Other'" class="mt-2 col-md-7">
 												<label for="otherHospital">{{'medicalcare.Write the name of the hospital' | translate }}</label>
-												<input type="text" class="form-control"  name="emergencies.otherHospital" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
+												<input type="text" class="form-control"  name="emergencies.otherHospital{{k}}" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
 											</div>
 											<div [ngClass]="(general.hospital=='Other')?'mt-2 offset-md-1 col-md-4':'mt-2 col-md-4'">
 												<label for="reason">{{'medicalcare.Reason' | translate }}</label>
@@ -517,7 +519,7 @@
 											</div>
 											<div *ngIf="general.reason=='Other'" [ngClass]="(general.hospital=='Other')?'mt-2 col-md-7':'mt-2 offset-md-1 col-md-7'">
 												<label for="otherReason">{{'medicalcare.Reason' | translate }}</label>
-												<input type="text" class="form-control"  name="emergencies.otherReason" [(ngModel)]="general.otherReason" (change)="fieldchanged()">
+												<input type="text" class="form-control"  name="emergencies.otherReason{{k}}" [(ngModel)]="general.otherReason" (change)="fieldchanged()">
 											</div>
 											<div [ngClass]="(general.reason=='Other')?'mt-2 offset-md-1 col-md-3':'mt-2 col-md-3'">
 												<label for="date">{{'generics.Date' | translate }}</label>
@@ -541,7 +543,7 @@
 											<div *ngIf="general.treatment" [ngClass]="(general.treatment=='')?'mt-2 col-md-1':'mt-2 offset-md-1 col-md-3'">
 												<label for="distance">{{'medicalcare.Treatment' | translate }}</label>
 												<p>
-													<input type="text" class="form-control"  hidden name="emergencies.treatment" [(ngModel)]="general.treatment">
+													<input type="text" class="form-control"  hidden name="emergencies.treatment{{k}}" [(ngModel)]="general.treatment">
 													<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(3, k, contentMedication);fieldchanged()" [routerLink]="['/user/clinicinfo/medication', { newTreatment: true }]">{{'generics.New' | translate }}</button>-->
 													<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(3, k, contentMedication)">{{'generics.New' | translate }}</button>-->
 													<a class="btn btn-outline-primary" (click)="viewTreatment(3, k, contentTreatment)" href="javascript:void(0)">{{'generics.View' | translate }}</a>
@@ -551,7 +553,7 @@
 											<div *ngIf="!general.treatment" style="margin-left: 10%;">
 												<label for="distance">&nbsp;</label>
 												<p id="buttonInfo">
-													<input type="text" class="form-control"  hidden name="emergencies.treatment" [(ngModel)]="general.treatment">
+													<input type="text" class="form-control"  hidden name="emergencies.treatment{{k}}" [(ngModel)]="general.treatment">
 													<!--<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(1, k, contentMedication)" data-title="A pop up screen will be open for you to enter information about the medication prescribed in this visit">{{'medicalcare.Treatment in visit' | translate }}</button>-->
 													<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(3, k, contentMedication)" style="margin-top: 5%;white-space: normal;">{{'medicalcare.Treatment in visit' | translate }}</button>
 													<span class="showTextInfo">
@@ -564,7 +566,7 @@
 												<div class="col-md-1"></div>
 												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
 												<p style="margin: 0;"></p>
-												<input type="text" class="form-control"  hidden name="cardiotest.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+												<input type="text" class="form-control"  hidden name="emergencies.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
 												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
 													<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 3, k);fieldchanged()" style="display: none;">
 												</label>
@@ -648,7 +650,7 @@
 											<div class="mt-2 col-md-4">
 												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
 												<p style="margin: 0;"></p>
-												<input type="text" class="form-control"  hidden name="cardiotest.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+												<input type="text" class="form-control"  hidden name="cardiotest.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
 												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
 													<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 4, k);fieldchanged()" style="display: none;">
 												</label>
@@ -659,16 +661,16 @@
 											</div>
 											<div class="mt-2 offset-md-1 col-md-6">
 												<label for="pulse">{{'medicalcare.Pulse' | translate }}</label>
-												<input type="text" class="form-control"  name="cardiotest.pulse" [(ngModel)]="general.pulse" (change)="fieldchanged()">
+												<input type="text" class="form-control"  name="cardiotest.pulse{{k}}" [(ngModel)]="general.pulse" (change)="fieldchanged()">
 											</div>
 											<div class="mt-2 col-md-5">
 												<label for="bloodpressure" style="display: block;">{{'medicalcare.Blood pressure' | translate }}</label>
-												<input type="text" class="form-control"  style="width: 3em;display: inline;" name="cardiotest.bloodpressure" [(ngModel)]="general.bloodpressure" (change)="fieldchanged()"> /
-												<input type="text" class="form-control"  style="width: 3em;display: inline;" name="cardiotest.bloodpressure2" [(ngModel)]="general.bloodpressure2" (change)="fieldchanged()">
+												<input type="text" class="form-control"  style="width: 3em;display: inline;" name="cardiotest.bloodpressure{{k}}" [(ngModel)]="general.bloodpressure" (change)="fieldchanged()"> /
+												<input type="text" class="form-control"  style="width: 3em;display: inline;" name="cardiotest.bloodpressure2{{k}}" [(ngModel)]="general.bloodpressure2" (change)="fieldchanged()">
 											</div>
 											<div class="mt-2 offset-md-1 col-md-7">
 												<label for="lvef" style="display: block;">{{'medicalcare.Left Ventricle Ejection Fraction' | translate }}</label>
-												<input type="text" class="form-control" style="width: 4em;display: inline;" name="cardiotest.lvef" [(ngModel)]="general.lvef" (change)="fieldchanged()"> <span class="d-inline">%</span>
+												<input type="text" class="form-control" style="width: 4em;display: inline;" name="cardiotest.lvef{{k}}" [(ngModel)]="general.lvef" (change)="fieldchanged()"> <span class="d-inline">%</span>
 											</div>
                       <div class="col-md-11 offset-md-1 mt-2">
                         <button type="button" class="btn btn-outline-danger" (click)="deleteData(4,k);fieldchanged()" href="javascript:void(0)">
@@ -725,7 +727,7 @@
 											</div>
 											<div *ngIf="general.typeoftest=='Other'" class="mt-2 col-md-7">
 												<label for="otherTest">{{'medicalcare.Write the name of the test' | translate }}</label>
-												<input type="text" class="form-control"  name="respiratorytests.otherTest" [(ngModel)]="general.otherTest" (change)="fieldchanged()">
+												<input type="text" class="form-control"  name="respiratorytests.otherTest{{k}}" [(ngModel)]="general.otherTest" (change)="fieldchanged()">
 											</div>
 											<div [ngClass]="(general.typeoftest=='Other')?'mt-2 offset-md-1 col-md-3':'mt-2 col-md-3'">
 												<label for="date">{{'generics.Date' | translate }}</label>
@@ -749,7 +751,7 @@
 											<div class="mt-2 col-md-4">
 												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
 												<p style="margin: 0;"></p>
-												<input type="text" class="form-control"  hidden name="respiratorytests.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+												<input type="text" class="form-control"  hidden name="respiratorytests.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
 												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
 								<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 5, k);fieldchanged()" style="display: none;">
 							</label>
@@ -760,15 +762,15 @@
 											</div>
 											<div [ngClass]="(general.typeoftest=='Other')?'mt-2 col-md-2':'mt-2 offset-md-1 col-md-2'">
 												<label for="days">FVC (%)</label>
-												<input type="text" class="form-control"  name="respiratorytests.days" [(ngModel)]="general.fvc" (change)="fieldchanged()">
+												<input type="text" class="form-control"  name="respiratorytests.days{{k}}" [(ngModel)]="general.fvc" (change)="fieldchanged()">
 											</div>
 											<div [ngClass]="(general.typeoftest=='Other')?'mt-2 offset-md-1 col-md-4':'mt-2 col-md-4'">
 												<label for="days">PEF (L/min)</label>
-												<input type="text" class="form-control"  name="respiratorytests.days" [(ngModel)]="general.pef" (change)="fieldchanged()">
+												<input type="text" class="form-control"  name="respiratorytests.days{{k}}" [(ngModel)]="general.pef" (change)="fieldchanged()">
 											</div>
 											<div class="mt-2 col-md-4">
 												<label for="days">MIP/MEP (cmH2O)</label>
-												<input type="text" class="form-control"  name="respiratorytests.days" [(ngModel)]="general.mipmep" (change)="fieldchanged()">
+												<input type="text" class="form-control"  name="respiratorytests.days{{k}}" [(ngModel)]="general.mipmep" (change)="fieldchanged()">
 											</div>
                       <div class="col-md-11 offset-md-1 mt-2">
                         <button type="button" class="btn btn-outline-danger" (click)="deleteData(5,k);fieldchanged()" href="javascript:void(0)">
@@ -843,7 +845,7 @@
 											<div class="mt-2 col-md-3">
 												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
 												<p style="margin: 0;"></p>
-												<input type="text" class="form-control"  hidden name="bonehealthtest.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+												<input type="text" class="form-control"  hidden name="bonehealthtest.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
 												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
 								<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 6, k);fieldchanged()" style="display: none;">
 							</label>
@@ -918,7 +920,7 @@
 											<div class="mt-2 col-md-4">
 												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
 												<p style="margin: 0;"></p>
-												<input type="text" class="form-control"  hidden name="bloodtest.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+												<input type="text" class="form-control"  hidden name="bloodtest.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
 												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
 								<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 7, k);fieldchanged()" style="display: none;">
 							</label>
@@ -984,7 +986,7 @@
 											</div>
 											<div *ngIf="general.typeoftest=='Other'" class="mt-2 col-md-7">
 												<label for="otherTest">{{'medicalcare.Enter the name of the operation here' | translate }}</label>
-												<input type="text" class="form-control"  name="surgery.otherTest" [(ngModel)]="general.otherTest" (change)="fieldchanged()">
+												<input type="text" class="form-control"  name="surgery.otherTest{{k}}" [(ngModel)]="general.otherTest" (change)="fieldchanged()">
 											</div>
 											<div [ngClass]="(general.typeoftest=='Other')?'mt-2 offset-md-1 col-md-3':'mt-2 col-md-3'">
 												<label for="date">{{'generics.Date' | translate }}</label>
@@ -1008,7 +1010,7 @@
 											<div class="mt-2 col-md-3">
 												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
 												<p style="margin: 0;"></p>
-												<input type="text" class="form-control"  hidden name="surgery.hospitalrecord" [(ngModel)]="general.hospitalrecord">
+												<input type="text" class="form-control"  hidden name="surgery.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
 												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
 								<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 8, k);fieldchanged()" style="display: none;">
 							</label>
