@@ -599,6 +599,7 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
     if(this.sectionsAndProms[i].promsStructure[j].data.length==0){
       this.newchoiserangedate(i, j);
     }
+    this.listPromsChanged.push({data: this.sectionsAndProms[i].promsStructure[j].data, promId:this.sectionsAndProms[i].promsStructure[j].structure._id});
   }
 
   deletenumberchoisedate(i,j, k){
@@ -606,6 +607,7 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
     if(this.sectionsAndProms[i].promsStructure[j].data.length==0){
       this.newnumberchoisedate(i, j);
     }
+    this.listPromsChanged.push({data: this.sectionsAndProms[i].promsStructure[j].data, promId:this.sectionsAndProms[i].promsStructure[j].structure._id});
   }
 
   deleteTextAndDoubleChoiseAndRangeDate(i,j, k){
@@ -613,6 +615,7 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
     if(this.sectionsAndProms[i].promsStructure[j].data.length==0){
       this.newTextAndDoubleChoiseAndRangeDate(i, j);
     }
+    this.listPromsChanged.push({data: this.sectionsAndProms[i].promsStructure[j].data, promId:this.sectionsAndProms[i].promsStructure[j].structure._id});
   }
 
 
@@ -621,6 +624,7 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
     if(this.sectionsAndProms[i].promsStructure[j].data.length==0){
       this.newchoisedate(i, j);
     }
+    this.listPromsChanged.push({data: this.sectionsAndProms[i].promsStructure[j].data, promId:this.sectionsAndProms[i].promsStructure[j].structure._id});
   }
 
   onSubmit() {
@@ -663,94 +667,97 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
           }
         }
         if(enc){
-          if(this.sectionsAndProms[i].promsStructure[j].data.length==0){
-            // hpos a quitar
-            if(this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Toogle' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Text' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Number' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Date'){
-              if(this.sectionsAndProms[i].promsStructure[j].structure.hpo){
-                if(this.sectionsAndProms[i].promsStructure[j].structure.hpo != ""){
-                  textToRemoveHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.hpo);
-                }
-              }
-            }else{
-              if(this.sectionsAndProms[i].promsStructure[j].structure.values.length>0){
-                for (var k = 0; k < this.sectionsAndProms[i].promsStructure[j].structure.values.length; k++) {
-                  if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo){
-                    textToRemoveHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo);
+          if(this.sectionsAndProms[i].promsStructure[j].data!=null){
+            if(this.sectionsAndProms[i].promsStructure[j].data.length==0){
+              // hpos a quitar
+              if(this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Toogle' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Text' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Number' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Date'){
+                if(this.sectionsAndProms[i].promsStructure[j].structure.hpo){
+                  if(this.sectionsAndProms[i].promsStructure[j].structure.hpo != ""){
+                    textToRemoveHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.hpo);
                   }
                 }
-              }
-            }
-          }else{
-            // hpos a añadir
-            if(this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Toogle' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Text' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Number' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Date'){
-              if(this.sectionsAndProms[i].promsStructure[j].structure.hpo){
-                if(this.sectionsAndProms[i].promsStructure[j].structure.hpo != ""){
-                  textToAddHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.hpo);
-                }
-              }
-            }else{
-              if(this.sectionsAndProms[i].promsStructure[j].structure.values.length>0){
-                var textToAdd = [];
-                var textToRemove = [];
-                for (var k = 0; k < this.sectionsAndProms[i].promsStructure[j].structure.values.length; k++) {
-                  if(this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Choise' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'RadioButtons'){
-                    var promValue = this.sectionsAndProms[i].promsStructure[j].structure.values[k].original;
-                    if(this.sectionsAndProms[i].promsStructure[j].data == promValue){
-                      if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo){
-                        textToAdd.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo);
-                      }
-
-                    }else{
-                      if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo){
-                        if(!this.existsInArray(textToRemove, this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo)){
-                          textToRemove.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo);
-                        }
-                        //textToRemove.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo);
-                      }
+              }else{
+                if(this.sectionsAndProms[i].promsStructure[j].structure.values.length>0){
+                  for (var k = 0; k < this.sectionsAndProms[i].promsStructure[j].structure.values.length; k++) {
+                    if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo){
+                      textToRemoveHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo);
                     }
                   }
-                  if(this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'ChoiseSet' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'CheckboxList'){
-                    var promValue = this.sectionsAndProms[i].promsStructure[j].structure.values[k].original;
-                    for (var indexData = 0; indexData < this.sectionsAndProms[i].promsStructure[j].data.length; indexData++) {
-                      if(this.sectionsAndProms[i].promsStructure[j].data[indexData] == promValue){
+                }
+              }
+            }else{
+              // hpos a añadir
+              if(this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Toogle' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Text' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Number' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Date'){
+                if(this.sectionsAndProms[i].promsStructure[j].structure.hpo){
+                  if(this.sectionsAndProms[i].promsStructure[j].structure.hpo != ""){
+                    textToAddHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.hpo);
+                  }
+                }
+              }else{
+                if(this.sectionsAndProms[i].promsStructure[j].structure.values.length>0){
+                  var textToAdd = [];
+                  var textToRemove = [];
+                  for (var k = 0; k < this.sectionsAndProms[i].promsStructure[j].structure.values.length; k++) {
+                    if(this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Choise' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'RadioButtons'){
+                      var promValue = this.sectionsAndProms[i].promsStructure[j].structure.values[k].original;
+                      if(this.sectionsAndProms[i].promsStructure[j].data == promValue){
                         if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo){
                           textToAdd.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo);
                         }
+  
                       }else{
                         if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo){
                           if(!this.existsInArray(textToRemove, this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo)){
                             textToRemove.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo);
                           }
+                          //textToRemove.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo);
                         }
                       }
                     }
-
+                    if(this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'ChoiseSet' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'CheckboxList'){
+                      var promValue = this.sectionsAndProms[i].promsStructure[j].structure.values[k].original;
+                      for (var indexData = 0; indexData < this.sectionsAndProms[i].promsStructure[j].data.length; indexData++) {
+                        if(this.sectionsAndProms[i].promsStructure[j].data[indexData] == promValue){
+                          if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo){
+                            textToAdd.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo);
+                          }
+                        }else{
+                          if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo){
+                            if(!this.existsInArray(textToRemove, this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo)){
+                              textToRemove.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo);
+                            }
+                          }
+                        }
+                      }
+  
+                    }
+  
+  
+  
                   }
-
-
-
-                }
-
-                if(textToRemove.length>0 && textToAdd.length>0){
-                  for (var indexData = 0; indexData < textToAdd.length; indexData++) {
-                    var enc2 = false;
-                    for (var indexData2 = 0; indexData2 < textToRemove.length && !enc2; indexData2++) {
-                      if(textToRemove[indexData2] == textToAdd[indexData]){
-                        delete textToRemove[indexData2];
-                        enc2 = true;
+  
+                  if(textToRemove.length>0 && textToAdd.length>0){
+                    for (var indexData = 0; indexData < textToAdd.length; indexData++) {
+                      var enc2 = false;
+                      for (var indexData2 = 0; indexData2 < textToRemove.length && !enc2; indexData2++) {
+                        if(textToRemove[indexData2] == textToAdd[indexData]){
+                          delete textToRemove[indexData2];
+                          enc2 = true;
+                        }
                       }
                     }
                   }
-                }
-                for (var indextextToRemove = 0; indextextToRemove < textToRemove.length; indextextToRemove++) {
-                  textToRemoveHpo.push(textToRemove[indextextToRemove]);
-                }
-                for (var indextextToAdd = 0; indextextToAdd < textToAdd.length; indextextToAdd++) {
-                  textToAddHpo.push(textToAdd[indextextToAdd]);
+                  for (var indextextToRemove = 0; indextextToRemove < textToRemove.length; indextextToRemove++) {
+                    textToRemoveHpo.push(textToRemove[indextextToRemove]);
+                  }
+                  for (var indextextToAdd = 0; indextextToAdd < textToAdd.length; indextextToAdd++) {
+                    textToAddHpo.push(textToAdd[indextextToAdd]);
+                  }
                 }
               }
             }
           }
+          
         }
 
       }
