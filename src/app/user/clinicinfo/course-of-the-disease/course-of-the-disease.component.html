@@ -71,18 +71,10 @@
 														</span>
 														<!--Date-->
 														<span *ngIf="eachprom.structure.responseType=='Date' && eachprom.structure.enabled">
-															<!--<div *ngIf="!isSafari && !isIeOrEdge">
-																<input type="date" (change)="promchanged(eachprom)" class="form-control" name="dateTime{{j}}" [(ngModel)]="eachprom.data" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" dateTime #dateTime="ngModel">
-															</div>
-															<div *ngIf="isSafari || isIeOrEdge">
-															<input  class="form-control w-75 d-inline" name="dateTime{{j}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachprom.data" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
-															<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-															<mat-datepicker touchUi="true" #picker></mat-datepicker>
-															</div>-->
 															<div>
-																<input  class="form-control w-75 d-inline" name="dateTime{{j}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachprom.data" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
+																<input readonly (click)="picker.open()" class="form-control w-75 d-inline" name="dateTime{{j}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachprom.data" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
 																<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-																<mat-datepicker touchUi="true" #picker></mat-datepicker>
+																<mat-datepicker startView="multi-year" touchUi="true" #picker></mat-datepicker>
 															</div>
 														</span>
 
@@ -132,23 +124,11 @@
 																		<mat-option *ngFor="let value of eachprom.structure.values" value="{{value.original}}">{{value.translation}}</mat-option>
 																	</mat-select>
 																</div>
-																<!--<div *ngIf="!isSafari && !isIeOrEdge" class="mt-2 col-md-5">
-																	<label for="date">{{'generics.Date' | translate }}</label>
-																	<input type="date" (change)="promchanged(eachprom)" class="form-control" name="dateTime{{j}}{{k}}" [(ngModel)]="eachpromdata.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel">
-																	<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-																</div>
-																<div *ngIf="isSafari || isIeOrEdge" class="mt-2 col-md-5">
-																	<label style="display:block !important;" for="date">{{'generics.Date' | translate }}</label>
-																<input  class="form-control w-75 d-inline-block" name="dateTime{{j}}{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachpromdata.date" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
-																<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-																<mat-datepicker touchUi="true" #picker></mat-datepicker>
-																	<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-																</div>-->
 																<div class="mt-2 col-md-5">
 																	<label style="display:block !important;" for="date">{{'generics.Date' | translate }}</label>
-																	<input  class="form-control w-75 d-inline-block" name="dateTime{{j}}{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachpromdata.date" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<input readonly (click)="picker.open()" class="form-control w-75 d-inline-block" name="dateTime{{j}}{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachpromdata.date" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
 																	<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-																	<mat-datepicker touchUi="true" #picker></mat-datepicker>
+																	<mat-datepicker startView="multi-year" touchUi="true" #picker></mat-datepicker>
 																	<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
 																</div>
 
@@ -187,9 +167,9 @@
 																</div>
 																<div class="mt-2 col-md-3">
 																	<label style="display:block !important;" for="date">{{'generics.Date' | translate }}</label>
-																	<input  class="form-control w-75 d-inline-block" name="date{{j}}{{k}}"  matInput [matDatepicker]="date" [(ngModel)]="eachpromdata.date" dateTime #date="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<input readonly (click)="date.open()" class="form-control w-75 d-inline-block" name="date{{j}}{{k}}"  matInput [matDatepicker]="date" [(ngModel)]="eachpromdata.date" dateTime #date="ngModel" (ngModelChange)="promchanged(eachprom)">
 																	<mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
-																	<mat-datepicker touchUi="true" #date></mat-datepicker>
+																	<mat-datepicker startView="multi-year" touchUi="true" #date></mat-datepicker>
 																	<small class="form-text text-muted danger" *ngIf="!date.valid && (date.dirty || date.touched)">{{'generics.Invalid' | translate }}</small>
 																</div>
 																<div class="mt-4 col-md-1">
@@ -225,30 +205,18 @@
 																		<mat-option *ngFor="let value of eachprom.structure.values" value="{{value.original}}">{{value.translation}}</mat-option>
 																	</mat-select>
 																</div>
-																<!--<div *ngIf="!isSafari && !isIeOrEdge" class="mt-2 col-md-5">
-																	<label for="date">{{'generics.Date' | translate }}</label>
-																	<input type="date" (change)="promchanged(eachprom)" class="form-control" name="dateTime{{j}}{{k}}" [(ngModel)]="eachpromdata.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel">
-																	<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-																</div>
-																<div *ngIf="isSafari || isIeOrEdge" class="mt-2 col-md-5">
-																<label style="display:block !important;" for="date">{{'generics.Date' | translate }}</label>
-																<input  class="form-control w-75 d-inline-block" name="dateTime{{j}}{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachpromdata.date" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
-																<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-																<mat-datepicker touchUi="true" #picker></mat-datepicker>
-																<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-																</div>-->
 																<div class="mt-2 col-md-3">
 																	<label style="display:block !important;" for="startDate">{{'generics.Start Date' | translate }}</label>
-																	<input  class="form-control w-75 d-inline-block" name="startDate{{j}}{{k}}"  matInput [matDatepicker]="pickerStartDate" [(ngModel)]="eachpromdata.startDate" dateTime #startDate="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<input readonly (click)="pickerStartDate.open()" class="form-control w-75 d-inline-block" name="startDate{{j}}{{k}}"  matInput [matDatepicker]="pickerStartDate" [(ngModel)]="eachpromdata.startDate" dateTime #startDate="ngModel" (ngModelChange)="promchanged(eachprom)">
 																	<mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
-																	<mat-datepicker touchUi="true" #pickerStartDate></mat-datepicker>
+																	<mat-datepicker startView="multi-year" touchUi="true" #pickerStartDate></mat-datepicker>
 																	<small class="form-text text-muted danger" *ngIf="!startDate.valid && (startDate.dirty || startDate.touched)">{{'generics.Invalid' | translate }}</small>
 																</div>
 																<div class="mt-2 col-md-3">
 																	<label style="display:block !important;" for="endDate">{{'generics.End Date' | translate }}</label>
-																	<input  class="form-control w-75 d-inline-block" name="endDate{{j}}{{k}}"  matInput [matDatepicker]="pickerEndDate" [(ngModel)]="eachpromdata.endDate" dateTime #endDate="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<input readonly (click)="pickerEndDate.open()" class="form-control w-75 d-inline-block" name="endDate{{j}}{{k}}"  matInput [matDatepicker]="pickerEndDate" [(ngModel)]="eachpromdata.endDate" dateTime #endDate="ngModel" (ngModelChange)="promchanged(eachprom)">
 																	<mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
-																	<mat-datepicker touchUi="true" #pickerEndDate></mat-datepicker>
+																	<mat-datepicker startView="multi-year" touchUi="true" #pickerEndDate></mat-datepicker>
 																	<small class="form-text text-muted danger" *ngIf="!endDate.valid && (endDate.dirty || endDate.touched)">{{'generics.Invalid' | translate }}</small>
 																</div>
 																<div class="mt-4 col-md-1">
@@ -307,19 +275,6 @@
 																		<mat-option *ngFor="let value of eachprom.structure.values" value="{{value.original}}">{{value.translation}}</mat-option>
 																	</mat-select>
 																</div>
-
-																<!--<div *ngIf="!isSafari && !isIeOrEdge" class="mt-2 col-md-5">
-																	<label for="date">{{'generics.Date' | translate }}</label>
-																	<input type="date" (change)="promchanged(eachprom)" class="form-control" name="dateTime{{j}}{{k}}" [(ngModel)]="eachpromdata.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel">
-																	<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-																</div>
-																<div *ngIf="isSafari || isIeOrEdge" class="mt-2 col-md-5">
-																<label style="display:block !important;" for="date">{{'generics.Date' | translate }}</label>
-																<input  class="form-control w-75 d-inline-block" name="dateTime{{j}}{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachpromdata.date" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
-																<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-																<mat-datepicker touchUi="true" #picker></mat-datepicker>
-																<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-																</div>-->
 																<div class="mt-2 col-md-1">
 																</div>
 
@@ -329,16 +284,16 @@
 
 																<div class="mt-2 col-md-3">
 																	<label style="display:block !important;" for="startDate">{{'generics.Start Date' | translate }}</label>
-																	<input  class="form-control w-75 d-inline-block" name="startDate{{j}}{{k}}"  matInput [matDatepicker]="pickerStartDate" [(ngModel)]="eachpromdata.startDate" dateTime #startDate="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<input readonly (click)="pickerStartDate.open()" class="form-control w-75 d-inline-block" name="startDate{{j}}{{k}}"  matInput [matDatepicker]="pickerStartDate" [(ngModel)]="eachpromdata.startDate" dateTime #startDate="ngModel" (ngModelChange)="promchanged(eachprom)">
 																	<mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
-																	<mat-datepicker touchUi="true" #pickerStartDate></mat-datepicker>
+																	<mat-datepicker startView="multi-year" touchUi="true" #pickerStartDate></mat-datepicker>
 																	<small class="form-text text-muted danger" *ngIf="!startDate.valid && (startDate.dirty || startDate.touched)">{{'generics.Invalid' | translate }}</small>
 																</div>
 																<div class="mt-2 col-md-3">
 																	<label style="display:block !important;" for="endDate">{{'generics.End Date' | translate }}</label>
-																	<input  class="form-control w-75 d-inline-block" name="endDate{{j}}{{k}}"  matInput [matDatepicker]="pickerEndDate" [(ngModel)]="eachpromdata.endDate" dateTime #endDate="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<input readonly (click)="pickerEndDate.open()" class="form-control w-75 d-inline-block" name="endDate{{j}}{{k}}"  matInput [matDatepicker]="pickerEndDate" [(ngModel)]="eachpromdata.endDate" dateTime #endDate="ngModel" (ngModelChange)="promchanged(eachprom)">
 																	<mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
-																	<mat-datepicker touchUi="true" #pickerEndDate></mat-datepicker>
+																	<mat-datepicker startView="multi-year" touchUi="true" #pickerEndDate></mat-datepicker>
 																	<small class="form-text text-muted danger" *ngIf="!endDate.valid && (endDate.dirty || endDate.touched)">{{'generics.Invalid' | translate }}</small>
 																</div>
 																<div class="mt-4 col-md-4">
