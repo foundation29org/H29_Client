@@ -41,6 +41,10 @@ export class UsersAdminComponent implements OnDestroy{
   subgroups: any = [];
   countries: any;
 
+  title = 'Select/ Unselect All Checkboxes in Angular - FreakyJolly.com';
+  masterSelected:boolean;
+  checkedList:any;
+
   constructor(private http: HttpClient, public translate: TranslateService, private authService: AuthService, private authGuard: AuthGuard, public toastr: ToastsManager, private modalService: NgbModal, private dateService: DateService,private adapter: DateAdapter<any>, private sortService: SortService){
 
     this.adapter.setLocale(this.authService.getLang());
@@ -72,6 +76,10 @@ export class UsersAdminComponent implements OnDestroy{
     this.subscription.add( this.http.get('assets/jsons/subgroups.json')
     .subscribe( (res : any) => {
       this.subgroups = res;
+      for (let i = 0; i < this.subgroups.length; i++) {
+        this.subgroups[i].isSelected = false;
+      }
+      this.getCheckedItemList();
     }));
   }
 
@@ -192,6 +200,53 @@ export class UsersAdminComponent implements OnDestroy{
     this.subscription.add( this.http.put(environment.api+'/api/admin/users/state/'+user.userId, data)
     .subscribe( (res : any) => {
       this.usersCopy = JSON.parse(JSON.stringify(this.users));
+     }, (err) => {
+       console.log(err);
+     }));
+  }
+
+  selectGroupToExport(content){
+    this.checkedList = [];
+    this.modalReference = this.modalService.open(content);
+  }
+
+  // The master checkbox will check/ uncheck all items
+  checkUncheckAll() {
+    for (var i = 0; i < this.subgroups.length; i++) {
+      this.subgroups[i].isSelected = this.masterSelected;
+    }
+    this.getCheckedItemList();
+  }
+
+  // Check All Checkbox Checked
+  isAllSelected() {
+    this.masterSelected = this.subgroups.every(function(item:any) {
+        return item.isSelected == true;
+      })
+    this.getCheckedItemList();
+  }
+
+  // Get List of Checked Items
+  getCheckedItemList(){
+    this.checkedList = [];
+    for (var i = 0; i < this.subgroups.length; i++) {
+      if(this.subgroups[i].isSelected)
+      this.checkedList.push(this.subgroups[i]);
+    }
+    //this.checkedList = JSON.stringify(this.checkedList);
+  }
+
+  onSubmitExportData(){
+    var dataSubgroups = [];
+    for (var i = 0; i < this.checkedList.length; i++) {
+      dataSubgroups.push(this.checkedList[i].id);
+    }
+    console.log(dataSubgroups);
+    
+    this.subscription.add( this.http.post(environment.api+'/api/exportsubgroups', dataSubgroups)
+    .subscribe( (res : any) => {
+      console.log(res);
+      this.modalReference.close();
      }, (err) => {
        console.log(err);
      }));
