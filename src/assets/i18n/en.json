@@ -238,7 +238,9 @@
     "Organization": "Organization",
     "Select organization": "Select organization",
     "I can’t find": "I can’t find my group",
-    "I don’t belong to any": "I don’t belong to any group"
+    "I don’t belong to any": "I don’t belong to any group",
+    "Select/ Unselect All": "Select/ Unselect All",
+    "Exporting": "Exporting"
   },
   "lang":{
     "Question deleted successfully": "Question deleted successfully",

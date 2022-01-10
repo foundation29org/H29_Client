@@ -29,6 +29,7 @@ export class UsersAdminComponent implements OnDestroy{
   allLangs: any;
   langs: any;
   working: boolean = false;
+  sending: boolean = false;
   loadingUsers: boolean = false;
   users: any = [];
   usersCopy: any = [];
@@ -41,8 +42,8 @@ export class UsersAdminComponent implements OnDestroy{
   subgroups: any = [];
   countries: any;
 
-  title = 'Select/ Unselect All Checkboxes in Angular - FreakyJolly.com';
-  masterSelected:boolean;
+  title = 'Select/ Unselect All';
+  masterSelected:boolean = false;
   checkedList:any;
 
   constructor(private http: HttpClient, public translate: TranslateService, private authService: AuthService, private authGuard: AuthGuard, public toastr: ToastsManager, private modalService: NgbModal, private dateService: DateService,private adapter: DateAdapter<any>, private sortService: SortService){
@@ -207,6 +208,8 @@ export class UsersAdminComponent implements OnDestroy{
 
   selectGroupToExport(content){
     this.checkedList = [];
+    this.masterSelected = false;
+    this.checkUncheckAll();
     this.modalReference = this.modalService.open(content);
   }
 
@@ -220,34 +223,60 @@ export class UsersAdminComponent implements OnDestroy{
 
   // Check All Checkbox Checked
   isAllSelected() {
-    this.masterSelected = this.subgroups.every(function(item:any) {
-        return item.isSelected == true;
-      })
+    /*this.masterSelected = this.subgroups.every(function(item:any) {
+      console.log(item)
+        return (item.isSelected == true);
+      })*/
     this.getCheckedItemList();
   }
 
   // Get List of Checked Items
   getCheckedItemList(){
     this.checkedList = [];
+    var oneUnselected = false;
     for (var i = 0; i < this.subgroups.length; i++) {
-      if(this.subgroups[i].isSelected)
-      this.checkedList.push(this.subgroups[i]);
+      if(this.subgroups[i].isSelected){
+        this.checkedList.push(this.subgroups[i]);
+      }else{
+        oneUnselected = true;
+      }
     }
     //this.checkedList = JSON.stringify(this.checkedList);
   }
 
   onSubmitExportData(){
+    this.sending = true;
     var dataSubgroups = [];
+    var dataExported = {};
     for (var i = 0; i < this.checkedList.length; i++) {
       dataSubgroups.push(this.checkedList[i].id);
+      dataExported[this.checkedList[i].id]={name: this.checkedList[i].name, country: this.checkedList[i].country};
     }
-    console.log(dataSubgroups);
-    
     this.subscription.add( this.http.post(environment.api+'/api/exportsubgroups', dataSubgroups)
     .subscribe( (res : any) => {
       console.log(res);
+      this.sending = false;
+      res.metadata.subgroups = dataExported;
+      var json = JSON.stringify(res);
+      
+        var blob = new Blob([json], {type: "application/json"});
+        var url  = URL.createObjectURL(blob);
+        var p = document.createElement('p');
+        document.getElementById('content').appendChild(p);
+
+        var a = document.createElement('a');
+        var dateNow = new Date();
+        var stringDateNow = this.dateService.transformDate(dateNow);
+        a.download    = "dataRaito_"+stringDateNow+".json";
+        a.href        = url;
+        a.textContent = "dataRaito_"+stringDateNow+".json";
+        a.setAttribute("id", "download")
+
+        document.getElementById('content').appendChild(a);
+        document.getElementById("download").click();
       this.modalReference.close();
      }, (err) => {
+      this.sending = false;
        console.log(err);
      }));
   }

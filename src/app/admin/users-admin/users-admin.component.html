@@ -235,7 +235,7 @@
 											  <ul class="list-group">
 												<li class="list-group-item">
 												  <input type="checkbox" [(ngModel)]="masterSelected" name="list_name" value="m1"
-													(change)="checkUncheckAll()" /> <strong>Select/ Unselect All</strong>
+													(change)="checkUncheckAll()" /> <strong>{{'generics.Select/ Unselect All' | translate }}</strong>
 												</li>
 											  </ul>
 											  <ul class="list-group">
@@ -264,8 +264,11 @@
 															<button class="btn btn-raised btn-raised btn-primary" type="submit">{{'generics.ExportData' | translate }}</button>
 														</div>
 														<div class="col-md-12 center-elements" *ngIf="sending">
-															<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+															<div>
+																<p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+																<p>{{'generics.Exporting' | translate }}</p>
 														</div>
+														<div class="d-none"><span id="content"></span></div>
 												</div>
 											</div>
 										  </div>
