@@ -254,7 +254,6 @@ export class UsersAdminComponent implements OnDestroy{
     }
     this.subscription.add( this.http.post(environment.api+'/api/exportsubgroups', dataSubgroups)
     .subscribe( (res : any) => {
-      console.log(res);
       this.sending = false;
       res.metadata.subgroups = dataExported;
       var json = JSON.stringify(res);

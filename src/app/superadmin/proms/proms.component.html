@@ -1,27 +1,44 @@
 <!--User Profile Starts-->
 <section id="basic-form-layouts">
 	<div class="row">
-      <div class="col-sm-12">
-          <div class="content-header">Proms</div>
-      </div>
-  </div>
+		<div class="col-sm-12">
+			<div class="content-header">Proms</div>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-md-6">
-		  <div class="form-group">
-		    <label for="lang">{{'groups.Groups' | translate }}</label>
-		    <select id="lang" name="lang" class="form-control"  [(ngModel)]="groupSelected" #groupselected (ngModelChange)="onChangeGroup(groupSelected)">
-		      <option *ngFor="let group of groups" [ngValue]="group"> {{group.name}}</option>
-		    </select>
-		  </div>
+			<div class="form-group">
+				<label for="lang">{{'groups.Groups' | translate }}</label>
+				<select id="lang" name="lang" class="form-control" [(ngModel)]="groupSelected" #groupselected
+					(ngModelChange)="onChangeGroup(groupSelected)">
+					<option *ngFor="let group of groups" [ngValue]="group"> {{group.name}}</option>
+				</select>
+			</div>
 		</div>
 		<div class="col-md-6" *ngIf="!showTranslations && groupSelected.name">
-		  <div class="form-group">
-				<button type="button" class="pull-right btn btn-sm btn-raised btn-raised btn-primary" (click)="showPanelTranslations()">Translations</button>
+			<div class="form-group">
+				<button type="button" class="pull-right btn btn-sm btn-raised btn-raised btn-primary"
+					(click)="showPanelTranslations()">Translations</button>
+
+					<input type="file" #fileDropRef id="fileDropRef" multiple style="display: none;"
+					(change)="onFileChange($event);"
+					accept=".json" />
+				<label *ngIf="!sending" class="pull-right btn btn-sm btn-raised btn-raised btn-primary mr-2"
+					style="text-transform: none;letter-spacing: 0px;cursor: pointer;"
+					for="fileDropRef">Import datapoints</label>
+					<div class="col-md-12 center-elements pull-right" *ngIf="sending">
+						<div>
+							<p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i>
+								<span>Importing</span>
+							</p>
+						</div>
+					</div>
 			</div>
 		</div>
 		<div class="col-md-6" *ngIf="showTranslations">
-		  <div class="form-group">
-				<button type="button" class="float-right btn btn-raised btn-danger" (click)="back()">{{'generics.Back' | translate }}</button>
+			<div class="form-group">
+				<button type="button" class="float-right btn btn-raised btn-danger" (click)="back()">{{'generics.Back' |
+					translate }}</button>
 			</div>
 		</div>
 	</div>
@@ -30,7 +47,8 @@
 			<div class="card">
 				<div class="card-header">
 					Sections
-					<button type="button" class="pull-right btn btn-sm btn-raised btn-raised btn-primary" (click)="newSection(contentNewSection)"> New Section</button>
+					<button type="button" class="pull-right btn btn-sm btn-raised btn-raised btn-primary"
+						(click)="newSection(contentNewSection)"> New Section</button>
 				</div>
 				<div class="card-body">
 					<div class="row">
@@ -54,17 +72,20 @@
 												<td>{{section.order}}</td>
 												<td>{{section.enabled}}</td>
 												<td>
-													<a class="green" data-original-title="" title="" (click)="seeProms(section)">
+													<a class="green" data-original-title="" title=""
+														(click)="seeProms(section)">
 														<i class="ft-eye"></i>
 													</a>
 												</td>
 												<td>
-													<a class="primary" data-original-title="" title="" (click)="editSection(section, contentNewSection)">
+													<a class="primary" data-original-title="" title=""
+														(click)="editSection(section, contentNewSection)">
 														<i class="ft-edit"></i>
 													</a>
 												</td>
 												<td>
-													<a class="danger" data-original-title="" title="" (click)="confirmDeleteSection(section)">
+													<a class="danger" data-original-title="" title=""
+														(click)="confirmDeleteSection(section)">
 														<i class="ft-x"></i>
 													</a>
 												</td>
@@ -76,7 +97,10 @@
 									No sections, please add new.
 								</div>
 								<div class="col-md-12 center-elements" *ngIf="loading || sending">
-									<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+									<div>
+										<p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i>
+										</p>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -89,7 +113,8 @@
 			<div class="card">
 				<div class="card-header">
 					Proms of {{actualSection.name}}
-					<button type="button" class="pull-right btn btn-sm btn-raised btn-raised btn-primary" (click)="newProm(contentProm)"> New Prom</button>
+					<button type="button" class="pull-right btn btn-sm btn-raised btn-raised btn-primary"
+						(click)="newProm(contentProm)"> New Prom</button>
 				</div>
 				<div class="card-body">
 					<div class="row">
@@ -115,12 +140,14 @@
 												<td>{{prom.enabled}}</td>
 												<td>{{prom.order}}</td>
 												<td>
-													<a class="primary" data-original-title="" title="" (click)="editProm(prom, contentProm)">
+													<a class="primary" data-original-title="" title=""
+														(click)="editProm(prom, contentProm)">
 														<i class="ft-edit"></i>
 													</a>
 												</td>
 												<td>
-													<a class="danger" data-original-title="" title="" (click)="confirmDeleteProm(prom)">
+													<a class="danger" data-original-title="" title=""
+														(click)="confirmDeleteProm(prom)">
 														<i class="ft-x"></i>
 													</a>
 												</td>
@@ -132,7 +159,10 @@
 									No proms, please add new.
 								</div>
 								<div class="col-md-12 center-elements" *ngIf="sending">
-									<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+									<div>
+										<p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i>
+										</p>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -144,290 +174,479 @@
 		<ng-template #contentNewSection let-c="close" let-d="dismiss">
 			<form class="form" (ngSubmit)="submitNewSection()" #fsection="ngForm">
 				<div class="modal-header">
-						<h4 class="modal-title">New Section</h4>
-						<button type="button" class="close" aria-label="Close" (click)="closePanelSection()">
+					<h4 class="modal-title">New Section</h4>
+					<button type="button" class="close" aria-label="Close" (click)="closePanelSection()">
 						<span aria-hidden="true">&times;</span>
-						</button>
+					</button>
 				</div>
 				<div class="modal-body">
-						<div class="form-body">
-							<div class="row">
-								<div class="col-sm-12">
-										<div class="card-body">
+					<div class="form-body">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="card-body">
 
-												<div class="col-md-12">
-													<div class="form-group" *ngIf="editingsection">
-														<p class="content-sub-header">{{'generics.Edit' | translate }} {{section.name}}</p>
-													</div>
-													<div class="form-group">
-														<label for="name">{{'generics.Name' | translate }}</label>
-														<input  type="text" id="name" class="form-control"  name="name" [(ngModel)]="section.name" required #name="ngModel">
-														<small class="form-text text-muted danger" *ngIf="(!name.valid && showError) || (!name.valid && (name.dirty || name.touched))">{{'generics.required' | translate }}</small>
-													</div>
-												</div>
-												<div class="col-md-12">
-													<div class="form-group">
-														<label for="description">description</label>
-														  <textarea name="description" #description="ngModel" class="autoajustable form-control" [(ngModel)]="section.description" placeholder="type description"></textarea>
-														<small class="form-text text-muted danger" *ngIf="!description.valid && (description.dirty || description.touched)">{{'generics.required' | translate }}</small>
-													</div>
-												</div>
-												<div class="col-md-12">
-													<div class="form-group">
-														<label for="order">order</label>
-														<input  type="text" class="form-control" id="order" name="order" [(ngModel)]="section.order" digits #order="ngModel">
-														<small class="form-text text-muted danger" *ngIf="!order.valid && (order.dirty || order.touched) && order.errors?.digits">Only integers are allowed</small>
-													</div>
-												</div>
-												<div class="col-md-12">
-													<div class="form-group">
-														<label for="enabled">Enabled section</label>
-														<p>
-															<ui-switch id="enabled" name="enabled" [(ngModel)]="section.enabled"></ui-switch>
-														</p>
-													</div>
-												</div>
-
+									<div class="col-md-12">
+										<div class="form-group" *ngIf="editingsection">
+											<p class="content-sub-header">{{'generics.Edit' | translate }}
+												{{section.name}}</p>
 										</div>
+										<div class="form-group">
+											<label for="name">{{'generics.Name' | translate }}</label>
+											<input type="text" id="name" class="form-control" name="name"
+												[(ngModel)]="section.name" required #name="ngModel">
+											<small class="form-text text-muted danger"
+												*ngIf="(!name.valid && showError) || (!name.valid && (name.dirty || name.touched))">{{'generics.required'
+												| translate }}</small>
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label for="description">description</label>
+											<textarea name="description" #description="ngModel"
+												class="autoajustable form-control" [(ngModel)]="section.description"
+												placeholder="type description"></textarea>
+											<small class="form-text text-muted danger"
+												*ngIf="!description.valid && (description.dirty || description.touched)">{{'generics.required'
+												| translate }}</small>
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label for="order">order</label>
+											<input type="text" class="form-control" id="order" name="order"
+												[(ngModel)]="section.order" digits #order="ngModel">
+											<small class="form-text text-muted danger"
+												*ngIf="!order.valid && (order.dirty || order.touched) && order.errors?.digits">Only
+												integers are allowed</small>
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label for="enabled">Enabled section</label>
+											<p>
+												<ui-switch id="enabled" name="enabled" [(ngModel)]="section.enabled">
+												</ui-switch>
+											</p>
+										</div>
+									</div>
+
 								</div>
 							</div>
 						</div>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<div class="form-actions center" *ngIf="!sending">
-							<button type="button" class="btn btn-secondary btn-raised" (click)="closePanelSection()">{{'generics.Close' | translate }}</button>
-							<div *ngIf="fsection.valid;then formValid else formError"></div>
-							<ng-template #formValid><button class="btn btn-raised btn-raised btn-primary" type="submit" ><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
-							<ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidSectionForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
+						<button type="button" class="btn btn-secondary btn-raised"
+							(click)="closePanelSection()">{{'generics.Close' | translate }}</button>
+						<div *ngIf="fsection.valid;then formValid else formError"></div>
+						<ng-template #formValid><button class="btn btn-raised btn-raised btn-primary" type="submit"><i
+									class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button>
+						</ng-template>
+						<ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button"
+								(click)="submitInvalidSectionForm()"><i class="fa fa-check-square-o"></i>
+								{{'generics.Save' | translate }}</button></ng-template>
 					</div>
 				</div>
-				</form>
+			</form>
 		</ng-template>
 		<ng-template #contentProm let-c="close" let-d="dismiss">
 			<form class="form" (ngSubmit)="onSubmit()" #f="ngForm">
 				<div class="modal-header">
-						<h4 class="modal-title" *ngIf="!editing">New Prom</h4>
-						<h4 class="modal-title" *ngIf="editing">Update Prom</h4>
-						<button type="button" class="close" aria-label="Close" (click)="closePanelProm()">
+					<h4 class="modal-title" *ngIf="!editing">New Prom</h4>
+					<h4 class="modal-title" *ngIf="editing">Update Prom</h4>
+					<button type="button" class="close" aria-label="Close" (click)="closePanelProm()">
 						<span aria-hidden="true">&times;</span>
-						</button>
+					</button>
 				</div>
 				<div class="modal-body">
 					<div class="form-body">
 						<div class="row">
 
 							<div class="col-md-12">
-									<div class="card-header">
-										{{'generics.fieldsRequired' | translate }}
-									</div>
-									<div class="card-body">
-										<div class="row">
-											<div class="col-md-12">
-												<div class="px-3">
-													<div class="col-md-12">
-														<div class="px-3">
+								<div class="card-header">
+									{{'generics.fieldsRequired' | translate }}
+								</div>
+								<div class="card-body">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="px-3">
+												<div class="col-md-12">
+													<div class="px-3">
 
-																<div class="form-body">
-																	<div class="row">
-																		<div class="col-md-6">
-																			<div class="form-group">
-																				<label for="nameprom">* {{'personalinfo.First Name' | translate }}</label>
-																				<input type="text" id="nameprom" class="form-control"  name="nameprom" [(ngModel)]="prom.name" required nameprom #nameprom="ngModel">
-																				<small class="form-text text-muted danger" *ngIf="(!nameprom.valid && showError) || !nameprom.valid && (nameprom.dirty || nameprom.touched)">{{'generics.required' | translate }}</small>
-																			</div>
-																		</div>
-																		<div class="col-md-6">
-																			<div class="form-group">
-																				<label for="responseType">* Response Type</label>
-																				<select id="responseType" name="responseType" class="form-control"  [(ngModel)]="prom.responseType">
-																					<option value="CheckboxList">CheckboxList</option>
-																					<option value="Choise">Choise</option>
-																					<option value="ChoiseSet">ChoiseSet</option>
-																					<option value="ChoiseAndDate">Choise + Date</option>
-																					<option value="ChoiseAndRangeDate">Choise + RangeDate</option>
-																					<option value="Date">Date</option>
-																					<option value="Label">Label</option>
-																					<option value="Number">Number</option>
-																					<option value="NumberChoiseAndDate">Number + Choise + Date</option>
-																					<option value="RadioButtons">Radio buttons</option>
-																					<option value="Text">Text</option>
-																					<option value="TextAndDoubleChoiseAndRangeDate">Text + Double Choise + RangeDate</option>
-																					<option value="Title">Title</option>
-																					<option value="Time">Time</option>
-																					<option value="Toogle">Toogle</option>
-																				</select>
-																			</div>
-																		</div>
-																		<div class="col-md-12 form-group">
-																			<label for="hpo">HPO</label>
-																			<select name="hpo" class="form-control"  [(ngModel)]="prom.hpo">
-																				<option value="" > None</option>
-																				<option *ngFor="let hpo of groupPhenotype" [ngValue]="hpo.id" > {{hpo|json}}</option>
-																			</select>
-																		</div>
-																		<div class="col-md-9">
-																			<div class="form-group">
-																				<label for="question">* Question</label>
-																				<textarea id="question" name="question" class="autoajustable form-control" [(ngModel)]="prom.question" required name="question" question #question="ngModel"></textarea>
-																				<small class="form-text text-muted danger" *ngIf="(!question.valid && showError) || !question.valid && (question.dirty || question.touched)">{{'generics.required' | translate }}</small>
-																			</div>
-																		</div>
-																		<!--<div class="col-md-9">
+														<div class="form-body">
+															<div class="row">
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<label for="nameprom">* {{'personalinfo.First
+																			Name' | translate }}</label>
+																		<input type="text" id="nameprom"
+																			class="form-control" name="nameprom"
+																			[(ngModel)]="prom.name" required nameprom
+																			#nameprom="ngModel">
+																		<small class="form-text text-muted danger"
+																			*ngIf="(!nameprom.valid && showError) || !nameprom.valid && (nameprom.dirty || nameprom.touched)">{{'generics.required'
+																			| translate }}</small>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<label for="responseType">* Response
+																			Type</label>
+																		<select id="responseType" name="responseType"
+																			class="form-control"
+																			[(ngModel)]="prom.responseType">
+																			<option value="CheckboxList">CheckboxList
+																			</option>
+																			<option value="Choise">Choise</option>
+																			<option value="ChoiseSet">ChoiseSet</option>
+																			<option value="ChoiseAndDate">Choise + Date
+																			</option>
+																			<option value="ChoiseAndRangeDate">Choise +
+																				RangeDate</option>
+																			<option value="Date">Date</option>
+																			<option value="Label">Label</option>
+																			<option value="Number">Number</option>
+																			<option value="NumberChoiseAndDate">Number +
+																				Choise + Date</option>
+																			<option value="RadioButtons">Radio buttons
+																			</option>
+																			<option value="Text">Text</option>
+																			<option
+																				value="TextAndDoubleChoiseAndRangeDate">
+																				Text + Double Choise + RangeDate
+																			</option>
+																			<option value="Title">Title</option>
+																			<option value="Time">Time</option>
+																			<option value="Toogle">Toogle</option>
+																		</select>
+																	</div>
+																</div>
+																<div class="col-md-12">
+																	<label for="annotations">Annotations</label>
+																	<ng-template #rt let-r="result" let-t="term">
+																		{{ r.name}}
+																	</ng-template>
+																	<div class="form-group">
+																		<input #input class="input" type="text"
+																			name="modelTemp" class="form-control mb-3 col-md-6"
+																			[(ngModel)]="modelTemp"
+																			[ngbTypeahead]="searchSymptoms"
+																			[resultTemplate]="rt"
+																			[inputFormatter]="formatter1"
+																			placeholder="Type the annotation"
+																			(selectItem)="selected($event)"/>
+																	</div>
+																	<span class="btn btn-primary btn-sm selected"
+																		style="margin-right: 0.5em;"
+																		*ngFor="let item of prom.annotations">
+																		<span style="color: black !important;">
+																			{{item}}
+																			<span class="close-selected"
+																				(click)="deleteItem(item)">&nbsp;x</span>
+																		</span>
+																	</span>
+																	<span
+																		*ngIf="!foundlab && modelTemp && !searchinglab">
+																		<span class="btn btn-danger btn-sm selected"
+																			style="margin-right: 0.5em;"
+																			*ngIf="modelTemp.length>0">
+																			<span style="color: white !important;"
+																				(click)="addItem(modelTemp)">Click to add: {{modelTemp}}</span>
+																		</span>
+																	</span>
+																</div>
+																<div class="col-md-12 form-group">
+																	<label for="hpo">HPO</label>
+																	<select name="hpo" class="form-control"
+																		[(ngModel)]="prom.hpo">
+																		<option value=""> None</option>
+																		<option *ngFor="let hpo of groupPhenotype"
+																			[ngValue]="hpo.id"> {{hpo|json}}</option>
+																	</select>
+																</div>
+																<div class="col-md-9">
+																	<div class="form-group">
+																		<label for="question">* Question</label>
+																		<textarea id="question" name="question"
+																			class="autoajustable form-control"
+																			[(ngModel)]="prom.question" required
+																			name="question" question
+																			#question="ngModel"></textarea>
+																		<small class="form-text text-muted danger"
+																			*ngIf="(!question.valid && showError) || !question.valid && (question.dirty || question.touched)">{{'generics.required'
+																			| translate }}</small>
+																	</div>
+																</div>
+																<!--<div class="col-md-9">
 																			<div class="form-group">
 																				<label for="question">* Question</label>
 																				<textarea id="question" name="question" class="autoajustable form-control" [(ngModel)]="prom.question"></textarea>
 																			</div>
 																		</div>-->
-																		<div class="col-md-3">
-																			<div class="form-group">
-																				<label for="hideQuestion">Hide Question</label>
-																				<p>
-																					<ui-switch id="hideQuestion" name="hideQuestion" [(ngModel)]="prom.hideQuestion"></ui-switch>
-																				</p>
-																			</div>
-																		</div>
-																		<div class="col-md-3">
-																			<div class="form-group">
-																				<label for="marginTop">Margin Top</label>
-																				<p>
-																					<ui-switch id="marginTop" name="marginTop" [(ngModel)]="prom.marginTop"></ui-switch>
-																				</p>
-																			</div>
-																		</div>
-																		<div class="col-md-3">
-																			<div class="form-group">
-																				<label for="order">* Order</label>
-																				<input type="text" id="order" class="form-control"  name="order" [(ngModel)]="prom.order" required number #order="ngModel">
-																				<small class="form-text text-muted danger" *ngIf="order.errors?.number">number error</small>
-																				<small class="form-text text-muted danger" *ngIf="(!order.valid && showError) || (!order.valid && (order.dirty || order.touched))">{{'generics.required' | translate }}</small>
-																			</div>
-																		</div>
-																		<div class="col-md-3">
-																			<div class="form-group">
-																				<label for="periodicity">* Periodicity</label>
-																				<input type="text" id="periodicity" class="form-control"  name="periodicity" [(ngModel)]="prom.periodicity" required number #periodicity="ngModel">
-																				<small class="form-text text-muted danger" *ngIf="periodicity.errors?.number">number error</small>
-																				<small class="form-text text-muted danger" *ngIf="(!periodicity.valid && showError) || (!periodicity && (periodicity.dirty || periodicity.touched))">{{'generics.required' | translate }}</small>
-																			</div>
-																		</div>
-																		<div class="col-md-6">
-																		  <div class="form-group">
-																		    <label for="relatedTo">Related to</label>
-																				<select id="relatedTo" name="relatedTo" class="form-control"  [(ngModel)]="prom.relatedTo">
-																					<option *ngIf="proms.length==0" [ngValue]="null" selected>None</option>
-																					<option *ngIf="proms.length>0" [ngValue]="null">None</option>
-																					<option *ngIf="proms.length>0" [ngValue]="proms[0]._id" selected>{{proms[0].name}}</option>
-																					<ng-container *ngFor="let eachprom of proms">
-																					  <option *ngIf="(eachprom._id!=prom._id)&&(eachprom._id!=proms[0]._id)"  [ngValue]="eachprom._id" >{{eachprom.name}}</option>
-																					</ng-container>
-																				</select>
-																		  </div>
-																		</div>
-																		<div class="col-md-6">
-																			<div class="form-group">
-																				<label for="disableDataPoints">Disable with datapoint checked</label>
-																				<select id="disableDataPoints" name="disableDataPoints" class="form-control"  [(ngModel)]="prom.disableDataPoints">
-																					<option [ngValue]="null" selected>None</option>
-																					<ng-container *ngFor="let eachprom of proms" >
-																					<option *ngIf="eachprom._id!=prom._id"  [ngValue]="eachprom._id" >{{eachprom.name}}</option>
-																					</ng-container>
-																				</select>
-																			</div>
-																		</div>
-																		<div class="col-md-6">
-																			<div class="form-group">
-																				<label for="width">Width</label>
-																				<select id="width" name="width" class="form-control"  [(ngModel)]="prom.width" required width #width="ngModel">
-																					<option value="3">Small</option>
-																					<option value="4">Normal</option>
-																					<option value="6">Medium</option>
-																					<option value="12">Large</option>
-																				</select>
-																				<small class="form-text text-muted danger" *ngIf="(!width.valid && showError) || !width.valid && (width.dirty || width.touched)">{{'generics.required' | translate }}</small>
-																			</div>
-																		</div>
-																		<div class="col-md-3">
-																			<div class="form-group">
-																				<label for="isRequired">Required</label>
-																				<p>
-																					<ui-switch id="isRequired" name="isRequired" [(ngModel)]="prom.isRequired"></ui-switch>
-																				</p>
-																			</div>
-																		</div>
-																		<div class="col-md-3">
-																			<div class="form-group">
-																				<label for="enabled">Enabled prom</label>
-																				<p>
-																					<ui-switch id="enabled" name="enabled" [(ngModel)]="prom.enabled"></ui-switch>
-																				</p>
-																			</div>
-																		</div>
+																<div class="col-md-3">
+																	<div class="form-group">
+																		<label for="hideQuestion">Hide Question</label>
+																		<p>
+																			<ui-switch id="hideQuestion"
+																				name="hideQuestion"
+																				[(ngModel)]="prom.hideQuestion">
+																			</ui-switch>
+																		</p>
+																	</div>
+																</div>
+																<div class="col-md-3">
+																	<div class="form-group">
+																		<label for="marginTop">Margin Top</label>
+																		<p>
+																			<ui-switch id="marginTop" name="marginTop"
+																				[(ngModel)]="prom.marginTop">
+																			</ui-switch>
+																		</p>
+																	</div>
+																</div>
+																<div class="col-md-3">
+																	<div class="form-group">
+																		<label for="order">* Order</label>
+																		<input type="text" id="order"
+																			class="form-control" name="order"
+																			[(ngModel)]="prom.order" required number
+																			#order="ngModel">
+																		<small class="form-text text-muted danger"
+																			*ngIf="order.errors?.number">number
+																			error</small>
+																		<small class="form-text text-muted danger"
+																			*ngIf="(!order.valid && showError) || (!order.valid && (order.dirty || order.touched))">{{'generics.required'
+																			| translate }}</small>
+																	</div>
+																</div>
+																<div class="col-md-3">
+																	<div class="form-group">
+																		<label for="periodicity">* Periodicity</label>
+																		<input type="text" id="periodicity"
+																			class="form-control" name="periodicity"
+																			[(ngModel)]="prom.periodicity" required
+																			number #periodicity="ngModel">
+																		<small class="form-text text-muted danger"
+																			*ngIf="periodicity.errors?.number">number
+																			error</small>
+																		<small class="form-text text-muted danger"
+																			*ngIf="(!periodicity.valid && showError) || (!periodicity && (periodicity.dirty || periodicity.touched))">{{'generics.required'
+																			| translate }}</small>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<label for="relatedTo">Related to</label>
+																		<select id="relatedTo" name="relatedTo"
+																			class="form-control"
+																			[(ngModel)]="prom.relatedTo">
+																			<option *ngIf="proms.length==0"
+																				[ngValue]="null" selected>None</option>
+																			<option *ngIf="proms.length>0"
+																				[ngValue]="null">None</option>
+																			<option *ngIf="proms.length>0"
+																				[ngValue]="proms[0]._id" selected>
+																				{{proms[0].name}}</option>
+																			<ng-container
+																				*ngFor="let eachprom of proms">
+																				<option
+																					*ngIf="(eachprom._id!=prom._id)&&(eachprom._id!=proms[0]._id)"
+																					[ngValue]="eachprom._id">
+																					{{eachprom.name}}</option>
+																			</ng-container>
+																		</select>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<label for="disableDataPoints">Disable with
+																			datapoint checked</label>
+																		<select id="disableDataPoints"
+																			name="disableDataPoints"
+																			class="form-control"
+																			[(ngModel)]="prom.disableDataPoints">
+																			<option [ngValue]="null" selected>None
+																			</option>
+																			<ng-container
+																				*ngFor="let eachprom of proms">
+																				<option *ngIf="eachprom._id!=prom._id"
+																					[ngValue]="eachprom._id">
+																					{{eachprom.name}}</option>
+																			</ng-container>
+																		</select>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<label for="width">Width</label>
+																		<select id="width" name="width"
+																			class="form-control"
+																			[(ngModel)]="prom.width" required width
+																			#width="ngModel">
+																			<option value="3">Small</option>
+																			<option value="4">Normal</option>
+																			<option value="6">Medium</option>
+																			<option value="12">Large</option>
+																		</select>
+																		<small class="form-text text-muted danger"
+																			*ngIf="(!width.valid && showError) || !width.valid && (width.dirty || width.touched)">{{'generics.required'
+																			| translate }}</small>
+																	</div>
+																</div>
+																<div class="col-md-3">
+																	<div class="form-group">
+																		<label for="isRequired">Required</label>
+																		<p>
+																			<ui-switch id="isRequired" name="isRequired"
+																				[(ngModel)]="prom.isRequired">
+																			</ui-switch>
+																		</p>
+																	</div>
+																</div>
+																<div class="col-md-3">
+																	<div class="form-group">
+																		<label for="enabled">Enabled prom</label>
+																		<p>
+																			<ui-switch id="enabled" name="enabled"
+																				[(ngModel)]="prom.enabled"></ui-switch>
+																		</p>
+																	</div>
+																</div>
+																<div class="col-md-12">
+																	<h4 class="form-section">Values</h4>
+																	<div class="row">
 																		<div class="col-md-12">
-																			<h4 class="form-section">Values</h4>
-																			<div class="row">
-																				<div class="col-md-12">
-																					<div class="form-group">
-																						<div class="table-responsive">
-																							<table class="table text-center">
-																								<thead>
-																									<tr>
-																										<th>{{'generics.Name' | translate }}</th>
-																										<th>{{'generics.Edit' | translate }}</th>
-																										<th>{{'generics.Delete' | translate }}</th>
-																									</tr>
-																								</thead>
-																								<tbody>
-																									<tr *ngFor="let eachvalue of prom.values ; let i = index">
-																										<td>{{eachvalue | json}}</td>
-																										<td>
-																											<a class="warning" data-original-title="" title="" (click)="editValueForProm(i)">
-																												<i class="icon-note"></i>
-																											</a>
-																										</td>
-																										<td>
-																											<a class="danger" data-original-title="" title="" (click)="deleteValueForProm(i)">
-																												<i class="ft-x"></i>
-																											</a>
-																										</td>
-																									</tr>
-																								</tbody>
-																							</table>
-																						</div>
-																					</div>
+																			<div class="form-group">
+																				<div class="table-responsive">
+																					<table class="table text-center">
+																						<thead>
+																							<tr>
+																								<th>{{'generics.Name' |
+																									translate }}</th>
+																								<th>{{'generics.Edit' |
+																									translate }}</th>
+																								<th>{{'generics.Delete'
+																									| translate }}</th>
+																							</tr>
+																						</thead>
+																						<tbody>
+																							<tr
+																								*ngFor="let eachvalue of prom.values ; let i = index">
+																								<td>{{eachvalue | json}}
+																								</td>
+																								<td>
+																									<a class="warning"
+																										data-original-title=""
+																										title=""
+																										(click)="editValueForProm(i)">
+																										<i
+																											class="icon-note"></i>
+																									</a>
+																								</td>
+																								<td>
+																									<a class="danger"
+																										data-original-title=""
+																										title=""
+																										(click)="deleteValueForProm(i)">
+																										<i
+																											class="ft-x"></i>
+																									</a>
+																								</td>
+																							</tr>
+																						</tbody>
+																					</table>
 																				</div>
-																				<div class="row col-md-12">
-																					<div class="col-md-6 form-group">
-																						<label for="newvalue">New value</label>
-																						<input type="text" id="newvalue" class="form-control"  name="newvalue" [(ngModel)]="newvalue">
-																					</div>
-																					<div class="col-md-4 form-group">
-																						<label for="actualHpo">HPO</label>
-																						<select name="actualHpo" class="form-control"  [(ngModel)]="actualHpo">
-																							<option *ngFor="let hpo of groupPhenotype" [ngValue]="hpo.id" > {{hpo|json}}</option>
-																						</select>
-																					</div>
-																					<div class="col-md-2 form-group" *ngIf="!editingValue">
-																						<button class="mt-4 btn btn-raised btn-primary" type="button" (click)="newValueForProm()"> Add</button>
-																					</div>
-																					<div class="col-md-2 form-group" *ngIf="editingValue">
-																						<button class="mt-4 btn btn-raised btn-primary" type="button" (click)="saveValueForProm()"> Save</button>
-																					</div>
+																			</div>
+																		</div>
+																		<div class="row col-md-12">
+																			<div class="col-md-6 form-group">
+																				<label for="newvalue">New value</label>
+																				<input type="text" id="newvalue"
+																					class="form-control" name="newvalue"
+																					[(ngModel)]="newvalue">
+																			</div>
+																			<div class="col-md-6 form-group">
+																				<label for="actualHpo">HPO</label>
+																				<select name="actualHpo"
+																					class="form-control"
+																					[(ngModel)]="actualHpo">
+																					<option
+																						*ngFor="let hpo of groupPhenotype"
+																						[ngValue]="hpo.id"> {{hpo|json}}
+																					</option>
+																				</select>
+																			</div>
+																			<div class="col-md-10">
+																				<label for="annotations">Annotations</label>
+																				<ng-template #rt let-r="result" let-t="term">
+																					{{ r.name}}
+																				</ng-template>
+																				<div class="form-group">
+																					<input #input class="input" type="text"
+																						name="modelTemp2" class="form-control mb-3 col-md-6"
+																						[(ngModel)]="modelTemp2"
+																						[ngbTypeahead]="searchSymptoms"
+																						[resultTemplate]="rt"
+																						[inputFormatter]="formatter1"
+																						placeholder="Type the annotation"
+																						(selectItem)="selected2($event)"/>
 																				</div>
+																				<span class="btn btn-primary btn-sm selected"
+																					style="margin-right: 0.5em;"
+																					*ngFor="let item of selectedItems">
+																					<span style="color: black !important;">
+																						{{item}}
+																						<span class="close-selected"
+																							(click)="deleteItem2(item)">&nbsp;x</span>
+																					</span>
+																				</span>
+																				<span
+																					*ngIf="!foundlab && modelTemp2 && !searchinglab">
+																					<span class="btn btn-danger btn-sm selected"
+																						style="margin-right: 0.5em;"
+																						*ngIf="modelTemp2.length>0">
+																						<span style="color: white !important;"
+																							(click)="addItem2(modelTemp2)">Click to add: {{modelTemp2}}</span>
+																					</span>
+																				</span>
+																			</div>
+																			<div class="col-md-2 form-group"
+																				*ngIf="!editingValue">
+																				<button
+																					class="mt-4 btn btn-raised btn-primary"
+																					type="button"
+																					(click)="newValueForProm()">
+																					Add</button>
+																			</div>
+																			<div class="col-md-2 form-group"
+																				*ngIf="editingValue">
+																				<button
+																					class="mt-4 btn btn-raised btn-primary"
+																					type="button"
+																					(click)="saveValueForProm()">
+																					Save</button>
 																			</div>
 																		</div>
 																	</div>
 																</div>
-																<div class="col-md-12 center-elements" *ngIf="sending">
-																	<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
-																</div>
-
-
+															</div>
 														</div>
+														<div class="col-md-12 center-elements" *ngIf="sending">
+															<div>
+																<p class="centerSpinner"><i
+																		class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i>
+																</p>
+															</div>
+														</div>
+
+
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
+								</div>
 							</div>
 
 						</div>
@@ -435,50 +654,64 @@
 				</div>
 				<div class="modal-footer">
 					<div class="form-actions center" *ngIf="!sending">
-						<button type="button" class="btn btn-secondary btn-raised" (click)="closePanelProm()">{{'generics.Close' | translate }}</button>
+						<button type="button" class="btn btn-secondary btn-raised"
+							(click)="closePanelProm()">{{'generics.Close' | translate }}</button>
 						<div *ngIf="f.valid;then formValid else formError"></div>
 						<ng-template #formValid>
-							<button class="btn btn-raised btn-raised btn-primary" type="submit"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button>
+							<button class="btn btn-raised btn-raised btn-primary" type="submit"><i
+									class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button>
 						</ng-template>
 						<ng-template #formError>
-							<button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button>
+							<button class="btn btn-raised btn-raised btn-primary" type="button"
+								(click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' |
+								translate }}</button>
 						</ng-template>
 					</div>
 				</div>
-				</form>
+			</form>
 		</ng-template>
-  </div>
-<div class="row" *ngIf="showTranslations && groupSelected.name">
-	<div class="col-md-10">
-		<label for="langSelected">{{'generics.Lang' | translate }}</label>
-		<select id="langSelected2" name="langSelected2" class="form-control" [(ngModel)]="langSelected" (ngModelChange)="onChangeLang($event)">
-			<option *ngFor="let lang of langs" [ngValue]="lang"> {{lang.name}}</option>
-		</select>
 	</div>
-	<div class="col-md-2" *ngIf="!loading">
-			<button class="btn btn-raised btn-raised btn-primary" type="button" (click)="saveTranslation()"><i class="fa fa-check-square-o"></i> Save translation</button>
-	</div>
-	<div class="col-md-12 mt-4">
-		<div class="form-group card card-body" *ngFor="let sectionAndProm of sectionsAndProms ; let i=index">
-			<h2 for="shortDescription2">Name of section: {{sectionsAndPromsOrigin[i].section.name}}</h2>
-			<textarea id="sectionAndProm.section.name{{i}}" name="sectionAndProm.section.name{{i}}" rows="4" class="form-control" [(ngModel)]="sectionAndProm.section.name" required></textarea>
-			<label for="shortDescription2">Description of section: {{sectionsAndPromsOrigin[i].section.description}}</label>
-			<textarea id="sectionAndProm.section.description{{i}}" name="sectionAndProm.section.description{{i}}" rows="4" class="form-control" [(ngModel)]="sectionAndProm.section.description"></textarea>
-			<h3>Proms</h3>
-			<div class="form-group" *ngFor="let eachProm of sectionAndProm.promsStructure ; let j=index">
-				<h4>Prom {{j}}</h4>
-				<label for="shortDescription2">Question: {{sectionsAndPromsOrigin[i].promsStructure[j].structure.question}}</label> <span class="pull-right">PromId: {{sectionsAndPromsOrigin[i].promsStructure[j].structure._id}}</span>
-				<textarea id="eachProm.structure.{{j}}" name="eachProm.structure.{{j}}" rows="4" class="form-control" [(ngModel)]="eachProm.structure.question" required></textarea>
-				<div class="row" *ngIf="eachProm.structure.values.length>0">
-					<h5 class="col-md-12">Values</h5>
-					<div class="form-group col-md-6" *ngFor="let eachValue of eachProm.structure.values ; let k=index">
-						<label for="shortDescription2">Value: {{eachValue.original}}</label>
-						<textarea id="eachValue.translation.{{j}}" name="eachValue.translation.{{j}}" rows="4" class="form-control" [(ngModel)]="eachValue.translation" required></textarea>
+	<div class="row" *ngIf="showTranslations && groupSelected.name">
+		<div class="col-md-10">
+			<label for="langSelected">{{'generics.Lang' | translate }}</label>
+			<select id="langSelected2" name="langSelected2" class="form-control" [(ngModel)]="langSelected"
+				(ngModelChange)="onChangeLang($event)">
+				<option *ngFor="let lang of langs" [ngValue]="lang"> {{lang.name}}</option>
+			</select>
+		</div>
+		<div class="col-md-2" *ngIf="!loading">
+			<button class="btn btn-raised btn-raised btn-primary" type="button" (click)="saveTranslation()"><i
+					class="fa fa-check-square-o"></i> Save translation</button>
+		</div>
+		<div class="col-md-12 mt-4">
+			<div class="form-group card card-body" *ngFor="let sectionAndProm of sectionsAndProms ; let i=index">
+				<h2 for="shortDescription2">Name of section: {{sectionsAndPromsOrigin[i].section.name}}</h2>
+				<textarea id="sectionAndProm.section.name{{i}}" name="sectionAndProm.section.name{{i}}" rows="4"
+					class="form-control" [(ngModel)]="sectionAndProm.section.name" required></textarea>
+				<label for="shortDescription2">Description of section:
+					{{sectionsAndPromsOrigin[i].section.description}}</label>
+				<textarea id="sectionAndProm.section.description{{i}}" name="sectionAndProm.section.description{{i}}"
+					rows="4" class="form-control" [(ngModel)]="sectionAndProm.section.description"></textarea>
+				<h3>Proms</h3>
+				<div class="form-group" *ngFor="let eachProm of sectionAndProm.promsStructure ; let j=index">
+					<h4>Prom {{j}}</h4>
+					<label for="shortDescription2">Question:
+						{{sectionsAndPromsOrigin[i].promsStructure[j].structure.question}}</label> <span
+						class="pull-right">PromId: {{sectionsAndPromsOrigin[i].promsStructure[j].structure._id}}</span>
+					<textarea id="eachProm.structure.{{j}}" name="eachProm.structure.{{j}}" rows="4"
+						class="form-control" [(ngModel)]="eachProm.structure.question" required></textarea>
+					<div class="row" *ngIf="eachProm.structure.values.length>0">
+						<h5 class="col-md-12">Values</h5>
+						<div class="form-group col-md-6"
+							*ngFor="let eachValue of eachProm.structure.values ; let k=index">
+							<label for="shortDescription2">Value: {{eachValue.original}}</label>
+							<textarea id="eachValue.translation.{{j}}" name="eachValue.translation.{{j}}" rows="4"
+								class="form-control" [(ngModel)]="eachValue.translation" required></textarea>
+						</div>
 					</div>
-				</div>
 
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 </section>

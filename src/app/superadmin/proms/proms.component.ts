@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, Injectable } from '@angular/core';
 import { Router } from "@angular/router";
 import { NgForm } from '@angular/forms';
 import { environment } from 'environments/environment';
@@ -14,12 +14,35 @@ import { SortService} from 'app/shared/services/sort.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import swal from 'sweetalert2';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable, of, OperatorFunction } from 'rxjs';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/toPromise';
+import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap, merge, mergeMap, concatMap } from 'rxjs/operators';
+import { ApiDx29ServerService } from 'app/shared/services/api-dx29-server.service';
+
+@Injectable()
+export class SearchTermService {
+  constructor(private apiDx29ServerService: ApiDx29ServerService) { }
+
+  search(term: string) {
+    if (term === '') {
+      return of([]);
+    }
+    var info = {
+      "text": term,
+      "lang": sessionStorage.getItem('lang')
+    }
+    return this.apiDx29ServerService.searchSymptoms(info).pipe(
+      map(response => response)
+    );
+  }
+}
 
 @Component({
     selector: 'app-proms',
     templateUrl: './proms.component.html',
     styleUrls: ['./proms.component.scss'],
-    providers: [LangService],
+    providers: [LangService, ApiDx29ServerService, SearchTermService],
 })
 
 export class PromsComponent implements OnInit, OnDestroy{
@@ -60,8 +83,15 @@ export class PromsComponent implements OnInit, OnDestroy{
   editingValue: boolean = false;
   indexValue: number = 0;
   private subscription: Subscription = new Subscription();
+  selectedItems:any = [];
+  modelTemp: any;
+  modelTemp2: any;
+  formatter1 = (x: { name: string }) => x.name;
+  @ViewChild('input') inputEl;
+  callListOfSymptoms: boolean = false;
+  nothingFoundSymptoms: boolean = false;
 
-  constructor(private http: HttpClient, private authService: AuthService, private dateService: DateService, public toastr: ToastsManager, public searchFilterPipe: SearchFilterPipe, public translate: TranslateService, private authGuard: AuthGuard, private router: Router, private langService: LangService, private modalService: NgbModal, private sortService: SortService) {
+  constructor(private http: HttpClient, private authService: AuthService, private dateService: DateService, public toastr: ToastsManager, public searchFilterPipe: SearchFilterPipe, public translate: TranslateService, private authGuard: AuthGuard, private router: Router, private langService: LangService, private modalService: NgbModal, private sortService: SortService, private apiDx29ServerService: ApiDx29ServerService, public searchTermService: SearchTermService) {
 
   }
 
@@ -352,6 +382,7 @@ export class PromsComponent implements OnInit, OnDestroy{
   }
 
   newProm(contentProm){
+    this.resetFormValues();
     this.resetForm();
     var relatedToValue=null
     if(this.proms.length>0){
@@ -369,15 +400,24 @@ export class PromsComponent implements OnInit, OnDestroy{
   }
 
   editProm(prom, contentProm){
+    this.resetFormValues();
     this.prom = prom;
     this.editing = true;
     this.modalReference = this.modalService.open(contentProm);
   }
 
-  newValueForProm(){
-    this.prom.values.push({value: this.newvalue, hpo: this.actualHpo});
+  resetFormValues(){
+    this.modelTemp2 = '';
+    this.selectedItems = [];
     this.newvalue = '';
     this.actualHpo = '';
+  }
+
+  newValueForProm(){
+    this.prom.values.push({value: this.newvalue, hpo: this.actualHpo, annotations: this.selectedItems});
+    this.newvalue = '';
+    this.actualHpo = '';
+    this.selectedItems = [];
     this.editingValue = false;
   }
 
@@ -385,9 +425,17 @@ export class PromsComponent implements OnInit, OnDestroy{
     if(this.prom.values[index].value){
       this.newvalue = this.prom.values[index].value;
       this.actualHpo = this.prom.values[index].hpo;
+      console.log(this.prom.values[index].annotations);
+      if(this.prom.values[index].annotations==undefined){
+        this.selectedItems = [];
+      }else{
+        this.selectedItems = this.prom.values[index].annotations;
+      }
+      
     }else{
       this.newvalue = this.prom.values[index];
       this.actualHpo = '';
+      this.selectedItems = [];
     }
 
     this.editingValue = true;
@@ -398,10 +446,13 @@ export class PromsComponent implements OnInit, OnDestroy{
     this.prom.values[this.indexValue] = {};
     this.prom.values[this.indexValue].value = this.newvalue;
     this.prom.values[this.indexValue].hpo = this.actualHpo;
+    this.prom.values[this.indexValue].annotations = this.selectedItems;
+    console.log(this.prom);
 
     this.indexValue = 0;
     this.newvalue = '';
     this.actualHpo = '';
+    this.selectedItems = [];
     this.editingValue = false;
   }
 
@@ -728,6 +779,113 @@ export class PromsComponent implements OnInit, OnDestroy{
       }));
     }
 
+  }
+
+  selected($e) {
+    console.log(this.modelTemp);
+    $e.preventDefault();
+    console.log($e.item);
+    this.prom.annotations.push($e.item.id);
+    this.modelTemp = '';
+    //this.inputEl.nativeElement.value = '';
+  }
+
+  deleteItem(item) {
+    this.prom.annotations.splice(this.prom.annotations.indexOf(item), 1);
+    //this.inputEl.nativeElement.focus();
+  }
+
+  addItem(labname){
+    console.log(labname);
+    this.prom.annotations.push(labname);
+    //this.prom.annotations.push({name:labname, _id: res.lab._id});
+
+    this.modelTemp = '';
+  }
+
+  selected2($e) {
+    console.log(this.modelTemp);
+    $e.preventDefault();
+    console.log($e.item);
+    this.selectedItems.push($e.item.id);
+    this.modelTemp2 = '';
+    //this.inputEl.nativeElement.value = '';
+  }
+
+  deleteItem2(item) {
+    this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
+    //this.inputEl.nativeElement.focus();
+  }
+
+  addItem2(labname){
+    console.log(labname);
+    this.selectedItems.push(labname);
+    //this.selectedItems.push({name:labname, _id: res.lab._id});
+
+    this.modelTemp2 = '';
+  }
+
+    searchSymptoms = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      tap(() => this.callListOfSymptoms = true),
+      switchMap(term =>
+        this.searchTermService.search(term).pipe(
+          tap(() => this.nothingFoundSymptoms = false),
+          catchError(() => {
+            this.nothingFoundSymptoms = true;
+            return of([]);
+          }))
+      ),
+      tap(() => this.callListOfSymptoms = false)
+    )
+
+
+    onFileChange(event) {
+      var reader = new FileReader();
+        reader.onload = this.onReaderLoad.bind(this);
+        reader.readAsText(event.target.files[0]);
+    }
+
+    onReaderLoad(event){
+      this.sending = true;
+      console.log(event.target.result);
+      var obj = JSON.parse(event.target.result);
+      var infoToImport = [];
+      for (var i = 0; i < obj.length; i++) {
+        if(obj[i].F29Id!=''){
+          var splitId= obj[i].F29Id.split(':');
+          var extensionTheme1 = obj[i].Theme1.substr(obj[i].Theme1.lastIndexOf('/')+1);
+          var value = extensionTheme1.replaceAll('_', ':');
+          var annotations = [];
+          annotations.push(value);
+          infoToImport.push({idProm: splitId[1], annotations:annotations});
+        }
+      }
+      console.log(infoToImport);
+      this.batchAnnotations(infoToImport);
+      
+  }
+
+  batchAnnotations(infoToImport){
+    this.subscription.add( this.http.post(environment.api+'/api/group/annotations/'+this.authService.getIdUser(), infoToImport)
+    .subscribe( (res : any) => {
+      this.toastr.success('', this.translate.instant("generics.Data saved successfully"), { showCloseButton: true });
+      console.log(this.actualSection);
+      if(this.actualSection!=undefined){
+        this.seeProms(this.actualSection);
+      }
+        
+        this.sending = false;
+     }, (err) => {
+       if(err.error.message=='Token expired' || err.error.message=='Invalid Token'){
+         this.authGuard.testtoken();
+       }else{
+         this.toastr.error('', this.translate.instant("generics.Data saved fail"), { showCloseButton: true });
+       }
+       this.sending = false;
+     }));
   }
 
 }
