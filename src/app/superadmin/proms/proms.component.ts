@@ -123,7 +123,8 @@ export class PromsComponent implements OnInit, OnDestroy{
       isRequired: false,
       enabled: true,
       hideQuestion: false,
-      marginTop: false
+      marginTop: false,
+      annotations: []
     };
 
 
@@ -182,7 +183,8 @@ export class PromsComponent implements OnInit, OnDestroy{
       enabled: true,
       hideQuestion:false,
       marginTop:false,
-      new: true
+      new: true,
+      annotations: ''
     };
   }
 
@@ -733,9 +735,9 @@ export class PromsComponent implements OnInit, OnDestroy{
     .subscribe( (res : any) => {
       // esta condición sobrará
       if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].value){
-        this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k].value, translation: res[0].translations[0].text};
+        this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k].value, translation: res[0].translations[0].text, annotations: this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations};
       }else{
-        this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k], translation: res[0].translations[0].text};
+        this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k], translation: res[0].translations[0].text, annotations: []};
       }
 
      }, (err) => {
