@@ -323,21 +323,25 @@
 																	</div>
 																</div>
 																<div class="col-md-12">
-																	<label for="annotations">Annotations</label>
+																	<ng-template #popContent3>
+																		<p class="mb-0 font-small-3" *ngFor="let hpo of groupPhenotype">{{hpo.name}} - ({{hpo.id}})</p>
+																		<button class="pull-right mt-2" style="margin-top: 1em;margin-bottom: 1em;" (click)="p3.close()">Close</button></ng-template>
+																	<label for="annotations">Annotations <span class=""><i class="ft-help-circle danger" style="cursor: pointer;" placement="down" #p3="ngbPopover" [ngbPopover]="popContent3" popoverTitle="Tipical HPO"></i></span></label>
 																	<ng-template #rt let-r="result" let-t="term">
 																		{{ r.name}}
 																	</ng-template>
-																	<div class="form-group">
+																	<div class="">
 																		<input #input class="input" type="text"
-																			name="modelTemp" class="form-control mb-3 col-md-6"
+																			name="modelTemp" class="form-control col-md-6"
 																			[(ngModel)]="modelTemp"
 																			[ngbTypeahead]="searchSymptoms"
 																			[resultTemplate]="rt"
 																			[inputFormatter]="formatter1"
 																			placeholder="Type the annotation"
 																			(selectItem)="selected($event)"/>
+																			<span>Search for a symptom. If what you are looking for is not listed, you can add it manually below this text. Ex: NCIT:329873927</span>
 																	</div>
-																	<span class="btn btn-primary btn-sm selected"
+																	<span class="btn btn-primary btn-sm selected mt-1"
 																		style="margin-right: 0.5em;"
 																		*ngFor="let item of prom.annotations">
 																		<span style="color: black !important;">
@@ -347,23 +351,14 @@
 																		</span>
 																	</span>
 																	<span
-																		*ngIf="!foundlab && modelTemp && !searchinglab">
-																		<span class="btn btn-danger btn-sm selected"
+																		*ngIf="!foundlab && modelTemp && !searchinglab" class="">
+																		<span class="btn btn-danger btn-sm selected mt-1"
 																			style="margin-right: 0.5em;"
 																			*ngIf="modelTemp.length>0">
 																			<span style="color: white !important;"
 																				(click)="addItem(modelTemp)">Click to add: {{modelTemp}}</span>
 																		</span>
 																	</span>
-																</div>
-																<div class="col-md-12 form-group">
-																	<label for="hpo">HPO</label>
-																	<select name="hpo" class="form-control"
-																		[(ngModel)]="prom.hpo">
-																		<option value=""> None</option>
-																		<option *ngFor="let hpo of groupPhenotype"
-																			[ngValue]="hpo.id"> {{hpo|json}}</option>
-																	</select>
 																</div>
 																<div class="col-md-9">
 																	<div class="form-group">
@@ -519,11 +514,10 @@
 																		<div class="col-md-12">
 																			<div class="form-group">
 																				<div class="table-responsive">
-																					<table class="table text-center">
+																					<table class="table">
 																						<thead>
 																							<tr>
-																								<th>{{'generics.Name' |
-																									translate }}</th>
+																								<th>Content</th>
 																								<th>{{'generics.Edit' |
 																									translate }}</th>
 																								<th>{{'generics.Delete'
@@ -533,7 +527,9 @@
 																						<tbody>
 																							<tr
 																								*ngFor="let eachvalue of prom.values ; let i = index">
-																								<td>{{eachvalue | json}}
+																								<td>
+																									<span>{{eachvalue.value}}</span>
+																									<span *ngIf="eachvalue.annotations" class="d-block"><strong>Annotations:</strong> {{eachvalue.annotations}}</span>
 																								</td>
 																								<td>
 																									<a class="warning"
@@ -566,33 +562,23 @@
 																					class="form-control" name="newvalue"
 																					[(ngModel)]="newvalue">
 																			</div>
-																			<div class="col-md-6 form-group">
-																				<label for="actualHpo">HPO</label>
-																				<select name="actualHpo"
-																					class="form-control"
-																					[(ngModel)]="actualHpo">
-																					<option
-																						*ngFor="let hpo of groupPhenotype"
-																						[ngValue]="hpo.id"> {{hpo|json}}
-																					</option>
-																				</select>
-																			</div>
-																			<div class="col-md-10">
+																			<div class="col-md-12">
 																				<label for="annotations">Annotations</label>
 																				<ng-template #rt let-r="result" let-t="term">
 																					{{ r.name}}
 																				</ng-template>
-																				<div class="form-group">
+																				<div class="">
 																					<input #input class="input" type="text"
-																						name="modelTemp2" class="form-control mb-3 col-md-6"
+																						name="modelTemp2" class="form-control col-md-6"
 																						[(ngModel)]="modelTemp2"
 																						[ngbTypeahead]="searchSymptoms"
 																						[resultTemplate]="rt"
 																						[inputFormatter]="formatter1"
 																						placeholder="Type the annotation"
 																						(selectItem)="selected2($event)"/>
+																						<span>Search for a symptom. If what you are looking for is not listed, you can add it manually below this text. Ex: NCIT:329873927</span>
 																				</div>
-																				<span class="btn btn-primary btn-sm selected"
+																				<span class="btn btn-primary btn-sm selected mt-1"
 																					style="margin-right: 0.5em;"
 																					*ngFor="let item of selectedItems">
 																					<span style="color: black !important;">
@@ -603,7 +589,7 @@
 																				</span>
 																				<span
 																					*ngIf="!foundlab && modelTemp2 && !searchinglab">
-																					<span class="btn btn-danger btn-sm selected"
+																					<span class="btn btn-danger btn-sm selected mt-1"
 																						style="margin-right: 0.5em;"
 																						*ngIf="modelTemp2.length>0">
 																						<span style="color: white !important;"

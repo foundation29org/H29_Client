@@ -267,9 +267,9 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
     .subscribe( (res : any) => {
       if(this.sectionsAndProms[i].promsStructure[j]!=undefined){
         if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].value){
-          this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k].value, translation: res[0].translations[0].text, hpo: this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo};
+          this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k].value, translation: res[0].translations[0].text};
         }else{
-          this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k], translation: res[0].translations[0].text, hpo: null};
+          this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k], translation: res[0].translations[0].text};
         }
       }
 

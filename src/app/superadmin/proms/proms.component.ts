@@ -68,7 +68,6 @@ export class PromsComponent implements OnInit, OnDestroy{
   translations: any = [];
   editing: boolean = false;
   newvalue: string = '';
-  actualHpo: string = '';
   actualSection: any = {};
   showError: boolean = false;
   showTranslations: boolean = false;
@@ -124,8 +123,7 @@ export class PromsComponent implements OnInit, OnDestroy{
       isRequired: false,
       enabled: true,
       hideQuestion: false,
-      marginTop: false,
-      hpo: ''
+      marginTop: false
     };
 
 
@@ -184,8 +182,7 @@ export class PromsComponent implements OnInit, OnDestroy{
       enabled: true,
       hideQuestion:false,
       marginTop:false,
-      new: true,
-      hpo: ''
+      new: true
     };
   }
 
@@ -410,13 +407,11 @@ export class PromsComponent implements OnInit, OnDestroy{
     this.modelTemp2 = '';
     this.selectedItems = [];
     this.newvalue = '';
-    this.actualHpo = '';
   }
 
   newValueForProm(){
-    this.prom.values.push({value: this.newvalue, hpo: this.actualHpo, annotations: this.selectedItems});
+    this.prom.values.push({value: this.newvalue, annotations: this.selectedItems});
     this.newvalue = '';
-    this.actualHpo = '';
     this.selectedItems = [];
     this.editingValue = false;
   }
@@ -424,7 +419,6 @@ export class PromsComponent implements OnInit, OnDestroy{
   editValueForProm(index){
     if(this.prom.values[index].value){
       this.newvalue = this.prom.values[index].value;
-      this.actualHpo = this.prom.values[index].hpo;
       console.log(this.prom.values[index].annotations);
       if(this.prom.values[index].annotations==undefined){
         this.selectedItems = [];
@@ -434,7 +428,6 @@ export class PromsComponent implements OnInit, OnDestroy{
       
     }else{
       this.newvalue = this.prom.values[index];
-      this.actualHpo = '';
       this.selectedItems = [];
     }
 
@@ -445,13 +438,11 @@ export class PromsComponent implements OnInit, OnDestroy{
   saveValueForProm(){
     this.prom.values[this.indexValue] = {};
     this.prom.values[this.indexValue].value = this.newvalue;
-    this.prom.values[this.indexValue].hpo = this.actualHpo;
     this.prom.values[this.indexValue].annotations = this.selectedItems;
     console.log(this.prom);
 
     this.indexValue = 0;
     this.newvalue = '';
-    this.actualHpo = '';
     this.selectedItems = [];
     this.editingValue = false;
   }
@@ -742,9 +733,9 @@ export class PromsComponent implements OnInit, OnDestroy{
     .subscribe( (res : any) => {
       // esta condición sobrará
       if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].value){
-        this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k].value, translation: res[0].translations[0].text, hpo: this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo};
+        this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k].value, translation: res[0].translations[0].text};
       }else{
-        this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k], translation: res[0].translations[0].text, hpo: null};
+        this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k], translation: res[0].translations[0].text};
       }
 
      }, (err) => {
@@ -856,10 +847,24 @@ export class PromsComponent implements OnInit, OnDestroy{
       for (var i = 0; i < obj.length; i++) {
         if(obj[i].F29Id!=''){
           var splitId= obj[i].F29Id.split(':');
-          var extensionTheme1 = obj[i].Theme1.substr(obj[i].Theme1.lastIndexOf('/')+1);
+          var elements = Object.keys(obj[i]).length;
+          var annotations = [];
+          for (var j = 0; j < elements; j++) {
+            var column = 'annotation'+(j+1);
+            if(obj[i][column]!=undefined){
+              var extensioncolum = obj[i][column].substr(obj[i][column].lastIndexOf('/')+1);
+              if(extensioncolum!=''){
+                var value = extensioncolum.replaceAll('_', ':');
+                annotations.push(value);
+              }
+              console.log(extensioncolum);
+            }
+            
+          }
+          /*var extensionTheme1 = obj[i].Theme1.substr(obj[i].Theme1.lastIndexOf('/')+1);
           var value = extensionTheme1.replaceAll('_', ':');
           var annotations = [];
-          annotations.push(value);
+          annotations.push(value);*/
           infoToImport.push({idProm: splitId[1], annotations:annotations});
         }
       }
@@ -872,8 +877,8 @@ export class PromsComponent implements OnInit, OnDestroy{
     this.subscription.add( this.http.post(environment.api+'/api/group/annotations/'+this.authService.getIdUser(), infoToImport)
     .subscribe( (res : any) => {
       this.toastr.success('', this.translate.instant("generics.Data saved successfully"), { showCloseButton: true });
-      console.log(this.actualSection);
-      if(this.actualSection!=undefined){
+      console.log(this.actualSection._id);
+      if(this.actualSection._id!=undefined){
         this.seeProms(this.actualSection);
       }
         
