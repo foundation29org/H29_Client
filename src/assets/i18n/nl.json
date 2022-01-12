@@ -237,7 +237,9 @@
     "Organization": "Organisatie",
     "Select organization": "Selecteer organisatie",
     "I can’t find": "Ik kan mijn groep niet vinden",
-    "I don’t belong to any": "Ik behoor tot geen enkele groep"
+    "I don’t belong to any": "Ik behoor tot geen enkele groep",
+    "Select/ Unselect All": "Alles selecteren/deselecteren",
+    "Exporting": "Exporteren"
   },
   "lang": {
     "Question deleted successfully": "Vraag is met succes verwijderd",

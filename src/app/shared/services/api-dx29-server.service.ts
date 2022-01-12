@@ -21,4 +21,14 @@ export class ApiDx29ServerService {
         })
     }
 
+    searchSymptoms(info) {
+        return this.http.post(environment.api + '/api/gateway/search/symptoms/', info)
+          .map((res: any) => {
+            return res;
+          }, (err) => {
+            console.log(err);
+            return err;
+          })
+      }
+
 }

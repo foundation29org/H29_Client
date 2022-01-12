@@ -29,6 +29,7 @@ export class UsersAdminComponent implements OnDestroy{
   allLangs: any;
   langs: any;
   working: boolean = false;
+  sending: boolean = false;
   loadingUsers: boolean = false;
   users: any = [];
   usersCopy: any = [];
@@ -40,6 +41,10 @@ export class UsersAdminComponent implements OnDestroy{
   currentGroup: any;
   subgroups: any = [];
   countries: any;
+
+  title = 'Select/ Unselect All';
+  masterSelected:boolean = false;
+  checkedList:any;
 
   constructor(private http: HttpClient, public translate: TranslateService, private authService: AuthService, private authGuard: AuthGuard, public toastr: ToastsManager, private modalService: NgbModal, private dateService: DateService,private adapter: DateAdapter<any>, private sortService: SortService){
 
@@ -72,6 +77,10 @@ export class UsersAdminComponent implements OnDestroy{
     this.subscription.add( this.http.get('assets/jsons/subgroups.json')
     .subscribe( (res : any) => {
       this.subgroups = res;
+      for (let i = 0; i < this.subgroups.length; i++) {
+        this.subgroups[i].isSelected = false;
+      }
+      this.getCheckedItemList();
     }));
   }
 
@@ -195,6 +204,124 @@ export class UsersAdminComponent implements OnDestroy{
      }, (err) => {
        console.log(err);
      }));
+  }
+
+  selectGroupToExport(content){
+    this.checkedList = [];
+    this.masterSelected = false;
+    this.checkUncheckAll();
+    this.modalReference = this.modalService.open(content);
+  }
+
+  // The master checkbox will check/ uncheck all items
+  checkUncheckAll() {
+    for (var i = 0; i < this.subgroups.length; i++) {
+      this.subgroups[i].isSelected = this.masterSelected;
+    }
+    this.getCheckedItemList();
+  }
+
+  // Check All Checkbox Checked
+  isAllSelected() {
+    /*this.masterSelected = this.subgroups.every(function(item:any) {
+      console.log(item)
+        return (item.isSelected == true);
+      })*/
+    this.getCheckedItemList();
+  }
+
+  // Get List of Checked Items
+  getCheckedItemList(){
+    this.checkedList = [];
+    var oneUnselected = false;
+    for (var i = 0; i < this.subgroups.length; i++) {
+      if(this.subgroups[i].isSelected){
+        this.checkedList.push(this.subgroups[i]);
+      }else{
+        oneUnselected = true;
+      }
+    }
+    //this.checkedList = JSON.stringify(this.checkedList);
+  }
+
+  onSubmitExportData(){
+    this.sending = true;
+    var dataSubgroups = [];
+    var dataExported = {};
+    for (var i = 0; i < this.checkedList.length; i++) {
+      dataSubgroups.push(this.checkedList[i].id);
+      dataExported[this.checkedList[i].id]={name: this.checkedList[i].name, country: this.checkedList[i].country};
+    }
+    this.subscription.add( this.http.post(environment.api+'/api/exportsubgroups', dataSubgroups)
+    .subscribe( (res : any) => {
+      var tempRes = JSON.parse(JSON.stringify(res));
+      tempRes = this.addedMetadata(tempRes, dataExported);
+      //load extraMetadata
+      this.subscription.add( this.http.get(environment.api+'/api/sections/group/'+this.authService.getGroup())
+        .subscribe( (res0 : any) => {
+          this.sending = false;
+          tempRes.metadata.dataPointsSections= {};
+          res0.forEach((section)=>{
+            if(section.enabled){
+              tempRes.metadata.dataPointsSections[section._id] = section.name;
+            }
+          })
+
+          this.createFile(tempRes);
+
+        }, (err) => {
+           console.log(err);
+           this.sending = false;
+           this.createFile(tempRes);
+         }));
+      
+      
+     }, (err) => {
+      this.sending = false;
+       console.log(err);
+     }));
+  }
+
+  addedMetadata(res, dataExported){
+      res.metadata.organizations = dataExported;
+      res.metadata.responseType= {};
+      res.metadata.responseType['CheckboxList'] = {label:'CheckboxList', desciption:'CheckboxList'};
+      res.metadata.responseType['Choise'] = {label:'Choise', desciption:'Choise'};
+      res.metadata.responseType['ChoiseSet'] = {label:'ChoiseSet', desciption:'ChoiseSet'};
+      res.metadata.responseType['ChoiseAndDate'] = {label:'ChoiseAndDate', desciption:'ChoiseAndDate'};
+      res.metadata.responseType['ChoiseAndRangeDate'] = {label:'ChoiseAndRangeDate', desciption:'ChoiseAndRangeDate'};
+      res.metadata.responseType['Date'] = {label:'Date', desciption:'Date'};
+      res.metadata.responseType['Label'] = {label:'Label', desciption:'Label'};
+      res.metadata.responseType['Number'] = {label:'Number', desciption:'Number'};
+      res.metadata.responseType['NumberChoiseAndDate'] = {label:'NumberChoiseAndDate', desciption:'NumberChoiseAndDate'};
+      res.metadata.responseType['RadioButtons'] = {label:'RadioButtons', desciption:'RadioButtons'};
+      res.metadata.responseType['Text'] = {label:'Text', desciption:'Text'};
+      res.metadata.responseType['TextAndDoubleChoiseAndRangeDate'] = {label:'TextAndDoubleChoiseAndRangeDate', desciption:'TextAndDoubleChoiseAndRangeDate'};
+      res.metadata.responseType['Title'] = {label:'Title', desciption:'Title'};
+      res.metadata.responseType['Time'] = {label:'Time', desciption:'Time'};
+      res.metadata.responseType['Toogle'] = {label:'Toogle', desciption:'Toogle'};
+    return res;
+  }
+
+  createFile(res){
+    var json = JSON.stringify(res);
+      
+    var blob = new Blob([json], {type: "application/json"});
+    var url  = URL.createObjectURL(blob);
+    var p = document.createElement('p');
+    document.getElementById('content').appendChild(p);
+
+    var a = document.createElement('a');
+    var dateNow = new Date();
+    var stringDateNow = this.dateService.transformDate(dateNow);
+    a.download    = "dataRaito_"+stringDateNow+".json";
+    a.href        = url;
+    a.textContent = "dataRaito_"+stringDateNow+".json";
+    a.setAttribute("id", "download")
+
+    document.getElementById('content').appendChild(a);
+    document.getElementById("download").click();
+    this.modalReference.close();
   }
 
 }

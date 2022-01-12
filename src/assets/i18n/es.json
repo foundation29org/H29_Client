@@ -237,7 +237,9 @@
     "Organization": "Organización",
     "Select organization": "Seleccione la organización",
     "I can’t find": "No puedo encontrar mi grupo",
-    "I don’t belong to any": "No pertenezco a ningún grupo"
+    "I don’t belong to any": "No pertenezco a ningún grupo",
+    "Select/ Unselect All": "Seleccionar/Deseleccionar todo",
+    "Exporting": "Exportando"
   },
   "lang":{
     "Question deleted successfully": "Pregunta eliminada con éxito",

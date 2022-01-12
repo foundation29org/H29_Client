@@ -267,9 +267,9 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
     .subscribe( (res : any) => {
       if(this.sectionsAndProms[i].promsStructure[j]!=undefined){
         if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].value){
-          this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k].value, translation: res[0].translations[0].text, hpo: this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo};
+          this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k].value, translation: res[0].translations[0].text};
         }else{
-          this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k], translation: res[0].translations[0].text, hpo: null};
+          this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k], translation: res[0].translations[0].text};
         }
       }
 
@@ -655,6 +655,14 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
 
   }
 
+  isHPO(value){
+    if(value.length==10 && value.indexOf('HP:')!=-1){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   getHposOfProms(listPromsChanged){
     var textToRemoveHpo = [];
     var textToAddHpo = [];
@@ -664,6 +672,7 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
         for (var k = 0; k < listPromsChanged.length; k++) {
           if(listPromsChanged[k].promId == this.sectionsAndProms[i].promsStructure[j].structure._id){
             enc = true;
+            console.log(this.sectionsAndProms[i].promsStructure[j]);
           }
         }
         if(enc){
@@ -671,16 +680,28 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
             if(this.sectionsAndProms[i].promsStructure[j].data.length==0){
               // hpos a quitar
               if(this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Toogle' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Text' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Number' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Date'){
-                if(this.sectionsAndProms[i].promsStructure[j].structure.hpo){
-                  if(this.sectionsAndProms[i].promsStructure[j].structure.hpo != ""){
-                    textToRemoveHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.hpo);
+                if(this.sectionsAndProms[i].promsStructure[j].structure.annotations){
+                  if(this.sectionsAndProms[i].promsStructure[j].structure.annotations.length>0){
+                    for (var anno = 0; anno < this.sectionsAndProms[i].promsStructure[j].structure.annotations.length; anno++) {
+                      if(this.isHPO(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno])){
+                        textToRemoveHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno]);
+                      } 
+                      
+                    }
+                    
                   }
                 }
               }else{
                 if(this.sectionsAndProms[i].promsStructure[j].structure.values.length>0){
                   for (var k = 0; k < this.sectionsAndProms[i].promsStructure[j].structure.values.length; k++) {
-                    if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo){
-                      textToRemoveHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo);
+                    if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations){
+                      for (var anno = 0; anno < this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations.length; anno++) {
+                        if(this.isHPO(this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations[anno])){
+                          textToRemoveHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations[anno]);
+                        }
+                        
+                      }
+                      
                     }
                   }
                 }
@@ -688,9 +709,14 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
             }else{
               // hpos a añadir
               if(this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Toogle' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Text' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Number' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Date'){
-                if(this.sectionsAndProms[i].promsStructure[j].structure.hpo){
-                  if(this.sectionsAndProms[i].promsStructure[j].structure.hpo != ""){
-                    textToAddHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.hpo);
+                if(this.sectionsAndProms[i].promsStructure[j].structure.annotations){
+                  if(this.sectionsAndProms[i].promsStructure[j].structure.annotations.length>0){
+                    for (var anno = 0; anno < this.sectionsAndProms[i].promsStructure[j].structure.annotations.length; anno++) {
+                      if(this.isHPO(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno])){
+                        textToAddHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno]);
+                      }
+                      
+                    }
                   }
                 }
               }else{
@@ -701,16 +727,24 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
                     if(this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Choise' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'RadioButtons'){
                       var promValue = this.sectionsAndProms[i].promsStructure[j].structure.values[k].original;
                       if(this.sectionsAndProms[i].promsStructure[j].data == promValue){
-                        if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo){
-                          textToAdd.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo);
+                        if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations){
+                          for (var anno = 0; anno < this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations.length; anno++) {
+                            if(this.isHPO(this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations[anno])){
+                              textToAdd.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations[anno]);
+                            }
+                          }
                         }
   
                       }else{
-                        if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo){
-                          if(!this.existsInArray(textToRemove, this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo)){
-                            textToRemove.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo);
+                        if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations){
+                          for (var anno = 0; anno < this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations.length; anno++) {
+                            if(!this.existsInArray(textToRemove, this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations[anno])){
+                              if(this.isHPO(this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations[anno])){
+                                textToRemove.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations[anno]);
+                              }
+                              
+                            }
                           }
-                          //textToRemove.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo);
                         }
                       }
                     }
@@ -718,14 +752,25 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
                       var promValue = this.sectionsAndProms[i].promsStructure[j].structure.values[k].original;
                       for (var indexData = 0; indexData < this.sectionsAndProms[i].promsStructure[j].data.length; indexData++) {
                         if(this.sectionsAndProms[i].promsStructure[j].data[indexData] == promValue){
-                          if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo){
-                            textToAdd.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo);
+                          if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations){
+                            for (var anno = 0; anno < this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations.length; anno++) {
+                              if(this.isHPO(this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations[anno])){
+                                textToAdd.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations[anno]);
+                              }
+                              
+                            }
+                            
                           }
                         }else{
-                          if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo){
-                            if(!this.existsInArray(textToRemove, this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo)){
-                              textToRemove.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].hpo);
+                          if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations){
+                            for (var anno = 0; anno < this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations.length; anno++) {
+                              if(!this.existsInArray(textToRemove, this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations[anno])){
+                                if(this.isHPO(this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations[anno])){
+                                  textToRemove.push(this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations[anno]);
+                                }
+                              }
                             }
+                            
                           }
                         }
                       }
@@ -757,89 +802,66 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
               }
             }
           }
+          //check this.sectionsAndProms[i].promsStructure[j].structure.annotations
+          for (var anno1 = 0; anno1 < this.sectionsAndProms[i].promsStructure[j].structure.annotations.length; anno1++) {
+            if(this.isHPO(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno1])){
+              if(this.sectionsAndProms[i].promsStructure[j].data!=null){
+                if(this.sectionsAndProms[i].promsStructure[j].data.length==0){
+                  textToRemoveHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno1]);
+                }else{
+                  textToAddHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno1]);
+                }
+              }else{
+                textToRemoveHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno1]);
+              }
+            }
+            
+          }
           
         }
 
       }
     }
-
+    console.log(textToAddHpo);
+    console.log(textToRemoveHpo);
     //get hpo names
     this.getHpoNamesAndSaveAdd(textToAddHpo, textToRemoveHpo);
 
   }
 
   getHpoNamesAndSaveAdd(textToAddHpo, textToRemoveHpo){
-    var hposStrins =[];
-    textToAddHpo.forEach(function(element) {
-      if(element!=undefined){
-        hposStrins.push(element);
-      }
-    });
-
-    if(hposStrins.length>0){
-      let httpParams = new HttpParams();
-      hposStrins.forEach(id => {
-        httpParams = httpParams.append('symtomCodes', id);
-      });
-
-      this.subscription.add( this.http.get(environment.api+'/api/hpoinfoservice/',{params: httpParams})
-        .subscribe( (res : any) => {
-          for (var i = 0; i < res.length; i++) {
-            var found = false;
-            for (var j = 0; j < this.phenotype.data.length && !found; j++) {
-              if(res[i].id==this.phenotype.data[j].id){
-                found = true;
-              }
-            }
-            if(!found){
-                this.phenotype.data.push({id: res[i].id,name: res[i].name});
-            }
+    if(textToAddHpo.length>0){
+      for (var i = 0; i < textToAddHpo.length; i++) {
+        var found = false;
+        for (var j = 0; j < this.phenotype.data.length && !found; j++) {
+          if(textToAddHpo[i]==this.phenotype.data[j].id){
+            found = true;
           }
-          this.getHpoNamesAndSaveRemove(textToRemoveHpo);
-
-       }, (err) => {
-         console.log(err);
-         this.getHpoNamesAndSaveRemove(textToRemoveHpo);
-       }));
-    }else{
-      this.getHpoNamesAndSaveRemove(textToRemoveHpo);
+        }
+        if(!found){
+            this.phenotype.data.push({id: textToAddHpo[i]});
+        }
+      }
     }
+    this.getHpoNamesAndSaveRemove(textToRemoveHpo);
 
   }
 
   getHpoNamesAndSaveRemove(textToRemoveHpo){
-    var hposStrins =[];
-    textToRemoveHpo.forEach(function(element) {
-      if(element!=undefined){
-        hposStrins.push(element);
-      }
-    });
+    if(textToRemoveHpo.length>0){
 
-    if(hposStrins.length>0){
-      let httpParams = new HttpParams();
-      hposStrins.forEach(id => {
-        httpParams = httpParams.append('symtomCodes', id);
-      });
-
-      this.subscription.add( this.http.get(environment.api+'/api/hpoinfoservice/',{params: httpParams})
-        .subscribe( (res : any) => {
-          for (var i = 0; i < res.length; i++) {
-            var found = false;
-            for (var j = 0; j < this.phenotype.data.length && !found; j++) {
-              if(res[i].id==this.phenotype.data[j].id){
-                found = true;
-                delete this.phenotype.data[j];
-              }
-            }
+      for (var i = 0; i < textToRemoveHpo.length; i++) {
+        var found = false;
+        for (var j = 0; j < this.phenotype.data.length && !found; j++) {
+          if(textToRemoveHpo[i]==this.phenotype.data[j].id){
+            found = true;
+            delete this.phenotype.data[j];
           }
-          this.saveSymptoms();
-       }, (err) => {
-         console.log(err);
-         this.saveSymptoms();
-       }));
-    }else{
-      this.saveSymptoms();
+        }
+      }
+      
     }
+    this.saveSymptoms();
 
   }
 
