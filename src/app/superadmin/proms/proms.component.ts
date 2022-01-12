@@ -7,10 +7,10 @@ import { LangService } from 'app/shared/services/lang.service';
 import { AuthService } from 'app/shared/auth/auth.service';
 import { DateService } from 'app/shared/services/date.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
-import { SearchFilterPipe} from 'app/shared/services/search-filter.service';
+import { SearchFilterPipe } from 'app/shared/services/search-filter.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthGuard } from 'app/shared/auth/auth-guard.service';
-import { SortService} from 'app/shared/services/sort.service';
+import { SortService } from 'app/shared/services/sort.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import swal from 'sweetalert2';
 import { Subscription } from 'rxjs/Subscription';
@@ -39,13 +39,13 @@ export class SearchTermService {
 }
 
 @Component({
-    selector: 'app-proms',
-    templateUrl: './proms.component.html',
-    styleUrls: ['./proms.component.scss'],
-    providers: [LangService, ApiDx29ServerService, SearchTermService],
+  selector: 'app-proms',
+  templateUrl: './proms.component.html',
+  styleUrls: ['./proms.component.scss'],
+  providers: [LangService, ApiDx29ServerService, SearchTermService],
 })
 
-export class PromsComponent implements OnInit, OnDestroy{
+export class PromsComponent implements OnInit, OnDestroy {
   //Variable Declaration
   groups: Array<any> = [];
   groupSelected: any = {};
@@ -82,7 +82,7 @@ export class PromsComponent implements OnInit, OnDestroy{
   editingValue: boolean = false;
   indexValue: number = 0;
   private subscription: Subscription = new Subscription();
-  selectedItems:any = [];
+  selectedItems: any = [];
   modelTemp: any;
   modelTemp2: any;
   formatter1 = (x: { name: string }) => x.name;
@@ -104,19 +104,19 @@ export class PromsComponent implements OnInit, OnDestroy{
 
     this.section = {
       name: '',
-      description:'',
+      description: '',
       enabled: true,
       order: null
     };
 
     this.prom = {
       name: '',
-    	responseType: '',
-    	question: '',
-    	values: [],
-    	section: '',
-    	order: null,
-    	periodicity: "1",
+      responseType: '',
+      question: '',
+      values: [],
+      section: '',
+      order: null,
+      periodicity: "1",
       relatedTo: null,
       disableDataPoints: null,
       width: '',
@@ -136,32 +136,32 @@ export class PromsComponent implements OnInit, OnDestroy{
 
   }
 
-  loadPhenotypeGroup(name){
-    this.subscription.add( this.http.get(environment.api+'/api/group/phenotype/'+name)
-    .subscribe( (res : any) => {
-      //res.infoPhenotype.data.sort(this.sortService.GetSortOrder("name"));
-      this.groupPhenotype = res.infoPhenotype.data;
-     }, (err) => {
-       console.log(err);
-     }));
+  loadPhenotypeGroup(name) {
+    this.subscription.add(this.http.get(environment.api + '/api/group/phenotype/' + name)
+      .subscribe((res: any) => {
+        //res.infoPhenotype.data.sort(this.sortService.GetSortOrder("name"));
+        this.groupPhenotype = res.infoPhenotype.data;
+      }, (err) => {
+        console.log(err);
+      }));
   }
 
 
 
   loadGroups() {
     //cargar los grupos actuales
-    this.subscription.add( this.http.get(environment.api+'/api/groups/')
-    .subscribe( (res : any) => {
-      this.groups = res;
-     }, (err) => {
-       console.log(err);
-     }));
+    this.subscription.add(this.http.get(environment.api + '/api/groups/')
+      .subscribe((res: any) => {
+        this.groups = res;
+      }, (err) => {
+        console.log(err);
+      }));
   }
 
-  resetSection(){
+  resetSection() {
     this.section = {
       name: '',
-      description:'',
+      description: '',
       enabled: true,
       order: null
     };
@@ -181,42 +181,42 @@ export class PromsComponent implements OnInit, OnDestroy{
       width: '',
       isRequired: false,
       enabled: true,
-      hideQuestion:false,
-      marginTop:false,
+      hideQuestion: false,
+      marginTop: false,
       new: true,
       annotations: ''
     };
   }
 
   //traducir cosas
-  loadTranslations(){
+  loadTranslations() {
     this.translate.get('generics.Data saved successfully').subscribe((res: string) => {
-      this.msgDataSavedOk=res;
+      this.msgDataSavedOk = res;
     });
     this.translate.get('generics.Data saved fail').subscribe((res: string) => {
-      this.msgDataSavedFail=res;
+      this.msgDataSavedFail = res;
     });
   }
 
-  newSection(contentNewSection){
+  newSection(contentNewSection) {
     this.resetSection();
     this.modalReference = this.modalService.open(contentNewSection);
   }
 
-  closePanelSection(){
+  closePanelSection() {
     this.modalReference.close();
     this.showError = false;
     this.onChangeGroup(this.groupSelected);
   }
 
-  closePanelProm(){
+  closePanelProm() {
     this.modalReference.close();
     this.showError = false;
     this.seeProms(this.actualSection);
   }
 
 
-  onChangeGroup(value){
+  onChangeGroup(value) {
     //las tres líneas siguientes son para inicializar las traduciones si se cambia de grupo
     this.langSelected = [];
     this.sectionsAndProms = [];
@@ -225,17 +225,17 @@ export class PromsComponent implements OnInit, OnDestroy{
     this.resetSection();
     //cargar la info
     this.loading = true;
-    this.subscription.add( this.http.get(environment.api+'/api/group/sections/'+value._id)
-    .subscribe( (res : any) => {
-      res.sort(this.sortService.GetSortOrder("order"));
-      this.sections = res;
-      this.actualSection = {};
-      this.loading = false;
-     }, (err) => {
-       console.log(err);
-       this.loading = false;
-     }));
-     this.loadPhenotypeGroup(value.name);
+    this.subscription.add(this.http.get(environment.api + '/api/group/sections/' + value._id)
+      .subscribe((res: any) => {
+        res.sort(this.sortService.GetSortOrder("order"));
+        this.sections = res;
+        this.actualSection = {};
+        this.loading = false;
+      }, (err) => {
+        console.log(err);
+        this.loading = false;
+      }));
+    this.loadPhenotypeGroup(value.name);
   }
 
   submitInvalidSectionForm() {
@@ -244,34 +244,34 @@ export class PromsComponent implements OnInit, OnDestroy{
     const base = this.sectionForm;
     for (const field in base.form.controls) {
       if (!base.form.controls[field].valid) {
-          base.form.controls[field].markAsTouched()
+        base.form.controls[field].markAsTouched()
       }
     }
   }
 
-  submitNewSection(){
-    this.showError=false;
-    if(this.authGuard.testtoken()){
+  submitNewSection() {
+    this.showError = false;
+    if (this.authGuard.testtoken()) {
       this.sending = true;
 
-      if(this.section._id){
+      if (this.section._id) {
 
         swal({
-            title: 'Important, read!',
-            html: 'Do you want to overwrite the section title and the description? If you overwrite, remember to make the corresponding translations for each language.',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#0CC27E',
-            cancelButtonColor: '#FF586B',
-            confirmButtonText: 'Yes, overwrite',
-            cancelButtonText: this.translate.instant("generics.No"),
-            showLoaderOnConfirm: true,
-            allowOutsideClick: false
+          title: 'Important, read!',
+          html: 'Do you want to overwrite the section title and the description? If you overwrite, remember to make the corresponding translations for each language.',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#0CC27E',
+          cancelButtonColor: '#FF586B',
+          confirmButtonText: 'Yes, overwrite',
+          cancelButtonText: this.translate.instant("generics.No"),
+          showLoaderOnConfirm: true,
+          allowOutsideClick: false
         }).then((result) => {
           if (result.value) {
             this.section.machacar = true;
             this.updateSection();
-          }else{
+          } else {
             this.section.machacar = false;
             this.updateSection();
           }
@@ -279,61 +279,61 @@ export class PromsComponent implements OnInit, OnDestroy{
 
 
 
-      }else{
-        this.subscription.add( this.http.post(environment.api+'/api/group/section/'+this.groupSelected._id, this.section)
-        .subscribe( (res : any) => {
-          this.toastr.success('', this.translate.instant("generics.Data saved successfully"), { showCloseButton: true });
+      } else {
+        this.subscription.add(this.http.post(environment.api + '/api/group/section/' + this.groupSelected._id, this.section)
+          .subscribe((res: any) => {
+            this.toastr.success('', this.translate.instant("generics.Data saved successfully"), { showCloseButton: true });
             this.sending = false;
             this.closePanelSection();
             this.onChangeGroup(this.groupSelected);
-         }, (err) => {
-           if(err.error.message=='Token expired' || err.error.message=='Invalid Token'){
-             this.authGuard.testtoken();
-           }else{
-             this.toastr.error('', this.translate.instant("generics.Data saved fail"), { showCloseButton: true });
-           }
-           this.sending = false;
-         }));
+          }, (err) => {
+            if (err.error.message == 'Token expired' || err.error.message == 'Invalid Token') {
+              this.authGuard.testtoken();
+            } else {
+              this.toastr.error('', this.translate.instant("generics.Data saved fail"), { showCloseButton: true });
+            }
+            this.sending = false;
+          }));
       }
 
     }
   }
 
-  updateSection(){
-    this.subscription.add( this.http.put(environment.api+'/api/group/section/'+this.section._id, this.section)
-    .subscribe( (res : any) => {
-      this.toastr.success('', this.translate.instant("generics.Data saved successfully"), { showCloseButton: true });
+  updateSection() {
+    this.subscription.add(this.http.put(environment.api + '/api/group/section/' + this.section._id, this.section)
+      .subscribe((res: any) => {
+        this.toastr.success('', this.translate.instant("generics.Data saved successfully"), { showCloseButton: true });
         this.sending = false;
         this.closePanelSection();
         this.onChangeGroup(this.groupSelected);
-     }, (err) => {
-       if(err.error.message=='Token expired' || err.error.message=='Invalid Token'){
-         this.authGuard.testtoken();
-       }else{
-         this.toastr.error('', this.translate.instant("generics.Data saved fail"), { showCloseButton: true });
-       }
-       this.sending = false;
-     }));
+      }, (err) => {
+        if (err.error.message == 'Token expired' || err.error.message == 'Invalid Token') {
+          this.authGuard.testtoken();
+        } else {
+          this.toastr.error('', this.translate.instant("generics.Data saved fail"), { showCloseButton: true });
+        }
+        this.sending = false;
+      }));
   }
 
-  editSection(section, contentNewSection){
+  editSection(section, contentNewSection) {
     this.editingsection = true;
     this.section = section;
     this.modalReference = this.modalService.open(contentNewSection);
   }
 
-  confirmDeleteSection(section){
+  confirmDeleteSection(section) {
     swal({
-        title: this.translate.instant("generics.Are you sure?"),
-        html: this.translate.instant("generics.Delete")+': '+ section.name,
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#0CC27E',
-        cancelButtonColor: '#FF586B',
-        confirmButtonText: this.translate.instant("generics.Delete"),
-        cancelButtonText: this.translate.instant("generics.No, cancel"),
-        showLoaderOnConfirm: true,
-        allowOutsideClick: false
+      title: this.translate.instant("generics.Are you sure?"),
+      html: this.translate.instant("generics.Delete") + ': ' + section.name,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#0CC27E',
+      cancelButtonColor: '#FF586B',
+      confirmButtonText: this.translate.instant("generics.Delete"),
+      cancelButtonText: this.translate.instant("generics.No, cancel"),
+      showLoaderOnConfirm: true,
+      allowOutsideClick: false
     }).then((result) => {
       if (result.value) {
         this.deleteSection(section._id);
@@ -341,94 +341,94 @@ export class PromsComponent implements OnInit, OnDestroy{
     }).catch(swal.noop);
   }
 
-  deleteSection(sectionId){
-    this.subscription.add( this.http.delete(environment.api+'/api/group/section/'+sectionId)
-    .subscribe( (res : any) => {
-      this.toastr.success('', this.translate.instant("generics.Data saved successfully"), { showCloseButton: true });
+  deleteSection(sectionId) {
+    this.subscription.add(this.http.delete(environment.api + '/api/group/section/' + sectionId)
+      .subscribe((res: any) => {
+        this.toastr.success('', this.translate.instant("generics.Data saved successfully"), { showCloseButton: true });
         this.sending = false;
         this.onChangeGroup(this.groupSelected);
-     }, (err) => {
-       if(err.error.message=='Token expired' || err.error.message=='Invalid Token'){
-         this.authGuard.testtoken();
-       }else{
-         this.toastr.error('', this.translate.instant("generics.Data saved fail"), { showCloseButton: true });
-       }
-       this.sending = false;
-     }));
+      }, (err) => {
+        if (err.error.message == 'Token expired' || err.error.message == 'Invalid Token') {
+          this.authGuard.testtoken();
+        } else {
+          this.toastr.error('', this.translate.instant("generics.Data saved fail"), { showCloseButton: true });
+        }
+        this.sending = false;
+      }));
   }
 
-  seeProms(section){
+  seeProms(section) {
     this.actualSection = section;
     this.resetForm();
     this.proms = [];
     //cargar la info
     this.loading = true;
-    this.subscription.add( this.http.get(environment.api+'/api/group/proms/'+section._id)
-    .subscribe( (res : any) => {
-      if(res.length == 0){
-        //no tiene proms
-        this.resetForm();
-      }else{
-        res.sort(this.sortService.GetSortOrder("order"));
-        this.proms = res;
-      }
-      this.loading = false;
-     }, (err) => {
-       console.log(err);
-       this.loading = false;
-     }));
+    this.subscription.add(this.http.get(environment.api + '/api/group/proms/' + section._id)
+      .subscribe((res: any) => {
+        if (res.length == 0) {
+          //no tiene proms
+          this.resetForm();
+        } else {
+          res.sort(this.sortService.GetSortOrder("order"));
+          this.proms = res;
+        }
+        this.loading = false;
+      }, (err) => {
+        console.log(err);
+        this.loading = false;
+      }));
 
   }
 
-  newProm(contentProm){
+  newProm(contentProm) {
     this.resetFormValues();
     this.resetForm();
-    var relatedToValue=null
-    if(this.proms.length>0){
-      this.prom.relatedTo=this.proms[0]._id;
+    var relatedToValue = null
+    if (this.proms.length > 0) {
+      this.prom.relatedTo = this.proms[0]._id;
     }
     this.prom.section = this.actualSection._id;
     this.editing = false;
     this.modalReference = this.modalService.open(contentProm);
   }
 
-  addProm(){
+  addProm() {
     this.proms.push(JSON.parse(JSON.stringify(this.prom)));
     this.promsForm.reset();
     this.prom.values = [];
   }
 
-  editProm(prom, contentProm){
+  editProm(prom, contentProm) {
     this.resetFormValues();
     this.prom = prom;
     this.editing = true;
     this.modalReference = this.modalService.open(contentProm);
   }
 
-  resetFormValues(){
+  resetFormValues() {
     this.modelTemp2 = '';
     this.selectedItems = [];
     this.newvalue = '';
   }
 
-  newValueForProm(){
-    this.prom.values.push({value: this.newvalue, annotations: this.selectedItems});
+  newValueForProm() {
+    this.prom.values.push({ value: this.newvalue, annotations: this.selectedItems });
     this.newvalue = '';
     this.selectedItems = [];
     this.editingValue = false;
   }
 
-  editValueForProm(index){
-    if(this.prom.values[index].value){
+  editValueForProm(index) {
+    if (this.prom.values[index].value) {
       this.newvalue = this.prom.values[index].value;
       console.log(this.prom.values[index].annotations);
-      if(this.prom.values[index].annotations==undefined){
+      if (this.prom.values[index].annotations == undefined) {
         this.selectedItems = [];
-      }else{
+      } else {
         this.selectedItems = this.prom.values[index].annotations;
       }
-      
-    }else{
+
+    } else {
       this.newvalue = this.prom.values[index];
       this.selectedItems = [];
     }
@@ -437,7 +437,7 @@ export class PromsComponent implements OnInit, OnDestroy{
     this.indexValue = index;
   }
 
-  saveValueForProm(){
+  saveValueForProm() {
     this.prom.values[this.indexValue] = {};
     this.prom.values[this.indexValue].value = this.newvalue;
     this.prom.values[this.indexValue].annotations = this.selectedItems;
@@ -449,25 +449,25 @@ export class PromsComponent implements OnInit, OnDestroy{
     this.editingValue = false;
   }
 
-  deleteValueForProm(index){
+  deleteValueForProm(index) {
     this.prom.values.splice(index, 1);
   }
 
 
 
 
-  confirmDeleteProm(prom){
+  confirmDeleteProm(prom) {
     swal({
-        title: this.translate.instant("generics.Are you sure?"),
-        html: this.translate.instant("generics.Delete")+': '+ prom.name,
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#0CC27E',
-        cancelButtonColor: '#FF586B',
-        confirmButtonText: this.translate.instant("generics.Delete"),
-        cancelButtonText: this.translate.instant("generics.No, cancel"),
-        showLoaderOnConfirm: true,
-        allowOutsideClick: false
+      title: this.translate.instant("generics.Are you sure?"),
+      html: this.translate.instant("generics.Delete") + ': ' + prom.name,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#0CC27E',
+      cancelButtonColor: '#FF586B',
+      confirmButtonText: this.translate.instant("generics.Delete"),
+      cancelButtonText: this.translate.instant("generics.No, cancel"),
+      showLoaderOnConfirm: true,
+      allowOutsideClick: false
     }).then((result) => {
       if (result.value) {
         this.deleteProm(prom);
@@ -475,59 +475,59 @@ export class PromsComponent implements OnInit, OnDestroy{
     }).catch(swal.noop);
   }
 
-  deleteProm(prom){
-    var paramssend = this.authService.getIdUser()+'-code-'+prom._id;
-    this.subscription.add( this.http.delete(environment.api+'/api/group/prom/'+paramssend)
-    .subscribe( (res : any) => {
-      this.toastr.success('', this.translate.instant("generics.Data saved successfully"), { showCloseButton: true });
+  deleteProm(prom) {
+    var paramssend = this.authService.getIdUser() + '-code-' + prom._id;
+    this.subscription.add(this.http.delete(environment.api + '/api/group/prom/' + paramssend)
+      .subscribe((res: any) => {
+        this.toastr.success('', this.translate.instant("generics.Data saved successfully"), { showCloseButton: true });
         this.sending = false;
         this.seeProms(this.actualSection);
-     }, (err) => {
-       if(err.error.message=='Token expired' || err.error.message=='Invalid Token'){
-         this.authGuard.testtoken();
-       }else{
-         this.toastr.error('', this.translate.instant("generics.Data saved fail"), { showCloseButton: true });
-       }
-       this.sending = false;
-     }));
+      }, (err) => {
+        if (err.error.message == 'Token expired' || err.error.message == 'Invalid Token') {
+          this.authGuard.testtoken();
+        } else {
+          this.toastr.error('', this.translate.instant("generics.Data saved fail"), { showCloseButton: true });
+        }
+        this.sending = false;
+      }));
   }
 
   submitInvalidForm() {
-    this.showError=true;
+    this.showError = true;
     if (!this.promsForm) { return; }
     const base = this.promsForm;
     for (const field in base.form.controls) {
       if (!base.form.controls[field].valid) {
-          base.form.controls[field].markAsTouched()
+        base.form.controls[field].markAsTouched()
       }
     }
   }
 
   onSubmit() {
-    this.showError=false;
-    if(this.authGuard.testtoken()){
+    this.showError = false;
+    if (this.authGuard.testtoken()) {
 
       this.sending = true;
 
-      if(this.prom._id){
+      if (this.prom._id) {
 
 
         swal({
-            title: 'Important, read!',
-            html: 'Do you want to overwrite the datapoint values? If you overwrite, remember to make the corresponding translations for each language. The same if the question field has changed.',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#0CC27E',
-            cancelButtonColor: '#FF586B',
-            confirmButtonText: 'Yes, overwrite',
-            cancelButtonText: this.translate.instant("generics.No"),
-            showLoaderOnConfirm: true,
-            allowOutsideClick: false
+          title: 'Important, read!',
+          html: 'Do you want to overwrite the datapoint values? If you overwrite, remember to make the corresponding translations for each language. The same if the question field has changed.',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#0CC27E',
+          cancelButtonColor: '#FF586B',
+          confirmButtonText: 'Yes, overwrite',
+          cancelButtonText: this.translate.instant("generics.No"),
+          showLoaderOnConfirm: true,
+          allowOutsideClick: false
         }).then((result) => {
           if (result.value) {
             this.prom.machacar = true;
             this.updateProm();
-          }else{
+          } else {
             this.prom.machacar = false;
             this.updateProm();
           }
@@ -535,22 +535,22 @@ export class PromsComponent implements OnInit, OnDestroy{
 
 
 
-      }else{
-        var paramssend = this.authService.getIdUser()+'-code-'+this.groupSelected._id;
-        this.subscription.add( this.http.post(environment.api+'/api/group/prom/'+paramssend, this.prom)
-        .subscribe( (res : any) => {
-          this.toastr.success('', this.translate.instant("generics.Data saved successfully"), { showCloseButton: true });
+      } else {
+        var paramssend = this.authService.getIdUser() + '-code-' + this.groupSelected._id;
+        this.subscription.add(this.http.post(environment.api + '/api/group/prom/' + paramssend, this.prom)
+          .subscribe((res: any) => {
+            this.toastr.success('', this.translate.instant("generics.Data saved successfully"), { showCloseButton: true });
             this.closePanelProm();
             this.seeProms(this.actualSection);
             this.sending = false;
-         }, (err) => {
-           if(err.error.message=='Token expired' || err.error.message=='Invalid Token'){
-             this.authGuard.testtoken();
-           }else{
-             this.toastr.error('', this.translate.instant("generics.Data saved fail"), { showCloseButton: true });
-           }
-           this.sending = false;
-         }));
+          }, (err) => {
+            if (err.error.message == 'Token expired' || err.error.message == 'Invalid Token') {
+              this.authGuard.testtoken();
+            } else {
+              this.toastr.error('', this.translate.instant("generics.Data saved fail"), { showCloseButton: true });
+            }
+            this.sending = false;
+          }));
       }
 
 
@@ -558,39 +558,39 @@ export class PromsComponent implements OnInit, OnDestroy{
     }
   }
 
-  updateProm(){
-    this.subscription.add( this.http.put(environment.api+'/api/group/prom/'+this.authService.getIdUser(), this.prom)
-    .subscribe( (res : any) => {
-      this.toastr.success('', this.translate.instant("generics.Data saved successfully"), { showCloseButton: true });
+  updateProm() {
+    this.subscription.add(this.http.put(environment.api + '/api/group/prom/' + this.authService.getIdUser(), this.prom)
+      .subscribe((res: any) => {
+        this.toastr.success('', this.translate.instant("generics.Data saved successfully"), { showCloseButton: true });
         this.closePanelProm();
         this.seeProms(this.actualSection);
         this.sending = false;
-     }, (err) => {
-       if(err.error.message=='Token expired' || err.error.message=='Invalid Token'){
-         this.authGuard.testtoken();
-       }else{
-         this.toastr.error('', this.translate.instant("generics.Data saved fail"), { showCloseButton: true });
-       }
-       this.sending = false;
-     }));
+      }, (err) => {
+        if (err.error.message == 'Token expired' || err.error.message == 'Invalid Token') {
+          this.authGuard.testtoken();
+        } else {
+          this.toastr.error('', this.translate.instant("generics.Data saved fail"), { showCloseButton: true });
+        }
+        this.sending = false;
+      }));
   }
 
-  showPanelTranslations(){
+  showPanelTranslations() {
     this.showTranslations = true;
   }
 
-  back(){
+  back() {
     this.showTranslations = false;
   }
 
   loadLanguages() {
-      this.subscription.add( this.langService.getLangs()
-      .subscribe( (res : any) => {
-        this.langs=res;
+    this.subscription.add(this.langService.getLangs()
+      .subscribe((res: any) => {
+        this.langs = res;
       }));
   }
 
-  onChangeLang(lang){
+  onChangeLang(lang) {
     this.langSelected = lang;
     this.loading = true;
     this.sectionsAndProms = [];
@@ -598,178 +598,178 @@ export class PromsComponent implements OnInit, OnDestroy{
     this.actualIdSectionsAndProms = null;
     this.hasTranslation = false;
 
-    var paramssend = lang.code+'-code-'+this.groupSelected._id;
-    this.subscription.add( this.http.get(environment.api+'/api/translationstructureproms/'+paramssend)
-    .subscribe( (res : any) =>{
-      if(res.message){
-        this.hasTranslation = false;
+    var paramssend = lang.code + '-code-' + this.groupSelected._id;
+    this.subscription.add(this.http.get(environment.api + '/api/translationstructureproms/' + paramssend)
+      .subscribe((res: any) => {
+        if (res.message) {
+          this.hasTranslation = false;
 
-        var paramssend = this.langSelected.code+'-code-'+this.groupSelected._id;
-        this.subscription.add( this.http.get(environment.api+'/api/structureproms/'+paramssend)
-        .subscribe( (res1 : any) =>{
-          this.sectionsAndProms = res1;
-          this.sectionsAndPromsOrigin = res1;
-          this.maketranslation();
+          var paramssend = this.langSelected.code + '-code-' + this.groupSelected._id;
+          this.subscription.add(this.http.get(environment.api + '/api/structureproms/' + paramssend)
+            .subscribe((res1: any) => {
+              this.sectionsAndProms = res1;
+              this.sectionsAndPromsOrigin = res1;
+              this.maketranslation();
 
+            }, (err) => {
+              console.log(err);
+              this.loading = false;
+              this.toastr.error('', this.translate.instant("generics.error try again"), { showCloseButton: true });
+            }));
+        } else {
+          (res.structureProm.data).sort(this.sortService.GetSortOrderSections("order"));
+          for (var i = 0; i < (res.structureProm.data).length; i++) {
+            (res.structureProm.data)[i].promsStructure.sort(this.sortService.GetSortOrderProms("order"));
+          }
+          this.hasTranslation = true;
+          this.sectionsAndProms = res.structureProm.data;
+          this.sectionsAndPromsOrigin = res.structureProm.data;
+          this.actualIdSectionsAndProms = res.structureProm._id;
+        }
+        this.loading = false;
+      }, (err) => {
+        console.log(err);
+        this.loading = false;
+        this.toastr.error('', this.translate.instant("generics.error try again"), { showCloseButton: true });
+      }));
+  }
+
+  maketranslation() {
+    //traducir a ingles
+    this.subscription.add(this.http.post('https://api.cognitive.microsoft.com/sts/v1.0/issueToken', '')
+      .subscribe((res: any) => {
+        sessionStorage.setItem('tokenMicrosoftTranslator', res);
+
+        var jsonText = [];
+        //comprobar el idioma
+        if (this.sectionsAndProms.length > 0) {
+          jsonText = [{ "Text": this.sectionsAndProms[0].section.name }];
+        }
+
+        var numPieces = this.sectionsAndProms.length;
+
+        this.contTranslates = 0;
+        for (var i = 0; i < numPieces; i++) {
+          //section name
+          var sectionName = this.sectionsAndProms[i].section.name;
+          jsonText = [{ "Text": sectionName }];
+          this.getTranslationSection(jsonText, i, 'name', numPieces)
+          //description of section
+          var sectionDescription = this.sectionsAndProms[i].section.description;
+          var jsonText2 = [{ "Text": sectionDescription }];
+          this.getTranslationDescriptionSection(jsonText2, i, 'description')
+
+          for (var j = 0; j < this.sectionsAndProms[i].promsStructure.length; j++) {
+            var promQuestion = this.sectionsAndProms[i].promsStructure[j].structure.question;
+            var jsonpromQuestion = [{ "Text": promQuestion }];
+            this.getTranslationProm(jsonpromQuestion, i, j, 'question')
+
+            if (this.sectionsAndProms[i].promsStructure[j].structure.values.length > 0) {
+              for (var k = 0; k < this.sectionsAndProms[i].promsStructure[j].structure.values.length; k++) {
+
+                //la siguiente condicion sobrará
+                var promValue = '';
+                if (this.sectionsAndProms[i].promsStructure[j].structure.values[k].value) {
+                  promValue = this.sectionsAndProms[i].promsStructure[j].structure.values[k].value;
+                } else {
+                  promValue = this.sectionsAndProms[i].promsStructure[j].structure.values[k];
+                }
+
+                var jsonpromValue = [{ "Text": promValue }];
+                this.getTranslationValue(jsonpromValue, i, j, k)
+              }
+            }
+
+          }
+        }
+
+      }, (err) => {
+        console.log(err);
+        this.loading = false;
+        this.toastr.error('', this.translate.instant("generics.error try again"), { showCloseButton: true });
+      }));
+  }
+
+  getTranslationSection(jsonText, i, field, numPieces) {
+    this.subscription.add(this.http.post('https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=' + this.langSelected.code, jsonText)
+      .subscribe((res: any) => {
+        this.sectionsAndProms[i].section[field] = res[0].translations[0].text;
+        this.contTranslates++;
+        if (this.contTranslates == numPieces) {
+          //this.showInfo(this.sectionsAndProms);
+          // this.loading = false;
+        }
+      }, (err) => {
+        this.contTranslates++;
+        if (this.contTranslates == numPieces) {
+          //this.showInfo(this.sectionsAndProms);
+          // this.loading = false;
+        }
+        console.log(err);
+        this.toastr.error('', this.translate.instant("generics.error try again"), { showCloseButton: true });
+      }));
+  }
+
+  getTranslationDescriptionSection(jsonText, i, field) {
+    this.subscription.add(this.http.post('https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=' + this.langSelected.code, jsonText)
+      .subscribe((res: any) => {
+        this.sectionsAndProms[i].section[field] = res[0].translations[0].text;
+      }, (err) => {
+        console.log(err);
+        this.toastr.error('', this.translate.instant("generics.error try again"), { showCloseButton: true });
+      }));
+  }
+
+  getTranslationProm(jsonText, i, j, field) {
+    this.subscription.add(this.http.post('https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=' + this.langSelected.code, jsonText)
+      .subscribe((res: any) => {
+        this.sectionsAndProms[i].promsStructure[j].structure[field] = res[0].translations[0].text;
+      }, (err) => {
+        console.log(err);
+        this.toastr.error('', this.translate.instant("generics.error try again"), { showCloseButton: true });
+      }));
+  }
+
+  getTranslationValue(jsonText, i, j, k) {
+    this.subscription.add(this.http.post('https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=' + this.langSelected.code, jsonText)
+      .subscribe((res: any) => {
+        // esta condición sobrará
+        if (this.sectionsAndProms[i].promsStructure[j].structure.values[k].value) {
+          this.sectionsAndProms[i].promsStructure[j].structure.values[k] = { original: this.sectionsAndProms[i].promsStructure[j].structure.values[k].value, translation: res[0].translations[0].text, annotations: this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations };
+        } else {
+          this.sectionsAndProms[i].promsStructure[j].structure.values[k] = { original: this.sectionsAndProms[i].promsStructure[j].structure.values[k], translation: res[0].translations[0].text, annotations: [] };
+        }
+
+      }, (err) => {
+        console.log(err);
+        this.toastr.error('', this.translate.instant("generics.error try again"), { showCloseButton: true });
+      }));
+  }
+
+  saveTranslation() {
+    this.loading = true;
+    if (this.actualIdSectionsAndProms == null) {
+      //var paramssend = this.langSelected.code+'-code-'+this.groupSelected._id;
+      var paramssend = { lang: this.langSelected.code, data: this.sectionsAndProms, groupId: this.groupSelected._id };
+      this.subscription.add(this.http.post(environment.api + '/api/structureproms', paramssend)
+        .subscribe((res: any) => {
+          this.actualIdSectionsAndProms = res._id;
+          this.loading = false;
         }, (err) => {
           console.log(err);
           this.loading = false;
           this.toastr.error('', this.translate.instant("generics.error try again"), { showCloseButton: true });
         }));
-      }else{
-        (res.structureProm.data).sort(this.sortService.GetSortOrderSections("order"));
-        for (var i = 0; i < (res.structureProm.data).length; i++) {
-          (res.structureProm.data)[i].promsStructure.sort(this.sortService.GetSortOrderProms("order"));
-        }
-        this.hasTranslation = true;
-        this.sectionsAndProms = res.structureProm.data;
-        this.sectionsAndPromsOrigin = res.structureProm.data;
-        this.actualIdSectionsAndProms = res.structureProm._id;
-      }
-      this.loading = false;
-    }, (err) => {
-      console.log(err);
-      this.loading = false;
-      this.toastr.error('', this.translate.instant("generics.error try again"), { showCloseButton: true });
-    }));
-  }
-
-  maketranslation(){
-    //traducir a ingles
-    this.subscription.add( this.http.post('https://api.cognitive.microsoft.com/sts/v1.0/issueToken','')
-    .subscribe( (res : any) => {
-      sessionStorage.setItem('tokenMicrosoftTranslator', res);
-
-      var jsonText = [];
-      //comprobar el idioma
-      if(this.sectionsAndProms.length>0){
-        jsonText = [{"Text": this.sectionsAndProms[0].section.name}];
-      }
-
-      var numPieces = this.sectionsAndProms.length;
-
-      this.contTranslates = 0;
-     for (var i = 0; i < numPieces; i++) {
-       //section name
-       var sectionName = this.sectionsAndProms[i].section.name;
-       jsonText = [{"Text":sectionName}];
-       this.getTranslationSection(jsonText, i, 'name', numPieces)
-       //description of section
-       var sectionDescription = this.sectionsAndProms[i].section.description;
-       var jsonText2 = [{"Text":sectionDescription}];
-       this.getTranslationDescriptionSection(jsonText2, i, 'description')
-
-       for (var j = 0; j < this.sectionsAndProms[i].promsStructure.length; j++) {
-         var promQuestion = this.sectionsAndProms[i].promsStructure[j].structure.question;
-         var jsonpromQuestion = [{"Text":promQuestion}];
-         this.getTranslationProm(jsonpromQuestion, i, j, 'question')
-
-         if(this.sectionsAndProms[i].promsStructure[j].structure.values.length>0){
-           for (var k = 0; k < this.sectionsAndProms[i].promsStructure[j].structure.values.length; k++) {
-
-             //la siguiente condicion sobrará
-             var promValue = '';
-             if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].value){
-               promValue = this.sectionsAndProms[i].promsStructure[j].structure.values[k].value;
-             }else{
-               promValue = this.sectionsAndProms[i].promsStructure[j].structure.values[k];
-             }
-
-             var jsonpromValue = [{"Text":promValue}];
-             this.getTranslationValue(jsonpromValue, i, j, k)
-           }
-         }
-
-       }
-      }
-
-     }, (err) => {
-       console.log(err);
-       this.loading = false;
-       this.toastr.error('', this.translate.instant("generics.error try again"), { showCloseButton: true });
-     }));
-  }
-
-  getTranslationSection(jsonText, i, field, numPieces){
-    this.subscription.add( this.http.post('https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to='+this.langSelected.code, jsonText)
-    .subscribe( (res : any) => {
-      this.sectionsAndProms[i].section[field] = res[0].translations[0].text;
-      this.contTranslates++;
-      if(this.contTranslates == numPieces){
-        //this.showInfo(this.sectionsAndProms);
-       // this.loading = false;
-      }
-     }, (err) => {
-       this.contTranslates++;
-       if(this.contTranslates == numPieces){
-         //this.showInfo(this.sectionsAndProms);
-        // this.loading = false;
-       }
-       console.log(err);
-       this.toastr.error('', this.translate.instant("generics.error try again"), { showCloseButton: true });
-     }));
-  }
-
-  getTranslationDescriptionSection(jsonText, i, field){
-    this.subscription.add( this.http.post('https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to='+this.langSelected.code, jsonText)
-    .subscribe( (res : any) => {
-      this.sectionsAndProms[i].section[field] = res[0].translations[0].text;
-     }, (err) => {
-       console.log(err);
-       this.toastr.error('', this.translate.instant("generics.error try again"), { showCloseButton: true });
-     }));
-  }
-
-  getTranslationProm(jsonText, i, j,  field){
-    this.subscription.add( this.http.post('https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to='+this.langSelected.code, jsonText)
-    .subscribe( (res : any) => {
-       this.sectionsAndProms[i].promsStructure[j].structure[field] = res[0].translations[0].text;
-     }, (err) => {
-       console.log(err);
-       this.toastr.error('', this.translate.instant("generics.error try again"), { showCloseButton: true });
-     }));
-  }
-
-  getTranslationValue(jsonText, i, j, k){
-    this.subscription.add( this.http.post('https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to='+this.langSelected.code, jsonText)
-    .subscribe( (res : any) => {
-      // esta condición sobrará
-      if(this.sectionsAndProms[i].promsStructure[j].structure.values[k].value){
-        this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k].value, translation: res[0].translations[0].text, annotations: this.sectionsAndProms[i].promsStructure[j].structure.values[k].annotations};
-      }else{
-        this.sectionsAndProms[i].promsStructure[j].structure.values[k] = {original: this.sectionsAndProms[i].promsStructure[j].structure.values[k], translation: res[0].translations[0].text, annotations: []};
-      }
-
-     }, (err) => {
-       console.log(err);
-       this.toastr.error('', this.translate.instant("generics.error try again"), { showCloseButton: true });
-     }));
-  }
-
-  saveTranslation(){
-    this.loading = true;
-    if(this.actualIdSectionsAndProms==null){
-      //var paramssend = this.langSelected.code+'-code-'+this.groupSelected._id;
-      var paramssend = { lang: this.langSelected.code, data: this.sectionsAndProms, groupId: this.groupSelected._id};
-      this.subscription.add( this.http.post(environment.api+'/api/structureproms', paramssend)
-      .subscribe( (res : any) =>{
-        this.actualIdSectionsAndProms = res._id;
-        this.loading = false;
-      }, (err) => {
-        console.log(err);
-        this.loading = false;
-        this.toastr.error('', this.translate.instant("generics.error try again"), { showCloseButton: true });
-      }));
-    }else{
-      var paramssend2 = { lang: this.langSelected.code, data: this.sectionsAndProms};
-      this.subscription.add( this.http.put(environment.api+'/api/structureproms/'+this.actualIdSectionsAndProms, paramssend2)
-      .subscribe( (res : any) =>{
-        this.loading = false;
-      }, (err) => {
-        console.log(err);
-        this.loading = false;
-        this.toastr.error('', this.translate.instant("generics.error try again"), { showCloseButton: true });
-      }));
+    } else {
+      var paramssend2 = { lang: this.langSelected.code, data: this.sectionsAndProms };
+      this.subscription.add(this.http.put(environment.api + '/api/structureproms/' + this.actualIdSectionsAndProms, paramssend2)
+        .subscribe((res: any) => {
+          this.loading = false;
+        }, (err) => {
+          console.log(err);
+          this.loading = false;
+          this.toastr.error('', this.translate.instant("generics.error try again"), { showCloseButton: true });
+        }));
     }
 
   }
@@ -788,7 +788,7 @@ export class PromsComponent implements OnInit, OnDestroy{
     //this.inputEl.nativeElement.focus();
   }
 
-  addItem(labname){
+  addItem(labname) {
     console.log(labname);
     this.prom.annotations.push(labname);
     //this.prom.annotations.push({name:labname, _id: res.lab._id});
@@ -810,7 +810,7 @@ export class PromsComponent implements OnInit, OnDestroy{
     //this.inputEl.nativeElement.focus();
   }
 
-  addItem2(labname){
+  addItem2(labname) {
     console.log(labname);
     this.selectedItems.push(labname);
     //this.selectedItems.push({name:labname, _id: res.lab._id});
@@ -818,7 +818,7 @@ export class PromsComponent implements OnInit, OnDestroy{
     this.modelTemp2 = '';
   }
 
-    searchSymptoms = (text$: Observable<string>) =>
+  searchSymptoms = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(300),
       distinctUntilChanged(),
@@ -835,64 +835,75 @@ export class PromsComponent implements OnInit, OnDestroy{
     )
 
 
-    onFileChange(event) {
-      var reader = new FileReader();
-        reader.onload = this.onReaderLoad.bind(this);
-        reader.readAsText(event.target.files[0]);
-    }
+  onFileChange(event) {
+    var reader = new FileReader();
+    reader.onload = this.onReaderLoad.bind(this);
+    reader.readAsText(event.target.files[0]);
+  }
 
-    onReaderLoad(event){
-      this.sending = true;
-      console.log(event.target.result);
+  onReaderLoad(event) {
+    this.sending = true;
+    try {
       var obj = JSON.parse(event.target.result);
       var infoToImport = [];
       for (var i = 0; i < obj.length; i++) {
-        if(obj[i].F29Id!=''){
-          var splitId= obj[i].F29Id.split(':');
+        if (obj[i].promId != '') {
+          var promId = obj[i].promId;
+          var valueId = '';
+          if (obj[i].valueId != undefined) {
+            if (obj[i].valueId != '') {
+              valueId = obj[i].valueId;
+            }
+          }
+
           var elements = Object.keys(obj[i]).length;
           var annotations = [];
           for (var j = 0; j < elements; j++) {
-            var column = 'annotation'+(j+1);
-            if(obj[i][column]!=undefined){
-              var extensioncolum = obj[i][column].substr(obj[i][column].lastIndexOf('/')+1);
-              if(extensioncolum!=''){
+            var column = 'annotation' + (j + 1);
+            if (obj[i][column] != undefined) {
+              var extensioncolum = obj[i][column].substr(obj[i][column].lastIndexOf('/') + 1);
+              if (extensioncolum != '') {
                 var value = extensioncolum.replaceAll('_', ':');
                 annotations.push(value);
               }
-              console.log(extensioncolum);
             }
-            
+
           }
           /*var extensionTheme1 = obj[i].Theme1.substr(obj[i].Theme1.lastIndexOf('/')+1);
           var value = extensionTheme1.replaceAll('_', ':');
           var annotations = [];
           annotations.push(value);*/
-          infoToImport.push({idProm: splitId[1], annotations:annotations});
+          infoToImport.push({ idProm: promId, annotations: annotations, valueId: valueId });
         }
       }
       console.log(infoToImport);
       this.batchAnnotations(infoToImport);
-      
+    } catch (e) {
+      this.sending = false;
+      alert(e); // error in the above string (in this case, yes)!
+    }
+
+
   }
 
-  batchAnnotations(infoToImport){
-    this.subscription.add( this.http.post(environment.api+'/api/group/annotations/'+this.authService.getIdUser(), infoToImport)
-    .subscribe( (res : any) => {
-      this.toastr.success('', this.translate.instant("generics.Data saved successfully"), { showCloseButton: true });
-      console.log(this.actualSection._id);
-      if(this.actualSection._id!=undefined){
-        this.seeProms(this.actualSection);
-      }
-        
+  batchAnnotations(infoToImport) {
+    this.subscription.add(this.http.post(environment.api + '/api/group/annotations/' + this.authService.getIdUser(), infoToImport)
+      .subscribe((res: any) => {
+        this.toastr.success('', this.translate.instant("generics.Data saved successfully"), { showCloseButton: true });
+        console.log(this.actualSection._id);
+        if (this.actualSection._id != undefined) {
+          this.seeProms(this.actualSection);
+        }
+
         this.sending = false;
-     }, (err) => {
-       if(err.error.message=='Token expired' || err.error.message=='Invalid Token'){
-         this.authGuard.testtoken();
-       }else{
-         this.toastr.error('', this.translate.instant("generics.Data saved fail"), { showCloseButton: true });
-       }
-       this.sending = false;
-     }));
+      }, (err) => {
+        if (err.error.message == 'Token expired' || err.error.message == 'Invalid Token') {
+          this.authGuard.testtoken();
+        } else {
+          this.toastr.error('', this.translate.instant("generics.Data saved fail"), { showCloseButton: true });
+        }
+        this.sending = false;
+      }));
   }
 
 }
