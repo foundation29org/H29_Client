@@ -286,16 +286,16 @@ export class UsersAdminComponent implements OnDestroy{
       res.metadata.organizations = dataExported;
       res.metadata.responseType= {};
       res.metadata.responseType['CheckboxList'] = {label:'CheckboxList', desciption:'Several answer options can be checked'};
-      res.metadata.responseType['Choise'] = {label:'Choise', desciption:'Choose an answer option from a menu'};
-      res.metadata.responseType['ChoiseSet'] = {label:'ChoiseSet', desciption:'Several answer options can be checked'};
-      res.metadata.responseType['ChoiseAndDate'] = {label:'ChoiseAndDate', desciption:'Choose an answer option from a menu and add a date as answer'};
-      res.metadata.responseType['ChoiseAndRangeDate'] = {label:'ChoiseAndRangeDate', desciption:'Choose an answer option from a menu and add a date range as answer'};
+      res.metadata.responseType['Choice'] = {label:'Choice', desciption:'Choose an answer option from a menu'};
+      res.metadata.responseType['ChoiceSet'] = {label:'ChoiceSet', desciption:'Several answer options can be checked'};
+      res.metadata.responseType['ChoiceAndDate'] = {label:'ChoiceAndDate', desciption:'Choose an answer option from a menu and add a date as answer'};
+      res.metadata.responseType['ChoiceAndRangeDate'] = {label:'ChoiceAndRangeDate', desciption:'Choose an answer option from a menu and add a date range as answer'};
       res.metadata.responseType['Date'] = {label:'Date', desciption:'Allows dates as answers'};
       res.metadata.responseType['Number'] = {label:'Number', desciption:'Allows numbers as answers'};
-      res.metadata.responseType['NumberChoiseAndDate'] = {label:'NumberChoiseAndDate', desciption:'Numbers, choice of an option from a menu and a date as answers'};
+      res.metadata.responseType['NumberChoiceAndDate'] = {label:'NumberChoiceAndDate', desciption:'Numbers, choice of an option from a menu and a date as answers'};
       res.metadata.responseType['RadioButtons'] = {label:'RadioButtons', desciption:'Allow one answer option to be selected from a list'};
       res.metadata.responseType['Text'] = {label:'Text', desciption:'Allows free text answers'};
-      res.metadata.responseType['TextAndDoubleChoiseAndRangeDate'] = {label:'TextAndDoubleChoiseAndRangeDate', desciption:'Numbers, choice of two options from a menu and a date range as answers'};
+      res.metadata.responseType['TextAndDoubleChoiceAndRangeDate'] = {label:'TextAndDoubleChoiceAndRangeDate', desciption:'Numbers, choice of two options from a menu and a date range as answers'};
       res.metadata.responseType['Toogle'] = {label:'Toogle', desciption:'Select or unselect one answer'};
     return res;
   }

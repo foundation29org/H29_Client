@@ -847,12 +847,12 @@ export class PromsComponent implements OnInit, OnDestroy {
       var obj = JSON.parse(event.target.result);
       var infoToImport = [];
       for (var i = 0; i < obj.length; i++) {
-        if (obj[i].promId != '') {
-          var promId = obj[i].promId;
-          var valueId = '';
-          if (obj[i].valueId != undefined) {
-            if (obj[i].valueId != '') {
-              valueId = obj[i].valueId;
+        if (obj[i].F29Id != '') {
+          var F29Id = obj[i].F29Id;
+          var F29ValueId = '';
+          if (obj[i].F29ValueId != undefined) {
+            if (obj[i].F29ValueId != '') {
+              F29ValueId = obj[i].F29ValueId;
             }
           }
 
@@ -864,7 +864,10 @@ export class PromsComponent implements OnInit, OnDestroy {
               var extensioncolum = obj[i][column].substr(obj[i][column].lastIndexOf('/') + 1);
               if (extensioncolum != '') {
                 var value = extensioncolum.replaceAll('_', ':');
-                annotations.push(value);
+                var value1 = value.replaceAll(' ', '');
+                var upper = value1.toUpperCase();
+                console.log(upper);
+                annotations.push(upper);
               }
             }
 
@@ -873,7 +876,7 @@ export class PromsComponent implements OnInit, OnDestroy {
           var value = extensionTheme1.replaceAll('_', ':');
           var annotations = [];
           annotations.push(value);*/
-          infoToImport.push({ idProm: promId, annotations: annotations, valueId: valueId });
+          infoToImport.push({ idProm: F29Id, annotations: annotations, valueId: F29ValueId });
         }
       }
       console.log(infoToImport);
