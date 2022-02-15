@@ -1490,27 +1490,67 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
               doc.text(20, lineText += 10, this.translate.instant("social.Sports"));
               doc.setTextColor(0,0,0)
               var sports
-              if(element.data.sports != "" && element.data.sports != undefined && element.data.sports != null){
+              console.log(element.data);
+              if((element.data.sports != "" && element.data.sports != undefined && element.data.sports != null) || element.data.othersport != ''){
                 sports = []; //
                 for(var l = 0; l<element.data.sports.length ; l++){
-                  if(element.data.sports[l] == "swimming"){
-                    sports[l] = this.translate.instant("social.Swimming")
-                  }
-                  else if(element.data.sports[l] == "wheelchairHockey"){
-                    sports[l] = this.translate.instant("social.Wheelchair hockey")
-                  }
-                  else if(element.data.sports[l] == "soccer"){
+                  if(element.data.sports[l] == "Accessible rambling"){
+                    sports[l] = this.translate.instant("social.Accessible rambling")
+                  }else if(element.data.sports[l] == "Archery"){
+                    sports[l] = this.translate.instant("social.Archery")
+                  }else if(element.data.sports[l] == "Athletics"){
+                    sports[l] = this.translate.instant("social.Athletics")
+                  }else if(element.data.sports[l] == "Badminton"){
+                    sports[l] = this.translate.instant("social.Badminton")
+                  }else if(element.data.sports[l] == "Boccia"){
+                    sports[l] = this.translate.instant("social.Boccia")
+                  }else if(element.data.sports[l] == "Canoeing"){
+                    sports[l] = this.translate.instant("social.Canoeing")
+                  }else if(element.data.sports[l] == "Cycling"){
+                    sports[l] = this.translate.instant("social.Cycling")
+                  }else if(element.data.sports[l] == "soccer"){
                     sports[l] = this.translate.instant("social.Soccer")
-                  }
-                  else if(element.data.sports[l] == "hourseRiding"){
+                  }else if(element.data.sports[l] == "hourseRiding"){
                     sports[l] = this.translate.instant("social.Horse riding")
+                  }else if(element.data.sports[l] == "Inclusive dance"){
+                    sports[l] = this.translate.instant("social.Inclusive dance")
+                  }else if(element.data.sports[l] == "Karate"){
+                    sports[l] = this.translate.instant("social.Karate")
+                  }else if(element.data.sports[l] == "Pilates"){
+                    sports[l] = this.translate.instant("social.Pilates")
+                  }else if(element.data.sports[l] == "Sailing"){
+                    sports[l] = this.translate.instant("social.Sailing")
+                  }else if(element.data.sports[l] == "Shooting"){
+                    sports[l] = this.translate.instant("social.Shooting")
+                  }else if(element.data.sports[l] == "Sitting Volleyball"){
+                    sports[l] = this.translate.instant("social.Sitting Volleyball")
+                  }else if(element.data.sports[l] == "swimming"){
+                    sports[l] = this.translate.instant("social.swimming")
+                  }else if(element.data.sports[l] == "Taekwondo"){
+                    sports[l] = this.translate.instant("social.Taekwondo")
+                  }else if(element.data.sports[l] == "Wheelchair Basketball"){
+                    sports[l] = this.translate.instant("social.Wheelchair Basketball")
+                  }else if(element.data.sports[l] == "Wheelchair Football"){
+                    sports[l] = this.translate.instant("social.Wheelchair Football")
+                  }else if(element.data.sports[l] == "wheelchairHockey"){
+                    sports[l] = this.translate.instant("social.Wheelchair hockey")
+                  }else if(element.data.sports[l] == "Wheelchair Rugby"){
+                    sports[l] = this.translate.instant("social.Wheelchair Rugby")
+                  }else if(element.data.sports[l] == "Wheelchair tennis"){
+                    sports[l] = this.translate.instant("social.Wheelchair tennis")
+                  }else if(element.data.sports[l] == "Yoga"){
+                    sports[l] = this.translate.instant("social.Yoga")
                   }
                   else if(element.data.sports[l] == "none"){
                     sports[l] = this.translate.instant("generics.None")
-                  }
+                  }/*
                   else if(element.data.sports[l] == "other"){
                     sports[l] = this.translate.instant("generics.Other")
-                  }
+                  }*/
+                }
+                if(element.data.othersport != ''){
+                  var info = this.translate.instant("generics.Other")+': '+element.data.othersport;
+                  sports.push(info);
                 }
               }
               else{
@@ -1523,33 +1563,33 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
               doc.text(20, lineText += 10, this.translate.instant("social.Interests"));
               doc.setTextColor(0,0,0)
               var interests
-              if(element.data.interests != "" && element.data.interests != undefined && element.data.interests != null){
+              if((element.data.interests != "" && element.data.interests != undefined && element.data.interests != null) || element.data.otherinterest != ''){
                 interests = []; //
                 for(var l = 0; l<element.data.sports.length ; l++){
-                  if(element.data.interests[l] == "gaming"){
-                    interests[l] = this.translate.instant("social.Gaming")
-                  }
-                  else if(element.data.interests[l] == "music"){
-                    interests[l] = this.translate.instant("social.Music")
-                  }
-                  else if(element.data.interests[l] == "sports"){
-                    interests[l] = this.translate.instant("social.Sports")
-                  }
-                  else if(element.data.interests[l] == "movies"){
-                    interests[l] = this.translate.instant("social.Movies")
-                  }
-                  else if(element.data.interests[l] == "mindgames"){
-                    interests[l] = this.translate.instant("social.Mindgames")
-                  }
-                  else if(element.data.interests[l] == "scouting"){
+                  if(element.data.interests[l] == "scouting"){
                     interests[l] = this.translate.instant("social.Scouting")
-                  }
-                  else if(element.data.interests[l] == "none"){
+                  }else if(element.data.interests[l] == "sports"){
+                    interests[l] = this.translate.instant("social.Sports")
+                  }else if(element.data.interests[l] == "Lego"){
+                    interests[l] = this.translate.instant("social.Lego")
+                  }else if(element.data.interests[l] == "movies"){
+                    interests[l] = this.translate.instant("social.Movies")
+                  }else if(element.data.interests[l] == "music"){
+                    interests[l] = this.translate.instant("social.Music")
+                  }else if(element.data.interests[l] == "mindgames"){
+                    interests[l] = this.translate.instant("social.Mindgames")
+                  }else if(element.data.interests[l] == "gaming"){
+                    interests[l] = this.translate.instant("social.Gaming")
+                  }else if(element.data.interests[l] == "none"){
                     interests[l] = this.translate.instant("generics.None")
-                  }
+                  }/*
                   else if(element.data.interests[l] == "other"){
                     interests[l] = this.translate.instant("generics.Other")
-                  }
+                  }*/
+                }
+                if(element.data.otherinterest != ''){
+                  var info = this.translate.instant("generics.Other")+': '+element.data.otherinterest;
+                  interests.push(info);
                 }
               }
               else{

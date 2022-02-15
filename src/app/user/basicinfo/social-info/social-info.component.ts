@@ -31,6 +31,8 @@ export class SocialInfoComponent implements OnInit, OnDestroy{
   private msgDataSavedFail: string;
   loading: boolean = false;
   sending: boolean = false;
+  showfieldOtherSports: boolean = false;
+  showfieldOtherInterests: boolean = false;
   group: string;
   nameduchenne: string = globalvars.duchennenetherlands;
   nameduchenneInter: string = globalvars.duchenneinternational;
@@ -58,7 +60,9 @@ export class SocialInfoComponent implements OnInit, OnDestroy{
         livingSituation: '',
         support: [],
         sports: [],
+        othersport: '',
         interests: [],
+        otherinterest: '',
         moreInterests: '',
         _id: null
       };
@@ -77,6 +81,8 @@ export class SocialInfoComponent implements OnInit, OnDestroy{
             }else{
               this.socialInfo = res.socialInfo;
               this.socialInfoCopy = JSON.parse(JSON.stringify(res.socialInfo));
+              this.sportschanged();
+              this.interestschanged();
               //this.idSocialInfo = res.socialInfo._id;
             }
             this.loading = false;
@@ -146,6 +152,29 @@ export class SocialInfoComponent implements OnInit, OnDestroy{
            }));
         }
       }
+  }
+
+  sportschanged(){
+    this.showfieldOtherSports = false;
+    console.log(this.socialInfo.sports);
+    this.socialInfo.sports.forEach(function(item){
+      if (item === 'other') {
+          console.log('other');
+          this.showfieldOtherSports = true;
+      }
+   }.bind(this));
+    
+  }
+
+  interestschanged(){
+    console.log(this.socialInfo.interests);
+    this.socialInfo.interests.forEach(function(item){
+      if (item === 'other') {
+          console.log('other');
+          this.showfieldOtherInterests = true;
+      }
+   }.bind(this));
+    
   }
 
   }
