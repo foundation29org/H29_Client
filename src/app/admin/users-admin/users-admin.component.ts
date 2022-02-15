@@ -285,21 +285,18 @@ export class UsersAdminComponent implements OnDestroy{
   addedMetadata(res, dataExported){
       res.metadata.organizations = dataExported;
       res.metadata.responseType= {};
-      res.metadata.responseType['CheckboxList'] = {label:'CheckboxList', desciption:'CheckboxList'};
-      res.metadata.responseType['Choise'] = {label:'Choise', desciption:'Choise'};
-      res.metadata.responseType['ChoiseSet'] = {label:'ChoiseSet', desciption:'ChoiseSet'};
-      res.metadata.responseType['ChoiseAndDate'] = {label:'ChoiseAndDate', desciption:'ChoiseAndDate'};
-      res.metadata.responseType['ChoiseAndRangeDate'] = {label:'ChoiseAndRangeDate', desciption:'ChoiseAndRangeDate'};
-      res.metadata.responseType['Date'] = {label:'Date', desciption:'Date'};
-      res.metadata.responseType['Label'] = {label:'Label', desciption:'Label'};
-      res.metadata.responseType['Number'] = {label:'Number', desciption:'Number'};
-      res.metadata.responseType['NumberChoiseAndDate'] = {label:'NumberChoiseAndDate', desciption:'NumberChoiseAndDate'};
-      res.metadata.responseType['RadioButtons'] = {label:'RadioButtons', desciption:'RadioButtons'};
-      res.metadata.responseType['Text'] = {label:'Text', desciption:'Text'};
-      res.metadata.responseType['TextAndDoubleChoiseAndRangeDate'] = {label:'TextAndDoubleChoiseAndRangeDate', desciption:'TextAndDoubleChoiseAndRangeDate'};
-      res.metadata.responseType['Title'] = {label:'Title', desciption:'Title'};
-      res.metadata.responseType['Time'] = {label:'Time', desciption:'Time'};
-      res.metadata.responseType['Toogle'] = {label:'Toogle', desciption:'Toogle'};
+      res.metadata.responseType['CheckboxList'] = {label:'CheckboxList', desciption:'Several answer options can be checked'};
+      res.metadata.responseType['Choice'] = {label:'Choice', desciption:'Choose an answer option from a menu'};
+      res.metadata.responseType['ChoiceSet'] = {label:'ChoiceSet', desciption:'Several answer options can be checked'};
+      res.metadata.responseType['ChoiceAndDate'] = {label:'ChoiceAndDate', desciption:'Choose an answer option from a menu and add a date as answer'};
+      res.metadata.responseType['ChoiceAndRangeDate'] = {label:'ChoiceAndRangeDate', desciption:'Choose an answer option from a menu and add a date range as answer'};
+      res.metadata.responseType['Date'] = {label:'Date', desciption:'Allows dates as answers'};
+      res.metadata.responseType['Number'] = {label:'Number', desciption:'Allows numbers as answers'};
+      res.metadata.responseType['NumberChoiceAndDate'] = {label:'NumberChoiceAndDate', desciption:'Numbers, choice of an option from a menu and a date as answers'};
+      res.metadata.responseType['RadioButtons'] = {label:'RadioButtons', desciption:'Allow one answer option to be selected from a list'};
+      res.metadata.responseType['Text'] = {label:'Text', desciption:'Allows free text answers'};
+      res.metadata.responseType['TextAndDoubleChoiceAndRangeDate'] = {label:'TextAndDoubleChoiceAndRangeDate', desciption:'Numbers, choice of two options from a menu and a date range as answers'};
+      res.metadata.responseType['Toogle'] = {label:'Toogle', desciption:'Select or unselect one answer'};
     return res;
   }
 
