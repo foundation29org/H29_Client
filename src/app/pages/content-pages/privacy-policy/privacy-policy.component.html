@@ -14,6 +14,7 @@
      <li><a class="primary" (click)="goTo('step5')">{{'policy.Security and confidentiality.' | translate }}</a></li>
      <li><a class="primary" (click)="goTo('step6')">{{'policy.Users under age.' | translate }}</a></li>
      <li><a class="primary" (click)="goTo('step7')">{{'policy.Privacy Policy updates.' | translate }}</a></li>
+     <li><a class="primary" (click)="goTo('step8')">{{'policy.Additional information' | translate }}</a></li>
    </ol>
    <a id="step1"></a>
    <div>
@@ -109,7 +110,7 @@
              </td>
              <td>{{'policy.Your express and specific consent.' | translate }}</td>
              <td>
-               {{'policy.We will not share your personal data ...' | translate }}
+               {{'policy.We will not share your personal data 2 ...' | translate }}
              </td>
              <td></td>
              <td>
@@ -208,6 +209,52 @@
        {{'policy.You may find this Privacy Policy ...' | translate }}
      </p>
    </div>
+   <a id="step8"></a>
+   <div>
+    <h6 class="primary">8. {{'policy.Additional information' | translate }}</h6>
+    <div class="p-2" style="background: #e3e1e1;border: 2px solid !important;">
+      <span>
+        <strong>{{'policy.step8.t1' | translate }}</strong>
+        <p class="mb-0">{{'policy.step8.cont1.1' | translate }}</p>
+        <p [innerHTML]="'policy.step8.cont1.2' | translate | safe: 'html'"></p>
+      </span>
+      <span>
+        <strong>{{'policy.step8.t2' | translate }}</strong>
+        <p class="mb-0">{{'policy.step8.cont2.1' | translate }}</p>
+        <p [innerHTML]="'policy.step8.cont2.2' | translate | safe: 'html'"></p>
+      </span>
+    </div>
+    <div class="mt-3">
+      <strong>{{'policy.step8.p1.t' | translate }}</strong>
+      <p>{{'policy.step8.p1.c1' | translate }}</p>
+    </div>
+    <div>
+      <strong>{{'policy.step8.p2.t' | translate }}</strong>
+      <p>{{'policy.step8.p2.c1' | translate }}</p>
+    </div>
+    <div>
+      <strong>{{'policy.step8.p3.t' | translate }}</strong>
+      <p>{{'policy.step8.p3.c1' | translate }}</p>
+    </div>
+    <div>
+      <strong>{{'policy.step8.p4.t' | translate }}</strong>
+      <ul>
+        <li>
+          {{'policy.step8.p4.c1' | translate }}
+        </li>
+        <li>
+          {{'policy.step8.p4.c2' | translate }}
+        </li>
+        <li>
+          {{'policy.step8.p4.c3' | translate }}
+        </li>
+        <li>
+          {{'policy.step8.p4.c4' | translate }}
+        </li>
+      </ul>
+    </div>
+    
+  </div>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary btn-raised" (click)="back()">{{'generics.Back' | translate }}</button>

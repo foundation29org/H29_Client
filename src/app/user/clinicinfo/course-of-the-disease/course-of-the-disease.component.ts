@@ -680,7 +680,7 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
             if(this.sectionsAndProms[i].promsStructure[j].data.length==0){
               // hpos a quitar
               if(this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Toogle' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Text' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Number' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Date'){
-                if(this.sectionsAndProms[i].promsStructure[j].structure.annotations){
+                if(this.sectionsAndProms[i].promsStructure[j].structure.annotations !=undefined){
                   if(this.sectionsAndProms[i].promsStructure[j].structure.annotations.length>0){
                     for (var anno = 0; anno < this.sectionsAndProms[i].promsStructure[j].structure.annotations.length; anno++) {
                       if(this.isHPO(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno])){
@@ -709,7 +709,7 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
             }else{
               // hpos a añadir
               if(this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Toogle' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Text' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Number' || this.sectionsAndProms[i].promsStructure[j].structure.responseType == 'Date'){
-                if(this.sectionsAndProms[i].promsStructure[j].structure.annotations){
+                if(this.sectionsAndProms[i].promsStructure[j].structure.annotations !=undefined){
                   if(this.sectionsAndProms[i].promsStructure[j].structure.annotations.length>0){
                     for (var anno = 0; anno < this.sectionsAndProms[i].promsStructure[j].structure.annotations.length; anno++) {
                       if(this.isHPO(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno])){
@@ -803,21 +803,22 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
             }
           }
           //check this.sectionsAndProms[i].promsStructure[j].structure.annotations
-          for (var anno1 = 0; anno1 < this.sectionsAndProms[i].promsStructure[j].structure.annotations.length; anno1++) {
-            if(this.isHPO(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno1])){
-              if(this.sectionsAndProms[i].promsStructure[j].data!=null){
-                if(this.sectionsAndProms[i].promsStructure[j].data.length==0){
-                  textToRemoveHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno1]);
+          if(this.sectionsAndProms[i].promsStructure[j].structure.annotations !=undefined){
+            for (var anno1 = 0; anno1 < this.sectionsAndProms[i].promsStructure[j].structure.annotations.length; anno1++) {
+              if(this.isHPO(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno1])){
+                if(this.sectionsAndProms[i].promsStructure[j].data!=null){
+                  if(this.sectionsAndProms[i].promsStructure[j].data.length==0){
+                    textToRemoveHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno1]);
+                  }else{
+                    textToAddHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno1]);
+                  }
                 }else{
-                  textToAddHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno1]);
+                  textToRemoveHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno1]);
                 }
-              }else{
-                textToRemoveHpo.push(this.sectionsAndProms[i].promsStructure[j].structure.annotations[anno1]);
               }
+              
             }
-            
-          }
-          
+          }          
         }
 
       }

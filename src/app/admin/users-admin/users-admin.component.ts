@@ -283,6 +283,14 @@ export class UsersAdminComponent implements OnDestroy{
   }
 
   addedMetadata(res, dataExported){
+      res.metadata.unitsOfMeasure = {};
+      res.metadata.unitsOfMeasure['Weight'] = 'Kg';
+      res.metadata.unitsOfMeasure['Height'] = 'cm';
+      res.metadata.unitsOfMeasure['Drugs dose'] = 'mg';
+      res.metadata.education = {};
+      res.metadata.education['0int'] = this.translate.instant("education.Primary education:");
+      res.metadata.education['1int'] = this.translate.instant("education.Secondary education:");
+      res.metadata.education['2int'] = this.translate.instant("education.Vocational education");
       res.metadata.organizations = dataExported;
       res.metadata.responseType= {};
       res.metadata.responseType['CheckboxList'] = {label:'CheckboxList', desciption:'Several answer options can be checked'};

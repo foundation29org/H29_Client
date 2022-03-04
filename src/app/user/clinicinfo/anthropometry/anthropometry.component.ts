@@ -192,6 +192,11 @@ export class AnthropometryComponent implements OnInit, OnDestroy{
         .subscribe( (res : any) => {
           if(res.message){
             //no tiene weight
+            this.actualWeight = {
+              value: null,
+              dateTime: null,
+              _id: null
+            };
           }else{
             this.actualWeight = res.weight;
             if(this.settings.massunit == 'lb'){
@@ -252,6 +257,11 @@ export class AnthropometryComponent implements OnInit, OnDestroy{
          .subscribe( (res : any) => {
            if(res.message){
              //no tiene height
+             this.actualHeight = {
+              value: null,
+              dateTime: null,
+              _id: null
+            };
            }else{
              this.actualHeight = res.height;
              if(this.settings.lengthunit == 'ft'){
