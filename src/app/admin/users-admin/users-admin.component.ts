@@ -40,6 +40,7 @@ export class UsersAdminComponent implements OnDestroy{
   nameduchenneInter: string = globalvars.duchenneinternational;
   currentGroup: any;
   subgroups: any = [];
+  annotations: any = {};
   countries: any;
 
   title = 'Select/ Unselect All';
@@ -71,6 +72,7 @@ export class UsersAdminComponent implements OnDestroy{
     }else{
       this.getUsers();
     }
+    this.loadAnnotations();
   }
 
   loadSubgroups(){
@@ -283,6 +285,7 @@ export class UsersAdminComponent implements OnDestroy{
   }
 
   addedMetadata(res, dataExported){
+      res.metadata.annotations = this.annotations;
       res.metadata.unitsOfMeasure = {};
       res.metadata.unitsOfMeasure['Weight'] = 'Kg';
       res.metadata.unitsOfMeasure['Height'] = 'cm';
@@ -327,6 +330,31 @@ export class UsersAdminComponent implements OnDestroy{
     document.getElementById('content').appendChild(a);
     document.getElementById("download").click();
     this.modalReference.close();
+  }
+
+  loadAnnotations(){
+    this.subscription.add(this.http.get('assets/jsons/annotations.json')
+        .subscribe((res: any) => {
+            this.annotations = res;
+            this.loadDrugsAnnotations();
+        }, (err) => {
+            console.log(err);
+        }));
+  }
+
+  loadDrugsAnnotations(){
+    this.subscription.add( this.http.get(environment.api+'/api/group/medications/'+this.currentGroup)
+    .subscribe( (res : any) => {
+      if(res.medications.data.length == 0){
+        //no tiene medications
+      }else{
+        for (var i = 0; i < res.medications.data.drugs.length; i++) {
+          this.annotations.drugs.push({_id: res.medications.data.drugs[i]._id, name:res.medications.data.drugs[i].name, annotations:res.medications.data.drugs[i].annotations})
+        }
+      }
+     }, (err) => {
+       console.log(err);
+     }));
   }
 
 }

@@ -1,0 +1,63 @@
+{
+    "height": [],
+    "weight": [],
+    "drugs": [],
+    "otherDrugs": {
+        "Supplements": {
+            "Calcium": [],
+            "Vitamin D": [],
+            "Green Tea Extract": [],
+            "Coenzyme Q10": [],
+            "Creatine": [],
+            "Arginine": [],
+            "Taurine": [],
+            "Carnitine": [],
+            "Glutamine": [],
+            "Leucine": [],
+            "Fish oil": [],
+            "Vitamin E": [],
+            "Multivitamin": [],
+            "Herbs or plant extracts": [],
+            "N-acetylcysteine": [],
+            "Protandim": [],
+            "Resveratrol": [],
+            "Quercetin": []
+        },
+        "Gastroprotective drugs": {
+            "Omeprazol": [],
+            "Pantoprazol": [],
+            "Esomeprazol / Nexium": [],
+            "Zantac / Ranitidine": [],
+            "Famotidine": [],
+            "Gaviscon": []
+        },
+        "Psychopharmaceuticals": [],
+        "Pain medication": [],
+        "Laxative": []
+    },
+    "vaccines": {
+        "Flue":[],
+        "D.K.T.P.":[],
+        "D.T.P.":[],
+        "H.I.B.":[],
+        "B.M.R.":[],
+        "Pneumococcal":[],
+        "Chicken-pox":[],
+        "Meningococcal":[],
+        "Hepatitis A":[],
+        "Hepatitis B":[],
+        "HPV":[],
+        "COVID-19":[]
+    },
+    "medicalcare": {
+        "general": [],
+        "specificVisit": [],
+        "hospitalization": [],
+        "emergencies": [],
+        "cardiotest": [],
+        "respiratorytests": [],
+        "bonehealthtest": [],
+        "bloodtest": [],
+        "surgery": []
+    }
+}
