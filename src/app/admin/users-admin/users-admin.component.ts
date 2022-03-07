@@ -322,9 +322,9 @@ export class UsersAdminComponent implements OnDestroy{
     var a = document.createElement('a');
     var dateNow = new Date();
     var stringDateNow = this.dateService.transformDate(dateNow);
-    a.download    = "dataRaito_"+stringDateNow+".json";
+    a.download    = "dataHealth29_"+stringDateNow+".json";
     a.href        = url;
-    a.textContent = "dataRaito_"+stringDateNow+".json";
+    a.textContent = "dataHealth29_"+stringDateNow+".json";
     a.setAttribute("id", "download")
 
     document.getElementById('content').appendChild(a);
