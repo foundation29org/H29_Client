@@ -694,9 +694,9 @@
     "Type": "Soort"
   },
   "medicalcare": {
-    "general": "Reguliere zorg",
+    "general": "Reguliere zorg team",
     "list of Clinicals in care of patient": "lijst van ziekenhuizen voor zorg van de patiënt",
-    "specificVisit": "Specifiek bezoek",
+    "specificVisit": "Gegevens bezoek specialist",
     "hospitalization": "Ziekenhuisopname",
     "emergencies": "Spoedgevallen",
     "cardiotest": "Hartonderzoek",
@@ -728,7 +728,7 @@
     "Distance": "Afstand in km vanaf huis",
     "DistanceKm": "Afstand",
     "Write the name of the hospital": "Vul hier de naam van het ziekenhuis in",
-    "Specific visit": "Specifiek bezoek",
+    "Specific visit": "Gegevens bezoek specialist",
     "Treatment": "Voorgeschreven medicijnen",
     "Treatment in visit": "Voorgeschreven medicijnen tijdens ziekenhuisbezoek/opname",
     "Info popup treatement":"Er wordt een pop-up scherm geopend waarin je kunt invoeren welke medicatie tijdens dit bezoek/deze opname werd voorgeschreven.",
