@@ -1280,7 +1280,6 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
               doc.setFontSize(9);
               var completedEducation = "-"
               if(this.user.group == this.duchenneinternational){
-                console.log(element.data.completedEducation)
                 if(element.data.completedEducation != "" && element.data.completedEducation != undefined && element.data.completedEducation != null){
                   if(element.data.completedEducation == "0int"){
                     completedEducation = this.translate.instant("education.Primary education:")
@@ -1490,7 +1489,6 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
               doc.text(20, lineText += 10, this.translate.instant("social.Sports"));
               doc.setTextColor(0,0,0)
               var sports
-              console.log(element.data);
               if((element.data.sports != "" && element.data.sports != undefined && element.data.sports != null) || element.data.othersport != ''){
                 sports = []; //
                 for(var l = 0; l<element.data.sports.length ; l++){
@@ -1595,7 +1593,6 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
               else{
                 interests = "-"
               }
-              console.log(interests);
               doc.text(20, lineText += 5, interests);
               var lengthSpace= interests.length*5;
               lineText = this.checkIfNewPage(doc,lineText += lengthSpace)
@@ -1633,7 +1630,8 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
                 doc.setFontType("normal");
                 doc.setFontSize(11);
                 doc.text(20, anthropometryLineText += 10, (element.data.value != "" && element.data.value != undefined && element.data.value != null)? element.data.value : "-");
-                doc.text(35, anthropometryLineText, lengthunit);
+                doc.text(35, anthropometryLineText, 'cm');
+                //doc.text(35, anthropometryLineText, lengthunit);
               }
             }//filter
 
@@ -1652,7 +1650,8 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
                 doc.text(80, anthropometryLineText, this.translate.instant("generics.Date"));
                 doc.setTextColor(0,0,0)
                 doc.text(20, anthropometryLineText += 5, (height.value != "" && height.value != undefined && height.value != null)? height.value : "-");
-                doc.text(35, anthropometryLineText, lengthunit);
+                doc.text(35, anthropometryLineText, 'cm');
+                //doc.text(35, anthropometryLineText, lengthunit);
                 doc.text(80, anthropometryLineText, (height.dateTime != "" && height.dateTime != undefined && height.dateTime != null)?this.datePipe.transform(height.dateTime, this.timeformat) : "-");
               });
             }
@@ -1682,7 +1681,8 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
                 doc.setFontType("normal");
                 doc.setFontSize(11);
                 if(massunit == "lb"){
-                  doc.text(20, anthropometryLineText += 5, (element.data.value != "" && element.data.value != undefined && element.data.value != null)? element.data.value * 2.2046 : "-");
+                  var value = ((element.data.value * 2.20462).toFixed(2).toString());
+                  doc.text(20, anthropometryLineText += 5, (element.data.value != "" && element.data.value != undefined && element.data.value != null)? value : "-");
                 }
                 else if(massunit == "kg"){
                   doc.text(20, anthropometryLineText += 5, (element.data.value != "" && element.data.value != undefined && element.data.value != null)? element.data.value : "-");
@@ -1706,7 +1706,8 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
                 doc.text(80, anthropometryLineText, this.translate.instant("generics.Date"));
                 doc.setTextColor(0,0,0)
                 if(massunit == "lb"){
-                  doc.text(20, anthropometryLineText += 5, (weight.value != "" && weight.value != undefined && weight.value != null)? weight.value * 2.2046 : "-");
+                  var value = ((weight.value * 2.20462).toFixed(2).toString());
+                  doc.text(20, anthropometryLineText += 5, (weight.value != "" && weight.value != undefined && weight.value != null)? value : "-");
                 }
                 else if(massunit == "kg"){
                   doc.text(20, anthropometryLineText += 5, (weight.value != "" && weight.value != undefined && weight.value != null)? weight.value : "-");
@@ -2316,13 +2317,16 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
                   var lineFinal = lineText
                   //recorrer proms y ver responsetype, relatedto, enabled, data y name
                   care.listProms.forEach(prom => {
-                    if(prom[0].enabled == true){
-                      var tempoInfo = this.translateSectionProm(prom)
-                      if(tempoInfo!=undefined){
-                        lineText = this.writePromsInPDF(firstProm,doc, prom, lineText, promPosition, tempoInfo)
+                    if(prom[0]!=undefined){
+                      if(prom[0].enabled == true){
+                        var tempoInfo = this.translateSectionProm(prom)
+                        if(tempoInfo!=undefined){
+                          lineText = this.writePromsInPDF(firstProm,doc, prom, lineText, promPosition, tempoInfo)
+                        }
+  
                       }
-
                     }
+                    
                   });
                 }
               })
