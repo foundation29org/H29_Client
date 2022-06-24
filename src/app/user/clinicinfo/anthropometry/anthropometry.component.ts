@@ -8,6 +8,7 @@ import { AuthService } from 'app/shared/auth/auth.service';
 import { DateService } from 'app/shared/services/date.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { SearchFilterPipe} from 'app/shared/services/search-filter.service';
+import { SortService} from 'app/shared/services/sort.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthGuard } from 'app/shared/auth/auth-guard.service';
 import swal from 'sweetalert2';
@@ -81,7 +82,7 @@ export class AnthropometryComponent implements OnInit, OnDestroy{
   lang='en';
   duchennenetherlands: string = globalvars.duchennenetherlands;
   duchenneinternational: string = globalvars.duchenneinternational;
-  constructor(private router: Router, private http: HttpClient, private authService: AuthService, private dateService: DateService, public toastr: ToastsManager, public searchFilterPipe: SearchFilterPipe, public translate: TranslateService, private authGuard: AuthGuard, private modalService: NgbModal, private adapter: DateAdapter<any>) {
+  constructor(private router: Router, private http: HttpClient, private authService: AuthService, private dateService: DateService, public toastr: ToastsManager, public searchFilterPipe: SearchFilterPipe, public translate: TranslateService, private authGuard: AuthGuard, private modalService: NgbModal, private adapter: DateAdapter<any>, private sortService: SortService) {
     this.adapter.setLocale(this.authService.getLang());
     this.lang =this.authService.getLang();
     switch(this.authService.getLang()){
@@ -182,6 +183,8 @@ export class AnthropometryComponent implements OnInit, OnDestroy{
     //cargar los datos del usuario
     this.loadingWeight = true;
     this.loadingHeight = true;
+    this.weightHistory = [];
+    this.heightHistory = [];
     this.subscription.add( this.http.get(environment.api+'/api/patients-all/'+this.authService.getIdUser())
     .subscribe( (res : any) => {
       if(res.listpatients.length>0){
@@ -211,7 +214,9 @@ export class AnthropometryComponent implements OnInit, OnDestroy{
               if(resweight.message){
                 //no tiene historico de peso
               }else{
-               this.weightHistory = resweight;
+                console.log(resweight);
+                //resweight.sort(this.sortService.GetSortOrder("dateTime"));
+               //this.weightHistory = resweight;
                 var datagraphweight =  [];
                 for(var i = 0; i < resweight.length; i++) {
                   //var splitDate = resweight[i].dateTime.split('T');
@@ -228,8 +233,14 @@ export class AnthropometryComponent implements OnInit, OnDestroy{
                       splitDateString=splitDate.toLocaleString('en-US').split(",")[0];
                   }*/
                   //datagraphweight.push({value: resweight[i].value, name: splitDate[0]});
+                  if(this.settings.massunit == 'lb'){
+                    resweight[i].value = (resweight[i].value * 2.2046).toFixed(2)
+                    this.weightHistory.push(resweight[i]);
+                  }else{
+                    this.weightHistory.push(resweight[i]);
+                  }
                   datagraphweight.push({value: resweight[i].value, name: splitDate});
-
+                  
                 }
 
                 this.lineChartWeight = [
@@ -283,7 +294,7 @@ export class AnthropometryComponent implements OnInit, OnDestroy{
                if(resheight.message){
                  //no tiene historico de peso
                }else{
-               this.heightHistory = resheight;
+               //this.heightHistory = resheight;
                  var datagraphheight =  [];
                  for(var i = 0; i < resheight.length; i++) {
                    //var splitDate = resheight[i].dateTime.split('T');
@@ -291,6 +302,14 @@ export class AnthropometryComponent implements OnInit, OnDestroy{
 
                    var splitDate = new Date(resheight[i].dateTime);
                     //datagraphweight.push({value: resweight[i].value, name: splitDate[0]});
+
+                    if(this.settings.lengthunit == 'ft'){
+                      resheight[i].value = (resheight[i].value / 30.48).toFixed(2)
+                      this.heightHistory.push(resheight[i]);
+                    }else{
+                      this.heightHistory.push(resheight[i]);
+                    }
+
                     datagraphheight.push({value: resheight[i].value, name: splitDate});
 
 
