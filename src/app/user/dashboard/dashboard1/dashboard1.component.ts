@@ -19,8 +19,7 @@ declare let cordova: any;
 
 export class Dashboard1Component implements OnDestroy{
   group: string;
-
-  nameduchenne: string = globalvars.duchennenetherlands;
+  subgroup: string;
   nameduchenneInter: string = globalvars.duchenneinternational;
   namediabetes: string = 'Diabetes';
   nameundiagnosed: string = 'Undiagnosed';
@@ -33,6 +32,7 @@ export class Dashboard1Component implements OnDestroy{
 
   constructor(private http: HttpClient, public translate: TranslateService, private authService: AuthService, private sanitizer: DomSanitizer, private router: Router){
      this.group = this.authService.getGroup();
+     this.subgroup = this.authService.getSubgroup();
      this.userId = this.authService.getIdUser();
      this.lang = this.authService.getLang();
      this.urlimg = 'assets/img/Duchenne_'+this.lang+'.jpg';

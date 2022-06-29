@@ -76,12 +76,12 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
     generatingPDF:boolean=false;
     exportPDFSelected:boolean=false;
     pdfGenerated:boolean=true;
-    duchennenetherlands: string = globalvars.duchennenetherlands;
     duchenneinternational: string = globalvars.duchenneinternational;
+    subgroup: string;
     isApp: boolean = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && location.hostname != "localhost" && location.hostname != "127.0.0.1";
 
     constructor(private http: HttpClient, private modalService: NgbModal, private datePipe: DatePipe, private authService: AuthService, public toastr: ToastsManager, public translate: TranslateService, private authGuard: AuthGuard, private langService:LangService, private elRef: ElementRef, private router: Router, private dateService: DateService, private inj: Injector) {
-
+      this.subgroup = this.authService.getSubgroup();
       //obter las lista de idiomas
       this.loadLanguages();
 
@@ -708,7 +708,7 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
       var lineText = 0
       var img = document.createElement('img');
       var date = new Date()
-      if(this.user.group == this.duchennenetherlands || this.user.group == this.duchenneinternational){
+      if(this.user.group == this.duchenneinternational){
         img.src = "https://health29.org/assets/img/duchenne-medium.png"
       }
       else{
@@ -1279,7 +1279,7 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
               doc.setTextColor(0,0,0)
               doc.setFontSize(9);
               var completedEducation = "-"
-              if(this.user.group == this.duchenneinternational){
+              if(this.user.group == this.duchenneinternational && this.subgroup != '3900'){
                 if(element.data.completedEducation != "" && element.data.completedEducation != undefined && element.data.completedEducation != null){
                   if(element.data.completedEducation == "0int"){
                     completedEducation = this.translate.instant("education.Primary education:")
@@ -1292,7 +1292,7 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
                   }
                 }
                 doc.text(20, lineText+= 5, completedEducation);
-              }else if(this.user.group == this.duchennenetherlands){
+              }else if(this.user.group == this.duchenneinternational && this.subgroup == '3900'){
                 doc.text(20, lineText+= 5, (element.data.completedEducation != "" && element.data.completedEducation != undefined && element.data.completedEducation != null)? element.data.completedEducation : "-");
               }else{
                 if(element.data.completedEducation != "" && element.data.completedEducation != undefined && element.data.completedEducation != null){
@@ -1335,7 +1335,7 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
               doc.setFontSize(9);
               //doc.text(80, lineText, (element.data.completedEducation != "" && element.data.completedEducation != undefined && element.data.completedEducation != null)? element.data.completedEducation : "-");
               var currentEducation = "-"
-              if(this.user.group == this.duchenneinternational){
+              if(this.user.group == this.duchenneinternational && this.subgroup != '3900'){
 
                 if(element.data.currentEducation != "" && element.data.currentEducation != undefined && element.data.currentEducation != null){
                   if(element.data.currentEducation == "0int"){
@@ -1349,7 +1349,7 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
                   }
                 }
                 doc.text(20, lineText+= 5, currentEducation);
-              }else if(this.user.group == this.duchennenetherlands){
+              }else if(this.user.group == this.duchenneinternational && this.subgroup == '3900'){
                 doc.text(20, lineText+= 5, (element.data.currentEducation != "" && element.data.currentEducation != undefined && element.data.currentEducation != null)? element.data.currentEducation : "-");
               }else{
                 if(element.data.currentEducation != "" && element.data.currentEducation != undefined && element.data.currentEducation != null){

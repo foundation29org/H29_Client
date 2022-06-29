@@ -23,7 +23,7 @@
 									translate }}</h4>
 								<div class="row">
 									<div class="col-md-4">
-										<div class="form-group" *ngIf="nameduchenneInter != group">
+										<div class="form-group" *ngIf="nameduchenneInter == group && 3900 == subgroup">
 											<label for="education">{{'social.Type' | translate }}</label>
 											<select id="education" name="education" class="form-control"
 												[(ngModel)]="socialInfo.education">
@@ -33,7 +33,7 @@
 													translate }}</option>
 											</select>
 										</div>
-										<div class="form-group" *ngIf="nameduchenneInter == group">
+										<div class="form-group" *ngIf="nameduchenneInter == group && 3900 != subgroup">
 											<label for="education">{{'social.Type' | translate }}</label>
 											<select id="education" name="education" class="form-control"
 												[(ngModel)]="socialInfo.education">
@@ -46,7 +46,7 @@
 											</select>
 										</div>
 									</div>
-									<div class="col-md-4" *ngIf="nameduchenne != group && nameduchenneInter != group">
+									<div class="col-md-4" *ngIf="nameduchenneInter != group">
 										<div class="form-group">
 											<label for="currentEducation">{{'social.Current Education' | translate }}
 												<small>(<a
@@ -75,7 +75,7 @@
 											</select>
 										</div>
 									</div>
-									<div class="col-md-4" *ngIf="nameduchenneInter == group">
+									<div class="col-md-4" *ngIf="nameduchenneInter == group && 3900 != subgroup">
 										<div class="form-group">
 											<label for="currentEducation">{{'social.Current Education' | translate
 												}}</label>
@@ -90,7 +90,7 @@
 											</select>
 										</div>
 									</div>
-									<div class="col-md-4" *ngIf="nameduchenne == group">
+									<div class="col-md-4" *ngIf="nameduchenneInter == group && 3900 == subgroup">
 										<div class="form-group">
 											<label for="currentEducation">{{'social.Current Education' | translate
 												}}</label>
@@ -106,7 +106,7 @@
 											</select>
 										</div>
 									</div>
-									<div class="col-md-4" *ngIf="nameduchenne != group && nameduchenneInter != group">
+									<div class="col-md-4" *ngIf="nameduchenneInter != group">
 										<div class="form-group">
 											<label for="completedEducation">{{'social.Completed Education' | translate
 												}} <small>(<a
@@ -135,7 +135,7 @@
 											</select>
 										</div>
 									</div>
-									<div class="col-md-4" *ngIf="nameduchenneInter == group">
+									<div class="col-md-4" *ngIf="nameduchenneInter == group && 3900 != subgroup">
 										<div class="form-group">
 											<label for="completedEducation">{{'social.Completed Education' | translate
 												}}</label>
@@ -150,7 +150,7 @@
 											</select>
 										</div>
 									</div>
-									<div class="col-md-4" *ngIf="nameduchenne == group">
+									<div class="col-md-4" *ngIf="nameduchenneInter == group && 3900 == subgroup">
 										<div class="form-group">
 											<label for="completedEducation">{{'social.Completed Education' | translate
 												}}</label>

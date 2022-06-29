@@ -24,14 +24,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
     urlLogo: string = 'assets/img/health29-compr-small.png';
     urlLogo2: string = 'assets/img/health29-medium.png';
     modules: any = [];
-    duchennenetherlands: string = globalvars.duchennenetherlands;
     duchenneinternational: string = globalvars.duchenneinternational;
     private subscription: Subscription = new Subscription();
 
     constructor(private router: Router, private route: ActivatedRoute, public translate: TranslateService, private authService: AuthService, private eventsService: EventsService, private http: HttpClient, private authGuard: AuthGuard) {
       this.group = this.authService.getGroup();
       //logo
-      if(this.group  == this.duchennenetherlands || this.group  == this.duchenneinternational){
+      if(this.group  == this.duchenneinternational){
         this.urlLogo = 'assets/img/logo-dark.png';
         this.urlLogo2 = 'assets/img/duchenne-medium.png';
       }
@@ -88,9 +87,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
           this.menuItems = JSON.parse(JSON.stringify(ROUTESDIABETES.filter(menuItem => menuItem)));
         }else if(this.authService.getGroup() == 'Undiagnosed'){
           this.menuItems = JSON.parse(JSON.stringify(ROUTESUNDIAGNOSED.filter(menuItem => menuItem)));
-        }else if(this.authService.getGroup() == this.duchennenetherlands){
+        }else if(this.authService.getGroup() == this.duchenneinternational && this.authService.getSubgroup() == '3900'){
           this.menuItems = JSON.parse(JSON.stringify(ROUTESDUCHENNE.filter(menuItem => menuItem)));
-        }else if(this.authService.getGroup() == this.duchenneinternational){
+        }else if(this.authService.getGroup() == this.duchenneinternational && this.authService.getSubgroup() != '3900'){
           this.menuItems = JSON.parse(JSON.stringify(ROUTESINTERNATIONAL.filter(menuItem => menuItem)));
         }else{
           this.menuItems = JSON.parse(JSON.stringify(ROUTES.filter(menuItem => menuItem)));

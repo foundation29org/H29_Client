@@ -34,13 +34,14 @@ export class SocialInfoComponent implements OnInit, OnDestroy{
   showfieldOtherSports: boolean = false;
   showfieldOtherInterests: boolean = false;
   group: string;
-  nameduchenne: string = globalvars.duchennenetherlands;
+  subgroup: string;
   nameduchenneInter: string = globalvars.duchenneinternational;
   private subscription: Subscription = new Subscription();
 
   //idSocialInfo: string = null;
   constructor(private router: Router, private route: ActivatedRoute, private http: HttpClient, private authService: AuthService, public toastr: ToastsManager, public translate: TranslateService, private authGuard: AuthGuard) {
     this.group = this.authService.getGroup();
+    this.subgroup = this.authService.getSubgroup();
   }
 
   ngOnDestroy() {

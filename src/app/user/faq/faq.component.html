@@ -1,4 +1,4 @@
-<div class="row" *ngIf="group == nameduchenne">
+<div class="row" *ngIf="group == nameduchenneInter && 3900 == subgroup">
   <div class="col-sm-12">
     <div class="content-header">Videos</div>
   </div>
@@ -32,7 +32,7 @@
 <div class="row">
   <div class="col-sm-12">
     <div class="content-header">{{'menu.FAQs' | translate }}</div>
-    <span *ngIf="group == nameduchenne" class="content-sub-header"><em>{{'faqs.any question' | translate }}</em></span>
+    <span *ngIf="group == nameduchenneInter && 3900 == subgroup" class="content-sub-header"><em>{{'faqs.any question' | translate }}</em></span>
   </div>
 </div>
 <!-- faq starts -->
@@ -40,13 +40,13 @@
   <div class="row">
     <div class="col-12">
       <div class="card faq-bg bg-transparent box-shadow-0">
-        <div *ngIf="group != nameduchenne" class="card-content">
+        <div *ngIf="group != nameduchenneInter && 3900 != subgroup" class="card-content">
           <div class="card-body p-md-2 text-center">
             <!--<h1 class="faq-title mb-3">{{'faqs.here to help' | translate }}!!</h1>-->
             <p><em>{{'faqs.any question' | translate }}</em></p>
           </div>
         </div>
-        <form class="d-flex" [ngClass]="( group != nameduchenne )?'justify-content-center':''">
+        <form class="d-flex" [ngClass]="( group != nameduchenneInter && 3900 != subgroup )?'justify-content-center':''">
           <fieldset class="faq-search-input form-group position-relative w-100">
             <input type="text" class="form-control round form-control-lg shadow p-1 pl-3" placeholder="{{'faqs.Search in faqs' | translate }}..." (input)="filter($event.target.value)" #messageInput>
           </fieldset>

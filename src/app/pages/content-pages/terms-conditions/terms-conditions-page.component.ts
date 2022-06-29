@@ -15,7 +15,6 @@ export class TermsConditionsPageComponent implements OnInit{
   showSecurity: boolean = false;
   role: string = '';
   group: string = '';
-  duchennenetherlands: string = globalvars.duchennenetherlands;
   duchenneinternational: string = globalvars.duchenneinternational;
   isApp: boolean = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && location.hostname != "localhost" && location.hostname != "127.0.0.1";
   constructor(public activeModal: NgbActiveModal, public translate: TranslateService, private modalService: NgbModal) {

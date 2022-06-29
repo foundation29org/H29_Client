@@ -18,6 +18,7 @@ export class AuthService {
   private iduser: string;
   private role: string;
   private group: string;
+  private subgroup: string;
   private lang: string;
   private expToken: number = null;
   private currentPatient: ICurrentPatient = null;
@@ -51,6 +52,7 @@ export class AuthService {
         this.setRedirectUrl('/user/dashboard/dashboard1')
       }
       this.setGroup(tokenPayload.group);
+      this.setSubgroup(tokenPayload.subgroup);
 
       return true;
     }else{
@@ -75,6 +77,7 @@ export class AuthService {
       this.setRedirectUrl('/user/dashboard/dashboard1')
     }
     this.setGroup(tokenPayload.group);
+    this.setSubgroup(tokenPayload.subgroup);
     //save sessionStorage
     sessionStorage.setItem('token', token)
   }
@@ -167,6 +170,7 @@ export class AuthService {
     this.token = null;
     this.role = null;
     this.group = null;
+    this.subgroup = null;
     this.lang = null;
     this.expToken = null;
     this.isloggedIn = false;
@@ -218,6 +222,12 @@ export class AuthService {
   }
   getGroup(): string {
     return this.group;
+  }
+  setSubgroup(subgroup: string): void {
+    this.subgroup = subgroup;
+  }
+  getSubgroup(): string {
+    return this.subgroup;
   }
   setExpToken(expToken: number): void {
     this.expToken = expToken;

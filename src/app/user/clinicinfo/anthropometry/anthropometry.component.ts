@@ -80,7 +80,6 @@ export class AnthropometryComponent implements OnInit, OnDestroy{
   private subscription: Subscription = new Subscription();
   timeformat="";
   lang='en';
-  duchennenetherlands: string = globalvars.duchennenetherlands;
   duchenneinternational: string = globalvars.duchenneinternational;
   constructor(private router: Router, private http: HttpClient, private authService: AuthService, private dateService: DateService, public toastr: ToastsManager, public searchFilterPipe: SearchFilterPipe, public translate: TranslateService, private authGuard: AuthGuard, private modalService: NgbModal, private adapter: DateAdapter<any>, private sortService: SortService) {
     this.adapter.setLocale(this.authService.getLang());

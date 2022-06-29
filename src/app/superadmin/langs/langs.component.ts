@@ -29,6 +29,20 @@ export class LangsComponent implements OnDestroy{
 
   constructor(private http: HttpClient, public translate: TranslateService, private authService: AuthService, private authGuard: AuthGuard, private langService: LangService, public toastr: ToastsManager){
     this.loadLanguages();
+    //this.migrateUsers();
+  }
+
+  migrateUsers(){
+    this.subscription.add( this.http.get(environment.api+'/api/migrate')
+    .subscribe( (res : any) => {
+      console.log(res);
+      for (var i = 0; i < res.data.length; i++) {
+        console.log(res.data[i].role);
+
+      }
+    }, (err) => {
+      console.log(err);
+    }));
   }
 
   ngOnDestroy() {
