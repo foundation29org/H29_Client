@@ -122,7 +122,7 @@ export class LoginPageComponent implements OnDestroy, OnInit {
       }
 
      ngOnDestroy() {
-       this.subscription.unsubscribe();
+       //this.subscription.unsubscribe();
      }
 
      submitInvalidForm() {
@@ -195,6 +195,36 @@ export class LoginPageComponent implements OnDestroy, OnInit {
                       this.router.navigate(['/user/basicinfo/personalinfo']);
                     }
                     else{
+
+                      if(authenticated.reason=='showPopup'){
+                        swal({
+                          title: this.translate.instant("login.titlePopup"),
+                          html: '<div class="col-md-12 mt-2"> <p> ' + this.translate.instant("registration.consent") + '</p> <p> ' + this.translate.instant("registration.consent3") + '</p> <p> ' + this.translate.instant("registration.consent4") + '</p> <p> ' + this.translate.instant("registration.consent5") + '</p> <p> ' + this.translate.instant("registration.consent6") + '</p></div>',
+                          type: 'warning',
+                          showCancelButton: true,
+                          confirmButtonColor: '#0CC27E',
+                          cancelButtonColor: '#FF586B',
+                          confirmButtonText: this.translate.instant("login.accept"),
+                          cancelButtonText: this.translate.instant("login.no accept"),
+                          showLoaderOnConfirm: true,
+                          allowOutsideClick: false
+                        }).then((result) => {
+                          console.log(result)
+                          if (result.value) {
+                            
+                            console.log(result.value);
+                            if (result.value == true){
+                              this.sendTerms(true);
+                            }else{
+                              this.sendTerms(false);
+                            }
+                            //this.phenotype.data.splice(index, 1);
+                          }else{
+                            this.sendTerms(false);
+                          }
+                        }).catch(swal.noop);
+                      }
+
                       // Check alerts with type 6 or 12 months if showDate > X months in each case
                       // and update all userAlerts showdate, state=Not read and launch = false
                       var patientId=res.sub;
@@ -368,6 +398,17 @@ export class LoginPageComponent implements OnDestroy, OnInit {
     		    }
           }
   	   ));
+    }
+
+    sendTerms(value){
+      console.log(value);
+      var info = {value:value};
+      this.subscription.add( this.http.post(environment.api+'/api/user/changeterms/'+this.authService.getIdUser(), info)
+        .subscribe( (res1 : any) => {
+          console.log(res1);
+        }, (err) => {
+          console.log(err);
+        }));
     }
 
     launchDemo(){

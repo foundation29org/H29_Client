@@ -83,7 +83,10 @@
     "Add phone number requiered text":"Je behoort tot een patiëntengroep waarbij authenticatie met de Authy-app nodig is om toegang te krijgen tot het platform. Om dit te doen, moet je je telefoonnummer geven en de instructies volgen die wij je per mail zullen sturen om de app op je mobiele apparaat te downloaden.",
     "Register in authy ok":"Controleer je e-mail en download de Authy-app om door te gaan.",
     "Register in authy ko":"Er is een fout opgetreden, probeer het opnieuw of neem contact op met het ondersteuningsteam.",
-    "Authy timeout":"Geen reactie van de Authy-app "
+    "Authy timeout":"Geen reactie van de Authy-app ",
+    "titlePopup":"Voorwaarden",
+    "accept": "Ik aanvaard",
+    "no accept": "Ik accepteer het niet"
   },
   "registration": {
     "Registration": "Registratie",

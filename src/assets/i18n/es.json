@@ -83,7 +83,10 @@
     "Add phone number requiered text":"Usted pertenece a un grupo de pacientes que requiere autenticación con la aplicación Authy para acceder a la plataforma. Para ello es necesario que nos facilite su número de teléfono y siga las instrucciones que le vamos a enviar por correo para instalar la aplicación en su dispositivo móvil",
     "Register in authy ok":"Por favor compruebe su correo e instale la aplicación Authy para continuar",
     "Register in authy ko":"Se ha producido un error, por favor inténtelo de nuevo o póngase en contacto con el equipo de soporte.",
-    "Authy timeout":"No se ha obtenido respuesta de la aplicación Authy"
+    "Authy timeout":"No se ha obtenido respuesta de la aplicación Authy",
+    "titlePopup":"Terminos y condiciones",
+    "accept": "Acepto",
+    "no accept": "No acepto"
   },
   "registration":{
     "Registration": "Registro",

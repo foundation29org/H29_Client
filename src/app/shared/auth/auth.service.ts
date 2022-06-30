@@ -92,7 +92,11 @@ export class AuthService {
             sessionStorage.setItem('lang', res.lang)
             this.setEnvironment(res.token);
             this.setMessage(res.message);
-            return {logged:this.isloggedIn,reason:""};
+            var msg = "";
+            if(res.showPopup){
+              msg = "showPopup";
+            }
+            return {logged:this.isloggedIn,reason:msg};
 
           }else if(res.type=="2FA request approval"){
             return {logged:this.isloggedIn,reason:"2FA"};

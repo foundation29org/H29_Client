@@ -83,7 +83,10 @@
     "Add phone number requiered text":"You belong to a patient group that requires 2 Factor authentication (using the Authy app) to access the platform. To comply with this requirement, please provide your telephone number and follow the installation instructions that we will send to you by email.",
     "Register in authy ok":"Please check your email and install the Authy application to continue",
     "Register in authy ko":"An error has occurred, please try again or contact the support team.",
-    "Authy timeout":"There is no response from the Authy application"
+    "Authy timeout":"There is no response from the Authy application",
+    "titlePopup":"Terms and conditions",
+    "accept": "I accept",
+    "no accept": "I do not accept"
   },
   "registration":{
     "Registration": "Registration",
