@@ -86,7 +86,12 @@
     "Authy timeout":"Geen reactie van de Authy-app ",
     "titlePopup":"Voorwaarden",
     "accept": "Ik aanvaard",
-    "no accept": "Ik accepteer het niet"
+    "no accept": "Ik accepteer het niet",
+    "consent": "Ik ga akkoord met de verwerking van mijn gezondheidsgegevens om onderzoek te bevorderen en de behandeling van Duchenne-patiënten te verbeteren, zoals uitgelegd in het Privacybeleid.",
+    "consent3": "Ik begrijp dat mijn deelname (de deelname van mijn kind) vrijwillig is en dat ik de toestemming op elk moment kan intrekken zonder de noodzaak van rechtvaardiging en zonder mijn toekomstige medische zorg (de medische zorg van mijn kind) te beïnvloeden.",
+    "consent4": "Ik ga ermee akkoord dat mijn gegevens (de gegevens van mijn kind) worden opgeslagen in het Duchenne Data Platform. Dat mijn FAIR-gegevens worden opgeslagen in een beveiligde Duchenne-bewaarplaats, worden hergebruikt voor non-profitdoeleinden en worden gedeeld met goedgekeurde onderzoekers om de levering van gezondheidszorgdiensten te verbeteren.",
+    "consent5": "Ik wil graag opnieuw gecontacteerd worden om geïnformeerd te worden over mijn mogelijke deelname (deelname van mijn kind) aan een onderzoeksproject en/of klinische studie met betrekking tot mijn aandoening (de toestand van mijn kind) zoals beschreven in het Privacybeleid.",
+    "consent6": "Ik ga akkoord met de verwerking van mijn gepseudonimiseerde gegevens (de gepseudonimiseerde gegevens van mijn kind) voor de hierboven beschreven doeleinden."
   },
   "registration": {
     "Registration": "Registratie",

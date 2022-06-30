@@ -199,7 +199,7 @@ export class LoginPageComponent implements OnDestroy, OnInit {
                       if(authenticated.reason=='showPopup'){
                         swal({
                           title: this.translate.instant("login.titlePopup"),
-                          html: '<div class="col-md-12 mt-2"> <p> ' + this.translate.instant("registration.consent") + '</p> <p> ' + this.translate.instant("registration.consent3") + '</p> <p> ' + this.translate.instant("registration.consent4") + '</p> <p> ' + this.translate.instant("registration.consent5") + '</p> <p> ' + this.translate.instant("registration.consent6") + '</p></div>',
+                          html: '<div class="col-md-12 mt-2"> <p> ' + this.translate.instant("login.consent") + '</p> <p> ' + this.translate.instant("login.consent3") + '</p> <p> ' + this.translate.instant("login.consent4") + '</p> <p> ' + this.translate.instant("login.consent5") + '</p> <p> ' + this.translate.instant("login.consent6") + '</p></div>',
                           type: 'warning',
                           showCancelButton: true,
                           confirmButtonColor: '#0CC27E',
@@ -211,14 +211,7 @@ export class LoginPageComponent implements OnDestroy, OnInit {
                         }).then((result) => {
                           console.log(result)
                           if (result.value) {
-                            
-                            console.log(result.value);
-                            if (result.value == true){
-                              this.sendTerms(true);
-                            }else{
-                              this.sendTerms(false);
-                            }
-                            //this.phenotype.data.splice(index, 1);
+                            this.sendTerms(true);
                           }else{
                             this.sendTerms(false);
                           }

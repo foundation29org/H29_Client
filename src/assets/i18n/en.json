@@ -86,7 +86,12 @@
     "Authy timeout":"There is no response from the Authy application",
     "titlePopup":"Terms and conditions",
     "accept": "I accept",
-    "no accept": "I do not accept"
+    "no accept": "I do not accept",
+    "consent": "I consent to the processing of my health data to foster investigation and improve treatment for all Duchenne patients, as explained in the Privacy Policy.",
+    "consent3": "I understand that my participation (the participation of my child) is voluntary and that I can withdraw the consent at any time without the need of justification and without affecting my future medical care (the medical care of my child).",
+    "consent4": "I approve that my data (the data of my child) will be stored in the Duchenne Data Platform. That my FAIR data will be stored into a secure Duchenne depository, re-used for non-profit purposes and shared with approved researchers to improve the delivery of healthcare services.",
+    "consent5": "I would like to be recontacted in order to be informed about my potential participation (participation of my child) in a research project and/or clinical study related to my condition (the condition of my child) as described in the Privacy Policy.",
+    "consent6": "I consent to the processing of my pseudonymised data (the pseudonymised data of my child) for the purposes described above."
   },
   "registration":{
     "Registration": "Registration",
