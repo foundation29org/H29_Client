@@ -39,10 +39,7 @@ export class TermsConditionsPageComponent implements OnInit{
 
   ngOnInit() {
     if(this.state=='showPopup'){
-      var htmlcode = '<div class="col-md-12 mt-2 text-left"> <p> ' + this.translate.instant("login.consent") + '</p> <p> ' + this.translate.instant("login.consent3") + '</p> <p class="mt-4"> ' + this.translate.instant("login.consent4") + '</p> <p> ' + this.translate.instant("login.consent5") + '</p> <p class="mt-4"> ' + this.translate.instant("login.consent6") + '</p><p> ' + this.translate.instant("login.consent7") + '</p></div>';
-      if(this.authService.getLang()=='nl'){
-        htmlcode= '<div class="col-md-12 mt-2 text-left"> <p> ' + this.translate.instant("login.consent") + '</p> <p class="mt-4"> ' + this.translate.instant("login.consent4") + '</p> <p> ' + this.translate.instant("login.consent5") + '</p> <p class="mt-4"> ' + this.translate.instant("login.consent6") + '</p><p> ' + this.translate.instant("login.consent7") + '</p></div>'
-      }
+      var htmlcode = '<div class="col-md-12 mt-2 text-left"> <p> ' + this.translate.instant("login.consent") + '</p> <p class="mt-4"> ' + this.translate.instant("login.consent4") + '</p> <p> ' + this.translate.instant("login.consent5") + '</p> <p class="mt-4"> ' + this.translate.instant("login.consent6") + '</p><p> ' + this.translate.instant("login.consent7") + '</p></div>';
       swal({
         html: htmlcode,
         type: undefined,

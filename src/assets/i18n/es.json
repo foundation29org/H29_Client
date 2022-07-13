@@ -963,7 +963,7 @@
     "step4content1": "Los usuarios y administradores del registro no podrán ponerse en contacto con usted porque el nombre, la dirección y el número de hospital no quedarán registrados. Todos los datos del paciente serán seudonimizados antes de ser almacenados en el registro. Esto significa que todos los identificadores relacionados con el paciente serán eliminados y sustituidos por un seudónimo del paciente real. Por lo tanto, el riesgo de reidentificación por parte de personas no autorizadas es mínimo.",
     "step4content2": "Los datos de DDP se almacenarán en un servidor seguro en Microsoft Azure y los datos FAIR transformados en el Repositorio Duchenne. Como el registro está diseñado para observar los resultados a largo plazo, los datos seudonimizados se almacenarán indefinidamente, incluso después de que la persona registrada haya fallecido. La necesidad de mantener los datos almacenados en este registro será revisada por el Duchenne Parent Project al menos cada 5 años.",
     "Identification and contact details of Data Controller": "Identificación y datos de contacto del Controlador de datos, y el encargado del tratamiento.",
-    "Necessary and updated information.": "Información necesaria y actualizada.",
+    "Necessary and updated information.": "Explicaciones sobre el uso de la Plataforma de Datos de Duchenne (DDP)",
     "Data Protection Rights.": "Derechos de protección de datos.",
     "Detailed information of the processing.": "Información detallada del proceso.",
     "Security and confidentiality.": "Seguridad y confidencialidad.",
