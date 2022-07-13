@@ -144,7 +144,13 @@ export class AuthService {
             this.setLang(response.lang);
             sessionStorage.setItem('lang', response.lang)
             this.setEnvironment(response.token);
-            this.setMessage(response.message);
+            var msg = "";
+            if(response.showPopup){
+              msg = "showPopup";
+              this.setMessage(msg);
+            }else{
+              this.setMessage(response.message);
+            }
             this.isloggedIn=true;
             subject.next(true);
             subject.complete();

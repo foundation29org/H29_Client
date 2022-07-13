@@ -270,7 +270,8 @@ export class LoginPageComponent implements OnDestroy, OnInit {
                         this.translate.use(this.authService.getLang());
                         let url =  this.authService.getRedirectUrl();
                         if(this.authService.getRole()=='User'){
-                          if(authenticated.reason=='showPopup'){
+                          var msg = this.authService.getMessage();
+                          if(msg=='showPopup'){
 
                             let ngbModalOptions: NgbModalOptions = {
                                   backdrop : 'static',
