@@ -41,6 +41,7 @@ export class AuthService {
       this.setIdUser(tokenPayload.sub);
       this.setExpToken(tokenPayload.exp);
       this.setRole(tokenPayload.role);
+      this.setMessage(sessionStorage.getItem('msg'));
 
       if(tokenPayload.role == 'Admin'){
         this.setRedirectUrl('/admin/dashboard-admin')
@@ -95,6 +96,7 @@ export class AuthService {
             var msg = "";
             if(res.showPopup){
               msg = "showPopup";
+              this.setMessage(msg);
             }
             return {logged:this.isloggedIn,reason:msg};
 
@@ -210,6 +212,7 @@ export class AuthService {
 		this.redirectUrl = url;
 	}
   setMessage(message: string): void {
+    sessionStorage.setItem('msg', message)
 		this.message = message;
 	}
   getMessage(): string {
