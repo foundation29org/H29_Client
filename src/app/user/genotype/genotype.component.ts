@@ -90,7 +90,6 @@ export class GenotypeComponent implements OnInit, OnDestroy{
   timeformat="";
 
   showinformation:boolean=false;
-  duchennenetherlands: string = globalvars.duchennenetherlands;
   duchenneinternational: string = globalvars.duchenneinternational;
 
   constructor(private router: Router, private route: ActivatedRoute, private http: HttpClient, private authService: AuthService, public toastr: ToastsManager, public translate: TranslateService, private authGuard: AuthGuard, private sortService: SortService, private searchService: SearchService, private blob: BlobStorageService,private adapter: DateAdapter<any>, private apiDx29ServerService: ApiDx29ServerService) {
@@ -173,7 +172,7 @@ export class GenotypeComponent implements OnInit, OnDestroy{
           this.accessToken.patientId = this.authService.getCurrentPatient().sub;
           this.blob.createContainerIfNotExists(this.accessToken);*/
           this.getAzureBlobSasToken();
-          if(this.group!=this.duchennenetherlands && this.group!=this.duchenneinternational){
+          if(this.group!=this.duchenneinternational){
             //cargar el genotipo del usuario
             this.subscription.add( this.http.get(environment.api+'/api/genotypes/'+res.listpatients[0].sub)
             .subscribe( (res : any) => {

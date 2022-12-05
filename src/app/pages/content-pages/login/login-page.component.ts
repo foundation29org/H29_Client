@@ -10,7 +10,8 @@ import { SortService} from 'app/shared/services/sort.service';
 import { PatientService } from 'app/shared/services/patient.service';
 import swal from 'sweetalert2';
 import { Subscription } from 'rxjs/Subscription';
-import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalRef, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { TermsConditionsPageComponent } from "../terms-conditions/terms-conditions-page.component";
 import * as Fingerprint2 from 'fingerprintjs2';
 declare let cordova: any;
 
@@ -59,6 +60,8 @@ export class LoginPageComponent implements OnDestroy, OnInit {
     showInstructions: boolean = false;
     textIntroInstructions: string = "";
     textInstruction6: string = "";
+    modalRef: NgbModalRef;
+    
     isApp: boolean = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && location.hostname != "localhost" && location.hostname != "127.0.0.1";
 
     constructor(private router: Router, private route: ActivatedRoute, private http: HttpClient, private authService: AuthService, public translate: TranslateService, private patientService: PatientService,private modalService: NgbModal, private sortService: SortService) {
@@ -107,9 +110,10 @@ export class LoginPageComponent implements OnDestroy, OnInit {
             this.authService.logout()
           }else{
             if(this.authService.getEnvironment()){
-              this.translate.use(this.authService.getLang());
+              this.authService.logout()
+              /*this.translate.use(this.authService.getLang());
               let url =  this.authService.getRedirectUrl();
-              this.router.navigate([ url ]);
+              this.router.navigate([ url ]);*/
             }
           }
         })
@@ -122,7 +126,7 @@ export class LoginPageComponent implements OnDestroy, OnInit {
       }
 
      ngOnDestroy() {
-       this.subscription.unsubscribe();
+       //this.subscription.unsubscribe();
      }
 
      submitInvalidForm() {
@@ -187,30 +191,44 @@ export class LoginPageComponent implements OnDestroy, OnInit {
                let url =  this.authService.getRedirectUrl();
 
               if(this.authService.getRole()=='User'){
-                //this.loadAlertsState();
-                this.subscription.add( this.patientService.getPatientId()
-                .subscribe( (res : any) => {
-                    if(res==null){
-                      swal(this.translate.instant("personalinfo.Welcome"), this.translate.instant("personalinfo.Fill personal info"), "info");
-                      this.router.navigate(['/user/basicinfo/personalinfo']);
-                    }
-                    else{
-                      // Check alerts with type 6 or 12 months if showDate > X months in each case
-                      // and update all userAlerts showdate, state=Not read and launch = false
-                      var patientId=res.sub;
-                      this.subscription.add( this.http.get(environment.api+'/api/alerts/patient/checkDateForUserAlerts/'+patientId)
-                      .subscribe( (res2 : any) => {
-                        this.router.navigate([ url ]);
-                      }, (err) => {
-                        console.log(err);
-                        this.router.navigate([ url ]);
-                      }));
-                    }
-                  this.sending = false;
-                }, (err) => {
-                  console.log(err);
-                  this.sending = false;
-                }));
+                if(authenticated.reason=='showPopup'){
+
+                  let ngbModalOptions: NgbModalOptions = {
+                        backdrop : 'static',
+                        keyboard : false,
+                        windowClass: 'ModalClass-sm  offset-md-3 col-md-6'
+                  };
+                  this.modalRef = this.modalService.open(TermsConditionsPageComponent, ngbModalOptions);
+                  this.modalRef.componentInstance.state = "showPopup";
+                  this.modalRef.componentInstance.role = this.authService.getRole();
+                  this.modalRef.componentInstance.group = this.authService.getGroup();
+                }else{
+                  //this.loadAlertsState();
+                  this.subscription.add( this.patientService.getPatientId()
+                  .subscribe( (res : any) => {
+                      if(res==null){
+                        swal(this.translate.instant("personalinfo.Welcome"), this.translate.instant("personalinfo.Fill personal info"), "info");
+                        this.router.navigate(['/user/basicinfo/personalinfo']);
+                      }
+                      else{
+                        // Check alerts with type 6 or 12 months if showDate > X months in each case
+                        // and update all userAlerts showdate, state=Not read and launch = false
+                        var patientId=res.sub;
+                        this.subscription.add( this.http.get(environment.api+'/api/alerts/patient/checkDateForUserAlerts/'+patientId)
+                        .subscribe( (res2 : any) => {
+                          this.router.navigate([ url ]);
+                        }, (err) => {
+                          console.log(err);
+                          this.router.navigate([ url ]);
+                        }));
+                      }
+                    this.sending = false;
+                  }, (err) => {
+                    console.log(err);
+                    this.sending = false;
+                  }));
+                }
+                
               }
               else{
                   this.sending = false;
@@ -252,29 +270,44 @@ export class LoginPageComponent implements OnDestroy, OnInit {
                         this.translate.use(this.authService.getLang());
                         let url =  this.authService.getRedirectUrl();
                         if(this.authService.getRole()=='User'){
-                          //this.loadAlertsState();
-                          this.subscription.add( this.patientService.getPatientId()
-                          .subscribe( (res : any) => {
-                            if(res==null){
-                              swal(this.translate.instant("personalinfo.Welcome"), this.translate.instant("personalinfo.Fill personal info"), "info");
-                              this.router.navigate(['/user/basicinfo/personalinfo']);
-                            }else{
-                              // Check alerts with type 6 or 12 months if showDate > X months in each case
-                              // and update all userAlerts showdate, state=Not read and launch = false
-                              var patientId=res.sub;
-                              this.subscription.add( this.http.get(environment.api+'/api/alerts/patient/checkDateForUserAlerts/'+patientId)
-                              .subscribe( (res2 : any) => {
-                                this.router.navigate([ url ]);
+                          var msg = this.authService.getMessage();
+                          if(msg=='showPopup'){
+
+                            let ngbModalOptions: NgbModalOptions = {
+                                  backdrop : 'static',
+                                  keyboard : false,
+                                  windowClass: 'ModalClass-sm  offset-md-3 col-md-6'
+                            };
+                            this.modalRef = this.modalService.open(TermsConditionsPageComponent, ngbModalOptions);
+                            this.modalRef.componentInstance.state = "showPopup";
+                            this.modalRef.componentInstance.role = this.authService.getRole();
+                            this.modalRef.componentInstance.group = this.authService.getGroup();
+                          }else{
+                            //this.loadAlertsState();
+                            this.subscription.add( this.patientService.getPatientId()
+                            .subscribe( (res : any) => {
+                              if(res==null){
+                                swal(this.translate.instant("personalinfo.Welcome"), this.translate.instant("personalinfo.Fill personal info"), "info");
+                                this.router.navigate(['/user/basicinfo/personalinfo']);
+                              }else{
+                                // Check alerts with type 6 or 12 months if showDate > X months in each case
+                                // and update all userAlerts showdate, state=Not read and launch = false
+                                var patientId=res.sub;
+                                this.subscription.add( this.http.get(environment.api+'/api/alerts/patient/checkDateForUserAlerts/'+patientId)
+                                .subscribe( (res2 : any) => {
+                                  this.router.navigate([ url ]);
+                                }, (err) => {
+                                  console.log(err);
+                                }));
+
+                                }
+                              this.sending = false;
                               }, (err) => {
                                 console.log(err);
+                                this.sending = false;
                               }));
-
-                              }
-                            this.sending = false;
-                            }, (err) => {
-                              console.log(err);
-                              this.sending = false;
-                            }));
+                          }
+                          
                         }else{
                           this.sending = false;
                           this.router.navigate([ url ]);
@@ -368,6 +401,17 @@ export class LoginPageComponent implements OnDestroy, OnInit {
     		    }
           }
   	   ));
+    }
+
+    sendTerms(value){
+      console.log(value);
+      var info = {value:value};
+      this.subscription.add( this.http.post(environment.api+'/api/user/changeterms/'+this.authService.getIdUser(), info)
+        .subscribe( (res1 : any) => {
+          console.log(res1);
+        }, (err) => {
+          console.log(err);
+        }));
     }
 
     launchDemo(){

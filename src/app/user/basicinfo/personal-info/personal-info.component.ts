@@ -43,12 +43,14 @@ export class PersonalInfoComponent implements OnInit, OnDestroy{
   loading: boolean = false;
   sending: boolean = false;
   group: string;
-  nameduchenne: string = globalvars.duchennenetherlands;
+  subgroup: string;
   nameduchenneInter: string = globalvars.duchenneinternational;
   private subscription: Subscription = new Subscription();
 
   constructor(private router: Router, private http: HttpClient, private authService: AuthService,private inj: Injector, private dateService: DateService, public toastr: ToastsManager, public searchFilterPipe: SearchFilterPipe, public translate: TranslateService, private authGuard: AuthGuard, private adapter: DateAdapter<any>) {
     this.group = this.authService.getGroup();
+    this.subgroup = this.authService.getSubgroup();
+    console.log(this.subgroup);
     this.loading = true;
     this.adapter.setLocale(this.authService.getLang());
 

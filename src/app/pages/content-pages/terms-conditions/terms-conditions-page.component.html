@@ -1,24 +1,176 @@
-<div *ngIf="group == duchennenetherlands || group == duchenneinternational">
+<div *ngIf="group == duchenneinternational">
   <section *ngIf="!showSecurity">
     <a id="initpos"></a>
-    <div class="modal-header">
-      <h4 class="modal-title">{{'registration.Privacy Policy' | translate }}</h4>
+    <div *ngIf="state=='showPopup'" style="border-bottom: 1px solid #e9ecef;">
+      <div class="modal-body">
+        <p>{{'policy.introupdatetitle' | translate }}</p>
+        <p [innerHTML]="'policy.introupdatecontent' | translate | safe: 'html'"></p>
+        <p>{{'policy.introupdatesubtitle' | translate }}</p>
+        <div class="p-2" style="background: #e3e1e1;border: 2px solid !important;">
+          <span>
+            <strong>{{'policy.step8.t1' | translate }}</strong>
+            <p class="mb-0">{{'policy.step8.cont1.1' | translate }}</p>
+            <p [innerHTML]="'policy.step8.cont1.2' | translate | safe: 'html'"></p>
+          </span>
+          <span>
+            <strong>{{'policy.step8.t2' | translate }}</strong>
+            <p class="mb-0">{{'policy.step8.cont2.1' | translate }}</p>
+            <p [innerHTML]="'policy.step8.cont2.2' | translate | safe: 'html'"></p>
+          </span>
+        </div>
+
+        <div class="mt-3">
+          <form (ngSubmit)="onSubmit(); activeModal.close('Close click')" #f="ngForm">
+            <p class="mb-0">
+              <mat-checkbox title="{{'registration.msgactivateterms' | translate }}" class="example-margin"
+              [(indeterminate)]="indeterminate" name="terms" ngModel required
+              #terms="ngModel" id="terms">
+              <label>
+                <a (click)="goTo('additionalCluses')" class="btn-flat btn-primary"><small
+                    style="margin-top: 1em;white-space: normal;text-transform: none;letter-spacing: 0px;">{{'registration.I have read and understood the' | translate }}</small></a>
+              </label>
+            </mat-checkbox>
+            
+            <small class="form-text text-muted danger"
+              *ngIf="!terms.valid && (terms.dirty || terms.touched)">{{'generics.required' |
+              translate }}</small>
+            </p>
+            <p class="mb-0">
+              <mat-checkbox class="example-margin" [(indeterminate)]="indeterminate"
+                name="terms2" ngModel required #terms2="ngModel" id="terms2">
+                <label
+                  style="margin-top: 1em;white-space: normal;text-transform: none;letter-spacing: 0px;">{{'registration.consent2'
+                  | translate }}</label>
+              </mat-checkbox>
+              <small class="form-text text-muted danger"
+                *ngIf="!terms2.valid && (terms2.dirty || terms2.touched)">{{'generics.required'
+                | translate }}</small>
+            </p>
+            <p class="mb-0">
+              <mat-checkbox class="example-margin" [(indeterminate)]="indeterminate"
+                name="terms3" ngModel required #terms3="ngModel" id="terms3">
+                <label
+                  style="margin-top: 1em;white-space: normal;text-transform: none;letter-spacing: 0px;">{{'registration.consent3'
+                  | translate }}</label>
+              </mat-checkbox>
+              <small class="form-text text-muted danger"
+                *ngIf="!terms3.valid && (terms3.dirty || terms3.touched)">{{'generics.required'
+                | translate }}</small>
+            </p>
+            <p class="mb-0">
+              <mat-checkbox class="example-margin" [(indeterminate)]="indeterminate"
+                name="terms4" ngModel required #terms4="ngModel" id="terms4">
+                <label
+                  style="margin-top: 1em;white-space: normal;text-transform: none;letter-spacing: 0px;">{{'registration.consent4'
+                  | translate }}</label>
+              </mat-checkbox>
+              <small class="form-text text-muted danger"
+                *ngIf="!terms4.valid && (terms4.dirty || terms4.touched)">{{'generics.required'
+                | translate }}</small>
+            </p>
+            <p class="mb-0">
+              <mat-checkbox class="example-margin" [(indeterminate)]="indeterminate"
+                name="terms5" ngModel required #terms5="ngModel" id="terms5">
+                <label
+                  style="margin-top: 1em;white-space: normal;text-transform: none;letter-spacing: 0px;">{{'registration.consent5'
+                  | translate }}</label>
+              </mat-checkbox>
+              <small class="form-text text-muted danger"
+                *ngIf="!terms5.valid && (terms5.dirty || terms5.touched)">{{'generics.required'
+                | translate }}</small>
+            </p>
+            <p>
+              <mat-checkbox class="example-margin" [(indeterminate)]="indeterminate"
+                name="terms6" ngModel required #terms6="ngModel" id="terms6">
+                <label
+                  style="margin-top: 1em;white-space: normal;text-transform: none;letter-spacing: 0px;">{{'registration.consent6'
+                  | translate }}</label>
+              </mat-checkbox>
+              <small class="form-text text-muted danger"
+                *ngIf="!terms6.valid && (terms6.dirty || terms6.touched)">{{'generics.required'
+                | translate }}</small>
+            </p>
+
+            <div class="center-elements">
+              <span *ngIf="!sending">
+                <div *ngIf="f.valid;then formValid else formError"></div>
+                <ng-template #formValid>
+                  <button class="btn btn-primary btn-outline-primary" type="submit"> {{'policy.continue' | translate }}</button>
+                </ng-template>
+                <ng-template #formError>
+                  <!--<p><small class="form-text text-muted danger">{{'generics.Complete the fields' | translate }}</small></p>-->
+                  <button class="btn btn-primary btn-outline-primary" type="button" (click)="submitInvalidForm()"> {{'policy.continue' | translate }}</button>
+                </ng-template>
+              </span>
+              <span *ngIf="sending">
+                <i class="fa fa-spinner fa-spin fa-3x fa-fw white"></i>
+              </span>
+            </div>
+
+          </form>
+            
+        </div>
+      </div>
+      
+    </div>
+    <div class="modal-header" [ngClass]="{'border-0': state=='showPopup'}">
+      <h4 class="modal-title">{{'registration.Privacy Policy' | translate }}
+        <p style="text-transform: initial;"><strong>{{'policy.date' | translate }}</strong></p>
+      </h4>
+      
     </div>
     <div class="modal-body">
   	 <h5>{{'policy.CONTENT' | translate }}</h5>
      <ol>
-       <li><a class="primary" (click)="goTo('step1')">{{'policy.Identification and contact details of Data Controller' | translate }}</a></li>
-       <li><a class="primary" (click)="goTo('step2')">{{'policy.Necessary and updated information.' | translate }}</a></li>
-       <li><a class="primary" (click)="goTo('step3')">{{'policy.Data Protection Rights.' | translate }}</a></li>
-       <li><a class="primary" (click)="goTo('step4')">{{'policy.Detailed information of the processing.' | translate }}</a></li>
-       <li><a class="primary" (click)="goTo('step5')">{{'policy.Security and confidentiality.' | translate }}</a></li>
-       <li><a class="primary" (click)="goTo('step6')">{{'policy.Users under age.' | translate }}</a></li>
-       <li><a class="primary" (click)="goTo('step7')">{{'policy.Privacy Policy updates.' | translate }}</a></li>
-       <li><a class="primary" (click)="goTo('step8')">{{'policy.Additional information' | translate }}</a></li>
+       <li><a class="primary" (click)="goTo('step1')">{{'policy.step1title' | translate }}</a></li>
+       <li><a class="primary" (click)="goTo('step2')">{{'policy.step2title' | translate }}</a></li>
+       <li><a class="primary" (click)="goTo('step3')">{{'policy.step3title' | translate }}</a></li>
+       <li><a class="primary" (click)="goTo('step4')">{{'policy.step4title' | translate }}</a></li>
+       <li><a class="primary" (click)="goTo('step5')">{{'policy.Identification and contact details of Data Controller' | translate }}</a></li>
+       <li><a class="primary" (click)="goTo('step6')">{{'policy.Necessary and updated information.' | translate }}</a></li>
+       <li><a class="primary" (click)="goTo('step7')">{{'policy.Data Protection Rights.' | translate }}</a></li>
+       <li><a class="primary" (click)="goTo('step8')">{{'policy.Detailed information of the processing.' | translate }}</a></li>
+       <li><a class="primary" (click)="goTo('step9')">{{'policy.Security and confidentiality.' | translate }}</a></li>
+       <li><a class="primary" (click)="goTo('step10')">{{'policy.Users under age.' | translate }}</a></li>
+       <li><a class="primary" (click)="goTo('step11')">{{'policy.Privacy Policy updates.' | translate }}</a></li>
      </ol>
+     <a id="additionalCluses"></a>
+     <p *ngIf="state=='showPopup'" class="mt-4"><strong>{{'policy.Additional Clauses' | translate }}</strong></p>
      <a id="step1"></a>
      <div>
-       <h6 class="primary">1. {{'policy.Identification and contact details of Data Controller' | translate }}</h6>
+       <h6 class="primary">1. {{'policy.step1title' | translate }}</h6>
+       <p>
+        {{'policy.step1content' | translate }}
+       </p>
+     </div>
+     <a id="step2"></a>
+     <div>
+       <h6 class="primary">2. {{'policy.step2title' | translate }}</h6>
+       <p>
+        {{'policy.step2content' | translate }}
+       </p>
+     </div>
+     <a id="step3"></a>
+     <div>
+       <h6 class="primary">3. {{'policy.step3title' | translate }}</h6>
+       <p>
+        {{'policy.step3content' | translate }}
+       </p>
+     </div>
+     <a id="step4"></a>
+     <div>
+       <h6 class="primary">4. {{'policy.step4title' | translate }}</h6>
+       <p>
+        {{'policy.step4content1' | translate }}
+       </p>
+       <p>
+        {{'policy.step4content2' | translate }}
+       </p>
+     </div>
+     <p *ngIf="state=='showPopup'" class="mt-4"><strong>{{'policy.Maintained Clauses' | translate }}</strong></p>
+     <a id="step5"></a>
+     <div>
+       <h6 class="primary">5. {{'policy.Identification and contact details of Data Controller' | translate }}</h6>
        <p>
          {{'policy.Duchenne Parent Project Netherlands, a non profit ...' | translate }}
        </p>
@@ -32,9 +184,9 @@
          {{'policy.Should you have any query ...' | translate }}
        </p>
      </div>
-     <a id="step2"></a>
+     <a id="step6"></a>
      <div>
-       <h6 class="primary">2. {{'policy.Necessary and updated information.' | translate }}</h6>
+       <h6 class="primary">6. {{'policy.Necessary and updated information.' | translate }}</h6>
        <p>
          {{'policy.All fields of the registration ...' | translate }}
        </p>
@@ -45,9 +197,9 @@
          {{'policy.In order to keep your information up to date...' | translate }}
        </p>
      </div>
-     <a id="step3"></a>
+     <a id="step7"></a>
      <div>
-       <h6 class="primary">3. {{'policy.Data Protection Rights.' | translate }}</h6>
+       <h6 class="primary">7. {{'policy.Data Protection Rights.' | translate }}</h6>
        <p>
          {{'policy.We hereby inform you that you may exercise the following rights:' | translate }}
        </p>
@@ -67,9 +219,9 @@
          {{'policy.You can also file a claim ...' | translate }}
        </p>
      </div>
-     <a id="step4"></a>
+     <a id="step8"></a>
      <div>
-       <h6 class="primary">4. {{'policy.Detailed information of the processing.' | translate }}</h6>
+       <h6 class="primary">8. {{'policy.Detailed information of the processing.' | translate }}</h6>
        * {{'policy.Purpose of the processing' | translate }} - <b>{{'policy.Registration and use of the platform.' | translate }}</b>
        <ul>
           <li>
@@ -120,9 +272,9 @@
           {{'policy.DPP might come back to you in order to ask for specific consent under the framework of a specific project' | translate }}
         </p>
      </div>
-     <a id="step5"></a>
+     <a id="step9"></a>
      <div>
-       <h6 class="primary">5. {{'policy.Security and confidentiality.' | translate }}</h6>
+       <h6 class="primary">9. {{'policy.Security and confidentiality.' | translate }}</h6>
        <p>
          {{'policy.We will keep confidential and secret ...' | translate }}
        </p>
@@ -183,9 +335,9 @@
          * {{'security.When used in the context ...' | translate }}
        </p>
      </div>
-     <a id="step6"></a>
+     <a id="step10"></a>
      <div>
-       <h6 class="primary">6. {{'policy.Users under age.' | translate }}</h6>
+       <h6 class="primary">10. {{'policy.Users under age.' | translate }}</h6>
        <p>
          {{'policy.Users under 16 years old are ...' | translate }}
        </p>
@@ -193,9 +345,9 @@
          {{'policy.In line with the abovementioned ...' | translate }}
        </p>
      </div>
-     <a id="step7"></a>
+     <a id="step11"></a>
      <div>
-       <h6 class="primary">7. {{'policy.Privacy Policy updates.' | translate }}</h6>
+       <h6 class="primary">11. {{'policy.Privacy Policy updates.' | translate }}</h6>
        <p>
          {{'policy.The Data Controller may update ...' | translate }}
        </p>
@@ -203,54 +355,8 @@
          {{'policy.You may find this Privacy Policy ...' | translate }}
        </p>
      </div>
-     <a id="step8"></a>
-      <div>
-        <h6 class="primary">8. {{'policy.Additional information' | translate }}</h6>
-        <div class="p-2" style="background: #e3e1e1;border: 2px solid !important;">
-          <span>
-            <strong>{{'policy.step8.t1' | translate }}</strong>
-            <p class="mb-0">{{'policy.step8.cont1.1' | translate }}</p>
-            <p [innerHTML]="'policy.step8.cont1.2' | translate | safe: 'html'"></p>
-          </span>
-          <span>
-            <strong>{{'policy.step8.t2' | translate }}</strong>
-            <p class="mb-0">{{'policy.step8.cont2.1' | translate }}</p>
-            <p [innerHTML]="'policy.step8.cont2.2' | translate | safe: 'html'"></p>
-          </span>
-        </div>
-        <div class="mt-3">
-          <strong>{{'policy.step8.p1.t' | translate }}</strong>
-          <p>{{'policy.step8.p1.c1' | translate }}</p>
-        </div>
-        <div>
-          <strong>{{'policy.step8.p2.t' | translate }}</strong>
-          <p>{{'policy.step8.p2.c1' | translate }}</p>
-        </div>
-        <div>
-          <strong>{{'policy.step8.p3.t' | translate }}</strong>
-          <p>{{'policy.step8.p3.c1' | translate }}</p>
-        </div>
-        <div>
-          <strong>{{'policy.step8.p4.t' | translate }}</strong>
-          <ul>
-            <li>
-              {{'policy.step8.p4.c1' | translate }}
-            </li>
-            <li>
-              {{'policy.step8.p4.c2' | translate }}
-            </li>
-            <li>
-              {{'policy.step8.p4.c3' | translate }}
-            </li>
-            <li>
-              {{'policy.step8.p4.c4' | translate }}
-            </li>
-          </ul>
-        </div>
-        
-      </div>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer" *ngIf="state!='showPopup'">
       <button type="button" class="btn btn-secondary btn-raised" (click)="activeModal.close('Close click')">{{'generics.Close' | translate }}</button>
     </div>
   </section>
@@ -370,7 +476,7 @@
     </div>
   </section>
 </div>
-<div *ngIf="group != duchennenetherlands && group != duchenneinternational">
+<div *ngIf="group != duchenneinternational">
   <section>
     <a id="initpos"></a>
     <div class="modal-header">

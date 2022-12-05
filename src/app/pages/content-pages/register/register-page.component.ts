@@ -34,7 +34,8 @@ export class RegisterPageComponent implements OnDestroy{
     isFailEmail: boolean = false;
 
     groups: Array<any> = [];
-    group: string = null;
+    
+    
     subgroups: any = [];
     subgroup: string = null;
     termso: boolean = false;
@@ -51,9 +52,8 @@ export class RegisterPageComponent implements OnDestroy{
     formatter1 = (x: { name: string }) => x.name;
 
     seleccionado: string = null;
-    duchennenetherlands: string = globalvars.duchennenetherlands;
     duchenneinternational: string = globalvars.duchenneinternational;
-
+    group: string = globalvars.duchenneinternational;
     private subscription: Subscription = new Subscription();
 
     constructor(private router: Router, private http: HttpClient, public translate: TranslateService, private modalService: NgbModal, private sortService: SortService,private authService: AuthService) {

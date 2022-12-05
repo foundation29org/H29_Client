@@ -77,7 +77,6 @@ export class NotificationsMenuComponent implements OnInit, OnDestroy {
     snoozeAlertSelected:any;
     eventSend: any;
     groupName:any;
-    duchennenetherlands: string = globalvars.duchennenetherlands;
     duchenneinternational: string = globalvars.duchenneinternational;
 
     private subscription: Subscription = new Subscription();

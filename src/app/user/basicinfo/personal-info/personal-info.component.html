@@ -219,7 +219,7 @@
                       </select>
                     </div>
                   </div>
-									<div class="col-md-6" *ngIf="nameduchenne == group">
+									<div class="col-md-6" *ngIf="nameduchenneInter == group && 3900 == subgroup">
                     <div class="form-group">
                       <label for="parent.highEducation">{{'personalinfo.High Education' | translate }}</label>
                       <select id="parent.highEducation" name="parent.highEducation{{i}}" class="form-control"  [(ngModel)]="parent.highEducation">
@@ -233,7 +233,7 @@
                       </select>
                     </div>
                   </div>
-									<div class="col-md-6" *ngIf="nameduchenneInter == group">
+									<div class="col-md-6" *ngIf="nameduchenneInter == group && 3900 != subgroup">
                     <div class="form-group">
                       <label for="parent.highEducation">{{'personalinfo.High Education' | translate }}</label>
                       <select id="parent.highEducation" name="parent.highEducation{{i}}" class="form-control"  [(ngModel)]="parent.highEducation">
@@ -243,7 +243,7 @@
                       </select>
                     </div>
                   </div>
-									<div class="col-md-6" *ngIf="nameduchenne != group && nameduchenneInter != group">
+									<div class="col-md-6" *ngIf="nameduchenneInter != group">
                     <div class="form-group">
                       <label for="parent.highEducation">{{'personalinfo.High Education' | translate }}  <small>(<a href="https://en.wikipedia.org/wiki/International_Standard_Classification_of_Education" target="_blank">ISCED</a>)</small></label>
                       <select id="parent.highEducation" name="parent.highEducation{{i}}" class="form-control"  [(ngModel)]="parent.highEducation">

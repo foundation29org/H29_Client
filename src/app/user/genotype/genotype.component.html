@@ -5,9 +5,9 @@
     </div>
     <div *ngIf="!uploadingGenotype">
       <br>
-      <p *ngIf="group==duchennenetherlands || group==duchenneinternational" class="content-sub-header">{{'genotype.explanation of genotype 1 Duchenne' | translate }}</p>
-      <p *ngIf="group!=duchennenetherlands && group!=duchenneinternational" class="content-sub-header">{{'genotype.explanation of genotype 1' | translate }}</p>
-      <ol *ngIf="group!=duchennenetherlands && group!=duchenneinternational">
+      <p *ngIf="group==duchenneinternational" class="content-sub-header">{{'genotype.explanation of genotype 1 Duchenne' | translate }}</p>
+      <p *ngIf="group!=duchenneinternational" class="content-sub-header">{{'genotype.explanation of genotype 1' | translate }}</p>
+      <ol *ngIf="group!=duchenneinternational">
         <li> <p class="content-sub-header">{{'genotype.explanation of genotype 1a' | translate }}</p> </li>
         <li><p class="content-sub-header">{{'genotype.explanation of genotype 1b' | translate }}</p> </li>
       </ol>
@@ -99,9 +99,8 @@
       <input id="noAnswer" type="checkbox" (change)="setAnswer($event)" style="margin-left: 0.3rem"><label class="answer ml-1" style="margin-left: 0.2rem">{{'generics.No' | translate }}</label>
       <!--<ui-switch id="answer" (change)="setAnswer($event)"></ui-switch>-->
       <div class="right-elements" *ngIf="genotype.data.length>0 || editingGenotype || filesOnBlob.length > 0">
-        <button type="button" *ngIf="!editingGenotype && group != duchennenetherlands && group != duchenneinternational" class="btn btn-raised btn-primary" (click)="editGenotype()">{{'genotype.Modify' | translate }}</button>
-        <!--<button type="button" *ngIf="!editingGenotype && group == duchennenetherlands" class="btn btn-raised btn-primary" (click)="editGenotype()">{{'generics.Upload' | translate }}</button>-->
-        <div *ngIf="!editingGenotype && (group == duchennenetherlands || group == duchenneinternational)">
+        <button type="button" *ngIf="!editingGenotype && group != duchenneinternational" class="btn btn-raised btn-primary" (click)="editGenotype()">{{'genotype.Modify' | translate }}</button>
+        <div *ngIf="!editingGenotype && group == duchenneinternational">
           <label *ngIf="!uploadingGenotype && !isApp && !showOnlyQuestion" class="btn btn-raised btn-primary">
               {{'generics.Upload' | translate }} <input type="file" (change)="onFileChange($event)" style="display: none;">
           </label>
@@ -110,8 +109,8 @@
           </label>
           <h4 *ngIf="uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
         </div>
-        <button type="button"  *ngIf="editingGenotype && !selectedOption && group != duchennenetherlands && group != duchenneinternational" class="btn btn-raised btn-danger" (click)="cancelEditGenotype()">{{'generics.Cancel edition' | translate }}</button>
-        <button type="button"  *ngIf="editingGenotype && !selectedOption && (group == duchennenetherlands || group == duchenneinternational)" class="btn btn-raised btn-danger" (click)="cancelEditGenotype()">{{'generics.Cancel' | translate }}</button>
+        <button type="button"  *ngIf="editingGenotype && !selectedOption && group != duchenneinternational" class="btn btn-raised btn-danger" (click)="cancelEditGenotype()">{{'generics.Cancel edition' | translate }}</button>
+        <button type="button"  *ngIf="editingGenotype && !selectedOption && group == duchenneinternational" class="btn btn-raised btn-danger" (click)="cancelEditGenotype()">{{'generics.Cancel' | translate }}</button>
         <button type="button"  *ngIf="editingGenotype && selectedOption" class="btn btn-raised btn-danger" (click)="back()">>{{'generics.Back' | translate }}</button>
       </div>
     </div>
@@ -134,21 +133,11 @@
 
       <!--INICIO SECCIONES<-->
       <div class="row" id="sectionsOfGenotype" matchHeight ="card">
-        <!--<div class="card-body">
-            <div class="card-block">
-                <ngb-alert type="secondary" [dismissible]="false">
-                    {{'genotype.Genetic information is important for patients...' | translate }}
-                </ngb-alert>
-            </div>
-        </div>-->
-        <!--<div *ngIf="group != duchennenetherlands && group != duchenneinternational" class="col-lg-12 col-md-12">
-          <p>{{'genotype.You can complete the genotype in several ways' | translate }}</p>
-        </div>-->
 
         <div class="col-lg-6 col-md-12" style="margin: 0 auto">
           <div class="card">
               <div class="card-header text-center pb-0">
-                <span *ngIf="group != duchennenetherlands && group != duchenneinternational" class="font-medium-2 primary">{{'generics.Option' | translate }} 1</span>
+                <span *ngIf="group != duchenneinternational" class="font-medium-2 primary">{{'generics.Option' | translate }} 1</span>
               </div>
               <div class="card-body height-150">
                   <div id="donut-chart2" class="center-elements">
@@ -169,7 +158,7 @@
               </div>
           </div>
         </div>
-        <div  *ngIf="group != duchennenetherlands && group != duchenneinternational" class="col-lg-6 col-md-12">
+        <div  *ngIf="group != duchenneinternational" class="col-lg-6 col-md-12">
             <div class="card">
                 <div class="card-header text-center pb-0">
                   <span class="font-medium-2 danger">{{'generics.Option' | translate }} 2</span>

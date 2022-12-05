@@ -18,6 +18,7 @@ export class AuthService {
   private iduser: string;
   private role: string;
   private group: string;
+  private subgroup: string;
   private lang: string;
   private expToken: number = null;
   private currentPatient: ICurrentPatient = null;
@@ -40,6 +41,7 @@ export class AuthService {
       this.setIdUser(tokenPayload.sub);
       this.setExpToken(tokenPayload.exp);
       this.setRole(tokenPayload.role);
+      this.setMessage(sessionStorage.getItem('msg'));
 
       if(tokenPayload.role == 'Admin'){
         this.setRedirectUrl('/admin/dashboard-admin')
@@ -51,6 +53,7 @@ export class AuthService {
         this.setRedirectUrl('/user/dashboard/dashboard1')
       }
       this.setGroup(tokenPayload.group);
+      this.setSubgroup(tokenPayload.subgroup);
 
       return true;
     }else{
@@ -75,6 +78,7 @@ export class AuthService {
       this.setRedirectUrl('/user/dashboard/dashboard1')
     }
     this.setGroup(tokenPayload.group);
+    this.setSubgroup(tokenPayload.subgroup);
     //save sessionStorage
     sessionStorage.setItem('token', token)
   }
@@ -89,7 +93,12 @@ export class AuthService {
             sessionStorage.setItem('lang', res.lang)
             this.setEnvironment(res.token);
             this.setMessage(res.message);
-            return {logged:this.isloggedIn,reason:""};
+            var msg = "";
+            if(res.showPopup){
+              msg = "showPopup";
+              this.setMessage(msg);
+            }
+            return {logged:this.isloggedIn,reason:msg};
 
           }else if(res.type=="2FA request approval"){
             return {logged:this.isloggedIn,reason:"2FA"};
@@ -135,7 +144,13 @@ export class AuthService {
             this.setLang(response.lang);
             sessionStorage.setItem('lang', response.lang)
             this.setEnvironment(response.token);
-            this.setMessage(response.message);
+            var msg = "";
+            if(response.showPopup){
+              msg = "showPopup";
+              this.setMessage(msg);
+            }else{
+              this.setMessage(response.message);
+            }
             this.isloggedIn=true;
             subject.next(true);
             subject.complete();
@@ -167,6 +182,7 @@ export class AuthService {
     this.token = null;
     this.role = null;
     this.group = null;
+    this.subgroup = null;
     this.lang = null;
     this.expToken = null;
     this.isloggedIn = false;
@@ -202,6 +218,7 @@ export class AuthService {
 		this.redirectUrl = url;
 	}
   setMessage(message: string): void {
+    sessionStorage.setItem('msg', message)
 		this.message = message;
 	}
   getMessage(): string {
@@ -218,6 +235,12 @@ export class AuthService {
   }
   getGroup(): string {
     return this.group;
+  }
+  setSubgroup(subgroup: string): void {
+    this.subgroup = subgroup;
+  }
+  getSubgroup(): string {
+    return this.subgroup;
   }
   setExpToken(expToken: number): void {
     this.expToken = expToken;

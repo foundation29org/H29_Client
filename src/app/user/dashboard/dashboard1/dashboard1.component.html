@@ -1,12 +1,12 @@
 <a id="initpos"></a>
-<div class="row md-4" *ngIf="nameduchenne == group || nameduchenneInter == group">
+<div class="row md-4" *ngIf="nameduchenneInter == group">
 	<div class="center-elements">
     <img alt="Card image cap" [src]=urlimg  style="border:none;" class="mx-auto d-block img-thumbnail">
   </div>
-	<div *ngIf="nameduchenne == group" class="col-md-6 center-elements embed-responsive embed-responsive-16by9">
+	<div *ngIf="nameduchenneInter == group && 3900 == subgroup" class="col-md-6 center-elements embed-responsive embed-responsive-16by9">
 		<iframe class="embed-responsive-item" src="https://www.youtube-nocookie.com/embed/jdv07zWqb1E?controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 	</div>
-	<div [ngClass]="(nameduchenneInter == group)?'col-md-8':'col-md-6'">
+	<div [ngClass]="(nameduchenneInter == group && 3900 != subgroup)?'col-md-8':'col-md-6'">
 		<p>
 			{{'dashboard.Duchenne Data Platform (DDP) is a collaboration between' | translate }} <a (click)="goToExternalUrl('https://duchenne.nl/')" href="javascript:void(0)" title="Stichting Parent Project Productions">Stichting Parent Project Productions</a> {{'dashboard.and' | translate }} <a (click)="goToExternalUrl('http://foundation29.org/')" href="javascript:void(0)" title="Foundation 29" target="_blank">Foundation 29</a>{{'dashboard.a non-profit organization...' | translate }}.
 		</p>

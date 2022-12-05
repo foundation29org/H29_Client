@@ -230,7 +230,7 @@
 											<small class="form-text text-muted danger" *ngIf="!inches.valid && (inches.dirty || inches.touched)">{{'generics.required' | translate }}</small>
 										</div>
 									</div>
-									<div class="col-md-4" *ngIf="group==duchennenetherlands || group==duchenneinternational">
+									<div class="col-md-4" *ngIf="group==duchenneinternational">
 										<div class="form-group">
 											<label for="technique">{{'anthropometry.Technique' | translate }}</label>
 											<select id="technique" name="technique" class="form-control"  [(ngModel)]="selectedHeight.technique" technique #technique="ngModel">
@@ -331,7 +331,7 @@
 										<tr>
 											<th>{{'generics.Date' | translate }}</th>
 											<th>{{'anthropometry.Height' | translate }} ({{settings.lengthunit}})</th>
-											<th *ngIf="group==duchennenetherlands || group==duchenneinternational">{{'anthropometry.Technique' | translate }}</th>
+											<th *ngIf="group==duchenneinternational">{{'anthropometry.Technique' | translate }}</th>
 											<th>{{'generics.Delete' | translate }}</th>
 										</tr>
 									</thead>
@@ -339,7 +339,7 @@
 										<tr *ngFor="let height of heightHistory ; let i = index">
 											<td>{{height.dateTime | date: timeformat}}</td>
 											<td>{{height.value}}</td>
-											<td *ngIf="group==duchennenetherlands || group==duchenneinternational">{{height.technique}}</td>
+											<td *ngIf="group==duchenneinternational">{{height.technique}}</td>
 											<td>
 												<a class="danger" data-original-title="" title="" (click)="confirmDeleteHeight(i)">
 													<i class="ft-x"></i>

@@ -86,7 +86,7 @@
 													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
 												</mat-select>
 											</div>
-											<div [ngClass]="(general.hospital=='Other')?'mt-2 col-md-3':'mt-2 col-md-5'" *ngIf="actualGroup==duchennenetherlands">
+											<div [ngClass]="(general.hospital=='Other')?'mt-2 col-md-3':'mt-2 col-md-5'" *ngIf="subgroup== 3900">
 												<label for="visitref">{{'medicalcare.Hospital' | translate }}</label>
 												<mat-select class="form-control" id="ChoiseAndDate" name="general.ChoiseAndDate2{{k}}"  [(ngModel)]="general.hospital" (change)="fieldchanged()">
 													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
@@ -199,7 +199,7 @@
 													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
 												</mat-select>
 											</div>
-											<div [ngClass]="(general.hospital=='Other')?'mt-2 col-md-3':'mt-2 col-md-5'" *ngIf="actualGroup==duchennenetherlands">
+											<div [ngClass]="(general.hospital=='Other')?'mt-2 col-md-3':'mt-2 col-md-5'" *ngIf="subgroup== 3900">
 												<label for="visitref">{{'medicalcare.Hospital' | translate }}</label>
 												<mat-select class="form-control" id="ChoiseAndDate2" name="specificVisit.ChoiseAndDate2{{k}}"  [(ngModel)]="general.hospital" (change)="fieldchanged()">
 													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
@@ -366,7 +366,7 @@
   												<input type="text" class="form-control"  name="hospitalization.days{{k}}" [(ngModel)]="general.days" (change)="fieldchanged()">
                         </span>
 											</div>
-											<div [ngClass]="(general.hospital=='Other')?'col-md-4 offset-md-1':'col-md-5 offset-md-1'" *ngIf="actualGroup==duchennenetherlands">
+											<div [ngClass]="(general.hospital=='Other')?'col-md-4 offset-md-1':'col-md-5 offset-md-1'" *ngIf="subgroup== 3900">
 												<label for="visitref">{{'medicalcare.Hospital' | translate }}</label>
 												<mat-select class="form-control" id="ChoiseAndDate" name="hospitalization.ChoiseAndDate{{k}}"  [(ngModel)]="general.hospital" (change)="fieldchanged()">
 													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
@@ -383,7 +383,7 @@
 													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
 												</mat-select>
 											</div>
-											<div *ngIf="general.hospital=='Other'" class="col-md-7" [ngClass]="(actualGroup==duchennenetherlands)?'col-md-7':'offset-md-1 col-md-7'" >
+											<div *ngIf="general.hospital=='Other'" class="col-md-7" [ngClass]="(subgroup== 3900)?'col-md-7':'offset-md-1 col-md-7'" >
 												<label for="otherHospital">{{'medicalcare.Write the name of the hospital' | translate }}</label>
 												<input type="text" class="form-control"  name="hospitalization.otherHospital{{k}}" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
 											</div>
@@ -482,7 +482,7 @@
 											<div class="mt-2 col-md-1">
 												<h4>{{k+1}}.</h4>
 											</div>
-											<div class="mt-2 col-md-4" *ngIf="actualGroup==duchennenetherlands">
+											<div class="mt-2 col-md-4" *ngIf="subgroup== 3900">
 												<label for="hospital">{{'medicalcare.Hospital' | translate }}</label>
 												<mat-select class="form-control" id="ChoiseAndDate" name="emergencies.ChoiseAndDate{{k}}"  [(ngModel)]="general.hospital" (change)="fieldchanged()">
 													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>

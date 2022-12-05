@@ -138,11 +138,12 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
   endOfPage: Boolean = false;
   timeformat="";
   actualGroup: string = '';
-  duchennenetherlands: string = globalvars.duchennenetherlands;
-
+  nameduchenneInter: string = globalvars.duchenneinternational;
+  subgroup: string;
   constructor(private http: HttpClient, private authService: AuthService, private dateService: DateService, public toastr: ToastsManager, public searchFilterPipe: SearchFilterPipe, public translate: TranslateService,
     private authGuard: AuthGuard,public dialogService: DialogService, private router: Router, private route: ActivatedRoute, private data: Data, private modalService: NgbModal, private blob: BlobStorageMedicalCareService, private adapter: DateAdapter<any>,private sortService: SortService, private apiDx29ServerService: ApiDx29ServerService) {
       this.adapter.setLocale(this.authService.getLang());
+      this.subgroup = this.authService.getSubgroup();
       switch(this.authService.getLang()){
         case 'en':
           this.timeformat="M/d/yy";
@@ -640,7 +641,7 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
   newData(index, info){
     this.setSectionToAddData(this.medicalCareSections[index].name);
     this.medicalCareSections[index].data.push({choise:'',date:null});
-    if((index==0||index==1||index==2||index==3) && (this.actualGroup!=this.duchennenetherlands)){
+    if((index==0||index==1||index==2||index==3) && (this.subgroup!= '3900')){
       this.medicalCareSections[index].data[this.medicalCareSections[index].data.length-1].hospital='Other'
     }
     var yesAnswer=document.getElementById('yesAnswer'+this.medicalCareSections[index].name);

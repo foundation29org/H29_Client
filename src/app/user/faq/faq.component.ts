@@ -27,8 +27,9 @@ export class FaqComponent implements OnDestroy{
   loadedfaqs = false;
   emailAdmin: string = '';
   hasfaqs: boolean = false;
-  nameduchenne: string = globalvars.duchennenetherlands;
+  nameduchenneInter: string = globalvars.duchenneinternational;
   group: string;
+  subgroup: string;
   private subscription: Subscription = new Subscription();
 
   constructor(private faqService: FaqService, private translate : TranslateService, private langService: LangService, private authService: AuthService, private http: HttpClient) {
@@ -38,6 +39,7 @@ export class FaqComponent implements OnDestroy{
     this.lang = this.authService.getLang();
     this.loadLanguages();
     this.group = this.authService.getGroup();
+    this.subgroup = this.authService.getSubgroup();
   }
 
   ngOnDestroy() {

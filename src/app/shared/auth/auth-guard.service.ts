@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
     const expiresAt = this.authService.getExpToken();
 
     if (this.authService.isAuthenticated()){
-      if(this.tokenService.isTokenValid() && (Date.now()/1000) < expiresAt){
+      if(this.tokenService.isTokenValid() && (Date.now()/1000) < expiresAt && this.authService.getMessage()=='You have successfully logged in'){
          return true;
       }else{
         this.authService.logout();
