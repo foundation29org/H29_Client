@@ -8,7 +8,6 @@ export class PatientService {
     constructor(private authService: AuthService, private http: HttpClient) {}
 
     getPatientId(){
-      //cargar las faqs del knowledgeBaseID
       return this.http.get(environment.api+'/api/patients-all/'+this.authService.getIdUser())
         .map( (res : any) => {
           if(res.listpatients.length>0){
@@ -24,7 +23,6 @@ export class PatientService {
     }
 
     getPatientsClinical(){
-      //cargar las faqs del knowledgeBaseID
       return this.http.get(environment.api+'/api/patients-all/'+this.authService.getIdUser())
         .map( (res : any) => {
           if(res.listpatients.length>0){
@@ -44,7 +42,6 @@ export class PatientService {
     }
 
     getPatientsClinicalSuperAdmin(idUser){
-      //cargar las faqs del knowledgeBaseID
       return this.http.get(environment.api+'/api/patients-all/'+idUser)
         .map( (res : any) => {
           if(res.listpatients.length>0){

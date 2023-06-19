@@ -10,7 +10,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatchHeightModule } from "../shared/directives/match-height.directive";
 
 import { DashboardSuperAdminComponent } from "./dashboard-superadmin/dashboard-superadmin.component";
-import { ManageFaqsComponent } from "./manage-faqs/manage-faqs.component";
 import { TranslationsComponent } from "./translations/translations.component";
 import { GroupComponent } from "./groups/groups.component";
 import { LangsComponent } from "./langs/langs.component";
@@ -43,7 +42,6 @@ import {MatSelectModule, MatInputModule, MatDatepickerModule, MatNativeDateModul
     exports: [TranslateModule],
     declarations: [
         DashboardSuperAdminComponent,
-        ManageFaqsComponent,
         TranslationsComponent,
         GroupComponent,
         LangsComponent,

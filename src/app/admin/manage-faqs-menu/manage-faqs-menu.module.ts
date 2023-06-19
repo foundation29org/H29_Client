@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ManageFaqsRoutingModule } from "./manage-faqs-menu-routing.module";
 import { TranslateModule } from '@ngx-translate/core';
 
-import { ManageFaqsComponent } from "./manage-faqs/manage-faqs.component";
 import { QuestionAskedNotAnsweredComponent } from './Question_Asked_Not_Answered/questionAskedNotAnswered.component';
 
 import { CustomFormsModule } from 'ng2-validation';
@@ -31,7 +30,6 @@ import {MatSelectModule, MatInputModule, MatDatepickerModule, MatNativeDateModul
         ReactiveFormsModule
     ],
     declarations: [
-        ManageFaqsComponent,
         QuestionAskedNotAnsweredComponent
     ]
 })

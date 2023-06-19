@@ -6,7 +6,6 @@ import { RoleGuard } from 'app/shared/auth/role-guard.service';
 import { DashboardSuperAdminComponent } from "./dashboard-superadmin/dashboard-superadmin.component";
 import { GroupComponent } from "./groups/groups.component";
 import { LangsComponent } from "./langs/langs.component";
-import { ManageFaqsComponent } from "./manage-faqs/manage-faqs.component";
 import { TranslationsComponent } from "./translations/translations.component";
 import { PhenotypesComponent } from "./phenotypes/phenotypes.component";
 import { PromsComponent } from "./proms/proms.component";
@@ -40,15 +39,6 @@ const routes: Routes = [
         component: LangsComponent,
         data: {
           title: 'menu.Languages',
-          expectedRole: ['SuperAdmin']
-        },
-        canActivate: [AuthGuard, RoleGuard]
-      },
-      {
-        path: 'managefaqs',
-        component: ManageFaqsComponent,
-        data: {
-          title: 'faqs.Manage FAQ',
           expectedRole: ['SuperAdmin']
         },
         canActivate: [AuthGuard, RoleGuard]

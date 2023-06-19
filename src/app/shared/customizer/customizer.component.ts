@@ -37,7 +37,6 @@ export class CustomizerComponent implements OnInit, OnDestroy {
   patientId: string;
   nameundiagnosed: string = 'Undiagnosed';
   user: any = [];
-  knowledgeBaseID: string;
 
   doExit=false;
   notificationScenarioShown:boolean=false;
@@ -83,8 +82,7 @@ export class CustomizerComponent implements OnInit, OnDestroy {
       this.subscription.add( this.http.get(environment.api+'/api/group/'+this.authService.getGroup())
       .subscribe( (resGroup : any) => {
         this.groupId = resGroup._id;
-        //this.chatRequested();
-        this.loadFaqs();
+        this.chatRequested();
 
       }, (err) => {
         console.log(err);
@@ -94,25 +92,8 @@ export class CustomizerComponent implements OnInit, OnDestroy {
      }));
   }
 
-  loadFaqs(){
-    this.knowledgeBaseID = '';
-    var paramssend = { lang: this.authService.getLang(), group: this.authService.getGroup() };
-    this.subscription.add( this.http.get(environment.api+'/api/qna',{params: paramssend})
-    .subscribe( (res0 : any) => {
-      if(res0.knowledgeBaseID){//res.knowledgeBaseID
-        this.knowledgeBaseID = res0.knowledgeBaseID
-        this.chatRequested();
-      }else{
-        this.chatRequested();
-      }
-     }, (err) => {
-       console.log(err);
-       this.chatRequested();
-     }));
-  }
-
   chatRequested() {
-    var paramssend = { userName: this.user.userName, userId: this.authService.getIdUser(), token: this.authService.getToken(), groupId: this.groupId, lang: this.user.lang, knowledgeBaseID: this.knowledgeBaseID}; //http://healthbotcontainersamplef666.scm.azurewebsites.net:80/chatBot
+    var paramssend = { userName: this.user.userName, userId: this.authService.getIdUser(), token: this.authService.getToken(), groupId: this.groupId, lang: this.user.lang, knowledgeBaseID: ''}; //http://healthbotcontainersamplef666.scm.azurewebsites.net:80/chatBot
     this.subscription.add( this.http.get(environment.healthbot+':443/chatBot',{params: paramssend})
     .subscribe( (res : any) => {
       this.initBotConversation(res);

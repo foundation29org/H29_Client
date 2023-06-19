@@ -380,6 +380,8 @@
     "Lego": "Lego"
   },
   "faqs":{
+    "Type a question in the text box": "Escriba una pregunta en la caja de texto",
+    "Search": "Buscar",
     "here to help": "Estamos aquí para ayudar",
     "any question": "Si tiene alguna pregunta, puede preguntar a continuación o introducir lo que está buscando",
     "Search in faqs": "Buscar en preguntas frecuentes",

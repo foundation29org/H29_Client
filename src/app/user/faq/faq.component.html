@@ -32,70 +32,31 @@
 <div class="row">
   <div class="col-sm-12">
     <div class="content-header">{{'menu.FAQs' | translate }}</div>
-    <span *ngIf="group == nameduchenneInter && 3900 == subgroup" class="content-sub-header"><em>{{'faqs.any question' | translate }}</em></span>
   </div>
 </div>
 <!-- faq starts -->
-<section id="faq" *ngIf="emailAdmin == '' && loadedfaqs">
+<section id="faq">
   <div class="row">
     <div class="col-12">
       <div class="card faq-bg bg-transparent box-shadow-0">
-        <div *ngIf="group != nameduchenneInter && 3900 != subgroup" class="card-content">
-          <div class="card-body p-md-2 text-center">
-            <!--<h1 class="faq-title mb-3">{{'faqs.here to help' | translate }}!!</h1>-->
-            <p><em>{{'faqs.any question' | translate }}</em></p>
+        <div class="row">
+          <div class="col-10">
+            <input type="text" class="form-control box-question" placeholder="{{'faqs.Type a question in the text box' | translate }}" (keyup.enter)="search()" [(ngModel)]="query">
+          </div>
+          <div class="col-10 mt-2">
+              <button class="btn btn-primary btn-raised" [disabled]="callinglangchainraito" (click)="search()">{{'faqs.Search' | translate }}</button>
+              <span *ngIf="callinglangchainraito"><em class="ml-2 fa fa-spinner fa-2x fa-spin fa-fw primary"></em></span>
           </div>
         </div>
-        <form class="d-flex" [ngClass]="( group != nameduchenneInter && 3900 != subgroup )?'justify-content-center':''">
-          <fieldset class="faq-search-input form-group position-relative w-100">
-            <input type="text" class="form-control round form-control-lg shadow p-1 pl-3" placeholder="{{'faqs.Search in faqs' | translate }}..." (input)="filter($event.target.value)" #messageInput>
-          </fieldset>
-        </form>
-      </div>
-    </div>
-  </div>
-  <p>{{disclaimer}}</p>
-  <div class="row">
-    <div class="col-12">
-      <div class="card" style="background-color: transparent !important;">
-        <div class="card-block">
-          <ngb-accordion [closeOthers]="true" *ngIf="faqs.length>0">
-            <ngb-panel [id]="faq.faqId" *ngFor="let faq of faqs; let i = index">
-                <ng-template ngbPanelTitle>
-                   <h5><i class="icon-question mr-2"></i> <span> {{faq.title}}</span></h5>
-                  </ng-template>
-              <ng-template ngbPanelContent>
-                <div class="card-block">
-                  <span id="content{{i}}" [innerHTML]="faq.content"></span>
-                </div>
-              </ng-template>
-            </ngb-panel>
-          </ngb-accordion>
-          <div *ngIf="faqs.length==0">
-            {{'generics.There are no results for the search' | translate }}
+        <div *ngIf="!callinglangchainraito && responseLangchain!=''" class="mt-3">
+          <h4 class="text-bold-500 text-left">{{queryCopy}}</h4>
+          <div class="row">
+              <div class="col-12">
+                  <p>{{responseLangchain}}</p>
+              </div>
+              
           </div>
-        </div>
       </div>
-    </div>
-  </div>
-</section>
-<section id="faqloading" *ngIf="!hasfaqs && !loadedfaqs">
-  <div class="col-md-12 center-elements">
-    <div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
-  </div>
-</section>
-<section id="faqempty" *ngIf="!hasfaqs && loadedfaqs">
-  <div class="row">
-    <div class="col-12">
-      <div class="card text-center p-4">
-        <div class="card-header">
-          <h1>{{'faqs.here to help' | translate }}!!</h1>
-          <p><em>{{'faqs.There are no frequently asked questions in' | translate }} {{langName}}</em></p>
-        </div>
-        <div class="card-block">
-          <h6>{{'faqs.Contact your administrator to add the questions in' | translate }} {{langName}}</h6>
-          <small>{{'generics.Email' | translate }}: {{emailAdmin}}</small>
-        </div>
       </div>
     </div>
   </div>
