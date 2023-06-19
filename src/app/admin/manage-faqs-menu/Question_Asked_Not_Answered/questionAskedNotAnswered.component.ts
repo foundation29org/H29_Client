@@ -6,7 +6,6 @@ import { HttpClient } from "@angular/common/http";
 import { AuthService } from 'app/shared/auth/auth.service';
 import { AuthGuard } from 'app/shared/auth/auth-guard.service';
 import { LangService } from 'app/shared/services/lang.service';
-import { FaqService } from 'app/shared/services/faq.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import swal from 'sweetalert2';
 import { Subscription } from 'rxjs/Subscription';
@@ -24,7 +23,7 @@ import { NgbModal, NgbModalRef, NgbModalOptions } from '@ng-bootstrap/ng-bootstr
     selector: 'app-question-asked-not-answered',
     templateUrl: './questionAskedNotAnswered.component.html',
     styleUrls: ['./questionAskedNotAnswered.component.scss'],
-    providers: [LangService, FaqService],
+    providers: [LangService],
     encapsulation: ViewEncapsulation.None
 })
 
@@ -45,7 +44,7 @@ export class QuestionAskedNotAnsweredComponent implements OnDestroy{
   timeformat="";
 
 
-  constructor(private http: HttpClient, public translate: TranslateService, private authService: AuthService, private authGuard: AuthGuard, private langService: LangService, private faqService: FaqService, public toastr: ToastsManager, private modalService: NgbModal, private router: Router, private data: Data,private adapter: DateAdapter<any>){
+  constructor(private http: HttpClient, public translate: TranslateService, private authService: AuthService, private authGuard: AuthGuard, private langService: LangService, public toastr: ToastsManager, private modalService: NgbModal, private router: Router, private data: Data,private adapter: DateAdapter<any>){
       this.getNotAnsweredFAQs();
       this.adapter.setLocale(this.authService.getLang());
       switch(this.authService.getLang()){
@@ -139,10 +138,7 @@ export class QuestionAskedNotAnsweredComponent implements OnDestroy{
   //Funtions for include the FAQs
   includeFAQs(dataJSON:any){
     let userQuestion = dataJSON.data[1].userQuestion;
-    //this.data.storage = {medicalCareSections: userQuestion, showPanelNewQnAPairs : true};
-    //this.router.navigate(['admin/managefaqs/managefaqs']);
-
-    this.router.navigate(['/admin/managefaqs/managefaqs'], { queryParams: { showPanelNewQnAPairs : true, userQuestion:userQuestion } })
+    console.log(userQuestion)
   }
 
 

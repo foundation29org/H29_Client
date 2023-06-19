@@ -27,16 +27,6 @@ const routes: Routes = [
         path: 'managefaqs',
         loadChildren: './manage-faqs-menu/manage-faqs-menu.module#ManageFaqsModule',
       },
-      /*{
-        path: 'managefaqs',
-        component: ManageFaqsComponent,
-        loadChildren: '#ManageFaqsModule',
-        data: {
-          title: 'menu.Manage FAQ',
-          expectedRole: ['Admin']
-        },
-        canActivate: [AuthGuard, RoleGuard]
-      },*/
       {
         path: 'translations',
         component: TranslationsComponent,

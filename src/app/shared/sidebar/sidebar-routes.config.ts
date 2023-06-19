@@ -128,14 +128,7 @@ export const ROUTESDIABETES: RouteInfo[] = [
 export const ROUTESADMIN: RouteInfo[] = [
 
     {path: '/admin/dashboard-admin', title: 'menu.Dashboard Admin', icon: 'ft-home', class: '', badge: '', badgeClass: 'badge badge-pill badge-danger float-right mr-1 mt-1', isExternalLink: false, submenu: [] },
-    //{ path: '/admin/managefaqs', title: 'faqs.Manage FAQ', icon: 'ft-help-circle', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: []},
-    {
-        path: '', title: 'menu.FAQs', icon: 'ft-help-circle', class: 'has-sub', badge: '', badgeClass: '', isExternalLink: false, submenu: [
-            { path: '/admin/managefaqs/managefaqs', title: 'faqs.Manage FAQ', icon: '', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
-            { path: '/admin/managefaqs/questionAskedNotAnswered', title: 'faqs.Questions Asked not Answered', icon: '', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
-        ]
-    },
-
+    { path: '/admin/managefaqs/questionAskedNotAnswered', title: 'faqs.Questions Asked not Answered', icon: 'ft-help-circle', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: []},
     { path: '/admin/translations', title: 'menu.Translations', icon: 'ft-flag', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
     { path: '/admin/users-admin', title: 'Users', icon: 'ft-users', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
     { path: '/admin/statistics', title: 'menu.Stats', icon: 'ft-percent', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
@@ -150,7 +143,6 @@ export const ROUTESSUPERADMIN: RouteInfo[] = [
     { path: '/superadmin/groups', title: 'menu.Groups', icon: 'ft-users', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
     { path: '/superadmin/phenotypes', title: 'menu.Phenotype', icon: 'ft-file-text', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
     { path: '/superadmin/langs', title: 'menu.Languages', icon: 'ft-flag', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
-    { path: '/superadmin/managefaqs', title: 'menu.Manage FAQ', icon: 'ft-help-circle', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
     { path: '/superadmin/manageproms', title: 'Proms', icon: 'ft-activity', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
     { path: '/superadmin/translations', title: 'menu.Translations', icon: 'ft-flag', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
     {
