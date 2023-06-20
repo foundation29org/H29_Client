@@ -381,6 +381,8 @@
     "Lego": "Lego"
   },
   "faqs":{
+    "thanksvote": "¡Gracias por compartir tu opinión! Nos ayuda a ofrecerte un mejor servicio.",
+    "Has this information been useful to you": "Has this information been useful to you?",
     "Type a question in the text box": "Type a question in the text box",
     "Search": "Search",
     "here to help": "We're here to help",
@@ -396,6 +398,7 @@
     "New frequently asked question": "New frequently asked question",
     "Question": "Question",
     "Answer": "Answer",
+    "Right answer": "Right answer",  
     "Add alternative question": "Add alternative question",
     "There may be several questions for the same answer": "There may be several questions for the same answer",
     "There are no frequently asked questions in": "There are no frequently asked questions in",
@@ -411,7 +414,7 @@
     "To be included":"To be included",
     "Curated by":"Curated by",
     "Filter selection":"Answer validated by",
-    "Score filtering":"Score filtering",
+    "Score filtering":"Right answer filtering",
     "Questions Asked not Answered":"Questions asked not answered",
     "Language filtering":"Language filtering",
     "Publish changes": "Publish changes",

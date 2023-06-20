@@ -380,6 +380,8 @@
     "Lego": "Lego"
   },
   "faqs":{
+    "thanksvote": "Thanks for sharing your opinion! It helps us to offer you a better service.",
+    "Has this information been useful to you": "¿Te ha resultado útil esta información?",
     "Type a question in the text box": "Escriba una pregunta en la caja de texto",
     "Search": "Buscar",
     "here to help": "Estamos aquí para ayudar",
@@ -395,6 +397,7 @@
     "New frequently asked question": "Nueva pregunta frecuente",
     "Question": "Pregunta",
     "Answer": "Respuesta",
+    "Right answer": "Respuesta correcta",
     "Add alternative question": "Agregar pregunta alternativa",
     "There may be several questions for the same answer": "Puede haber varias preguntas para una misma respuesta",
     "There are no frequently asked questions in": "No hay preguntas frecuentes en",
@@ -410,7 +413,7 @@
     "To be included":"Para ser incluido",
     "Curated by":"Comisariada por",
     "Filter selection":"Respuesta validada por",
-    "Score filtering":"Filtrado para puntuación",
+    "Score filtering":"Filtrado por respuesta correcta",
     "Questions Asked not Answered":"Preguntas formuladas sin respuesta",
     "Language filtering":"Filtrado por lenguaje",
     "Publish changes": "Publicar cambios",
