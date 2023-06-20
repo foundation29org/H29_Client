@@ -11,6 +11,7 @@ import { environment } from 'environments/environment';
 import { globalvars } from 'app/shared/global-variables';
 import { Subscription } from 'rxjs/Subscription';
 import * as marked from 'marked';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-faq',
@@ -32,13 +33,26 @@ export class FaqComponent implements OnDestroy{
   callinglangchainraito: boolean = false;
   responseLangchain: string = '';
 
+  groupId: string;
+
   constructor(private translate : TranslateService, private langService: LangService, private authService: AuthService, private http: HttpClient, public toastr: ToastsManager, private openAiService: OpenAiService) {
 
     this.lang = this.authService.getLang();
     this.loadLanguages();
     this.group = this.authService.getGroup();
     this.subgroup = this.authService.getSubgroup();
+    this.initEnvironment();
   }
+
+  initEnvironment(){
+    this.subscription.add( this.http.get(environment.api+'/api/group/'+this.authService.getGroup())
+      .subscribe( (resGroup : any) => {
+        this.groupId = resGroup._id;
+      }, (err) => {
+        console.log(err);
+      }));
+  }
+
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -77,6 +91,25 @@ export class FaqComponent implements OnDestroy{
         
     }));
 
+  }
+
+  sendFeedback(valueVote){
+    var data = {"answer": this.responseLangchain,"userQuestion":this.queryCopy,"value": valueVote};
+    var info = {
+      "lang":this.lang,
+      "data":data,
+      "type": "qna",
+      "user":this.authService.getIdUser()
+    }
+    this.subscription.add(this.http.post((environment.api+'/api/bot/'+ this.groupId), info)
+      .subscribe( (res : any) => {
+        swal({
+          type: 'success',
+          html: this.translate.instant("faqs.thanksvote")
+        })
+      }, (err) => {
+        console.log(err);
+      }));
   }
 
 }

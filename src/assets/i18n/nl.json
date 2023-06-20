@@ -380,6 +380,8 @@
     "Lego": "Lego"
   },
   "faqs": {
+    "thanksvote": "Bedankt voor het delen van je mening! Het helpt ons om je een betere service te bieden.",
+    "Has this information been useful to you": "Was deze informatie nuttig voor je?",
     "Type a question in the text box":"Typ een vraag in het tekstvak",
     "Search":"Zoeken",
     "here to help": "Wij zijn hier om te helpen",
@@ -395,6 +397,7 @@
     "New frequently asked question": "Nieuwe veelgestelde vraag",
     "Question": "Vraag",
     "Answer": "Antwoord",
+    "Right answer": "Juist antwoord",
     "Add alternative question": "Alternatieve vraag toevoegen",
     "There may be several questions for the same answer": "Er kunnen verschillende vragen zijn voor hetzelfde antwoord",
     "There are no frequently asked questions in": "Er zijn geen veelgestelde vragen in het",
@@ -410,7 +413,7 @@
     "To be included":"Opnemen",
     "Curated by":"Samengesteld door",
     "Filter selection":"Antwoord gevalideerd door",
-    "Score filtering":"score filteren",
+    "Score filtering":"Juist antwoord filteren",
     "Questions Asked not Answered":"Niet beantwoorde vraag",
     "Language filtering":"Taal filteren",
     "Publish changes": "Wijzigingen publiceren",

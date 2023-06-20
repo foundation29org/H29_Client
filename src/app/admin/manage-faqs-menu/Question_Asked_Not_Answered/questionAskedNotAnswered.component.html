@@ -4,14 +4,11 @@
   </a>
 </div>
 <div class="form-group">
-    <!---<span class="btn btn-primary btn-raised" (click)="openPanelManageFAQs(contentFAQManager)">
-        {{'faqs.Manage' | translate }}
-    </span>-->
   <span *ngIf="(filterActive)"> 
     <table class="col-md-12 table text-center table-responsive">
         <tbody>
           <tr>
-              <td *ngIf="(filterScoreActive)">{{'faqs.Score filtering' | translate}} [{{valueScoreMin}},{{valueScoreMax}}]</td>
+              <td *ngIf="(filterScoreActive)">{{'faqs.Score filtering' | translate}} [{{value}}]</td>
               <td *ngIf="(filterLanguageActive)">{{'faqs.Language filtering' | translate}} [{{language}}]</td>
           </tr> 
         </tbody>
@@ -27,11 +24,8 @@
         <tr>
           <th class="w-10" style="vertical-align: middle;">{{'generics.Date' | translate }}</th>
           <th class="w-10" style="vertical-align: middle;">{{'faqs.User question' | translate }}</th>
-          <!---<th class="w-15" style="vertical-align: middle;">{{'faqs.Related questions' | translate }}</th>-->
-          <!--<th class="w-15" style="vertical-align: middle;">{{'faqs.Suggested answer' | translate }}</th>-->
-          <th class="w-5" style="vertical-align: middle;">{{'faqs.Score' | translate }}</th>
-          <th class="w-5" style="vertical-align: middle;">{{'faqs.To be included' | translate }}</th>
-          <th class="w-10" style="vertical-align: middle;">{{'faqs.Curated by' | translate }}</th>
+          <th class="w-10" style="vertical-align: middle;"> {{'faqs.Answer' | translate }}</th>
+          <th class="w-5" style="vertical-align: middle;">{{'faqs.Right answer' | translate }}</th>
           <th class="w-5" style="vertical-align: middle;">{{'generics.Delete' | translate }}</th>
         </tr>
       </thead>
@@ -39,51 +33,24 @@
         <tr *ngFor="let QNA of FAQsNotAnswered ; let i=index">
 
           <td class="w-10" style="padding:10px;">
-            <div class="pull-left ft-globe" style="font-size:60%;color:black">{{QNA.lang}}</div>
+            <div class="pull-left ft-globe">{{QNA.lang}}</div>
             {{QNA.date|date: timeformat}}
           </td>
 
-          <td class="danger w-10" style="padding:10px;"*ngIf="((QNA.data[0].answers[0].score)<60)">
-            {{QNA.data[1].userQuestion}} 
-          </td>
-          <td class="w-10" style="padding:10px;color:orange;" *ngIf="(((QNA.data[0].answers[0].score)>60)&&((QNA.data[0].answers[0].score)<80))">
-              {{QNA.data[1].userQuestion}}
-          </td>
-          <td class="w-10" style="padding:10px;color:green;" *ngIf="((QNA.data[0].answers[0].score)>80)">
-            {{QNA.data[1].userQuestion}}
-          </td>
-
-
-          <!---<td class="danger w-10" style="padding:10px;" *ngIf="((QNA.data[0].answers[0].score)<60)">{{QNA.date|date}}</td>
-          <td class="w-10" style="padding:10px;color:orange;"*ngIf="(((QNA.data[0].answers[0].score)>60)&&((QNA.data[0].answers[0].score)<80))">{{QNA.date|date}}</td>
-          <td class="w-10" style="padding:10px; color:green;"*ngIf="((QNA.data[0].answers[0].score)>80)">{{QNA.date|date}}</td>
-          -->
-
-          <!---<td class="w-15" style="padding:10px;">
-            <span *ngFor="let questionSuggested of QNA.data[0].answers[0].questions ; let i=index">
-                {{questionSuggested}}
-                <br>
-            </span>
-          </td>-->
-          <!---<td class="w-15" style="padding:10px;">{{QNA.data[0].answers[0].answer}}</td>-->
-
-
-          <td class="danger w-5" style="padding:10px;" *ngIf="((QNA.data[0].answers[0].score)<60)">{{QNA.data[0].answers[0].score}}</td>
-          <td class="w-5" style="padding:10px;color:orange;"*ngIf="(((QNA.data[0].answers[0].score)>60)&&((QNA.data[0].answers[0].score)<80))">{{QNA.data[0].answers[0].score}}</td>
-          <td class="w-5" style="padding:10px;color:green;"*ngIf="((QNA.data[0].answers[0].score)>80)">{{QNA.data[0].answers[0].score}}</td>
-          
-          <td class="w-5" style="padding:10px;">
-              <a (click)="includeFAQs(QNA)" title="To Include"><i class="ft-plus-square primary"></i></a>
-          </td>
-
           <td class="w-10" style="padding:10px;">
-            <a (click)="openPanelEditCuratedBy(QNA, ContentEditCuratedBy)" title="Curated By"><i class="fa fa-edit primary"></i></a>
-            {{QNA.curatedBy}}
+            {{QNA.data.userQuestion}} 
           </td>
-
+          <td class="w-10" style="padding:10px;">
+            {{QNA.data.answer}} 
+          </td>
+          <td class="danger w-10" style="padding:10px;">
+            <span [ngClass]="(QNA.data.value=='No')?'danger':'success'">
+              {{QNA.data.value}} 
+            </span>
+          </td>
           <td class="w-5">
             <a class="danger" data-original-title="" title="" (click)="confirmDeleteFAQQuestion(QNA)">
-              <i class="ft-x-square"></i>
+              <i class="fa fa-trash"></i>
             </a>
           </td>
         </tr>
@@ -103,17 +70,15 @@
     <div class="modal-body" responsive>
       <select [(ngModel)]="seleccionado" required>
         <option value="" selected disabled>{{'generics.Select filter'| translate }}</option> 
-        <option value="Score">{{'faqs.Score' | translate }}</option>   
+        <option value="Value">{{'faqs.Right answer' | translate }}</option>   
         <option value="Lang">{{'generics.Lang' | translate }}</option>   
 
       </select> 
       <!---Seleccionado: {{ seleccionado }}-->
       <br>
-      <div *ngIf="(seleccionado=='Score')">
-        <label>{{'generics.Min value' | translate}}</label>
-        <textarea class="form-control" [(ngModel)]="valueScoreMin">{{valueScoreMin}}</textarea>
-        <label>{{'generics.Max value' | translate}}</label>
-        <textarea class="form-control" [(ngModel)]="valueScoreMax">{{valueScoreMax}}</textarea>
+      <div *ngIf="(seleccionado=='Value')">
+        <input type="radio" [(ngModel)]="value" value="No" > No<br>
+        <input type="radio" [(ngModel)]="value" value="Yes"> Yes<br>
       </div>
 
       <div *ngIf="(seleccionado=='Lang')">
@@ -131,27 +96,10 @@
     </div>
     <div class="modal-footer" >
         <div class="form-actions center" *ngIf="!sending">
-            <button type="submit" class="btn btn-primary btn-raised" (click)="applyFilter(valueScoreMin,valueScoreMax)" *ngIf="(seleccionado=='Score')">{{'generics.Save' | translate }}</button>
+            <button type="submit" class="btn btn-primary btn-raised" (click)="applyFilter(value)" *ngIf="(seleccionado=='Value')">{{'generics.Save' | translate }}</button>
             <button type="submit" class="btn btn-primary btn-raised" (click)="applyFilterLang(language)" *ngIf="(seleccionado=='Lang')">{{'generics.Save' | translate }}</button>
             <button type="submit" class="btn btn-primary btn-raised" (click)="c('Close click')" *ngIf="(seleccionado=='')" >{{'generics.Save' | translate }}</button>
             <button type="button" class="btn btn-secondary btn-raised" (click)="c('Close click')">{{'generics.Close' | translate }}</button>
-        </div>
-    </div>
-</ng-template>
-
-
-
-<ng-template #ContentEditCuratedBy let-c="close" let-d="dismiss" appendTo="body">
-    <div class="modal-header" id="idHeader">
-      <h4 class="modal-title">{{'faqs.Filter selection' | translate }}</h4>
-    </div>
-    <div class="modal-body">
-        <textarea class="form-control" [(ngModel)]="dataQNA.curatedBy">{{dataQNA.curatedBy}}</textarea>
-    </div>
-    <div class="modal-footer" >
-        <div class="form-actions center" *ngIf="!sending">
-            <button type="button" class="btn btn-secondary btn-raised" (click)="c('Close click')">{{'generics.Close' | translate }}</button>
-            <button type="button" class="btn btn-primary btn-raised" (click)="saveDataQNA()">{{'generics.Save' | translate }}</button>
         </div>
     </div>
 </ng-template>

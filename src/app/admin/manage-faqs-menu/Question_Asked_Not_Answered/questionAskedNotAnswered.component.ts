@@ -42,6 +42,8 @@ export class QuestionAskedNotAnsweredComponent implements OnDestroy{
   filterElementsList: any = [];
   dataQNA: any =[];
   timeformat="";
+  language="";
+  value="";
 
 
   constructor(private http: HttpClient, public translate: TranslateService, private authService: AuthService, private authGuard: AuthGuard, private langService: LangService, public toastr: ToastsManager, private modalService: NgbModal, private router: Router, private data: Data,private adapter: DateAdapter<any>){
@@ -78,6 +80,7 @@ export class QuestionAskedNotAnsweredComponent implements OnDestroy{
         this.subscription.add(this.http.get(environment.api+'/api/bots/'+this.groupId)
         .subscribe( (res : any) => {
             this.FAQsNotAnswered=res;
+            this.FAQsNotAnsweredCopy=res;
             this.isLoading=false;
           }, (err) => {
             this.isLoading=false;
@@ -115,7 +118,7 @@ export class QuestionAskedNotAnsweredComponent implements OnDestroy{
   confirmDeleteFAQQuestion(dataJSON){
     swal({
         title: this.translate.instant("generics.Are you sure?"),
-        html: this.translate.instant("generics.Delete")+': '+ dataJSON.data[1].userQuestion,
+        html: this.translate.instant("generics.Delete")+': '+ dataJSON.data.userQuestion,
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#0CC27E',
@@ -132,19 +135,6 @@ export class QuestionAskedNotAnsweredComponent implements OnDestroy{
         //this.phenotype.data.splice(index, 1);
       }
     }).catch(swal.noop);
-  }
-
-
-  //Funtions for include the FAQs
-  includeFAQs(dataJSON:any){
-    let userQuestion = dataJSON.data[1].userQuestion;
-    console.log(userQuestion)
-  }
-
-
-  openPanelEditCuratedBy(QNA, ContentEditCuratedBy){
-    this.dataQNA = QNA;
-    this.modalReference = this.modalService.open(ContentEditCuratedBy);
   }
 
   saveDataQNA(){
@@ -170,23 +160,46 @@ export class QuestionAskedNotAnsweredComponent implements OnDestroy{
 
   }
 
-  applyFilter(valueScoreMin,valueScoreMax){
+  applyFilter(value){
+    this.value = value;
     this.filterElementsList=[];
-
     this.filterActive = true;
+    this.FAQsNotAnswered = JSON.parse(JSON.stringify(this.FAQsNotAnsweredCopy));
     this.filterScoreActive = true;
-    if(valueScoreMin==undefined){valueScoreMin="0";}
-    if(valueScoreMax==undefined){valueScoreMax="100";}
-
-    // Copy all FAQs in a internal variable (Avoid calls to the database when the filter is deleted)
-    this.FAQsNotAnsweredCopy = this.FAQsNotAnswered;
-
     for (var i= 0; i< this.FAQsNotAnswered.length;i++){
-      if(((JSON.parse(JSON.stringify(this.FAQsNotAnswered[i].data[0].answers[0].score)))>=valueScoreMin)&&((JSON.parse(JSON.stringify(this.FAQsNotAnswered[i].data[0].answers[0].score)))<=valueScoreMax)){
-        this.filterElementsList.push(this.FAQsNotAnswered[i]);
+      if(this.FAQsNotAnswered[i].data.value==value){
+        if(this.filterLanguageActive){
+          if(this.FAQsNotAnswered[i].lang==this.language){
+            this.filterElementsList.push(this.FAQsNotAnswered[i]);
+          }
+        }else{
+          this.filterElementsList.push(this.FAQsNotAnswered[i]);
+        }
       }
     }
-    this.FAQsNotAnswered=[];
+    this.FAQsNotAnswered=this.filterElementsList;
+    this.modalReference.close();
+
+  }
+
+  applyFilterLang(language){
+    this.language=language;
+    this.filterElementsList=[];
+    this.filterActive = true;
+    this.FAQsNotAnswered = JSON.parse(JSON.stringify(this.FAQsNotAnsweredCopy));
+    this.filterLanguageActive=true;
+
+    for (var i= 0; i< this.FAQsNotAnswered.length;i++){
+      if(this.FAQsNotAnswered[i].lang==language){
+        if(this.filterScoreActive){
+          if(this.FAQsNotAnswered[i].data.value==this.value){
+            this.filterElementsList.push(this.FAQsNotAnswered[i]);
+          }
+        }else{
+          this.filterElementsList.push(this.FAQsNotAnswered[i]);
+        }
+      }
+    }
     this.FAQsNotAnswered=this.filterElementsList;
     this.modalReference.close();
 
@@ -195,32 +208,9 @@ export class QuestionAskedNotAnsweredComponent implements OnDestroy{
   removeFilter(){
     this.FAQsNotAnswered=[];
     this.FAQsNotAnswered=this.FAQsNotAnsweredCopy;
-    this.FAQsNotAnsweredCopy=[];
     this.filterActive=false;
     this.filterScoreActive=false;
     this.filterLanguageActive=false;
-
-  }
-
-  applyFilterLang(language){
-
-    this.filterElementsList=[];
-
-    this.filterActive = true;
-    this.filterLanguageActive=true;
-
-
-    // Copy all FAQs in a internal variable (Avoid calls to the database when the filter is deleted)
-    this.FAQsNotAnsweredCopy = this.FAQsNotAnswered;
-
-    for (var i= 0; i< this.FAQsNotAnswered.length;i++){
-      if((JSON.parse(JSON.stringify(this.FAQsNotAnswered[i].lang)))==language){
-        this.filterElementsList.push(this.FAQsNotAnswered[i]);
-      }
-    }
-    this.FAQsNotAnswered=[];
-    this.FAQsNotAnswered=this.filterElementsList;
-    this.modalReference.close();
 
   }
 
