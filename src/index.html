@@ -5,9 +5,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Health 29</title>
+  <meta name="title" content="Health 29">
+  <meta name="keywords" content="Health 29" />
+  <meta name="description" content="A platform to digitalize patient data"/>
   <base href="/"><!--<base href="./">-->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link href="https://cdn.botframework.com/botframework-webchat/latest/botchat.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
 
@@ -48,7 +50,7 @@
       z-index: 1;
     }
   </style>
-  <script type="text/javascript">
+  <script async type="text/javascript">
     var isApp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && location.hostname != "localhost" && location.hostname != "127.0.0.1";
 		if (!isApp){
 			if (location.hostname != "localhost" && location.hostname != "127.0.0.1" && window.location.protocol == "http:") {
@@ -101,7 +103,7 @@
   
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-0FE88WM35X"></script>
-<script>
+<script async>
   var isApp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && location.hostname != "localhost" && location.hostname != "127.0.0.1";
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -113,13 +115,11 @@
   }
   
 </script>
-
 </head>
 <body>
-  <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
   <app-root></app-root>
   <div class="page-loading">
-    <img src="assets/img/oval.svg" class="loading-icon" />
+    <img src="assets/img/oval.svg" alt="loading icon" class="loading-icon" />
   </div>
 </body>
 </html>

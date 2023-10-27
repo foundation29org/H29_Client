@@ -9,7 +9,7 @@
     "build": "ng build --env=local",
     "buildDev": "ng build --env=dev",
     "buildStaging": "ng build --env=test",
-    "buildProd": "ng build --env=prod",
+    "buildProd": "ng build --prod --env=prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
