@@ -63,8 +63,9 @@ export class CustomizerComponent implements OnInit, OnDestroy {
 
   reloadPage(){
     //location.reload();
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
-    this.router.navigate([this.router.url]));
+    /*this.router.navigateByUrl('/user/dashboard/dashboard1', {skipLocationChange: true}).then(() =>
+    this.router.navigate([this.router.url]));*/
+    this.initEnvironment();
   }
 
   wait(ms){
@@ -115,11 +116,11 @@ export class CustomizerComponent implements OnInit, OnDestroy {
           id: tokenPayload.userId,
           name: tokenPayload.userName
       };
+      let domain = 'https://europe.directline.botframework.com/v3/directline';
       const botConnection = new BotChat.DirectLine({
           //secret: botSecret,
           token: tokenPayload.connectorToken,
-          //domain: "",
-          webSocket: true
+          domain: domain
       });
       this.startChat(user, botConnection);
 
@@ -140,14 +141,16 @@ export class CustomizerComponent implements OnInit, OnDestroy {
       var header = document.getElementsByClassName("wc-header");
       var headerStringTranslate=this.translate.instant("generics.Assistant")
       header[0].innerHTML = "<span>"+headerStringTranslate+"</span>"
-
+      console.log(botConnection)
+      console.log(jsonWebToken)
+      //botConnection.postActivity({type: "message", text: "begin inithealth29", from: user}).subscribe(function (id) {console.log("success")});
+      botConnection.activity$.subscribe(function (activity: any) {
+        console.log(activity)
+      })
       this.subscription.add( botConnection.postActivity({type: "event", value: jsonWebToken, from: user, name: "InitAuthenticatedConversation"}).subscribe(function (id) {
           if(this.group == this.nameundiagnosed){
             this.subscription.add( botConnection.postActivity({type: "message", text: "begin undiagnosed", from: user}).subscribe(function (id) {console.log("success undiagnosed")}));
           }else{
-            /*if(this.user.lang == 'nl'){
-              botConnection.postActivity({type: "message", text: "begin demonl", from: user}).subscribe(function (id) {console.log("success")});
-            }else{*/
               var botName=undefined;
              this.subscription.add( botConnection.postActivity({type: "message", text: "begin inithealth29", from: user}).subscribe(function (id) {console.log("success")}));
              this.subscription.add( botConnection.activity$.filter(function (activity) {
@@ -221,9 +224,6 @@ export class CustomizerComponent implements OnInit, OnDestroy {
                   else{
                     //this.wait(7000)
                     loadingNotifications=false;
-                    /*this.subscription.add( botConnection.postActivity({type: "message", text: "begin inithealth29", from: user}).subscribe(function (id) {
-                      console.log("success")
-                    }));*/
                   }
 
                 }
@@ -240,7 +240,7 @@ export class CustomizerComponent implements OnInit, OnDestroy {
                         return tempElement.textContent;
                       });
                       this.wait(2000)
-                      this.reloadPage()
+                      //this.reloadPage()
                     }
                   }
 

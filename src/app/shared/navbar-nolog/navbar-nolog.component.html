@@ -2,14 +2,14 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-faded damemarger">
     <div class="container-fluid">
         <div class="navbar-header">
-          <img *ngIf="title._doc.location.pathname!='/error'" style="cursor:pointer;" class="logo-img" src='assets/img/health29-medium.png' routerLink="/login"/>
-          <img *ngIf="title._doc.location.pathname=='/error'" class="logo-img" src='assets/img/health29-medium.png'>
+          <img *ngIf="title._doc.location.pathname!='/error'" style="cursor:pointer;" class="logo-img" alt="logo health 29" src='assets/img/health29-medium.png' routerLink="/login"/>
+          <img *ngIf="title._doc.location.pathname=='/error'" class="logo-img" alt="logo health 29" src='assets/img/health29-medium.png'>
         </div>
         <div class="navbar-container">
             <div class="navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav m-r-0">
                     <li class="nav-item" ngbDropdown placement="bottom-right">
-                        <a class="nav-link position-relative colorlink" id="dropdownLang" ngbDropdownToggle>
+                        <a class="nav-link position-relative colorlink" id="dropdownLang" ngbDropdownToggle role="button">
                             <i class="ft-flag font-medium-3 blue-grey darken-4 iconcolor"></i>
                             <p class="d-none">{{'generics.Lang' | translate }}</p>
                         </a>
