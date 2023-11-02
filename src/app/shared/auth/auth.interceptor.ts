@@ -94,14 +94,6 @@ export class AuthInterceptor implements HttpInterceptor {
           authReq = req.clone({ headers: req.headers.set('Ocp-Apim-Subscription-Key',  environment.keyCognitiveMicrosoft ) });
         }
 
-        if(req.url.indexOf(environment.f29api)!==-1){
-          isExternalReq = true;
-          const headers = new HttpHeaders({
-            'Ocp-Apim-Subscription-Key': environment.keyF29api
-          });
-          authReq = req.clone({ headers});
-        }
-
         if(req.url.indexOf('healthbot')!==-1){
           isExternalReq = true;
           const headers = new HttpHeaders({
@@ -120,7 +112,7 @@ export class AuthInterceptor implements HttpInterceptor {
           authReq = req.clone({ headers});//'Content-Type',  'application/json'
         }
 
-        if(isApp && (req.url.includes("f29api")==false) && (req.url.indexOf("assets")==-1)){
+        if(isApp && (req.url.indexOf("assets")==-1)){
           if(serverTrusted){
             //return from(this.handleNativeRequest(authReq,isExternalReq,authService,eventsService))
             return from(this.handleNativeRequest(authReq,isExternalReq,authService,eventsService)).catch((error)=>{
@@ -143,7 +135,7 @@ export class AuthInterceptor implements HttpInterceptor {
             }.bind(this));
           }
         }
-        else if(isApp && (req.url.includes("f29api")==true) && (req.url.indexOf("assets")==-1)){
+        else if(isApp && (req.url.indexOf("assets")==-1)){
           return from(this.handleNativeRequest(authReq,isExternalReq,authService,eventsService)).catch((error)=>{
             this.manageErrors(error,isExternalReq,authService,eventsService);
             return Observable.throw(error);

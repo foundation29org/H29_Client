@@ -25,8 +25,8 @@
                                 <div class="form-group" *ngIf="!sending">
                                     <div class="col-md-12">
                                       <div *ngIf="f.valid;then formValid else formError"></div>
-                                      <ng-template #formValid><button class="btn btn-pink btn-block btn-foursquare" type="submit"> {{'login.Login' | translate }}</button></ng-template>
-                                      <ng-template #formError><button class="btn btn-pink btn-block btn-foursquare" type="button" (click)="submitInvalidForm()"> {{'login.Login' | translate }}</button></ng-template>
+                                      <ng-template #formValid><button class="btn btn-pink btn-block btn-foursquare" type="submit" title="{{'login.Login' | translate }}"> {{'login.Login' | translate }}</button></ng-template>
+                                      <ng-template #formError><button class="btn btn-pink btn-block btn-foursquare" type="button" (click)="submitInvalidForm()" title="{{'login.Login' | translate }}"> {{'login.Login' | translate }}</button></ng-template>
                                     </div>
                                     <!--<a class="white" (click)="launchDemo()">Demo</a>-->
                                 </div>
@@ -83,8 +83,8 @@
                         </div>
                     </div>
                     <div class="card-footer" style="background: none;">
-                        <div class="float-left white centerdiv"><a (click)="onForgotPassword()">{{'login.Recover Password' | translate }}</a></div>
-                        <div class="float-right white centerdiv"><a (click)="onRegister()">{{'login.Create User' | translate }}</a></div>
+                        <div class="float-left white centerdiv"><a class="white" routerLink="/forgotpassword" title="{{'login.Recover Password' | translate }}">{{'login.Recover Password' | translate }}</a></div>
+                        <div class="float-right white centerdiv"><a class="white" routerLink="/register" title="{{'login.Create User' | translate }}">{{'login.Create User' | translate }}</a></div>
                     </div>
                 </div>
 
