@@ -141,12 +141,8 @@ export class CustomizerComponent implements OnInit, OnDestroy {
       var header = document.getElementsByClassName("wc-header");
       var headerStringTranslate=this.translate.instant("generics.Assistant")
       header[0].innerHTML = "<span>"+headerStringTranslate+"</span>"
-      console.log(botConnection)
-      console.log(jsonWebToken)
       //botConnection.postActivity({type: "message", text: "begin inithealth29", from: user}).subscribe(function (id) {console.log("success")});
-      botConnection.activity$.subscribe(function (activity: any) {
-        console.log(activity)
-      })
+
       this.subscription.add( botConnection.postActivity({type: "event", value: jsonWebToken, from: user, name: "InitAuthenticatedConversation"}).subscribe(function (id) {
           if(this.group == this.nameundiagnosed){
             this.subscription.add( botConnection.postActivity({type: "message", text: "begin undiagnosed", from: user}).subscribe(function (id) {console.log("success undiagnosed")}));
