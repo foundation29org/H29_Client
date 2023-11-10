@@ -12,7 +12,7 @@ export class OpenAiService {
     constructor(private http: HttpClient, private sortService: SortService) {}
 
     postOpenAi3(info){
-      return this.http.post('https://af29.azurewebsites.net/api/duchenne', info)
+      return this.http.post(environment.api + '/api/callbook', info)
         .map((res: any) => {
           return res;
         }, (err) => {
