@@ -573,12 +573,40 @@ export class GenotypeComponent implements OnInit, OnDestroy{
   }
 
   onChangeGen(newValue, index, indice) {
+    //this.genlist = [];
+    let param = newValue.toUpperCase();
+    this.subscription.add( this.http.get('https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?df=_code_system,_code,chromosome,Symbol,description,type_of_gene&authenticity_token=&maxList=15&terms='+param)
+    .subscribe( (res : any) => {
+      if (res[3] && Array.isArray(res[3])) {
+        let tempGenes = [];
+        res[3].forEach(gene => {
+          // Verificamos que el sub-array del gen tiene al menos 4 elementos
+          if (gene[3]) {
+            let geneName = gene[3]; 
+            tempGenes.push({name: geneName});
+            
+            // El nombre del gen está en la posición 3 de cada sub-array
+            
+          }
+        });
+        if(this.genlist[indice]==undefined){
+          this.genlist.push(tempGenes);
+        }else{
+          this.genlist[indice] = tempGenes;
+        }
+      }
+     }, (err) => {
+       console.log(err);
+     }));
+  }
+
+  onChangeGen2(newValue, index, indice) {
     /*let myHeaders = new Headers();
     myHeaders.append('existingGenes', []);
     let options = new RequestOptions({ headers: myHeaders });*/
-
     this.subscription.add( this.http.get('https://magallanescontributionservice.azurewebsites.net/api/contribution/SearchGenes'+'?tokenWord='+newValue)
     .subscribe( (res : any) => {
+      console.log(res)
       if(this.genlist[indice]==undefined){
         this.genlist.push(res);
       }else{
