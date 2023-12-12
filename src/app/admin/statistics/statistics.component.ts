@@ -527,8 +527,15 @@ export class StatisticsComponent implements OnDestroy{
     this.subscription.add( this.http.get(environment.api+'/api/group/'+this.authService.getGroup())
       .subscribe( (resGroup : any) => {
         var groupId = resGroup._id;
-        var params=groupId+"-code-"+this.authService.getLang()+"-code-"+JSON.stringify(sectionsCoDToTranslate);
-        this.subscription.add(this.http.get(environment.api+'/api/admin/stats/translateCoDSections/'+params).subscribe((resTranslations : any)=>{
+        var params=groupId+"-code-"+this.authService.getLang();
+        let sections = {sections:[]};
+        if(sectionsCoDToTranslate.length>0){
+          if(sectionsCoDToTranslate[0].data){
+            sections.sections = sectionsCoDToTranslate[0].data;
+          }
+        }
+       
+        this.subscription.add(this.http.post(environment.api+'/api/admin/stats/translateCoDSections/'+params, sections).subscribe((resTranslations : any)=>{
           for(var j=0;j<this.sectionsContent.length;j++){
             if(this.sectionsContent[j].name==this.translate.instant('Course Of The disease.Course Of The disease')){
               this.sectionsContent[j].isPercentage=true;
