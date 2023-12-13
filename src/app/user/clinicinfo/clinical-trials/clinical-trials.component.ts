@@ -67,7 +67,8 @@ export class ClinicalTrialsComponent implements OnInit, OnDestroy{
       takingClinicalTrial: '',
       drugName: '',
       center: '',
-      date: null
+      date: null,
+      endDate: null
     }
 
     this.loadTranslations();
@@ -223,7 +224,8 @@ getAnswer(){
       takingClinicalTrial: '',
       drugName: '',
       center: '',
-      date: null
+      date: null,
+      endDate: null
     }
   }
 
@@ -246,6 +248,7 @@ getAnswer(){
     //this.editingSe = true;
     this.clinicalTrial = JSON.parse(JSON.stringify(this.listClinicalTrials[index]));
     this.clinicalTrial.date=this.dateService.transformDate(this.clinicalTrial.date);
+    this.clinicalTrial.endDate=this.dateService.transformDate(this.clinicalTrial.endDate);
     this.addedClinicalTrial = true;
   }
 

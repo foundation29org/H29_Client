@@ -15,6 +15,8 @@ import swal from 'sweetalert2';
 import { BlobStorageService, IBlobAccessToken } from 'app/shared/services/blob-storage.service';
 import { ApiDx29ServerService } from 'app/shared/services/api-dx29-server.service';
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, switchMap, catchError } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
 import {DateAdapter} from '@angular/material/core';
 
@@ -92,6 +94,19 @@ export class GenotypeComponent implements OnInit, OnDestroy{
   showinformation:boolean=false;
   duchenneinternational: string = globalvars.duchenneinternational;
 
+  search = (text$: Observable<string>) =>
+  text$.pipe(
+    debounceTime(200), // Ajusta el tiempo según sea necesario
+    distinctUntilChanged(),
+    switchMap(term =>
+      this.http.get(`https://clinicaltables.nlm.nih.gov/api/ncbi_genes/v3/search?df=_code_system,_code,chromosome,Symbol,description,type_of_gene&authenticity_token=&maxList=15&terms=${term.toUpperCase()}`)
+        .pipe(
+          map((res: any) => res[3] ? res[3].map(gene => gene[3]) : []),
+          catchError(() => of([])) // Manejo de errores
+        )
+    )
+  );
+
   constructor(private router: Router, private route: ActivatedRoute, private http: HttpClient, private authService: AuthService, public toastr: ToastsManager, public translate: TranslateService, private authGuard: AuthGuard, private sortService: SortService, private searchService: SearchService, private blob: BlobStorageService,private adapter: DateAdapter<any>, private apiDx29ServerService: ApiDx29ServerService) {
     this.group = this.authService.getGroup();
     this.adapter.setLocale(this.authService.getLang());
@@ -114,6 +129,12 @@ export class GenotypeComponent implements OnInit, OnDestroy{
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  onSelect(event: any, index: number) {
+    // Actualizar el gen seleccionado para la variante específica
+    this.genotype.data[index].gen = event.item;
+    //this.genotype.data[index].geninput = null;
   }
 
     ngOnInit() {
