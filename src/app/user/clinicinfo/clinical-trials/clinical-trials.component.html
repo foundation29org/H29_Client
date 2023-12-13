@@ -32,6 +32,7 @@
 							<th>{{'clinicaltrials.Name of the drug being tested' | translate }}</th>
 							<th>{{'clinicaltrials.In which center / hospital?' | translate }}</th>
 							<th>{{'generics.Date' | translate }}</th>
+							<th>{{'generics.End Date' | translate }}</th>
 							<th>{{'generics.Edit' | translate }}</th>
 							<th>{{'generics.Delete' | translate }}</th>
 						</tr>
@@ -49,6 +50,7 @@
 							<td>{{clinicalTrial.drugName}}</td>
 							<td>{{clinicalTrial.center}}</td>
 							<td>{{clinicalTrial.date | date: timeformat}}</td>
+							<td>{{clinicalTrial.endDate | date: timeformat}}</td>
 							<td>
 								<a class="primary" data-original-title="" title="" (click)="editClinicalTrial(i)">
 									<i class="ft-edit"></i>
@@ -122,6 +124,15 @@
 					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 					<mat-datepicker touchUi="true" #picker></mat-datepicker>
 					<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<label for="multidisciplanary2">{{'generics.End Date' | translate }}</label>
+				<div>
+					<input  class="form-control w-75 d-inline" name="clinicalTrial.endDate"  matInput [matDatepicker]="picker2" [(ngModel)]="clinicalTrial.endDate" dateTime2 #dateTime2="ngModel">
+					<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+					<mat-datepicker touchUi="true" #picker2></mat-datepicker>
+					<small class="form-text text-muted danger" *ngIf="!dateTime2.valid && (dateTime2.dirty || dateTime2.touched)">{{'generics.Invalid' | translate }}</small>
 				</div>
 			</div>
 			<div class="col-md-12 mt-4">

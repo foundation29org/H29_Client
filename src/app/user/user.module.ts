@@ -11,6 +11,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatSelectModule, MatInputModule, MatDatepickerModule, MatNativeDateModule} from '@angular/material';
 import { TagInputModule } from 'ngx-chips';
 import { UiSwitchModule } from 'ngx-ui-switch';
+import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { GenotypeComponent } from './genotype/genotype.component';
 import { FaqComponent } from './faq/faq.component';
@@ -32,7 +33,8 @@ import { FaqComponent } from './faq/faq.component';
         MatNativeDateModule,
         TagInputModule,
         ReactiveFormsModule,
-        UiSwitchModule
+        UiSwitchModule,
+        NgbTypeaheadModule
     ],
     declarations: [
         GenotypeComponent,

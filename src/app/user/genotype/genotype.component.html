@@ -111,7 +111,7 @@
         </div>
         <button type="button"  *ngIf="editingGenotype && !selectedOption && group != duchenneinternational" class="btn btn-raised btn-danger" (click)="cancelEditGenotype()">{{'generics.Cancel edition' | translate }}</button>
         <button type="button"  *ngIf="editingGenotype && !selectedOption && group == duchenneinternational" class="btn btn-raised btn-danger" (click)="cancelEditGenotype()">{{'generics.Cancel' | translate }}</button>
-        <button type="button"  *ngIf="editingGenotype && selectedOption" class="btn btn-raised btn-danger" (click)="back()">>{{'generics.Back' | translate }}</button>
+        <button type="button"  *ngIf="editingGenotype && selectedOption" class="btn btn-raised btn-danger" (click)="back()">{{'generics.Back' | translate }}</button>
       </div>
     </div>
   </div>
@@ -274,25 +274,31 @@
               <div class="col-md-12">
                 <label class="text-bold-500 primary">{{'genotype.Variant' | translate }} {{i+1}}</label><a class="btn danger mb-0 float-right" (click)="deleteVariant(i)" href="javascript:void(0)"><i class="fa fa-times"></i></a>
               </div>
-              <div class="col-md-3">
+              <!--<div class="col-md-3">
                 <div class="form-group">
                   <label for="variant.gen">{{'genotype.Search Gen' | translate }}</label>
                   <div class="position-relative has-icon-left">
-										<input type="text" id="variant.geninput" class="form-control" name="variant.geninput{{i}}"  [(ngModel)]="variant.geninput" #textgen (ngModelChange)="onChangeGen($event, textgen.value, i)" placeholder="Search gen">
+                    <input id="variant.geninput" type="text" class="form-control" [(ngModel)]="variant.geninput" [ngbTypeahead]="search" (selectItem)="onSelect($event, i)"/>
 										<div class="form-control-position">
 											<i class="ft-search info"></i>
 										</div>
 									</div>
-                  <small class="form-text text-muted danger" *ngIf="!variant.geninput && !genname.valid && (genname.dirty || genname.touched)">{{'genotype.Write something to find the gene' | translate }}</small>
+                  <span *ngIf="variant.gen" class="selected-gen" name="variant.gen{{i}}" [(ngModel)]="variant.gen">Gen seleccionado: {{ variant.gen }}</span>
                 </div>
-              </div>
+              </div>-->
               <div class="col-md-3" >
                 <div class="form-group">
-                  <label for="variant.gen">{{'genotype.Select gen' | translate }}</label>
-                  <select id="variant.gen" name="variant.gen{{i}}" class="form-control"  [(ngModel)]="variant.gen" required genname #genname="ngModel">
-                      <option [ngValue]="null" disabled selected>--{{'generics.Please select' | translate }}--</option>
-                    <option *ngFor="let gen of genlist[i]" [ngValue]="gen.name"> {{gen.name}}</option>
-                  </select>
+                  <label for="variant.gen">{{'genotype.Gene' | translate }}</label>
+                  <input 
+                    id="variant.gen" 
+                    name="variant.gen{{i}}" 
+                    class="form-control" 
+                    [(ngModel)]="variant.gen" 
+                    required 
+                    genname 
+                    #genname="ngModel"
+                    placeholder="{{'genotype.Write something to find the gene' | translate }}"
+                    type="text" [ngbTypeahead]="search" (selectItem)="onSelect($event, i)">
                   <small class="form-text text-muted danger" *ngIf="!genname.valid && (genname.dirty || genname.touched)">{{'generics.required' | translate }}</small>
                 </div>
               </div>
