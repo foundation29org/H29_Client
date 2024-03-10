@@ -1,18 +1,13 @@
-import { Component, ViewChild, OnDestroy, OnInit, ElementRef } from '@angular/core';
+import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router } from "@angular/router";
 import { environment } from 'environments/environment';
-import { HttpClient, HttpParams } from "@angular/common/http";
-import { sha512 } from "js-sha512";
+import { HttpClient } from "@angular/common/http";
 import { AuthService } from 'app/shared/auth/auth.service';
 import { TranslateService } from '@ngx-translate/core';
-import { SortService} from 'app/shared/services/sort.service';
 import { PatientService } from 'app/shared/services/patient.service';
 import swal from 'sweetalert2';
 import { Subscription } from 'rxjs/Subscription';
-import { NgbModalRef, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { TermsConditionsPageComponent } from "../terms-conditions/terms-conditions-page.component";
-import * as Fingerprint2 from 'fingerprintjs2';
 declare let cordova: any;
 
 declare global {
@@ -33,93 +28,27 @@ declare global {
 export class LoginPageComponent implements OnDestroy, OnInit {
 
     @ViewChild('f') loginForm: NgForm;
-    @ViewChild('fPhone') phoneForm: NgForm;
     sending: boolean = false;
 
     isBlockedAccount: boolean = false;
     isLoginFailed: boolean = false;
-    authyFail: boolean = false;
-    authyWaiting: boolean = false;
-    authyTimeout:boolean = false;
-    updateAuthyTimer:boolean=false;
     errorAccountActivated: boolean = false;
     isAccountActivated: boolean = false;
     isActivationPending: boolean = false;
     isBlocked: boolean = false;
     email: string;
-    requiredUpdatePhone:Boolean=false;
-    phoneCodes:any=[];
-    emailForUpdatePhone:String;
-    modalReference: NgbModalRef;
     private subscription: Subscription = new Subscription();
-    deviceId=null;
-    deviceInformation=null;
-    deviceType="";
 
-    seleccionado: string = null;
     showInstructions: boolean = false;
-    textIntroInstructions: string = "";
-    textInstruction6: string = "";
-    modalRef: NgbModalRef;
+    loginCode: number;
     
     isApp: boolean = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && location.hostname != "localhost" && location.hostname != "127.0.0.1";
 
-    constructor(private router: Router, private route: ActivatedRoute, private http: HttpClient, private authService: AuthService, public translate: TranslateService, private patientService: PatientService,private modalService: NgbModal, private sortService: SortService) {
-      if(localStorage.getItem('deviceid')){
-        this.deviceId=localStorage.getItem('deviceid')
-      }else{
-        this.deviceId = sha512(Math.random().toString(36).substr(2, 9));
-        localStorage.setItem('deviceid', this.deviceId)
+    constructor(private router: Router, private http: HttpClient, private authService: AuthService, public translate: TranslateService, private patientService: PatientService) {
+
+      if(this.authService.getEnvironment()){
+        this.authService.logout()
       }
-
-      setTimeout(() =>{
-        Fingerprint2.get((components:any) => {
-          var timezone="";
-          var platform="";
-          var userAgent="";
-          for(var i=0;i<components.length;i++){
-            if(components[i].key=="timezone"){
-              timezone=components[i].value;
-            }
-            else if(components[i].key=="platform"){
-              platform=components[i].value;
-            }
-            else if(components[i].key=="userAgent"){
-              userAgent=components[i].value;
-            }
-          }
-          this.deviceInformation={timezone:timezone,platform:platform,userAgent:userAgent}
-          var param = router.parseUrl(router.url).queryParams;
-          if(param.email && param.key){
-            //activar la cuenta
-            this.subscription.add( this.http.post(environment.api+'/api/activateuser',param)
-              .subscribe( (res : any) => {
-                if(res.message=='activated'){
-                  this.isAccountActivated = true;
-                  this.email = param.email;
-                  this.loginForm.controls['email'].setValue(param.email);
-                }else if(res.message=='error'){
-                  this.errorAccountActivated = true;
-                }
-              }, (err) => {
-                console.log(err);
-                this.errorAccountActivated = true;
-              }
-            ));
-
-            this.authService.logout()
-          }else{
-            if(this.authService.getEnvironment()){
-              this.authService.logout()
-              /*this.translate.use(this.authService.getLang());
-              let url =  this.authService.getRedirectUrl();
-              this.router.navigate([ url ]);*/
-            }
-          }
-        })
-      }, 500)
-
-
      }
 
      ngOnInit() {
@@ -139,80 +68,72 @@ export class LoginPageComponent implements OnDestroy, OnInit {
        }
      }
 
-     loadPhoneCodes(){
-      //cargar la lista mundial de ciudades
-      this.subscription.add( this.http.get('assets/jsons/phone_codes.json')
-      .subscribe( (res : any) => {
-        for (var i=0;i<res.length;i++){
-          var phoneCodeList=res[i].phone_code.split(/["]/g)
-          var phoneCode="+"+phoneCodeList[1]
-          var countryNameCode="";
-          var countryNameCodeList=[];
-          if(this.authService.getLang()=="es"){
-            countryNameCodeList=res[i].nombre.split(/["]/g)
-          }
-          else{
-            countryNameCodeList=res[i].name.split(/["]/g)
-          }
-          countryNameCode=countryNameCodeList[1]
-          this.phoneCodes.push({countryCode:countryNameCode,countryPhoneCode:phoneCode})
-        }
-        this.phoneCodes.sort(this.sortService.GetSortOrder("countryCode"));
-      }));
+     onSubmit(){
+      if(this.showInstructions){
+        this.onLogin();
+      }else{
+        //this.showInstructions = true;
+        this.sendCode();
+      }
+     }
 
-    }
+      sendCode(){
+        this.sending = true;
+        this.isBlockedAccount = false;
+        this.isLoginFailed = false;
+        this.isActivationPending = false;
+        this.isBlocked = false;
+        let form = {email: this.loginForm.value.email}
+        this.subscription.add( this.authService.sendCode(form).subscribe(
+          (authenticated:any) => {
+            console.log(authenticated);
+            if(authenticated.logged) {
+              this.sending = false;
+              this.showInstructions = true;
+              this.isLoginFailed = false;
+            }else{
+              this.sending = false;
+              this.loginForm.reset();
+              let message =  this.authService.getMessage();
+              if(message == "Login failed" || message == "Not found"){
+                  this.isLoginFailed = true;
+              }else if(message == "Account is temporarily locked"){
+                this.isBlockedAccount = true;
+              }else if(message == "Account is unactivated"){
+                this.isActivationPending = true;
+              }else if(message == "Account is blocked"){
+                this.isBlocked = true;
+              }
+            }
+            
+          }));
+      }
 
-    cancelAuthyWaiting(){
-      this.authyWaiting=false;
-      this.sending=false;
-      this.authService.stopPetition();
-      this.loginForm.reset();
-    }
-    // On submit button click
-    onSubmit(panelAddPhone) {
+    onLogin() {
       this.sending = true;
       this.isBlockedAccount = false;
       this.isLoginFailed = false;
-      this.authyFail=false;
-      this.authyTimeout=false;
-      this.authyWaiting=false;
       this.isActivationPending = false;
       this.isBlocked = false;
-      this.requiredUpdatePhone=false;
-      this.loginForm.value.password= sha512(this.loginForm.value.password)
-      this.emailForUpdatePhone=this.loginForm.value.email;
-      this.loginForm.value.device={id:this.deviceId,info:this.deviceInformation};
-  	   this.subscription.add( this.authService.signinUser(this.loginForm.value).subscribe(
+      let form = {email: this.loginForm.value.email, confirmationCode: this.loginForm.value.loginCode};
+  	   this.subscription.add( this.authService.signinUser(form).subscribe(
           (authenticated:any) => {
+            console.log(authenticated);
     		    if(authenticated.logged) {
               this.loginForm.reset();
                //this.translate.setDefaultLang( this.authService.getLang() );
                this.translate.use(this.authService.getLang());
                let url =  this.authService.getRedirectUrl();
-
+              console.log(url)
               if(this.authService.getRole()=='User'){
-                if(authenticated.reason=='showPopup'){
-
-                  let ngbModalOptions: NgbModalOptions = {
-                        backdrop : 'static',
-                        keyboard : false,
-                        windowClass: 'ModalClass-sm  offset-md-3 col-md-6'
-                  };
-                  this.modalRef = this.modalService.open(TermsConditionsPageComponent, ngbModalOptions);
-                  this.modalRef.componentInstance.state = "showPopup";
-                  this.modalRef.componentInstance.role = this.authService.getRole();
-                  this.modalRef.componentInstance.group = this.authService.getGroup();
-                }else{
-                  //this.loadAlertsState();
-                  this.subscription.add( this.patientService.getPatientId()
+                this.subscription.add( this.patientService.getPatientId()
                   .subscribe( (res : any) => {
                       if(res==null){
                         swal(this.translate.instant("personalinfo.Welcome"), this.translate.instant("personalinfo.Fill personal info"), "info");
                         this.router.navigate(['/user/basicinfo/personalinfo']);
                       }
                       else{
-                        // Check alerts with type 6 or 12 months if showDate > X months in each case
-                        // and update all userAlerts showdate, state=Not read and launch = false
+                        this.router.navigate([ url ]);
                         var patientId=res.sub;
                         this.subscription.add( this.http.get(environment.api+'/api/alerts/patient/checkDateForUserAlerts/'+patientId)
                         .subscribe( (res2 : any) => {
@@ -227,7 +148,6 @@ export class LoginPageComponent implements OnDestroy, OnInit {
                     console.log(err);
                     this.sending = false;
                   }));
-                }
                 
               }
               else{
@@ -237,181 +157,21 @@ export class LoginPageComponent implements OnDestroy, OnInit {
 
             }
             else {
-              if(authenticated.reason=="2FA"){
-                this.textIntroInstructions="";
-                this.textInstruction6="";
-                this.textIntroInstructions=this.translate.instant("login.Instructions to download the app")
-                this.textInstruction6=this.translate.instant("login.Instructions to download the app 6")
-                swal({
-                  title: this.translate.instant("login.Request authorization in Authy app"),
-                    text: this.translate.instant("login.Authorization in authy app"),
-                  type: 'warning',
-                  showCancelButton: true,
-                  showCloseButton: true,
-                  //confirmButtonColor: '#0CC27E',
-                  //cancelButtonColor: '#FF586B',
-                  // Ya tengo la APP
-                  confirmButtonText: this.translate.instant("login.Yes, continue"),
-                  confirmButtonClass: 'swal2-actions-padding',
-                  // No tengo la APP ir a descargarla
-                  cancelButtonText: this.translate.instant("login.No, go to instructions"),
-                  cancelButtonClass: 'swal2-actions-padding',
-                  showLoaderOnConfirm: true,
-                  allowOutsideClick: false
-                }).then((result) => {
-                  // ya tengo la APP
-                  if(result.value==true){
-                    this.authyWaiting=true;
-                    this.authService.signin2FA(this.emailForUpdatePhone,this.loginForm.value.password,this.deviceId,this.deviceInformation)
-                    .subscribe((authenticated2FA)=> {
-                      if(authenticated2FA==true){
-                        this.authyWaiting=false;
-                        this.loginForm.reset();
-                        this.translate.use(this.authService.getLang());
-                        let url =  this.authService.getRedirectUrl();
-                        if(this.authService.getRole()=='User'){
-                          var msg = this.authService.getMessage();
-                          if(msg=='showPopup'){
-
-                            let ngbModalOptions: NgbModalOptions = {
-                                  backdrop : 'static',
-                                  keyboard : false,
-                                  windowClass: 'ModalClass-sm  offset-md-3 col-md-6'
-                            };
-                            this.modalRef = this.modalService.open(TermsConditionsPageComponent, ngbModalOptions);
-                            this.modalRef.componentInstance.state = "showPopup";
-                            this.modalRef.componentInstance.role = this.authService.getRole();
-                            this.modalRef.componentInstance.group = this.authService.getGroup();
-                          }else{
-                            //this.loadAlertsState();
-                            this.subscription.add( this.patientService.getPatientId()
-                            .subscribe( (res : any) => {
-                              if(res==null){
-                                swal(this.translate.instant("personalinfo.Welcome"), this.translate.instant("personalinfo.Fill personal info"), "info");
-                                this.router.navigate(['/user/basicinfo/personalinfo']);
-                              }else{
-                                // Check alerts with type 6 or 12 months if showDate > X months in each case
-                                // and update all userAlerts showdate, state=Not read and launch = false
-                                var patientId=res.sub;
-                                this.subscription.add( this.http.get(environment.api+'/api/alerts/patient/checkDateForUserAlerts/'+patientId)
-                                .subscribe( (res2 : any) => {
-                                  this.router.navigate([ url ]);
-                                }, (err) => {
-                                  console.log(err);
-                                }));
-
-                                }
-                              this.sending = false;
-                              }, (err) => {
-                                console.log(err);
-                                this.sending = false;
-                              }));
-                          }
-                          
-                        }else{
-                          this.sending = false;
-                          this.router.navigate([ url ]);
-                        }
-
-
-                      }
-                      else if(authenticated2FA==false){
-                        this.sending = false;
-                        this.authyWaiting=false;
-                        this.loginForm.reset();
-                        let message =  this.authService.getMessage();
-                        if(message == "Login failed" || message == "Not found"){
-                            this.isLoginFailed = true;
-                        }else if(message == "Authy access denied"){
-                          this.authyFail = true;
-                        }else if(message == "Account is temporarily locked"){
-                          this.isBlockedAccount = true;
-                        }else if(message == "Account is unactivated"){
-                          this.isActivationPending = true;
-                        }else if(message == "Account is blocked"){
-                          this.isBlocked = true;
-                        }
-                        else if(message == "Authy time out"){
-                          this.authyTimeout=true
-                          this.authyWaiting=false;
-                          this.isAccountActivated=false;
-                          this.sending = false;
-                          this.loginForm.reset();
-                        }
-                      }
-                      else if(this.authyWaiting==false){
-                        this.authService.stopPetition();
-                        this.sending = false;
-                        this.loginForm.reset();
-                      }
-                    });
-                  }
-                  //quiero descargar la App: Ir a las instrucciones
-                  else if(result.dismiss=="cancel"){
-                    this.showInstructions = true;
-                  }
-                  // Close button
-                  else{
-                    this.sending = false;
-                    this.authyWaiting=false;
-                    this.loginForm.reset();
-                  }
-
-                }).catch(swal.noop);
-
-              }
-              else if(authenticated.reason=="Update Phone"){
-                //cargar la lista mundial de ciudades
-                this.subscription.add( this.http.get('assets/jsons/phone_codes.json')
-                .subscribe( (res : any) => {
-                  for (var i=0;i<res.length;i++){
-                    var phoneCodeList=res[i].phone_code.split(/["]/g)
-                    var phoneCode="+"+phoneCodeList[1]
-                    var countryNameCode="";
-                    var countryNameCodeList=[];
-                    if(this.authService.getLang()=="es"){
-                      countryNameCodeList=res[i].nombre.split(/["]/g)
-                    }
-                    else{
-                      countryNameCodeList=res[i].name.split(/["]/g)
-                    }
-                    countryNameCode=countryNameCodeList[1]
-                    this.phoneCodes.push({countryCode:countryNameCode,countryPhoneCode:phoneCode})
-                  }
-                  this.phoneCodes.sort(this.sortService.GetSortOrder("countryCode"));
-                  this.requiredUpdatePhone=true;
-                  this.sending = false;
-                  this.modalReference = this.modalService.open(panelAddPhone);
-                }));
-
-              }
-              else{
-                this.sending = false;
-                let message =  this.authService.getMessage();
-                if(message == "Login failed" || message == "Not found"){
-                    this.isLoginFailed = true;
-                }else if(message == "Account is temporarily locked"){
-                  this.isBlockedAccount = true;
-                }else if(message == "Account is unactivated"){
-                  this.isActivationPending = true;
-                }else if(message == "Account is blocked"){
-                  this.isBlocked = true;
-                }
+              this.sending = false;
+              this.loginForm.reset();
+              let message =  this.authService.getMessage();
+              if(message == "Login failed" || message == "Not found"){
+                  this.isLoginFailed = true;
+              }else if(message == "Account is temporarily locked"){
+                this.isBlockedAccount = true;
+              }else if(message == "Account is unactivated"){
+                this.isActivationPending = true;
+              }else if(message == "Account is blocked"){
+                this.isBlocked = true;
               }
     		    }
           }
   	   ));
-    }
-
-    sendTerms(value){
-      console.log(value);
-      var info = {value:value};
-      this.subscription.add( this.http.post(environment.api+'/api/user/changeterms/'+this.authService.getIdUser(), info)
-        .subscribe( (res1 : any) => {
-          console.log(res1);
-        }, (err) => {
-          console.log(err);
-        }));
     }
 
     launchDemo(){
@@ -420,66 +180,14 @@ export class LoginPageComponent implements OnDestroy, OnInit {
       //this.onSubmit();
     }
 
-    // On Forgot password link click
-    onForgotPassword() {
-        this.router.navigate(['/forgotpassword']);
-    }
     // On registration link click
     onRegister() {
         this.router.navigate(['/register']);
     }
 
-    loadAlertsState(){
-
-
-    }
-
-    submitInvalidFormPhone() {
-      if (!this.phoneForm) { return; }
-      const base = this.phoneForm;
-      for (const field in base.form.controls) {
-        if (!base.form.controls[field].valid) {
-            base.form.controls[field].markAsTouched()
-        }
-      }
-    }
-
-    updatePhoneInfo(seleccionado,phone){
-      this.sending = true;
-      var email= this.loginForm.value.email;
-      var body={email:this.emailForUpdatePhone,password:this.loginForm.value.password,countryselectedPhoneCode:seleccionado,phone:phone,device:{id:this.deviceId,info:this.deviceInformation}};
-      //Guardar para el usuario el numero de telefono y cuenta en authy
-      this.modalReference.close();
-      this.subscription.add( this.http.post(environment.api+'/api/signin/registerUserInAuthy/',body)
-      .subscribe( (res : any) => {
-        if(res.message=="User Registered in Authy"){
-          this.loginForm.setValue({email:email,password:''})
-          swal('', this.translate.instant("login.Register in authy ok"), "success");
-          this.sending = false;
-        }
-        else{
-          swal('', this.translate.instant("login.Register in authy ko"), "error");
-          this.sending = false;
-        }
-
-      }, (err) => {
-        console.log(err);
-        this.errorAccountActivated = true;
-      }));
-    }
-
     backToLogin(){
       this.showInstructions = false;
       this.sending = false;
-      this.authyWaiting=false;
       this.loginForm.reset();
-    }
-
-    goToExternalUrl(url){
-      if (this.isApp) {
-        cordova.InAppBrowser.open(url, "_system", { location: "yes", closebuttoncaption: "Done" });
-      }else{
-        window.open(url, '_blank');
-      }
     }
 }

@@ -40,7 +40,6 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
   isSafari:boolean = navigator.vendor && navigator.vendor.indexOf('Apple') > -1 && navigator.userAgent && !navigator.userAgent.match('CriOS');
   isIeOrEdge = (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0) || /Edge/.test(navigator.userAgent);
   phenotype: any = {};
-  isApp: boolean = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && location.hostname != "localhost" && location.hostname != "127.0.0.1";
   private subscription: Subscription = new Subscription();
   gradeList:any=[1,2,3,4,5,6,7,8,9,10]
 
@@ -485,8 +484,10 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
       }
     }
     if(idControlField){
-      if(idControlField.control.valid){
-        this.listPromsChanged.push({data: prom.data, promId:prom.structure._id});
+      if(idControlField.control != undefined){
+        if(idControlField.control.valid){
+          this.listPromsChanged.push({data: prom.data, promId:prom.structure._id});
+        }
       }
     }else{
       this.listPromsChanged.push({data: prom.data, promId:prom.structure._id});
@@ -544,7 +545,7 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
           else if((event)&&(this.sectionsAndProms[i].promsStructure[j].structure.responseType=="Toogle")&&(prom.structure.disableDataPoints==this.sectionsAndProms[i].promsStructure[j].structure._id)){
             this.previousValueData[j]=(this.sectionsAndProms[i].promsStructure[j].data);
             this.sectionsAndProms[i].promsStructure[j].data=false;
-            this.listPromsChanged.push({data: false, promId:this.sectionsAndProms[i].promsStructure[j]});
+            this.listPromsChanged.push({data: false, promId:this.sectionsAndProms[i].promsStructure[j]._id});
           }
           else if((!event)&&(this.sectionsAndProms[i].promsStructure[j].structure.responseType=="Toogle")&&(prom.structure.disableDataPoints==this.sectionsAndProms[i].promsStructure[j].structure._id)){
             //Check all datapoints status related with that
@@ -562,11 +563,11 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
               }
             }
             if(!hasAnyOtherDataPointsDisabledWith){
-              this.listPromsChanged.push({data: this.previousValueData[j], promId:this.sectionsAndProms[i].promsStructure[j]});
+              this.listPromsChanged.push({data: this.previousValueData[j], promId:this.sectionsAndProms[i].promsStructure[j]._id});
             }
             else{
               this.sectionsAndProms[i].promsStructure[j].data=false;
-              this.listPromsChanged.push({data: false, promId:this.sectionsAndProms[i].promsStructure[j]});
+              this.listPromsChanged.push({data: false, promId:this.sectionsAndProms[i].promsStructure[j]._id});
             }
           }
         }
@@ -628,6 +629,7 @@ export class CourseOfThediseaseComponent implements OnInit, OnDestroy{
   }
 
   onSubmit() {
+    console.log(this.listPromsChanged)
     if(this.listPromsChanged.length > 0){
       if(this.authGuard.testtoken()){
         this.sending = true;

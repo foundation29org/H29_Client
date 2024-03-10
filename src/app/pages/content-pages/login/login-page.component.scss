@@ -1,3 +1,18 @@
+/* Ocultar los spinners de los campos input type number */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield; /* Firefox */
+}
+
+.code-input {
+  text-align: center;
+}
+
 @media ( max-width: 380px ){
 
   .centerdiv{

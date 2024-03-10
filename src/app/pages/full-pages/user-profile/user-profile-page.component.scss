@@ -11,7 +11,7 @@
 
 .modalPDF > div > div > a{
     margin-right: 10px;
-    color: #009DA0;
+    color: #d71920;
 }
 
 .modalPDF > div > div :nth-child(2) {
@@ -34,4 +34,14 @@
 
 .modalPDF > p{
     font-weight: bolder;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield; /* Firefox */
 }

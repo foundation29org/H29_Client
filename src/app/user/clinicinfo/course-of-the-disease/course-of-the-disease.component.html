@@ -1,33 +1,42 @@
 <section id="basic-form-layouts">
 	<div class="row">
       <div class="col-sm-12">
-          <div class="content-header">{{'Course Of The disease.Course Of The disease' | translate }}</div>
+          <div class="content-header primary">{{'Course Of The disease.Course Of The disease' | translate }}</div>
       </div>
   </div>
 	<div class="center-elements" *ngIf="loading">
-		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 	</div>
 	<div class="row" *ngIf="!loading && sectionsAndProms.length>0">
-		<div *ngIf="!isApp" class="col-md-2 mt-4 fijado">
+		<div class="d-none d-md-block col-md-2 mt-4 fijado">
 			<div *ngFor="let info of sectionsAndProms">
 				<p *ngIf="info.section.enabled">
-					<a (click)="goTo(info.section.name)" title="{{info.section.name}}" [ngClass]="{'info': info.section.visible==true}">{{info.section.name}}</a>
+					<a (click)="goTo(info.section.name)" title="{{info.section.name}}" [ngClass]="{'primary': info.section.visible==true}">{{info.section.name}}</a>
 				</p>
 			</div>
 		</div>
-		<div *ngIf="isApp" class="col-md-12 mt-2 mb-2">
+		<div class="d-md-none col-md-12 mt-2 mb-2">
 			<label  class="col-md-2 d-inline">{{'generics.Section' | translate }}</label>
 			<select class="col-md-10 d-inline form-control" #t (change)="goTo($event.target.value)">
 				<option *ngFor="let info of sectionsAndProms"> {{info.section.name}}</option>
 			</select>
 		</div>
 
-		<div [ngClass]="(isApp==true)?'col-md-12':'col-md-10'">
+		<div class="col-sm-12 col-md-10">
 			<div class="card-block" *ngIf="!loading  && listPromsChanged.length > 0 && !sending">
-					<ngb-alert type="warning" [dismissible]="false">
+					<ngb-alert type="light" [dismissible]="false">
 							{{'generics.You have unsaved changes' | translate }}
 							<button type="button" class="pull-right btn btn-sm btn-raised btn-raised btn-primary" (click)="onSubmit()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button>
 					</ngb-alert>
+			</div>
+			<div class="card-block" *ngIf="!loading  && listPromsChanged.length > 0 && sending">
+				<ngb-alert type="light" [dismissible]="false">
+					<div class="center-elements">
+						<em class="fa fa-spinner fa-spin fa-fw primary"></em> {{'generics.Saving' | translate }}
+					</div>
+					
+				</ngb-alert>
+				
 			</div>
 			<div class="card col-12">
 				<div class="card-header">
@@ -72,7 +81,7 @@
 														<!--Date-->
 														<span *ngIf="eachprom.structure.responseType=='Date' && eachprom.structure.enabled">
 															<div>
-																<input readonly (click)="picker.open()" class="form-control w-75 d-inline" name="dateTime{{j}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachprom.data" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
+																<input readonly (click)="picker.open()" class="form-control w-75 d-inline pointer" name="dateTime{{j}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachprom.data" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
 																<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 																<mat-datepicker startView="multi-year" touchUi="true" #picker></mat-datepicker>
 															</div>
@@ -84,7 +93,7 @@
 
 														<!--Toogle-->
 														<p *ngIf="eachprom.structure.responseType=='Toogle' && eachprom.structure.enabled">
-															<ui-switch id="enabled" (change)="promchangedEvent(eachprom, $event)" name="eachprom.data{{j}}" [(ngModel)]="eachprom.data"></ui-switch>
+															<ui-switch color="#d71920" id="enabled" (change)="promchangedEvent(eachprom, $event)" name="eachprom.data{{j}}" [(ngModel)]="eachprom.data"></ui-switch>
 														</p>
 														<!--choise-->
 														<p *ngIf="eachprom.structure.responseType=='Choise' && eachprom.structure.enabled">
@@ -126,7 +135,7 @@
 																</div>
 																<div class="mt-2 col-md-5">
 																	<label style="display:block !important;" for="date">{{'generics.Date' | translate }}</label>
-																	<input readonly (click)="picker.open()" class="form-control w-75 d-inline-block" name="dateTime{{j}}{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachpromdata.date" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<input readonly (click)="picker.open()" class="form-control w-75 d-inline-block pointer" name="dateTime{{j}}{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="eachpromdata.date" dateTime #dateTime="ngModel" (ngModelChange)="promchanged(eachprom)">
 																	<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 																	<mat-datepicker startView="multi-year" touchUi="true" #picker></mat-datepicker>
 																	<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
@@ -167,7 +176,7 @@
 																</div>
 																<div class="mt-2 col-md-3">
 																	<label style="display:block !important;" for="date">{{'generics.Date' | translate }}</label>
-																	<input readonly (click)="date.open()" class="form-control w-75 d-inline-block" name="date{{j}}{{k}}"  matInput [matDatepicker]="date" [(ngModel)]="eachpromdata.date" dateTime #date="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<input readonly (click)="date.open()" class="form-control w-75 d-inline-block pointer" name="date{{j}}{{k}}"  matInput [matDatepicker]="date" [(ngModel)]="eachpromdata.date" dateTime #date="ngModel" (ngModelChange)="promchanged(eachprom)">
 																	<mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
 																	<mat-datepicker startView="multi-year" touchUi="true" #date></mat-datepicker>
 																	<small class="form-text text-muted danger" *ngIf="!date.valid && (date.dirty || date.touched)">{{'generics.Invalid' | translate }}</small>
@@ -207,14 +216,14 @@
 																</div>
 																<div class="mt-2 col-md-3">
 																	<label style="display:block !important;" for="startDate">{{'generics.Start Date' | translate }}</label>
-																	<input readonly (click)="pickerStartDate.open()" class="form-control w-75 d-inline-block" name="startDate{{j}}{{k}}"  matInput [matDatepicker]="pickerStartDate" [(ngModel)]="eachpromdata.startDate" dateTime #startDate="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<input readonly (click)="pickerStartDate.open()" class="form-control w-75 d-inline-block pointer" name="startDate{{j}}{{k}}"  matInput [matDatepicker]="pickerStartDate" [(ngModel)]="eachpromdata.startDate" dateTime #startDate="ngModel" (ngModelChange)="promchanged(eachprom)">
 																	<mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
 																	<mat-datepicker startView="multi-year" touchUi="true" #pickerStartDate></mat-datepicker>
 																	<small class="form-text text-muted danger" *ngIf="!startDate.valid && (startDate.dirty || startDate.touched)">{{'generics.Invalid' | translate }}</small>
 																</div>
 																<div class="mt-2 col-md-3">
 																	<label style="display:block !important;" for="endDate">{{'generics.End Date' | translate }}</label>
-																	<input readonly (click)="pickerEndDate.open()" class="form-control w-75 d-inline-block" name="endDate{{j}}{{k}}"  matInput [matDatepicker]="pickerEndDate" [(ngModel)]="eachpromdata.endDate" dateTime #endDate="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<input readonly (click)="pickerEndDate.open()" class="form-control w-75 d-inline-block pointer" name="endDate{{j}}{{k}}"  matInput [matDatepicker]="pickerEndDate" [(ngModel)]="eachpromdata.endDate" dateTime #endDate="ngModel" (ngModelChange)="promchanged(eachprom)">
 																	<mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
 																	<mat-datepicker startView="multi-year" touchUi="true" #pickerEndDate></mat-datepicker>
 																	<small class="form-text text-muted danger" *ngIf="!endDate.valid && (endDate.dirty || endDate.touched)">{{'generics.Invalid' | translate }}</small>
@@ -284,14 +293,14 @@
 
 																<div class="mt-2 col-md-3">
 																	<label style="display:block !important;" for="startDate">{{'generics.Start Date' | translate }}</label>
-																	<input readonly (click)="pickerStartDate.open()" class="form-control w-75 d-inline-block" name="startDate{{j}}{{k}}"  matInput [matDatepicker]="pickerStartDate" [(ngModel)]="eachpromdata.startDate" dateTime #startDate="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<input readonly (click)="pickerStartDate.open()" class="form-control w-75 d-inline-block pointer" name="startDate{{j}}{{k}}"  matInput [matDatepicker]="pickerStartDate" [(ngModel)]="eachpromdata.startDate" dateTime #startDate="ngModel" (ngModelChange)="promchanged(eachprom)">
 																	<mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
 																	<mat-datepicker startView="multi-year" touchUi="true" #pickerStartDate></mat-datepicker>
 																	<small class="form-text text-muted danger" *ngIf="!startDate.valid && (startDate.dirty || startDate.touched)">{{'generics.Invalid' | translate }}</small>
 																</div>
 																<div class="mt-2 col-md-3">
 																	<label style="display:block !important;" for="endDate">{{'generics.End Date' | translate }}</label>
-																	<input readonly (click)="pickerEndDate.open()" class="form-control w-75 d-inline-block" name="endDate{{j}}{{k}}"  matInput [matDatepicker]="pickerEndDate" [(ngModel)]="eachpromdata.endDate" dateTime #endDate="ngModel" (ngModelChange)="promchanged(eachprom)">
+																	<input readonly (click)="pickerEndDate.open()" class="form-control w-75 d-inline-block pointer" name="endDate{{j}}{{k}}"  matInput [matDatepicker]="pickerEndDate" [(ngModel)]="eachpromdata.endDate" dateTime #endDate="ngModel" (ngModelChange)="promchanged(eachprom)">
 																	<mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
 																	<mat-datepicker startView="multi-year" touchUi="true" #pickerEndDate></mat-datepicker>
 																	<small class="form-text text-muted danger" *ngIf="!endDate.valid && (endDate.dirty || endDate.touched)">{{'generics.Invalid' | translate }}</small>
@@ -342,16 +351,16 @@
 							</div>
 							<!--<span *ngIf="!f.valid" class="form-text text-muted danger">{{'generics.requiredfieldsmissing' | translate }}</span>-->
 							<div class="col-md-12 center-elements" *ngIf="sending">
-								<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+								<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 							</div>
 						</form>
 					</div>
 				</div>
 			</div>
 			<div class="card-block" *ngIf="!loading && listPromsChanged.length > 0  && !sending">
-					<ngb-alert type="warning" [dismissible]="false">
+					<ngb-alert type="light" [dismissible]="false">
 							{{'generics.You have unsaved changes' | translate }}
-							<button type="button" class="pull-right btn btn-sm btn-raised btn-raised btn-primary" (click)="onSubmit()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button>
+							<button type="button" class="ml-1 mb-0 btn btn-sm btn-raised btn-raised btn-primary" (click)="onSubmit()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button>
 					</ngb-alert>
 			</div>
 		</div>

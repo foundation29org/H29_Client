@@ -46,7 +46,13 @@
     "Deselect all": "Deselect all",
     "NoSubscriptions":"No subscriptions available yet",
     "Your file is being generated":"Your file is being generated",
-    "File created":"File created"
+    "File created":"File created",
+    "Delete account": "Delete account",
+    "We just sent you a code to continue deleting the account. Please check your inbox. Cant find it?": "We just sent you a code to continue deleting the account. Please check your inbox. Can't find it?",
+    "Paste deleting code": "Paste deleting code",
+    "I confirm that I want to delete the account": "I confirm that I want to delete the account",
+    "Account deleted successfully": "Account deleted successfully",
+    "Something has gone wrong, for your safety, we are going to close the session": "Something has gone wrong, for your safety, we are going to close the session"
   },
   "login":{
     "Login": "Login",
@@ -54,7 +60,7 @@
     "Recover Password": "Reset password",
     "Create User": "Create user",
     "Account is temporarily locked": "This account has been temporarily locked, please try again in 2 hours.",
-    "Login failed": "Something is wrong in the user ID / password combination you entered, please try again.",
+    "Login failed": "Login failed",
     "Account activated": "Your account has been sucessfully activated",
     "could not be activated": "The account could not be activated. Go back to the verification email and click again on 'Activate account'.",
     "The account is not activated": "This account is not active. Go back to the verification email and click again on 'Activate account'.",
@@ -89,7 +95,12 @@
     "consent4": "1) Read the updated Privacy Policy",
     "consent5": "2) (Re)consent by clicking the relevant boxes",
     "consent6": "This is mandatory and takes only <strong>a few minutes.</strong>",
-    "consent7": "Thank you!"
+    "consent7": "Thank you!",
+    "Continue with email": "Continue with email",
+    "We just sent you a temporary login code. Please check your inbox. Cant find it?" : "We just sent you a temporary login code. Please check your inbox. Can't find it?",
+    "Try again": "Try again",
+    "Paste login code": "Paste login code",
+    "Continue with login code": "Continue with login code"
   },
   "registration":{
     "Registration": "Registration",
@@ -98,7 +109,7 @@
     "Security Policy": "Security policy",
     "Get Started": "Get started",
     "email already exists": "An account with this email already exists",
-    "Check the email": "Check your email to activate the account",
+    "Check the email": "Created account. You can now log in",
     "could not be sent to activate": "This account is registered but the activation email could not be sent. Please contact the administrator: info@foundation29.org",
     "Please select a group": "Please select your patient group",
     "Please select a organization": "Please select the patient organisation you belong to",
@@ -190,6 +201,7 @@
     "Sending": "Sending",
     "Add": "Add",
     "Saved": "Saved",
+    "Saving": "Saving",
     "Not saved": "Not saved",
     "Saved on": "Saved on",
     "Edit": "Edit",

@@ -25,7 +25,7 @@ export const ROUTES: RouteInfo[] = [
     },
     { path: '/user/genotype', title: 'menu.Genotype', icon: 'icon-chemistry', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
     { path: '/user/faq', title: 'menu.FAQs', icon: 'ft-help-circle', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
-    { path: '/privacy-policy', title: 'registration.Privacy Policy', icon: 'ft-shield', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
+    //{ path: '/privacy-policy', title: 'registration.Privacy Policy', icon: 'ft-shield', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
     { path: '/support', title: 'support.support', icon: 'ft-mail', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
 ];
 
@@ -53,7 +53,7 @@ export const ROUTESDUCHENNE: RouteInfo[] = [
     },
     { path: '/user/genotype', title: 'menu.Genotype', icon: 'icon-chemistry', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
     { path: '/user/faq', title: 'menu.Help & FAQs', icon: 'ft-help-circle', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
-    { path: '/privacy-policy', title: 'registration.Privacy Policy', icon: 'ft-shield', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
+    //{ path: '/privacy-policy', title: 'registration.Privacy Policy', icon: 'ft-shield', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
     { path: '/support', title: 'support.support', icon: 'ft-mail', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
 ];
 
@@ -81,7 +81,7 @@ export const ROUTESINTERNATIONAL: RouteInfo[] = [
     },
     { path: '/user/genotype', title: 'menu.Genotype', icon: 'icon-chemistry', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
     { path: '/user/faq', title: 'menu.FAQs', icon: 'ft-help-circle', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
-    { path: '/privacy-policy', title: 'registration.Privacy Policy', icon: 'ft-shield', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
+    //{ path: '/privacy-policy', title: 'registration.Privacy Policy', icon: 'ft-shield', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
     { path: '/support', title: 'support.support', icon: 'ft-mail', class: '', badge: '', badgeClass: '', isExternalLink: false, submenu: [] },
 ];
 

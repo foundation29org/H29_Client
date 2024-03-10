@@ -246,7 +246,7 @@ export class VaccinationComponent implements OnInit, OnDestroy{
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#0CC27E',
-        cancelButtonColor: '#FF586B',
+        cancelButtonColor: '#d71920',
         confirmButtonText: this.translate.instant("generics.Delete"),
         cancelButtonText: this.translate.instant("generics.No, cancel"),
         showLoaderOnConfirm: true,

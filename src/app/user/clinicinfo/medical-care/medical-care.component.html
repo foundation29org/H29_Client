@@ -7,7 +7,7 @@
 <section id="listMeditationSection">
 	<div class="row">
       <div class="col-sm-12">
-          <div class="content-header">{{'clinicalinfo.Medical Care' | translate }}</div>
+          <div class="content-header primary">{{'clinicalinfo.Medical Care' | translate }}</div>
       </div>
   </div>
 	<div class="row" *ngIf="medicalCareSections.length>0">
@@ -30,7 +30,7 @@
 
 		<div class="col-lg-12 col-xl-9 border mt-2" style="background-color: #fff;">
 			<div class="card-block" id="savingRequest" *ngIf="!loading  && !savingVisit && hasChanges">
-				<ngb-alert type="warning" [dismissible]="false">
+				<ngb-alert type="light" [dismissible]="false">
 						<span>{{'generics.You have unsaved changes' | translate }}</span>
 						<button type="button" class="pull-right btn btn-sm btn-raised btn-raised btn-primary mb-0" (click)="submitNewVisit()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button>
 				</ngb-alert>
@@ -59,89 +59,92 @@
 											<div class="col-md-12"></div>
 										</div>
 									</h4>
-									<div *ngIf="clinicalActivation" style="background: #f7f7f7;">
-										<div class="row col-md-12" *ngFor="let general of medicalCareSections[0].data ; let k = index" >
-											<div class="mt-2 col-md-1">
-												<h4>{{k+1}}.</h4>
-											</div>
-											<div class="mt-2 col-md-5">
-												<label for="visitref">{{'medicalcare.Clinician' | translate }}</label>
-												<mat-select class="form-control" id="ChoiseAndDate" name="general.ChoiseAndDate{{k}}"  [(ngModel)]="general.clinician" (change)="fieldchanged()">
-													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
-													<mat-option value="Pediatrician">{{'medicalcare.Pediatrician' | translate }}</mat-option>
-													<mat-option value="Neurologist">{{'medicalcare.Neurologist' | translate }}</mat-option>
-													<mat-option value="Neuro-psychologist">{{'medicalcare.Neuro-psychologist' | translate }}</mat-option>
-													<mat-option value="Cardiologist">{{'medicalcare.Cardiologist' | translate }}</mat-option>
-													<mat-option value="Pulmonologist">{{'medicalcare.Pulmonologist' | translate }}</mat-option>
-													<mat-option value="Endocrinologist">{{'medicalcare.Endocrinologist' | translate }}</mat-option>
-													<mat-option value="Nutritionist/Dietician">{{'medicalcare.Nutritionist/Dietician' | translate }}</mat-option>
-													<mat-option value="Physiotherapist">{{'medicalcare.Physiotherapist' | translate }}</mat-option>
-													<mat-option value="Family doctor">{{'medicalcare.Family doctor' | translate }}</mat-option>
-													<mat-option value="Center for Homeventilation">{{'medicalcare.Center for Homeventilation' | translate }}</mat-option>
-													<mat-option value="Dentist/orthodontist">{{'medicalcare.Dentist/orthodontist' | translate }}</mat-option>
-													<mat-option value="Ophthalmologist">{{'medicalcare.Ophthalmologist' | translate }}</mat-option>
-													<mat-option value="Orthopeed">{{'medicalcare.Orthopeed' | translate }}</mat-option>
-													<mat-option value="Rehabilitation doctor">{{'medicalcare.Rehabilitation doctor' | translate }}</mat-option>
-													<mat-option value="Gastroenterologist specialist">{{'medicalcare.Gastroenterologist specialist' | translate }}</mat-option>
-													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
-												</mat-select>
-											</div>
-											<div [ngClass]="(general.hospital=='Other')?'mt-2 col-md-3':'mt-2 col-md-5'" *ngIf="subgroup== 3900">
-												<label for="visitref">{{'medicalcare.Hospital' | translate }}</label>
-												<mat-select class="form-control" id="ChoiseAndDate" name="general.ChoiseAndDate2{{k}}"  [(ngModel)]="general.hospital" (change)="fieldchanged()">
-													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
-													<mat-option value="LUMC (Leiden)">LUMC (Leiden)</mat-option>
-													<mat-option value="UMCG (Groningen)">UMCG (Groningen)</mat-option>
-													<mat-option value="RadboudUMC (Nijmegen)">RadboudUMC (Nijmegen)</mat-option>
-													<mat-option value="Erasmus UMC (Rotterdam)">Erasmus UMC (Rotterdam)</mat-option>
-													<mat-option value="MUMC  (Maastricht)">MUMC  (Maastricht)</mat-option>
-													<mat-option value="UMCU  (Utrecht)">UMCU  (Utrecht)</mat-option>
-													<mat-option value="AMC (Amsterdam)">AMC (Amsterdam)</mat-option>
-													<mat-option value="VUMC  (Amsterdam)">VUMC  (Amsterdam)</mat-option>
-													<mat-option value="Kempenhaeghe (Heeze)">Kempenhaeghe (Heeze)</mat-option>
-													<mat-option value="UZ Gasthuisberg (Leuven, België)">UZ Gasthuisberg (Leuven, België)</mat-option>
-													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
-												</mat-select>
-											</div>
-											<div *ngIf="general.hospital=='Other'" class="mt-2 offset-md-1 col-md-6">
-												<label for="otherHospital">{{'medicalcare.Write the name of the hospital' | translate }}</label>
-												<input type="text" class="form-control"  name="general.otherHospital{{k}}" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
-											</div>
-											<div [ngClass]="(general.hospital=='Other')?'mt-2 col-md-4':'mt-2 offset-md-1 col-md-4'">
-												<label for="multidisciplanary{{k}}">{{'medicalcare.Multidisciplinary' | translate }}</label>
-												<p>
-													<ui-switch id="enabled" name="general.multidisciplanary{{k}}" [(ngModel)]="general.multidisciplanary" (change)="fieldchanged()"></ui-switch>
-												</p>
-											</div>
-											<div [ngClass]="(general.hospital=='Other')?'mt-2 offset-md-1 col-md-6':'mt-2 col-md-6'">
-												<label for="distance{{k}}">{{'medicalcare.Distance' | translate }}</label>
-												<input type="text" class="form-control"  name="general.distance{{k}}" [(ngModel)]="general.distance" (change)="fieldchanged()">
-											</div>
-											<div class="row col-md-12">
-												<div class="mt-2 col-md-1"></div>
-												<div class="mt-2 col-md-4">
-													<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
-													<p style="margin: 0;"></p>
-													<input type="text" class="form-control"  hidden name="cardiotest.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
-													<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
-														<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 0, k);fieldchanged()" style="display: none;">
-													</label>
-													<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
-													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
-													<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
-													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(0,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+									<div *ngIf="clinicalActivation" class="border round" style="background: #f7f7f7;">
+										<div class="col-md-12">
+											<div class="row" *ngFor="let general of medicalCareSections[0].data ; let k = index" >
+												<div class="mt-2 col-md-1">
+													<h4>{{k+1}}.</h4>
 												</div>
+												<div class="mt-2 col-md-5">
+													<label for="visitref">{{'medicalcare.Clinician' | translate }}</label>
+													<mat-select class="form-control" id="ChoiseAndDate" name="general.ChoiseAndDate{{k}}"  [(ngModel)]="general.clinician" (change)="fieldchanged()">
+														<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+														<mat-option value="Pediatrician">{{'medicalcare.Pediatrician' | translate }}</mat-option>
+														<mat-option value="Neurologist">{{'medicalcare.Neurologist' | translate }}</mat-option>
+														<mat-option value="Neuro-psychologist">{{'medicalcare.Neuro-psychologist' | translate }}</mat-option>
+														<mat-option value="Cardiologist">{{'medicalcare.Cardiologist' | translate }}</mat-option>
+														<mat-option value="Pulmonologist">{{'medicalcare.Pulmonologist' | translate }}</mat-option>
+														<mat-option value="Endocrinologist">{{'medicalcare.Endocrinologist' | translate }}</mat-option>
+														<mat-option value="Nutritionist/Dietician">{{'medicalcare.Nutritionist/Dietician' | translate }}</mat-option>
+														<mat-option value="Physiotherapist">{{'medicalcare.Physiotherapist' | translate }}</mat-option>
+														<mat-option value="Family doctor">{{'medicalcare.Family doctor' | translate }}</mat-option>
+														<mat-option value="Center for Homeventilation">{{'medicalcare.Center for Homeventilation' | translate }}</mat-option>
+														<mat-option value="Dentist/orthodontist">{{'medicalcare.Dentist/orthodontist' | translate }}</mat-option>
+														<mat-option value="Ophthalmologist">{{'medicalcare.Ophthalmologist' | translate }}</mat-option>
+														<mat-option value="Orthopeed">{{'medicalcare.Orthopeed' | translate }}</mat-option>
+														<mat-option value="Rehabilitation doctor">{{'medicalcare.Rehabilitation doctor' | translate }}</mat-option>
+														<mat-option value="Gastroenterologist specialist">{{'medicalcare.Gastroenterologist specialist' | translate }}</mat-option>
+														<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+													</mat-select>
+												</div>
+												<div [ngClass]="(general.hospital=='Other')?'mt-2 col-md-3':'mt-2 col-md-5'" *ngIf="subgroup== 3900">
+													<label for="visitref">{{'medicalcare.Hospital' | translate }}</label>
+													<mat-select class="form-control" id="ChoiseAndDate" name="general.ChoiseAndDate2{{k}}"  [(ngModel)]="general.hospital" (change)="fieldchanged()">
+														<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+														<mat-option value="LUMC (Leiden)">LUMC (Leiden)</mat-option>
+														<mat-option value="UMCG (Groningen)">UMCG (Groningen)</mat-option>
+														<mat-option value="RadboudUMC (Nijmegen)">RadboudUMC (Nijmegen)</mat-option>
+														<mat-option value="Erasmus UMC (Rotterdam)">Erasmus UMC (Rotterdam)</mat-option>
+														<mat-option value="MUMC  (Maastricht)">MUMC  (Maastricht)</mat-option>
+														<mat-option value="UMCU  (Utrecht)">UMCU  (Utrecht)</mat-option>
+														<mat-option value="AMC (Amsterdam)">AMC (Amsterdam)</mat-option>
+														<mat-option value="VUMC  (Amsterdam)">VUMC  (Amsterdam)</mat-option>
+														<mat-option value="Kempenhaeghe (Heeze)">Kempenhaeghe (Heeze)</mat-option>
+														<mat-option value="UZ Gasthuisberg (Leuven, België)">UZ Gasthuisberg (Leuven, België)</mat-option>
+														<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+													</mat-select>
+												</div>
+												<div *ngIf="general.hospital=='Other'" class="mt-2 offset-md-1 col-md-6">
+													<label for="otherHospital">{{'medicalcare.Write the name of the hospital' | translate }}</label>
+													<input type="text" class="form-control"  name="general.otherHospital{{k}}" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
+												</div>
+												<div [ngClass]="(general.hospital=='Other')?'mt-2 col-md-4':'mt-2 offset-md-1 col-md-4'">
+													<label for="multidisciplanary{{k}}">{{'medicalcare.Multidisciplinary' | translate }}</label>
+													<p>
+														<ui-switch color="#d71920" id="enabled" name="general.multidisciplanary{{k}}" [(ngModel)]="general.multidisciplanary" (change)="fieldchanged()"></ui-switch>
+													</p>
+												</div>
+												<div [ngClass]="(general.hospital=='Other')?'mt-2 offset-md-1 col-md-6':'mt-2 col-md-6'">
+													<label for="distance{{k}}">{{'medicalcare.Distance' | translate }}</label>
+													<input type="text" class="form-control"  name="general.distance{{k}}" [(ngModel)]="general.distance" (change)="fieldchanged()">
+												</div>
+												<div class="row col-md-12">
+													<div class="mt-2 col-md-1"></div>
+													<div class="mt-2 col-md-4">
+														<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
+														<p style="margin: 0;"></p>
+														<input type="text" class="form-control"  hidden name="cardiotest.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
+														<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
+															<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 0, k);fieldchanged()" style="display: none;">
+														</label>
+														<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+														<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+														<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
+														<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(0,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+													</div>
+												</div>
+												<div class="col-md-11 offset-md-1 mt-2">
+													<button type="button" class="btn btn-outline-danger" (click)="deleteData(0,k);fieldchanged()" href="javascript:void(0)">
+													<span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
+													</button>
+												</div>
+												<div class="mt-2 col-md-12">
+													<hr *ngIf="k < medicalCareSections[0].data.length - 1">
+												</div>
+	
 											</div>
-											<div class="col-md-11 offset-md-1 mt-2">
-                        <button type="button" class="btn btn-outline-danger" (click)="deleteData(0,k);fieldchanged()" href="javascript:void(0)">
-                          <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
-                        </button>
-											</div>
-											<div class="mt-2 col-md-12">
-												<hr>
-											</div>
-
 										</div>
+										
 									</div>
 
 									<!-- FIN Clinician -->
@@ -171,8 +174,9 @@
 
 
 									</h4>
-									<div *ngIf="specificVisitActivation" style="background: #f7f7f7;">
-										<div class="row col-md-12" *ngFor="let general of medicalCareSections[1].data ; let k = index" >
+									<div *ngIf="specificVisitActivation" class="border round" style="background: #f7f7f7;">
+										<div class="col-md-12">
+										<div class="row" *ngFor="let general of medicalCareSections[1].data ; let k = index" >
 											<div class="mt-2 col-md-1">
 												<h4>{{k+1}}.</h4>
 											</div>
@@ -222,18 +226,8 @@
 											</div>
 											<div [ngClass]="(general.hospital=='Other')?'mt-2 col-md-3':'mt-2 offset-md-1 col-md-3'">
 												<label for="multidisciplanary">{{'generics.Date' | translate }}</label>
-												<!--<div *ngIf="!isSafari && !isIeOrEdge">
-													<input type="date" class="form-control" name="specificVisit.dateTime{{k}}" [(ngModel)]="general.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-												</div>
-												<div *ngIf="isSafari || isIeOrEdge">
-													<input  class="form-control w-75 d-inline" name="specificVisit.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
-													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-													<mat-datepicker touchUi="true" #picker></mat-datepicker>
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-												</div>-->
 												<div>
-													<input  class="form-control w-75 d-inline" name="specificVisit.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+													<input readonly (focus)="picker.open()" class="form-control w-75 d-inline pointer" name="specificVisit.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
 													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 													<mat-datepicker touchUi="true" #picker></mat-datepicker>
                           <mat-error *ngIf="dateTime.touched && dateTime.invalid">{{'generics.Invalid' | translate }}</mat-error>
@@ -282,9 +276,11 @@
                         </button>
 											</div>
 											<div class="mt-2 col-md-12">
-												<hr>
+												<hr *ngIf="k < medicalCareSections[1].data.length - 1">
 											</div>
 										</div>
+										</div>
+										
 									</div>
 									<!-- FIN Specific visit -->
 
@@ -311,143 +307,126 @@
 											</div>
 										</div>
 									</h4>
-									<div *ngIf="hospitalizationActivation" style="background: #f7f7f7;">
-										<div class="row col-md-12" *ngFor="let general of medicalCareSections[2].data ; let k = index" >
-											<div class="mt-2 col-md-1">
-												<h4>{{k+1}}.</h4>
-											</div>
-											<div class="mt-2 col-md-5">
-												<label for="multidisciplanary">{{'medicalcare.Date of admission' | translate }}</label>
-												<!--<div *ngIf="!isSafari && !isIeOrEdge">
-													<input type="date" class="form-control" name="hospitalization.dateTime{{k}}" [(ngModel)]="general.startdate" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+									<div *ngIf="hospitalizationActivation" class="border round" style="background: #f7f7f7;">
+										<div class="col-md-12">
+											<div class="row" *ngFor="let general of medicalCareSections[2].data ; let k = index" >
+												<div class="mt-2 col-md-1">
+													<h4>{{k+1}}.</h4>
 												</div>
-												<div *ngIf="isSafari || isIeOrEdge">
-													<input  class="form-control w-75 d-inline" name="hospitalization.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.startdate" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
-													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-													<mat-datepicker touchUi="true" #picker></mat-datepicker>
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-												</div>-->
-												<div>
-													<input  class="form-control w-75 d-inline" name="hospitalization.startDate{{k}}"  matInput [matDatepicker]="pickerStartDate" [(ngModel)]="general.startdate" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
-													<mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
-													<mat-datepicker touchUi="true" #pickerStartDate></mat-datepicker>
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												<div class="mt-2 col-md-5">
+													<label for="multidisciplanary">{{'medicalcare.Date of admission' | translate }}</label>
+													<div>
+														<input readonly (focus)="picker.open()" class="form-control w-75 d-inline pointer" name="hospitalization.startDate{{k}}"  matInput [matDatepicker]="pickerStartDate" [(ngModel)]="general.startdate" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+														<mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
+														<mat-datepicker touchUi="true" #pickerStartDate></mat-datepicker>
+														<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+													</div>
 												</div>
-											</div>
-											<div class="mt-2 col-md-5">
-												<label for="multidisciplanary">{{'medicalcare.Discharge date' | translate }}</label>
-												<!--<div *ngIf="!isSafari && !isIeOrEdge">
-													<input type="date" class="form-control" name="hospitalization.dateTime{{k}}" [(ngModel)]="general.enddate" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												<div class="mt-2 col-md-5">
+													<label for="multidisciplanary">{{'medicalcare.Discharge date' | translate }}</label>
+													<div>
+														<input readonly (focus)="picker.open()" class="form-control w-75 d-inline pointer" name="hospitalization.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.enddate" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+														<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+														<mat-datepicker touchUi="true" #picker></mat-datepicker>
+														<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+													</div>
 												</div>
-												<div *ngIf="isSafari || isIeOrEdge">
-													<input  class="form-control w-75 d-inline" name="hospitalization.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.enddate" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
-													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-													<mat-datepicker touchUi="true" #picker></mat-datepicker>
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-												</div>-->
-												<div>
-													<input  class="form-control w-75 d-inline" name="hospitalization.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.enddate" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
-													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-													<mat-datepicker touchUi="true" #picker></mat-datepicker>
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												<div class="mt-2 offset-md-1 col-md-5">
+													<label for="icu">{{'medicalcare.Stay in ICU?' | translate }}</label>
+													<p>
+														<ui-switch color="#d71920" id="enabled" name="hospitalization.icu{{k}}" [(ngModel)]="general.icu" (change)="fieldchanged()"></ui-switch>
+													</p>
 												</div>
-											</div>
-											<div class="mt-2 offset-md-1 col-md-5">
-												<label for="icu">{{'medicalcare.Stay in ICU?' | translate }}</label>
-												<p>
-													<ui-switch id="enabled" name="hospitalization.icu{{k}}" [(ngModel)]="general.icu" (change)="fieldchanged()"></ui-switch>
-												</p>
-											</div>
-											<div class="mt-2 col-md-5" >
-                        <span *ngIf="general.icu">
-  												<label for="days">{{'medicalcare.How many days in ICU?' | translate }}</label>
-  												<input type="text" class="form-control"  name="hospitalization.days{{k}}" [(ngModel)]="general.days" (change)="fieldchanged()">
-                        </span>
-											</div>
-											<div [ngClass]="(general.hospital=='Other')?'col-md-4 offset-md-1':'col-md-5 offset-md-1'" *ngIf="subgroup== 3900">
-												<label for="visitref">{{'medicalcare.Hospital' | translate }}</label>
-												<mat-select class="form-control" id="ChoiseAndDate" name="hospitalization.ChoiseAndDate{{k}}"  [(ngModel)]="general.hospital" (change)="fieldchanged()">
-													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
-													<mat-option value="LUMC (Leiden)">LUMC (Leiden)</mat-option>
-													<mat-option value="UMCG (Groningen)">UMCG (Groningen)</mat-option>
-													<mat-option value="RadboudUMC (Nijmegen)">RadboudUMC (Nijmegen)</mat-option>
-													<mat-option value="Erasmus UMC (Rotterdam)">Erasmus UMC (Rotterdam)</mat-option>
-													<mat-option value="MUMC  (Maastricht)">MUMC  (Maastricht)</mat-option>
-													<mat-option value="UMCU  (Utrecht)">UMCU  (Utrecht)</mat-option>
-													<mat-option value="AMC (Amsterdam)">AMC (Amsterdam)</mat-option>
-													<mat-option value="VUMC  (Amsterdam)">VUMC  (Amsterdam)</mat-option>
-													<mat-option value="Kempenhaeghe (Heeze)">Kempenhaeghe (Heeze)</mat-option>
-													<mat-option value="UZ Gasthuisberg (Leuven, België)">UZ Gasthuisberg (Leuven, België)</mat-option>
-													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
-												</mat-select>
-											</div>
-											<div *ngIf="general.hospital=='Other'" class="col-md-7" [ngClass]="(subgroup== 3900)?'col-md-7':'offset-md-1 col-md-7'" >
-												<label for="otherHospital">{{'medicalcare.Write the name of the hospital' | translate }}</label>
-												<input type="text" class="form-control"  name="hospitalization.otherHospital{{k}}" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
-											</div>
-											<div [ngClass]="(general.hospital=='Other')?'mt-2 offset-md-1 col-md-4':'col-md-5'">
-												<label for="visitref">{{'medicalcare.Reason' | translate }}</label>
-												<mat-select class="form-control" id="ChoiseAndDate" name="hospitalization.ChoiseAndDate2{{k}}"  [(ngModel)]="general.reason" (change)="fieldchanged()">
-													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
-													<mat-option value="Cardiac">{{'medicalcare.Cardiac' | translate }}</mat-option>
-													<mat-option value="Respiratory">{{'medicalcare.Respiratory' | translate }}</mat-option>
-													<mat-option value="Fracture">{{'medicalcare.Fracture' | translate }}</mat-option>
-													<mat-option value="Kidney">{{'medicalcare.Kidney' | translate }}</mat-option>
-													<mat-option value="Gastrointestinal">{{'medicalcare.Gastrointestinal' | translate }}</mat-option>
-													<mat-option value="Orthopedic Surgery spine">{{'medicalcare.Orthopedic Surgery spine' | translate }}</mat-option>
-													<mat-option value="Orthopedic Surgery feet">{{'medicalcare.Orthopedic Surgery feet' | translate }}</mat-option>
-													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
-												</mat-select>
-											</div>
-											<div *ngIf="general.reason=='Other'" [ngClass]="(general.hospital=='Other')?'mt-2 col-md-7':'mt-2 offset-md-1 col-md-7'">
-												<label for="otherReason">{{'medicalcare.Other reasons' | translate }}</label>
-												<input type="text" class="form-control"  name="hospitalization.otherReason{{k}}" [(ngModel)]="general.otherReason" (change)="fieldchanged()">
-											</div>
-											<div *ngIf="general.treatment" [ngClass]="(general.treatment=='')?'mt-2 col-md-1':'mt-2 offset-md-1 col-md-3'">
-												<label for="distance">{{'medicalcare.Treatment' | translate }}</label>
-												<p>
-													<input type="text" class="form-control"  hidden name="hospitalization.treatment{{k}}" [(ngModel)]="general.treatment">
-													<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(2, k);fieldchanged()" [routerLink]="['/user/clinicinfo/medication', { newTreatment: true }]">{{'generics.New' | translate }}</button>-->
-													<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(2, k,contentMedication)">{{'generics.New' | translate }}</button>-->
-													<a  class="btn btn-outline-primary" (click)="viewTreatment(2, k, contentTreatment)" href="javascript:void(0)">{{'generics.View' | translate }}</a>
-													<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="deleteTreatment(2, k);fieldchanged()">{{'generics.Delete' | translate }}</button>
-												</p>
-											</div>
-											<div *ngIf="!general.treatment" style="margin-left: 10%;">
-												<label for="distance">&nbsp;</label>
-												<p id="buttonInfo">
-													<input type="text" class="form-control"  hidden name="hospitalization.treatment{{k}}" [(ngModel)]="general.treatment">
-													<!--<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(1, k, contentMedication)" data-title="A pop up screen will be open for you to enter information about the medication prescribed in this visit">{{'medicalcare.Treatment in visit' | translate }}</button>-->
-													<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(2, k, contentMedication)" style="margin-top: 5%;white-space: normal;">{{'medicalcare.Treatment in visit' | translate }}</button>
-													<span class="showTextInfo">
-														<i class="ft-alert-circle primary"></i>
-														{{'medicalcare.Info popup treatement' | translate }}
-													</span>
-												</p>
-											</div>
-											<div class="mt-2 col-md-4 offset-md-1">
-												<label  for="distance">{{'medicalcare.Hospital record' | translate }}</label>
-												<p style="margin: 0;"></p>
-												<input type="text" class="form-control"  hidden name="hospitalization.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
-												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
-													<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 2, k);fieldchanged()" style="display: none;">
-												</label>
-												<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
-												<a  *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
-												<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
-												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(2,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
-											</div>
-                      <div class="col-md-11 offset-md-1 mt-2">
-                        <button type="button" class="btn btn-outline-danger" (click)="deleteData(2,k);fieldchanged()" href="javascript:void(0)">
-                          <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
-                        </button>
-											</div>
-											<div class="mt-2 col-md-12">
-												<hr>
+												<div class="mt-2 col-md-5" >
+							<span *ngIf="general.icu">
+													  <label for="days">{{'medicalcare.How many days in ICU?' | translate }}</label>
+													  <input type="text" class="form-control"  name="hospitalization.days{{k}}" [(ngModel)]="general.days" (change)="fieldchanged()">
+							</span>
+												</div>
+												<div [ngClass]="(general.hospital=='Other')?'col-md-4 offset-md-1':'col-md-5 offset-md-1'" *ngIf="subgroup== 3900">
+													<label for="visitref">{{'medicalcare.Hospital' | translate }}</label>
+													<mat-select class="form-control" id="ChoiseAndDate" name="hospitalization.ChoiseAndDate{{k}}"  [(ngModel)]="general.hospital" (change)="fieldchanged()">
+														<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+														<mat-option value="LUMC (Leiden)">LUMC (Leiden)</mat-option>
+														<mat-option value="UMCG (Groningen)">UMCG (Groningen)</mat-option>
+														<mat-option value="RadboudUMC (Nijmegen)">RadboudUMC (Nijmegen)</mat-option>
+														<mat-option value="Erasmus UMC (Rotterdam)">Erasmus UMC (Rotterdam)</mat-option>
+														<mat-option value="MUMC  (Maastricht)">MUMC  (Maastricht)</mat-option>
+														<mat-option value="UMCU  (Utrecht)">UMCU  (Utrecht)</mat-option>
+														<mat-option value="AMC (Amsterdam)">AMC (Amsterdam)</mat-option>
+														<mat-option value="VUMC  (Amsterdam)">VUMC  (Amsterdam)</mat-option>
+														<mat-option value="Kempenhaeghe (Heeze)">Kempenhaeghe (Heeze)</mat-option>
+														<mat-option value="UZ Gasthuisberg (Leuven, België)">UZ Gasthuisberg (Leuven, België)</mat-option>
+														<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+													</mat-select>
+												</div>
+												<div *ngIf="general.hospital=='Other'" class="col-md-7" [ngClass]="(subgroup== 3900)?'col-md-7':'offset-md-1 col-md-7'" >
+													<label for="otherHospital">{{'medicalcare.Write the name of the hospital' | translate }}</label>
+													<input type="text" class="form-control"  name="hospitalization.otherHospital{{k}}" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
+												</div>
+												<div [ngClass]="(general.hospital=='Other')?'mt-2 offset-md-1 col-md-4':'col-md-5'">
+													<label for="visitref">{{'medicalcare.Reason' | translate }}</label>
+													<mat-select class="form-control" id="ChoiseAndDate" name="hospitalization.ChoiseAndDate2{{k}}"  [(ngModel)]="general.reason" (change)="fieldchanged()">
+														<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+														<mat-option value="Cardiac">{{'medicalcare.Cardiac' | translate }}</mat-option>
+														<mat-option value="Respiratory">{{'medicalcare.Respiratory' | translate }}</mat-option>
+														<mat-option value="Fracture">{{'medicalcare.Fracture' | translate }}</mat-option>
+														<mat-option value="Kidney">{{'medicalcare.Kidney' | translate }}</mat-option>
+														<mat-option value="Gastrointestinal">{{'medicalcare.Gastrointestinal' | translate }}</mat-option>
+														<mat-option value="Orthopedic Surgery spine">{{'medicalcare.Orthopedic Surgery spine' | translate }}</mat-option>
+														<mat-option value="Orthopedic Surgery feet">{{'medicalcare.Orthopedic Surgery feet' | translate }}</mat-option>
+														<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+													</mat-select>
+												</div>
+												<div *ngIf="general.reason=='Other'" [ngClass]="(general.hospital=='Other')?'mt-2 col-md-7':'mt-2 offset-md-1 col-md-7'">
+													<label for="otherReason">{{'medicalcare.Other reasons' | translate }}</label>
+													<input type="text" class="form-control"  name="hospitalization.otherReason{{k}}" [(ngModel)]="general.otherReason" (change)="fieldchanged()">
+												</div>
+												<div *ngIf="general.treatment" [ngClass]="(general.treatment=='')?'mt-2 col-md-1':'mt-2 offset-md-1 col-md-3'">
+													<label for="distance">{{'medicalcare.Treatment' | translate }}</label>
+													<p>
+														<input type="text" class="form-control"  hidden name="hospitalization.treatment{{k}}" [(ngModel)]="general.treatment">
+														<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(2, k);fieldchanged()" [routerLink]="['/user/clinicinfo/medication', { newTreatment: true }]">{{'generics.New' | translate }}</button>-->
+														<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(2, k,contentMedication)">{{'generics.New' | translate }}</button>-->
+														<a  class="btn btn-outline-primary" (click)="viewTreatment(2, k, contentTreatment)" href="javascript:void(0)">{{'generics.View' | translate }}</a>
+														<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="deleteTreatment(2, k);fieldchanged()">{{'generics.Delete' | translate }}</button>
+													</p>
+												</div>
+												<div *ngIf="!general.treatment" style="margin-left: 10%;">
+													<label for="distance">&nbsp;</label>
+													<p id="buttonInfo">
+														<input type="text" class="form-control"  hidden name="hospitalization.treatment{{k}}" [(ngModel)]="general.treatment">
+														<!--<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(1, k, contentMedication)" data-title="A pop up screen will be open for you to enter information about the medication prescribed in this visit">{{'medicalcare.Treatment in visit' | translate }}</button>-->
+														<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(2, k, contentMedication)" style="margin-top: 5%;white-space: normal;">{{'medicalcare.Treatment in visit' | translate }}</button>
+														<span class="showTextInfo">
+															<i class="ft-alert-circle primary"></i>
+															{{'medicalcare.Info popup treatement' | translate }}
+														</span>
+													</p>
+												</div>
+												<div class="mt-2 col-md-4 offset-md-1">
+													<label  for="distance">{{'medicalcare.Hospital record' | translate }}</label>
+													<p style="margin: 0;"></p>
+													<input type="text" class="form-control"  hidden name="hospitalization.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
+													<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
+														<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 2, k);fieldchanged()" style="display: none;">
+													</label>
+													<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+													<a  *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+													<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
+													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(2,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+												</div>
+						  <div class="col-md-11 offset-md-1 mt-2">
+							<button type="button" class="btn btn-outline-danger" (click)="deleteData(2,k);fieldchanged()" href="javascript:void(0)">
+							  <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
+							</button>
+												</div>
+												<div class="mt-2 col-md-12">
+													<hr *ngIf="k < medicalCareSections[2].data.length - 1">
+												</div>
 											</div>
 										</div>
+										
 									</div>
 
 									<!-- hospitalization -->
@@ -477,113 +456,106 @@
 											</div>
 										</div>
 									</h4>
-									<div *ngIf="emergenciesActivation" style="background: #f7f7f7;">
-										<div class="row col-md-12" *ngFor="let general of medicalCareSections[3].data ; let k = index" >
-											<div class="mt-2 col-md-1">
-												<h4>{{k+1}}.</h4>
-											</div>
-											<div class="mt-2 col-md-4" *ngIf="subgroup== 3900">
-												<label for="hospital">{{'medicalcare.Hospital' | translate }}</label>
-												<mat-select class="form-control" id="ChoiseAndDate" name="emergencies.ChoiseAndDate{{k}}"  [(ngModel)]="general.hospital" (change)="fieldchanged()">
-													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
-													<mat-option value="LUMC (Leiden)">LUMC (Leiden)</mat-option>
-													<mat-option value="UMCG (Groningen)">UMCG (Groningen)</mat-option>
-													<mat-option value="RadboudUMC (Nijmegen)">RadboudUMC (Nijmegen)</mat-option>
-													<mat-option value="Erasmus UMC (Rotterdam)">Erasmus UMC (Rotterdam)</mat-option>
-													<mat-option value="MUMC  (Maastricht)">MUMC  (Maastricht)</mat-option>
-													<mat-option value="UMCU  (Utrecht)">UMCU  (Utrecht)</mat-option>
-													<mat-option value="AMC (Amsterdam)">AMC (Amsterdam)</mat-option>
-													<mat-option value="VUMC  (Amsterdam)">VUMC  (Amsterdam)</mat-option>
-													<mat-option value="Kempenhaeghe (Heeze)">Kempenhaeghe (Heeze)</mat-option>
-													<mat-option value="UZ Gasthuisberg (Leuven, België)">UZ Gasthuisberg (Leuven, België)</mat-option>
-													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
-												</mat-select>
-											</div>
-											<div *ngIf="general.hospital=='Other'" class="mt-2 col-md-7">
-												<label for="otherHospital">{{'medicalcare.Write the name of the hospital' | translate }}</label>
-												<input type="text" class="form-control"  name="emergencies.otherHospital{{k}}" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
-											</div>
-											<div [ngClass]="(general.hospital=='Other')?'mt-2 offset-md-1 col-md-4':'mt-2 col-md-4'">
-												<label for="reason">{{'medicalcare.Reason' | translate }}</label>
-												<mat-select class="form-control" id="ChoiseAndDate" name="emergencies.ChoiseAndDate2{{k}}"  [(ngModel)]="general.reason" (change)="fieldchanged()">
-													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
-													<mat-option value="Cardiac">{{'medicalcare.Cardiac' | translate }}</mat-option>
-													<mat-option value="Respiratory">{{'medicalcare.Respiratory' | translate }}</mat-option>
-													<mat-option value="Fracture">{{'medicalcare.Fracture' | translate }}</mat-option>
-													<mat-option value="Kidney">{{'medicalcare.Kidney' | translate }}</mat-option>
-													<mat-option value="Gastrointestinal">{{'medicalcare.Gastrointestinal' | translate }}</mat-option>
-													<mat-option value="Trauma">{{'medicalcare.Trauma' | translate }}</mat-option>
-													<mat-option value="FES">{{'medicalcare.FES (Fat Embolism Syndrom)' | translate }}</mat-option>
-													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
-												</mat-select>
-											</div>
-											<div *ngIf="general.reason=='Other'" [ngClass]="(general.hospital=='Other')?'mt-2 col-md-7':'mt-2 offset-md-1 col-md-7'">
-												<label for="otherReason">{{'medicalcare.Reason' | translate }}</label>
-												<input type="text" class="form-control"  name="emergencies.otherReason{{k}}" [(ngModel)]="general.otherReason" (change)="fieldchanged()">
-											</div>
-											<div [ngClass]="(general.reason=='Other')?'mt-2 offset-md-1 col-md-3':'mt-2 col-md-3'">
-												<label for="date">{{'generics.Date' | translate }}</label>
-												<!--<div *ngIf="!isSafari && !isIeOrEdge">
-													<input type="date" class="form-control" name="emergencies.dateTime{{k}}" [(ngModel)]="general.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+									<div *ngIf="emergenciesActivation" class="border round" style="background: #f7f7f7;">
+										<div class="col-md-12">
+											<div class="row" *ngFor="let general of medicalCareSections[3].data ; let k = index" >
+												<div class="mt-2 col-md-1">
+													<h4>{{k+1}}.</h4>
 												</div>
-												<div *ngIf="isSafari || isIeOrEdge">
-													<input  class="form-control w-75 d-inline" name="emergencies.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
-													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-													<mat-datepicker touchUi="true" #picker></mat-datepicker>
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-												</div>-->
-												<div>
-													<input  class="form-control w-75 d-inline" name="emergencies.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
-													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-													<mat-datepicker touchUi="true" #picker></mat-datepicker>
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												<div class="mt-2 col-md-4" *ngIf="subgroup== 3900">
+													<label for="hospital">{{'medicalcare.Hospital' | translate }}</label>
+													<mat-select class="form-control" id="ChoiseAndDate" name="emergencies.ChoiseAndDate{{k}}"  [(ngModel)]="general.hospital" (change)="fieldchanged()">
+														<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+														<mat-option value="LUMC (Leiden)">LUMC (Leiden)</mat-option>
+														<mat-option value="UMCG (Groningen)">UMCG (Groningen)</mat-option>
+														<mat-option value="RadboudUMC (Nijmegen)">RadboudUMC (Nijmegen)</mat-option>
+														<mat-option value="Erasmus UMC (Rotterdam)">Erasmus UMC (Rotterdam)</mat-option>
+														<mat-option value="MUMC  (Maastricht)">MUMC  (Maastricht)</mat-option>
+														<mat-option value="UMCU  (Utrecht)">UMCU  (Utrecht)</mat-option>
+														<mat-option value="AMC (Amsterdam)">AMC (Amsterdam)</mat-option>
+														<mat-option value="VUMC  (Amsterdam)">VUMC  (Amsterdam)</mat-option>
+														<mat-option value="Kempenhaeghe (Heeze)">Kempenhaeghe (Heeze)</mat-option>
+														<mat-option value="UZ Gasthuisberg (Leuven, België)">UZ Gasthuisberg (Leuven, België)</mat-option>
+														<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+													</mat-select>
 												</div>
-											</div>
-											<div *ngIf="general.treatment" [ngClass]="(general.treatment=='')?'mt-2 col-md-1':'mt-2 offset-md-1 col-md-3'">
-												<label for="distance">{{'medicalcare.Treatment' | translate }}</label>
-												<p>
-													<input type="text" class="form-control"  hidden name="emergencies.treatment{{k}}" [(ngModel)]="general.treatment">
-													<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(3, k, contentMedication);fieldchanged()" [routerLink]="['/user/clinicinfo/medication', { newTreatment: true }]">{{'generics.New' | translate }}</button>-->
-													<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(3, k, contentMedication)">{{'generics.New' | translate }}</button>-->
-													<a class="btn btn-outline-primary" (click)="viewTreatment(3, k, contentTreatment)" href="javascript:void(0)">{{'generics.View' | translate }}</a>
-													<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="deleteTreatment(3, k);fieldchanged()">{{'generics.Delete' | translate }}</button>
-												</p>
-											</div>
-											<div *ngIf="!general.treatment" style="margin-left: 10%;">
-												<label for="distance">&nbsp;</label>
-												<p id="buttonInfo">
-													<input type="text" class="form-control"  hidden name="emergencies.treatment{{k}}" [(ngModel)]="general.treatment">
-													<!--<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(1, k, contentMedication)" data-title="A pop up screen will be open for you to enter information about the medication prescribed in this visit">{{'medicalcare.Treatment in visit' | translate }}</button>-->
-													<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(3, k, contentMedication)" style="margin-top: 5%;white-space: normal;">{{'medicalcare.Treatment in visit' | translate }}</button>
-													<span class="showTextInfo">
-														<i class="ft-alert-circle primary"></i>
-														{{'medicalcare.Info popup treatement' | translate }}
-													</span>
-												</p>
-											</div>
-											<div class="mt-2 col-md-4 offset-md-1">
-												<div class="col-md-1"></div>
-												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
-												<p style="margin: 0;"></p>
-												<input type="text" class="form-control"  hidden name="emergencies.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
-												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
-													<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 3, k);fieldchanged()" style="display: none;">
-												</label>
-												<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
-												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
-												<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
-												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(3,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
-											</div>
-                      <div class="col-md-11 offset-md-1 mt-2">
-                        <button type="button" class="btn btn-outline-danger" (click)="deleteData(3,k);fieldchanged()" href="javascript:void(0)">
-                          <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
-                        </button>
-											</div>
-											<div class="mt-2 col-md-12">
-												<hr>
+												<div *ngIf="general.hospital=='Other'" class="mt-2 col-md-7">
+													<label for="otherHospital">{{'medicalcare.Write the name of the hospital' | translate }}</label>
+													<input type="text" class="form-control"  name="emergencies.otherHospital{{k}}" [(ngModel)]="general.otherHospital" (change)="fieldchanged()">
+												</div>
+												<div [ngClass]="(general.hospital=='Other')?'mt-2 offset-md-1 col-md-4':'mt-2 col-md-4'">
+													<label for="reason">{{'medicalcare.Reason' | translate }}</label>
+													<mat-select class="form-control" id="ChoiseAndDate" name="emergencies.ChoiseAndDate2{{k}}"  [(ngModel)]="general.reason" (change)="fieldchanged()">
+														<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+														<mat-option value="Cardiac">{{'medicalcare.Cardiac' | translate }}</mat-option>
+														<mat-option value="Respiratory">{{'medicalcare.Respiratory' | translate }}</mat-option>
+														<mat-option value="Fracture">{{'medicalcare.Fracture' | translate }}</mat-option>
+														<mat-option value="Kidney">{{'medicalcare.Kidney' | translate }}</mat-option>
+														<mat-option value="Gastrointestinal">{{'medicalcare.Gastrointestinal' | translate }}</mat-option>
+														<mat-option value="Trauma">{{'medicalcare.Trauma' | translate }}</mat-option>
+														<mat-option value="FES">{{'medicalcare.FES (Fat Embolism Syndrom)' | translate }}</mat-option>
+														<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+													</mat-select>
+												</div>
+												<div *ngIf="general.reason=='Other'" [ngClass]="(general.hospital=='Other')?'mt-2 col-md-7':'mt-2 offset-md-1 col-md-7'">
+													<label for="otherReason">{{'medicalcare.Reason' | translate }}</label>
+													<input type="text" class="form-control"  name="emergencies.otherReason{{k}}" [(ngModel)]="general.otherReason" (change)="fieldchanged()">
+												</div>
+												<div [ngClass]="(general.reason=='Other')?'mt-2 offset-md-1 col-md-3':'mt-2 col-md-3'">
+													<label for="date">{{'generics.Date' | translate }}</label>
+													<div>
+														<input readonly (focus)="picker.open()" class="form-control w-75 d-inline pointer" name="emergencies.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+														<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+														<mat-datepicker touchUi="true" #picker></mat-datepicker>
+														<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+													</div>
+												</div>
+												<div *ngIf="general.treatment" [ngClass]="(general.treatment=='')?'mt-2 col-md-1':'mt-2 offset-md-1 col-md-3'">
+													<label for="distance">{{'medicalcare.Treatment' | translate }}</label>
+													<p>
+														<input type="text" class="form-control"  hidden name="emergencies.treatment{{k}}" [(ngModel)]="general.treatment">
+														<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(3, k, contentMedication);fieldchanged()" [routerLink]="['/user/clinicinfo/medication', { newTreatment: true }]">{{'generics.New' | translate }}</button>-->
+														<!--<button *ngIf="!general.treatment" type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(3, k, contentMedication)">{{'generics.New' | translate }}</button>-->
+														<a class="btn btn-outline-primary" (click)="viewTreatment(3, k, contentTreatment)" href="javascript:void(0)">{{'generics.View' | translate }}</a>
+														<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="deleteTreatment(3, k);fieldchanged()">{{'generics.Delete' | translate }}</button>
+													</p>
+												</div>
+												<div *ngIf="!general.treatment" style="margin-left: 10%;">
+													<label for="distance">&nbsp;</label>
+													<p id="buttonInfo">
+														<input type="text" class="form-control"  hidden name="emergencies.treatment{{k}}" [(ngModel)]="general.treatment">
+														<!--<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(1, k, contentMedication)" data-title="A pop up screen will be open for you to enter information about the medication prescribed in this visit">{{'medicalcare.Treatment in visit' | translate }}</button>-->
+														<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="newTreatment(3, k, contentMedication)" style="margin-top: 5%;white-space: normal;">{{'medicalcare.Treatment in visit' | translate }}</button>
+														<span class="showTextInfo">
+															<i class="ft-alert-circle primary"></i>
+															{{'medicalcare.Info popup treatement' | translate }}
+														</span>
+													</p>
+												</div>
+												<div class="mt-2 col-md-4 offset-md-1">
+													<div class="col-md-1"></div>
+													<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
+													<p style="margin: 0;"></p>
+													<input type="text" class="form-control"  hidden name="emergencies.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
+													<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
+														<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 3, k);fieldchanged()" style="display: none;">
+													</label>
+													<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+													<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
+													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(3,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+												</div>
+						  <div class="col-md-11 offset-md-1 mt-2">
+							<button type="button" class="btn btn-outline-danger" (click)="deleteData(3,k);fieldchanged()" href="javascript:void(0)">
+							  <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
+							</button>
+												</div>
+												<div class="mt-2 col-md-12">
+													<hr *ngIf="k < medicalCareSections[3].data.length - 1">
+												</div>
 											</div>
 										</div>
+										
 									</div>
 									<!-- emergencies -->
 
@@ -613,74 +585,67 @@
 										</div>
 									</h4>
 
-									<div *ngIf="cardiotestActivation" style="background: #f7f7f7;">
-										<div class="row col-md-12" *ngFor="let general of medicalCareSections[4].data ; let k = index" >
-											<div class="mt-2 col-md-1">
-												<h4>{{k+1}}.</h4>
-											</div>
-											<div class="mt-2 col-md-4">
-												<label for="hospital">{{'medicalcare.Type of test' | translate }}</label>
-												<mat-select class="form-control" id="ChoiseAndDate" name="cardiotest.ChoiseAndDate{{k}}"  [(ngModel)]="general.typeoftest" (change)="fieldchanged()">
-													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
-													<mat-option value="Ultrasound">{{'medicalcare.Ultrasound' | translate }}</mat-option>
-													<mat-option value="ECG">{{'medicalcare.Electrocardiogram' | translate }}</mat-option>
-													<mat-option value="24h holter">24h holter</mat-option>
-													<mat-option value="MRI">{{'medicalcare.Magnetic resonance imaging (MRI)' | translate }}</mat-option>
-												</mat-select>
-											</div>
-											<div class="mt-2 col-md-3">
-												<label for="date">{{'generics.Date' | translate }}</label>
-												<!--<div *ngIf="!isSafari && !isIeOrEdge">
-													<input type="date" class="form-control" name="cardiotest.dateTime{{k}}" [(ngModel)]="general.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+									<div *ngIf="cardiotestActivation" class="border round" style="background: #f7f7f7;">
+										<div class="col-md-12">
+											<div class="row" *ngFor="let general of medicalCareSections[4].data ; let k = index" >
+												<div class="mt-2 col-md-1">
+													<h4>{{k+1}}.</h4>
 												</div>
-												<div *ngIf="isSafari || isIeOrEdge">
-													<input  class="form-control w-75 d-inline" name="cardiotest.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
-													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-													<mat-datepicker touchUi="true" #picker></mat-datepicker>
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-												</div>-->
-												<div>
-													<input  class="form-control w-75 d-inline" name="cardiotest.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
-													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-													<mat-datepicker touchUi="true" #picker></mat-datepicker>
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												<div class="mt-2 col-md-4">
+													<label for="hospital">{{'medicalcare.Type of test' | translate }}</label>
+													<mat-select class="form-control" id="ChoiseAndDate" name="cardiotest.ChoiseAndDate{{k}}"  [(ngModel)]="general.typeoftest" (change)="fieldchanged()">
+														<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+														<mat-option value="Ultrasound">{{'medicalcare.Ultrasound' | translate }}</mat-option>
+														<mat-option value="ECG">{{'medicalcare.Electrocardiogram' | translate }}</mat-option>
+														<mat-option value="24h holter">24h holter</mat-option>
+														<mat-option value="MRI">{{'medicalcare.Magnetic resonance imaging (MRI)' | translate }}</mat-option>
+													</mat-select>
 												</div>
-											</div>
-											<div class="mt-2 col-md-4">
-												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
-												<p style="margin: 0;"></p>
-												<input type="text" class="form-control"  hidden name="cardiotest.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
-												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
-													<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 4, k);fieldchanged()" style="display: none;">
-												</label>
-												<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
-												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
-												<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
-												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(4,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
-											</div>
-											<div class="mt-2 offset-md-1 col-md-6">
-												<label for="pulse">{{'medicalcare.Pulse' | translate }}</label>
-												<input type="text" class="form-control"  name="cardiotest.pulse{{k}}" [(ngModel)]="general.pulse" (change)="fieldchanged()">
-											</div>
-											<div class="mt-2 col-md-5">
-												<label for="bloodpressure" style="display: block;">{{'medicalcare.Blood pressure' | translate }}</label>
-												<input type="text" class="form-control"  style="width: 3em;display: inline;" name="cardiotest.bloodpressure{{k}}" [(ngModel)]="general.bloodpressure" (change)="fieldchanged()"> /
-												<input type="text" class="form-control"  style="width: 3em;display: inline;" name="cardiotest.bloodpressure2{{k}}" [(ngModel)]="general.bloodpressure2" (change)="fieldchanged()">
-											</div>
-											<div class="mt-2 offset-md-1 col-md-7">
-												<label for="lvef" style="display: block;">{{'medicalcare.Left Ventricle Ejection Fraction' | translate }}</label>
-												<input type="text" class="form-control" style="width: 4em;display: inline;" name="cardiotest.lvef{{k}}" [(ngModel)]="general.lvef" (change)="fieldchanged()"> <span class="d-inline">%</span>
-											</div>
-                      <div class="col-md-11 offset-md-1 mt-2">
-                        <button type="button" class="btn btn-outline-danger" (click)="deleteData(4,k);fieldchanged()" href="javascript:void(0)">
-                          <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
-                        </button>
-											</div>
-											<div class="mt-2 col-md-12">
-												<hr>
+												<div class="mt-2 col-md-3">
+													<label for="date">{{'generics.Date' | translate }}</label>
+													<div>
+														<input readonly (focus)="picker.open()" class="form-control w-75 d-inline pointer" name="cardiotest.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+														<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+														<mat-datepicker touchUi="true" #picker></mat-datepicker>
+														<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+													</div>
+												</div>
+												<div class="mt-2 col-md-4">
+													<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
+													<p style="margin: 0;"></p>
+													<input type="text" class="form-control"  hidden name="cardiotest.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
+													<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
+														<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 4, k);fieldchanged()" style="display: none;">
+													</label>
+													<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+													<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
+													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(4,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+												</div>
+												<div class="mt-2 offset-md-1 col-md-6">
+													<label for="pulse">{{'medicalcare.Pulse' | translate }}</label>
+													<input type="text" class="form-control"  name="cardiotest.pulse{{k}}" [(ngModel)]="general.pulse" (change)="fieldchanged()">
+												</div>
+												<div class="mt-2 col-md-5">
+													<label for="bloodpressure" style="display: block;">{{'medicalcare.Blood pressure' | translate }}</label>
+													<input type="text" class="form-control"  style="width: 3em;display: inline;" name="cardiotest.bloodpressure{{k}}" [(ngModel)]="general.bloodpressure" (change)="fieldchanged()"> /
+													<input type="text" class="form-control"  style="width: 3em;display: inline;" name="cardiotest.bloodpressure2{{k}}" [(ngModel)]="general.bloodpressure2" (change)="fieldchanged()">
+												</div>
+												<div class="mt-2 offset-md-1 col-md-7">
+													<label for="lvef" style="display: block;">{{'medicalcare.Left Ventricle Ejection Fraction' | translate }}</label>
+													<input type="text" class="form-control" style="width: 4em;display: inline;" name="cardiotest.lvef{{k}}" [(ngModel)]="general.lvef" (change)="fieldchanged()"> <span class="d-inline">%</span>
+												</div>
+						  <div class="col-md-11 offset-md-1 mt-2">
+							<button type="button" class="btn btn-outline-danger" (click)="deleteData(4,k);fieldchanged()" href="javascript:void(0)">
+							  <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
+							</button>
+												</div>
+												<div class="mt-2 col-md-12">
+													<hr *ngIf="k < medicalCareSections[4].data.length - 1">
+												</div>
 											</div>
 										</div>
+										
 									</div>
 
 									<!-- cardiotest -->
@@ -709,78 +674,71 @@
 										</div>
 
 									</h4>
-									<div *ngIf="respiratorytestsActivation" style="background: #f7f7f7;">
-										<div class="row col-md-12" *ngFor="let general of medicalCareSections[5].data ; let k = index" >
-											<div class="mt-2 col-md-1">
-												<h4>{{k+1}}.</h4>
-											</div>
-											<div [ngClass]="(general.typeoftest=='Other')?'mt-2 col-md-3':'mt-2 col-md-4'">
-												<label for="hospital">{{'medicalcare.Type of test' | translate }}</label>
-												<mat-select class="form-control" id="ChoiseAndDate" name="respiratorytests.ChoiseAndDate{{k}}"  [(ngModel)]="general.typeoftest" (change)="fieldchanged()">
-													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
-													<mat-option value="spirometry">{{'medicalcare.Spirometry' | translate }}</mat-option>
-													<mat-option value="sleep study">{{'medicalcare.Sleep study' | translate }}</mat-option>
-													<mat-option value="Blood gas test">{{'medicalcare.Blood gas test' | translate }}</mat-option>
-													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
-													<!--<mat-option value="No test">{{'medicalcare.No test' | translate }}</mat-option>-->
-												</mat-select>
-											</div>
-											<div *ngIf="general.typeoftest=='Other'" class="mt-2 col-md-7">
-												<label for="otherTest">{{'medicalcare.Write the name of the test' | translate }}</label>
-												<input type="text" class="form-control"  name="respiratorytests.otherTest{{k}}" [(ngModel)]="general.otherTest" (change)="fieldchanged()">
-											</div>
-											<div [ngClass]="(general.typeoftest=='Other')?'mt-2 offset-md-1 col-md-3':'mt-2 col-md-3'">
-												<label for="date">{{'generics.Date' | translate }}</label>
-												<!--<div *ngIf="!isSafari && !isIeOrEdge">
-													<input type="date" class="form-control" name="respiratorytests.dateTime{{k}}" [(ngModel)]="general.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+									<div *ngIf="respiratorytestsActivation" class="border round" style="background: #f7f7f7;">
+										<div class="col-md-12">
+											<div class="row" *ngFor="let general of medicalCareSections[5].data ; let k = index" >
+												<div class="mt-2 col-md-1">
+													<h4>{{k+1}}.</h4>
 												</div>
-												<div *ngIf="isSafari || isIeOrEdge">
-													<input  class="form-control w-75 d-inline" name="respiratorytests.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
-													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-													<mat-datepicker touchUi="true" #picker></mat-datepicker>
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-												</div>-->
-												<div>
-													<input  class="form-control w-75 d-inline" name="respiratorytests.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
-													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-													<mat-datepicker touchUi="true" #picker></mat-datepicker>
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												<div [ngClass]="(general.typeoftest=='Other')?'mt-2 col-md-3':'mt-2 col-md-4'">
+													<label for="hospital">{{'medicalcare.Type of test' | translate }}</label>
+													<mat-select class="form-control" id="ChoiseAndDate" name="respiratorytests.ChoiseAndDate{{k}}"  [(ngModel)]="general.typeoftest" (change)="fieldchanged()">
+														<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+														<mat-option value="spirometry">{{'medicalcare.Spirometry' | translate }}</mat-option>
+														<mat-option value="sleep study">{{'medicalcare.Sleep study' | translate }}</mat-option>
+														<mat-option value="Blood gas test">{{'medicalcare.Blood gas test' | translate }}</mat-option>
+														<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+														<!--<mat-option value="No test">{{'medicalcare.No test' | translate }}</mat-option>-->
+													</mat-select>
 												</div>
-											</div>
-											<div class="mt-2 col-md-4">
-												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
-												<p style="margin: 0;"></p>
-												<input type="text" class="form-control"  hidden name="respiratorytests.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
-												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
-								<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 5, k);fieldchanged()" style="display: none;">
-							</label>
-							<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
-												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
-												<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
-												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(5,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
-											</div>
-											<div [ngClass]="(general.typeoftest=='Other')?'mt-2 col-md-2':'mt-2 offset-md-1 col-md-2'">
-												<label for="days">FVC (%)</label>
-												<input type="text" class="form-control"  name="respiratorytests.days{{k}}" [(ngModel)]="general.fvc" (change)="fieldchanged()">
-											</div>
-											<div [ngClass]="(general.typeoftest=='Other')?'mt-2 offset-md-1 col-md-4':'mt-2 col-md-4'">
-												<label for="days">PEF (L/min)</label>
-												<input type="text" class="form-control"  name="respiratorytests.days{{k}}" [(ngModel)]="general.pef" (change)="fieldchanged()">
-											</div>
-											<div class="mt-2 col-md-4">
-												<label for="days">MIP/MEP (cmH2O)</label>
-												<input type="text" class="form-control"  name="respiratorytests.days{{k}}" [(ngModel)]="general.mipmep" (change)="fieldchanged()">
-											</div>
-                      <div class="col-md-11 offset-md-1 mt-2">
-                        <button type="button" class="btn btn-outline-danger" (click)="deleteData(5,k);fieldchanged()" href="javascript:void(0)">
-                          <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
-                        </button>
-											</div>
-											<div class="mt-2 col-md-12">
-												<hr>
+												<div *ngIf="general.typeoftest=='Other'" class="mt-2 col-md-7">
+													<label for="otherTest">{{'medicalcare.Write the name of the test' | translate }}</label>
+													<input type="text" class="form-control"  name="respiratorytests.otherTest{{k}}" [(ngModel)]="general.otherTest" (change)="fieldchanged()">
+												</div>
+												<div [ngClass]="(general.typeoftest=='Other')?'mt-2 offset-md-1 col-md-3':'mt-2 col-md-3'">
+													<label for="date">{{'generics.Date' | translate }}</label>
+													<div>
+														<input readonly (focus)="picker.open()" class="form-control w-75 d-inline pointer" name="respiratorytests.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+														<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+														<mat-datepicker touchUi="true" #picker></mat-datepicker>
+														<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+													</div>
+												</div>
+												<div class="mt-2 col-md-4">
+													<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
+													<p style="margin: 0;"></p>
+													<input type="text" class="form-control"  hidden name="respiratorytests.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
+													<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
+									<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 5, k);fieldchanged()" style="display: none;">
+								</label>
+								<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+													<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
+													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(5,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+												</div>
+												<div [ngClass]="(general.typeoftest=='Other')?'mt-2 col-md-2':'mt-2 offset-md-1 col-md-2'">
+													<label for="days">FVC (%)</label>
+													<input type="text" class="form-control"  name="respiratorytests.days{{k}}" [(ngModel)]="general.fvc" (change)="fieldchanged()">
+												</div>
+												<div [ngClass]="(general.typeoftest=='Other')?'mt-2 offset-md-1 col-md-4':'mt-2 col-md-4'">
+													<label for="days">PEF (L/min)</label>
+													<input type="text" class="form-control"  name="respiratorytests.days{{k}}" [(ngModel)]="general.pef" (change)="fieldchanged()">
+												</div>
+												<div class="mt-2 col-md-4">
+													<label for="days">MIP/MEP (cmH2O)</label>
+													<input type="text" class="form-control"  name="respiratorytests.days{{k}}" [(ngModel)]="general.mipmep" (change)="fieldchanged()">
+												</div>
+						  <div class="col-md-11 offset-md-1 mt-2">
+							<button type="button" class="btn btn-outline-danger" (click)="deleteData(5,k);fieldchanged()" href="javascript:void(0)">
+							  <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
+							</button>
+												</div>
+												<div class="mt-2 col-md-12">
+													<hr *ngIf="k < medicalCareSections[5].data.length - 1">
+												</div>
 											</div>
 										</div>
+										
 									</div>
 
 									<!-- respiratorytests -->
@@ -809,60 +767,53 @@
 											</div>
 										</div>
 									</h4>
-									<div *ngIf="bonehealthtestActivation" style="background: #f7f7f7;">
-										<div class="row col-md-12" *ngFor="let general of medicalCareSections[6].data ; let k = index" >
-											<div class="mt-2 col-md-1">
-												<h4>{{k+1}}.</h4>
-											</div>
-											<div class="mt-2 col-md-5">
-												<label for="hospital">{{'medicalcare.Type of test' | translate }}</label>
-												<mat-select class="form-control" id="ChoiseAndDate" name="bonehealthtest.ChoiseAndDate{{k}}"  [(ngModel)]="general.typeoftest" (change)="fieldchanged()">
-													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
-													<mat-option value="Bone Densitometry (DEXA)">{{'medicalcare.Bone Densitometry (DEXA)' | translate }}</mat-option>
-													<mat-option value="Spinal X-Ray">{{'medicalcare.Spinal X-Ray' | translate }}</mat-option>
-													<mat-option value="Scoliosis X-ray">{{'medicalcare.Scoliosis X-ray' | translate }}</mat-option>
-												</mat-select>
-											</div>
-											<div class="mt-2 col-md-3">
-												<label for="date">{{'generics.Date' | translate }}</label>
-												<!--<div *ngIf="!isSafari && !isIeOrEdge">
-													<input type="date" class="form-control" name="bonehealthtest.dateTime{{k}}" [(ngModel)]="general.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+									<div *ngIf="bonehealthtestActivation" class="border round" style="background: #f7f7f7;">
+										<div class="col-md-12">
+											<div class="row" *ngFor="let general of medicalCareSections[6].data ; let k = index" >
+												<div class="mt-2 col-md-1">
+													<h4>{{k+1}}.</h4>
 												</div>
-												<div *ngIf="isSafari || isIeOrEdge">
-													<input  class="form-control w-75 d-inline" name="bonehealthtest.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
-													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-													<mat-datepicker touchUi="true" #picker></mat-datepicker>
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-												</div>-->
-												<div>
-													<input  class="form-control w-75 d-inline" name="bonehealthtest.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
-													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-													<mat-datepicker touchUi="true" #picker></mat-datepicker>
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												<div class="mt-2 col-md-5">
+													<label for="hospital">{{'medicalcare.Type of test' | translate }}</label>
+													<mat-select class="form-control" id="ChoiseAndDate" name="bonehealthtest.ChoiseAndDate{{k}}"  [(ngModel)]="general.typeoftest" (change)="fieldchanged()">
+														<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+														<mat-option value="Bone Densitometry (DEXA)">{{'medicalcare.Bone Densitometry (DEXA)' | translate }}</mat-option>
+														<mat-option value="Spinal X-Ray">{{'medicalcare.Spinal X-Ray' | translate }}</mat-option>
+														<mat-option value="Scoliosis X-ray">{{'medicalcare.Scoliosis X-ray' | translate }}</mat-option>
+													</mat-select>
 												</div>
-											</div>
-											<div class="mt-2 col-md-3">
-												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
-												<p style="margin: 0;"></p>
-												<input type="text" class="form-control"  hidden name="bonehealthtest.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
-												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
-								<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 6, k);fieldchanged()" style="display: none;">
-							</label>
-							<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
-												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
-												<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
-												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(6,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
-											</div>
-                      <div class="col-md-11 offset-md-1 mt-2">
-                        <button type="button" class="btn btn-outline-danger" (click)="deleteData(6,k);fieldchanged()" href="javascript:void(0)">
-                          <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
-                        </button>
-											</div>
-											<div class="mt-2 col-md-12">
-												<hr>
+												<div class="mt-2 col-md-3">
+													<label for="date">{{'generics.Date' | translate }}</label>
+													<div>
+														<input readonly (focus)="picker.open()" class="form-control w-75 d-inline pointer" name="bonehealthtest.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+														<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+														<mat-datepicker touchUi="true" #picker></mat-datepicker>
+														<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+													</div>
+												</div>
+												<div class="mt-2 col-md-3">
+													<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
+													<p style="margin: 0;"></p>
+													<input type="text" class="form-control"  hidden name="bonehealthtest.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
+													<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
+									<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 6, k);fieldchanged()" style="display: none;">
+								</label>
+								<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+													<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
+													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(6,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+												</div>
+						  <div class="col-md-11 offset-md-1 mt-2">
+							<button type="button" class="btn btn-outline-danger" (click)="deleteData(6,k);fieldchanged()" href="javascript:void(0)">
+							  <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
+							</button>
+												</div>
+												<div class="mt-2 col-md-12">
+													<hr *ngIf="k < medicalCareSections[6].data.length - 1">
+												</div>
 											</div>
 										</div>
+										
 									</div>
 
 									<!-- bonehealthtest -->
@@ -893,51 +844,44 @@
 										</div>
 
 									</h4>
-									<div *ngIf="bloodtestActivation" style="background: #f7f7f7;">
-										<div class="row col-md-12" *ngFor="let general of medicalCareSections[7].data ; let k = index" >
-											<div class="mt-2 col-md-1">
-												<h4>{{k+1}}.</h4>
-											</div>
-											<div class="mt-2 col-md-5">
-												<label for="date">{{'generics.Date' | translate }}</label>
-												<!--<div *ngIf="!isSafari && !isIeOrEdge">
-													<input type="date" class="form-control" name="bloodtest.dateTime{{k}}" [(ngModel)]="general.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+									<div *ngIf="bloodtestActivation" class="border round" style="background: #f7f7f7;">
+										<div class="col-md-12">
+											<div class="row" *ngFor="let general of medicalCareSections[7].data ; let k = index" >
+												<div class="mt-2 col-md-1">
+													<h4>{{k+1}}.</h4>
 												</div>
-												<div *ngIf="isSafari || isIeOrEdge">
-													<input  class="form-control w-75 d-inline" name="bloodtest.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
-													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-													<mat-datepicker touchUi="true" #picker></mat-datepicker>
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-												</div>-->
-												<div>
-													<input  class="form-control w-75 d-inline" name="bloodtest.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
-													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-													<mat-datepicker touchUi="true" #picker></mat-datepicker>
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												<div class="mt-2 col-md-5">
+													<label for="date">{{'generics.Date' | translate }}</label>
+													<div>
+														<input readonly (focus)="picker.open()" class="form-control w-75 d-inline pointer" name="bloodtest.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+														<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+														<mat-datepicker touchUi="true" #picker></mat-datepicker>
+														<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+													</div>
 												</div>
-											</div>
-											<div class="mt-2 col-md-4">
-												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
-												<p style="margin: 0;"></p>
-												<input type="text" class="form-control"  hidden name="bloodtest.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
-												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
-								<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 7, k);fieldchanged()" style="display: none;">
-							</label>
-							<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
-												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
-												<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
-												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(7,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
-											</div>
-                      <div class="col-md-11 offset-md-1 mt-2">
-                        <button type="button" class="btn btn-outline-danger" (click)="deleteData(7,k);fieldchanged()" href="javascript:void(0)">
-                          <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
-                        </button>
-											</div>
-											<div class="mt-2 col-md-12">
-												<hr>
+												<div class="mt-2 col-md-4">
+													<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
+													<p style="margin: 0;"></p>
+													<input type="text" class="form-control"  hidden name="bloodtest.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
+													<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
+									<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 7, k);fieldchanged()" style="display: none;">
+								</label>
+								<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+													<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
+													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(7,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+												</div>
+						  <div class="col-md-11 offset-md-1 mt-2">
+							<button type="button" class="btn btn-outline-danger" (click)="deleteData(7,k);fieldchanged()" href="javascript:void(0)">
+							  <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
+							</button>
+												</div>
+												<div class="mt-2 col-md-12">
+													<hr *ngIf="k < medicalCareSections[7].data.length - 1">
+												</div>
 											</div>
 										</div>
+										
 									</div>
 
 									<!-- bloodtest -->
@@ -965,69 +909,62 @@
 											</div>
 										</div>
 									</h4>
-									<div *ngIf="surgeryActivation" style="background: #f7f7f7;">
-										<div class="row col-md-12" *ngFor="let general of medicalCareSections[8].data ; let k = index" >
-											<div class="mt-2 col-md-1">
-												<h4>{{k+1}}.</h4>
-											</div>
-											<div class="mt-2 col-md-4">
-												<label for="hospital">{{'medicalcare.Type of surgery' | translate }}</label>
-												<mat-select class="form-control" id="ChoiseAndDate" name="surgery.ChoiseAndDate{{k}}"  [(ngModel)]="general.typeoftest" (change)="fieldchanged()">
-													<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
-													<mat-option value="Scoliosis surgery">{{'medicalcare.Scoliosis surgery' | translate }}</mat-option>
-													<mat-option value="Foot surgery">{{'medicalcare.Foot surgery' | translate }}</mat-option>
-													<mat-option value="Tendonectomy">{{'medicalcare.Tendonectomy' | translate }}</mat-option>
-													<mat-option value="Fixation or Fracture">{{'medicalcare.Fixation or Fracture' | translate }}</mat-option>
-													<mat-option value="Tracheostoma">{{'medicalcare.Tracheostoma' | translate }}</mat-option>
-													<mat-option value="Placing an ICD / pacemaker">{{'medicalcare.Placing an ICD / pacemaker' | translate }}</mat-option>
-													<mat-option value="PEG probe">{{'medicalcare.PEG probe' | translate }}</mat-option>
-													<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
-												</mat-select>
-											</div>
-											<div *ngIf="general.typeoftest=='Other'" class="mt-2 col-md-7">
-												<label for="otherTest">{{'medicalcare.Enter the name of the operation here' | translate }}</label>
-												<input type="text" class="form-control"  name="surgery.otherTest{{k}}" [(ngModel)]="general.otherTest" (change)="fieldchanged()">
-											</div>
-											<div [ngClass]="(general.typeoftest=='Other')?'mt-2 offset-md-1 col-md-3':'mt-2 col-md-3'">
-												<label for="date">{{'generics.Date' | translate }}</label>
-												<!--<div *ngIf="!isSafari && !isIeOrEdge">
-													<input type="date" class="form-control" name="surgery.dateTime{{k}}" [(ngModel)]="general.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel" (change)="fieldchanged()">
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+									<div *ngIf="surgeryActivation" class="border round" style="background: #f7f7f7;">
+										<div class="col-md-12">
+											<div class="row" *ngFor="let general of medicalCareSections[8].data ; let k = index" >
+												<div class="mt-2 col-md-1">
+													<h4>{{k+1}}.</h4>
 												</div>
-												<div *ngIf="isSafari || isIeOrEdge">
-													<input  class="form-control w-75 d-inline" name="surgery.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
-													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-													<mat-datepicker touchUi="true" #picker></mat-datepicker>
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-												</div>-->
-												<div>
-													<input  class="form-control w-75 d-inline" name="surgery.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
-													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-													<mat-datepicker touchUi="true" #picker></mat-datepicker>
-													<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+												<div class="mt-2 col-md-4">
+													<label for="hospital">{{'medicalcare.Type of surgery' | translate }}</label>
+													<mat-select class="form-control" id="ChoiseAndDate" name="surgery.ChoiseAndDate{{k}}"  [(ngModel)]="general.typeoftest" (change)="fieldchanged()">
+														<mat-option value="null" disabled selected>--{{'generics.Please select' | translate }}--</mat-option>
+														<mat-option value="Scoliosis surgery">{{'medicalcare.Scoliosis surgery' | translate }}</mat-option>
+														<mat-option value="Foot surgery">{{'medicalcare.Foot surgery' | translate }}</mat-option>
+														<mat-option value="Tendonectomy">{{'medicalcare.Tendonectomy' | translate }}</mat-option>
+														<mat-option value="Fixation or Fracture">{{'medicalcare.Fixation or Fracture' | translate }}</mat-option>
+														<mat-option value="Tracheostoma">{{'medicalcare.Tracheostoma' | translate }}</mat-option>
+														<mat-option value="Placing an ICD / pacemaker">{{'medicalcare.Placing an ICD / pacemaker' | translate }}</mat-option>
+														<mat-option value="PEG probe">{{'medicalcare.PEG probe' | translate }}</mat-option>
+														<mat-option value="Other">{{'generics.Other' | translate }}</mat-option>
+													</mat-select>
 												</div>
-											</div>
-											<div class="mt-2 col-md-3">
-												<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
-												<p style="margin: 0;"></p>
-												<input type="text" class="form-control"  hidden name="surgery.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
-												<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
-								<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 8, k);fieldchanged()" style="display: none;">
-							</label>
-							<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
-												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
-												<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
-												<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(8,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
-											</div>
-                      <div class="col-md-11 offset-md-1 mt-2">
-                        <button type="button" class="btn btn-outline-danger" (click)="deleteData(8,k);fieldchanged()" href="javascript:void(0)">
-                          <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
-                        </button>
-											</div>
-											<div class="mt-2 col-md-12">
-												<hr>
+												<div *ngIf="general.typeoftest=='Other'" class="mt-2 col-md-7">
+													<label for="otherTest">{{'medicalcare.Enter the name of the operation here' | translate }}</label>
+													<input type="text" class="form-control"  name="surgery.otherTest{{k}}" [(ngModel)]="general.otherTest" (change)="fieldchanged()">
+												</div>
+												<div [ngClass]="(general.typeoftest=='Other')?'mt-2 offset-md-1 col-md-3':'mt-2 col-md-3'">
+													<label for="date">{{'generics.Date' | translate }}</label>
+													<div>
+														<input readonly (focus)="picker.open()" class="form-control w-75 d-inline pointer" name="surgery.dateTime{{k}}"  matInput [matDatepicker]="picker" [(ngModel)]="general.date" dateTime #dateTime="ngModel" (dateChange)="fieldchanged()">
+														<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+														<mat-datepicker touchUi="true" #picker></mat-datepicker>
+														<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
+													</div>
+												</div>
+												<div class="mt-2 col-md-3">
+													<label for="distance">{{'medicalcare.Hospital record' | translate }}</label>
+													<p style="margin: 0;"></p>
+													<input type="text" class="form-control"  hidden name="surgery.hospitalrecord{{k}}" [(ngModel)]="general.hospitalrecord">
+													<label *ngIf="!general.uploadingGenotype && !general.hospitalrecord" class="btn btn-outline-primary">
+									<i class="fa ft-upload-cloud"></i> <input type="file" (change)="onFileChange($event, 8, k);fieldchanged()" style="display: none;">
+								</label>
+								<h4 *ngIf="general.uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
+													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype && !isApp" class="btn btn-outline-danger mb-0" href="{{accessToken.blobAccountUrl}}/{{accessToken.containerName}}/{{general.hospitalrecord}}{{accessToken.sasToken}}" download="{{general.hospitalrecord}}" target="_blank"><i class="fa ft-download-cloud"></i></a>
+													<span *ngIf="general.hospitalrecord && !general.uploadingGenotype && isApp" class="btn btn-outline-danger mb-0" (click)="downloadFile(accessToken.containerName,general.hospitalrecord)"><i class="fa ft-download-cloud"></i></span>
+													<a *ngIf="general.hospitalrecord && !general.uploadingGenotype" class="btn btn-outline-danger mb-0" (click)="deleteDataAndFile(8,k);" href="javascript:void(0)"><i class="fa fa-trash"></i></a>
+												</div>
+						  <div class="col-md-11 offset-md-1 mt-2">
+							<button type="button" class="btn btn-outline-danger" (click)="deleteData(8,k);fieldchanged()" href="javascript:void(0)">
+							  <span>{{'generics.Delete' | translate }}</span><i class="ml-2 fa fa-trash"></i>
+							</button>
+												</div>
+												<div class="mt-2 col-md-12">
+													<hr *ngIf="k < medicalCareSections[8].data.length - 1">
+												</div>
 											</div>
 										</div>
+										
 									</div>
 
 									<!-- surgery -->
@@ -1133,11 +1070,6 @@
     											<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     											<mat-datepicker touchUi="true" #picker></mat-datepicker>
     											<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-      											<!--{{medication.startDate|date:timeformat}}
-      											<input  class="form-control w-75 d-none" id="startDate" name="startDate"  matInput [value]="medication.startDate" [matDatepicker]="picker1" [max]="today" [(ngModel)]="medication.startDate" required startDate #startDate="ngModel">
-      											<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-      											<mat-datepicker touchUi="true" #picker1></mat-datepicker>
-      											<small class="form-text text-muted danger" *ngIf="!startDate.valid && (startDate.dirty || startDate.touched)">{{'generics.required' | translate }}</small>-->
       									</div>
       								</div>
                       <div class="col-md-6 col-lg-6">
@@ -1148,11 +1080,6 @@
       											<input  class="col-md-6 col-lg-4 form-control w-75 d-none" name="endDate" [min]="startDate" [max]="today" matInput [matDatepicker]="picker2" [(ngModel)]="medication.endDate" (dateChange)="fieldchanged2()">
       											<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
       											<mat-datepicker touchUi="true" #picker2></mat-datepicker>
-      											<!--
-      											{{medication.endDate|date:timeformat}}
-      											<input  class="form-control w-75 d-none" id="endDate" name="endDate" [min]="medication.startDate" [max]="today" matInput [matDatepicker]="picker2" [(ngModel)]="medication.endDate" >
-      											<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-      											<mat-datepicker touchUi="true" #picker2></mat-datepicker>-->
       										</div>
       										<small class="form-text text-muted">{{'medication.If you are currently taking the drug, do not select end date' | translate }}</small>
       									</div>

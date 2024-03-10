@@ -36,6 +36,7 @@ declare var device;
 export class UserProfilePageComponent implements OnInit, OnDestroy {
     //Variable Declaration
     @ViewChild('f') userForm: NgForm;
+    @ViewChild('deleteForm') deleteForm: NgForm;
     @ViewChild('fPass') passwordForm: NgForm;
 
     modalReference: NgbModalRef;
@@ -79,6 +80,8 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
     duchenneinternational: string = globalvars.duchenneinternational;
     subgroup: string;
     isApp: boolean = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && location.hostname != "localhost" && location.hostname != "127.0.0.1";
+    showInstructions: boolean = false;
+    loginCode: number;
 
     constructor(private http: HttpClient, private modalService: NgbModal, private datePipe: DatePipe, private authService: AuthService, public toastr: ToastsManager, public translate: TranslateService, private authGuard: AuthGuard, private langService:LangService, private elRef: ElementRef, private router: Router, private dateService: DateService, private inj: Injector) {
       this.subgroup = this.authService.getSubgroup();
@@ -1763,15 +1766,18 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
                       doc.setFontSize(11);
                       var drug = "-"
                       if (current.drug != "" && current.drug != undefined && current.drug != null){
-                        medicationsGroupTranslated.drugs.forEach(drugsInfo => {
-                          if(drugsInfo.name == current.drug){
-                            drugsInfo.translations.forEach(translation => {
-                              if(this.user.lang == translation.code){
-                                drug = translation.name
-                              }
-                            });
-                          }
-                        });
+                        if(medicationsGroupTranslated != undefined && medicationsGroupTranslated != null){
+                          medicationsGroupTranslated.drugs.forEach(drugsInfo => {
+                            if(drugsInfo.name == current.drug){
+                              drugsInfo.translations.forEach(translation => {
+                                if(this.user.lang == translation.code){
+                                  drug = translation.name
+                                }
+                              });
+                            }
+                          });
+                        }
+                        
                       }
                       doc.text(20, medicationLineText, drug);
                       doc.text(120, medicationLineText, (current.dose != "" && current.dose != undefined && current.dose != null)? current.dose : "-");
@@ -2942,5 +2948,51 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
           }
         }
       });
+    }
+
+    startDeleting(){
+      this.showInstructions = true;
+      let data = {email: this.user.email}
+      this.subscription.add( this.http.post(environment.api+'/api/users/senddeletecode/'+this.authService.getIdUser(), data)
+      .subscribe( (res : any) => {
+        console.log(res);
+       }, (err) => {
+         console.log(err);
+         swal(this.translate.instant("generics.Warning"), this.translate.instant("generics.error try again"), "error");
+       }));
+    }
+
+    cancelDeleting(){
+      this.showInstructions = false;
+    }
+
+    submitInvalidForm2() {
+      if (!this.deleteForm) { return; }
+      const base = this.deleteForm;
+      for (const field in base.form.controls) {
+        if (!base.form.controls[field].valid) {
+            base.form.controls[field].markAsTouched()
+        }
+      }
+    }
+
+    deleteAccount(){
+      let data = {confirmationCode: this.deleteForm.value.loginCode, email: this.user.email}
+      this.subscription.add( this.http.post(environment.api+'/api/users/deleteaccount/'+this.authService.getIdUser(), data)
+      .subscribe( (res : any) => {
+        if(res.message == 'The user has been deleted'){
+          swal('', this.translate.instant("profile.Account deleted successfully"), "success");
+          this.authService.logout();
+          this.router.navigate([this.authService.getLoginUrl()]);
+        }else{
+          swal(this.translate.instant("generics.Warning"), this.translate.instant("profile.Something has gone wrong, for your safety, we are going to close the session"), "error");
+        }
+        this.sending = false;
+       }, (err) => {
+         console.log(err);
+         swal(this.translate.instant("generics.Warning"), this.translate.instant("profile.Something has gone wrong, for your safety, we are going to close the session"), "error");
+         this.resetForm();
+         this.sending = false;
+       }));
     }
 }

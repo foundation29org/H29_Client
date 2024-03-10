@@ -182,6 +182,7 @@ export class NotificationsComponent implements OnInit, OnDestroy{
   }
 
   onSubmitUpdate(){
+    this.sending = true;
     //Update translations for the alert
     var urlDataUpdate=[];
     for(var i =0; i<this.alertTranslationsUrlUpdate.length;i++){
@@ -207,30 +208,11 @@ export class NotificationsComponent implements OnInit, OnDestroy{
 
   onSubmit() {
     if(this.authGuard.testtoken()){
+      this.sending = true;
       this.alert.type = this.currentGroup
 
       // Tratar la direccion URL
       for(var i =0;i<this.alertAddressUrl.length;i++){
-        /*
-        var alertAddresUrlCutted=[];
-        // Lo primero, si incluye el http se lo quitamos
-        if(this.alertAddressUrl[i].match(/^http:\/\//)){
-          alertAddresUrlCutted=this.alertAddressUrl[i].split("http://");
-          this.alertAddressUrl[i]=alertAddresUrlCutted[1];
-
-        }
-        // Si no lo incluía
-        else{
-          // Compruebo si lo que incluye es https
-          if(this.alertAddressUrl[i].match(/^https:\/\//)){
-            alertAddresUrlCutted=this.alertAddressUrl[i].split("https://");
-            this.alertAddressUrl[i]=alertAddresUrlCutted[1];
-          }
-        }
-
-        // Con esto, se añade https:// delante del string
-        this.alertAddressUrl[i]="http://"+this.alertAddressUrl[i];
-        */
         // Comprobamos entonces si es externa o interna:
         var alertAddresUrlInt=[];
         if(this.alertAddressUrl[i].indexOf(environment.api)>-1){
@@ -576,7 +558,7 @@ export class NotificationsComponent implements OnInit, OnDestroy{
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#0CC27E',
-      cancelButtonColor: '#FF586B',
+      cancelButtonColor: '#d71920',
       confirmButtonText: this.translate.instant("generics.Delete"),
       cancelButtonText: this.translate.instant("generics.No, cancel"),
       showLoaderOnConfirm: true,

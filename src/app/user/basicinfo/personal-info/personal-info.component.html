@@ -2,11 +2,11 @@
 <section id="basic-form-layouts">
 	<div class="row">
       <div class="col-sm-12">
-          <div class="content-header">{{'personalinfo.Personal patient information' | translate }}</div>
+          <div class="content-header primary">{{'personalinfo.Personal patient information' | translate }}</div>
       </div>
   </div>
 	<div class="center-elements" *ngIf="loading">
-		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 	</div>
 	<div class="row" *ngIf="!loading">
 		<div class="col-md-12">
@@ -47,23 +47,13 @@
 								</div>
                 <div class="row">
                 </div>
-								<h4 class="form-section"><i class="ft-map-pin warning"></i> {{'personalinfo.Date and place of birth' | translate }}</h4>
+								<h4 class="form-section"><i class="ft-map-pin primary"></i> {{'personalinfo.Date and place of birth' | translate }}</h4>
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="birthDate">* {{'personalinfo.Birth Date' | translate }}</label>
-											<!--<div *ngIf="!isSafari && !isIeOrEdge">
-												<input type="date" id="birthDate" class="form-control" name="birthDate" [(ngModel)]="patient.birthDate" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required birthDate #birthDate="ngModel">
-												<small class="form-text text-muted danger" *ngIf="!birthDate.valid && (birthDate.dirty || birthDate.touched)">{{'generics.required' | translate }}</small>
-											</div>
-											<div *ngIf="isSafari || isIeOrEdge">
-											  <input  class="form-control w-75 d-inline" id="birthDate" name="birthDate"  matInput [matDatepicker]="picker" [(ngModel)]="patient.birthDate" required birthDate #birthDate="ngModel">
-											  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-											  <mat-datepicker touchUi="true" #picker></mat-datepicker>
-												<small class="form-text text-muted danger" *ngIf="!birthDate.valid && (birthDate.dirty || birthDate.touched)">{{'generics.required' | translate }}</small>
-											</div>-->
 											<div>
-												<input  class="form-control w-75 d-inline" id="birthDate" name="birthDate"  matInput [matDatepicker]="picker" [(ngModel)]="patient.birthDate" required birthDate #birthDate="ngModel">
+												<input readonly (focus)="picker.open()" class="form-control w-75 d-inline pointer" id="birthDate" name="birthDate"  matInput [matDatepicker]="picker" [(ngModel)]="patient.birthDate" required birthDate #birthDate="ngModel">
 												<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 												<mat-datepicker touchUi="true" #picker></mat-datepicker>
 												<small class="form-text text-muted danger" *ngIf="!birthDate.valid && (birthDate.dirty || birthDate.touched)">{{'generics.required' | translate }}</small>
@@ -111,7 +101,7 @@
 										</div>
 									</div>
 								</div>
-								<h4 class="form-section"><i class="ft-map-pin warning"></i> {{'personalinfo.Place of residence' | translate }}</h4>
+								<h4 class="form-section"><i class="ft-map-pin primary"></i> {{'personalinfo.Place of residence' | translate }}</h4>
                 <div class="row">
 					<!--Aqui estaba street y postal code-->
 					<div class="col-md-6">
@@ -272,7 +262,7 @@
 							</div>
 							<span *ngIf="!f.valid" class="form-text text-muted danger">{{'generics.requiredfieldsmissing' | translate }}</span>
 							<div class="form-actions center" *ngIf="!sending">
-								<button type="button" (click)="resetForm()" class="btn btn-raised btn-raised btn-warning mr-1">
+								<button type="button" (click)="resetForm()" class="btn btn-raised btn-raised btn-secondary mr-1">
 									<i class="ft-x"></i> {{'generics.Cancel' | translate }}
 								</button>
 								<div *ngIf="f.valid;then formValid else formError"></div>
@@ -280,7 +270,7 @@
 								<ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
 							</div>
 							<div class="col-md-12 center-elements" *ngIf="sending">
-								<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+								<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 							</div>
 						</form>
 					</div>

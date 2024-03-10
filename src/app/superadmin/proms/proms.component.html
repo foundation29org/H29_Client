@@ -2,7 +2,7 @@
 <section id="basic-form-layouts">
 	<div class="row">
 		<div class="col-sm-12">
-			<div class="content-header">Proms</div>
+			<div class="content-header primary">Proms</div>
 		</div>
 	</div>
 	<div class="row">
@@ -28,7 +28,7 @@
 					for="fileDropRef">Import datapoints</label>
 					<div class="col-md-12 center-elements pull-right" *ngIf="sending">
 						<div>
-							<p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i>
+							<p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i>
 								<span>Importing</span>
 							</p>
 						</div>
@@ -98,7 +98,7 @@
 								</div>
 								<div class="col-md-12 center-elements" *ngIf="loading || sending">
 									<div>
-										<p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i>
+										<p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i>
 										</p>
 									</div>
 								</div>
@@ -160,7 +160,7 @@
 								</div>
 								<div class="col-md-12 center-elements" *ngIf="sending">
 									<div>
-										<p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i>
+										<p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i>
 										</p>
 									</div>
 								</div>
@@ -224,7 +224,7 @@
 										<div class="form-group">
 											<label for="enabled">Enabled section</label>
 											<p>
-												<ui-switch id="enabled" name="enabled" [(ngModel)]="section.enabled">
+												<ui-switch color="#d71920" id="enabled" name="enabled" [(ngModel)]="section.enabled">
 												</ui-switch>
 											</p>
 										</div>
@@ -383,7 +383,7 @@
 																	<div class="form-group">
 																		<label for="hideQuestion">Hide Question</label>
 																		<p>
-																			<ui-switch id="hideQuestion"
+																			<ui-switch color="#d71920" id="hideQuestion"
 																				name="hideQuestion"
 																				[(ngModel)]="prom.hideQuestion">
 																			</ui-switch>
@@ -394,7 +394,7 @@
 																	<div class="form-group">
 																		<label for="marginTop">Margin Top</label>
 																		<p>
-																			<ui-switch id="marginTop" name="marginTop"
+																			<ui-switch color="#d71920" id="marginTop" name="marginTop"
 																				[(ngModel)]="prom.marginTop">
 																			</ui-switch>
 																		</p>
@@ -493,7 +493,7 @@
 																	<div class="form-group">
 																		<label for="isRequired">Required</label>
 																		<p>
-																			<ui-switch id="isRequired" name="isRequired"
+																			<ui-switch color="#d71920" id="isRequired" name="isRequired"
 																				[(ngModel)]="prom.isRequired">
 																			</ui-switch>
 																		</p>
@@ -503,7 +503,7 @@
 																	<div class="form-group">
 																		<label for="enabled">Enabled prom</label>
 																		<p>
-																			<ui-switch id="enabled" name="enabled"
+																			<ui-switch color="#d71920" id="enabled" name="enabled"
 																				[(ngModel)]="prom.enabled"></ui-switch>
 																		</p>
 																	</div>
@@ -621,7 +621,7 @@
 														<div class="col-md-12 center-elements" *ngIf="sending">
 															<div>
 																<p class="centerSpinner"><i
-																		class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i>
+																		class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i>
 																</p>
 															</div>
 														</div>

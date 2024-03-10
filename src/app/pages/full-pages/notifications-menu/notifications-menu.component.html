@@ -1,7 +1,7 @@
 <section id="basic-form-layouts">
 	<div class="row">
       <div class="col-sm-12">
-          <div class="content-header">{{'menu.Notifications' | translate }}</div>
+          <div class="content-header primary">{{'menu.Notifications' | translate }}</div>
       </div>
   </div>
 </section>
@@ -23,7 +23,7 @@
 			<div class="chat-name p-2 bg-white" style="border-bottom: 1px solid #e4e7ed;">
 				<div class="media-body">
 					<h4 class="form-section">
-						<i [ngClass]="{'ft-bell success': activeTittleMenu=='Notifications'}"></i>
+						<i [ngClass]="{'ft-bell primary': activeTittleMenu=='Notifications'}"></i>
 						<i [ngClass]="{'ft-user primary': activeTittleMenu=='Subscriptions'}"></i>
 						{{ msgActiveTittleMenu }}
 					</h4>
@@ -32,7 +32,7 @@
 			<div *ngIf="activeTittleMenu == 'Notifications'">
 
 				<div class="center-elements" *ngIf="loading||loadingSubscription">
-					<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+					<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 				</div>
 				<div class="row" *ngIf="!loading&&!loadingSubscription">
 					<div class="col-md-12">
@@ -131,7 +131,7 @@
 				<div *ngIf="activeTittleMenu == 'Subscriptions'">
 					<!-- Menu de Subscripciones con Toogle para unsubscribe-->
 					<div class="center-elements" *ngIf="loading||loadingSubscription">
-						<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+						<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 					</div>
 					<div class="row" *ngIf="!loading&&!loadingSubscription">
 						<div class="col-md-12">
@@ -154,7 +154,7 @@
 																	<p style="padding-left: 2%;display: flex;">{{eachAlertAndState.name}}</p>
 																</div>
 																<div class="col-md- center-elements">
-																	<ui-switch id="enabled" (change)="subscriptionchangedEvent(eachAlertAndState, $event)" name="{{eachAlertAndState.name}}" [(ngModel)]="eachAlertAndState.subscription"></ui-switch>
+																	<ui-switch color="#d71920" id="enabled" (change)="subscriptionchangedEvent(eachAlertAndState, $event)" name="{{eachAlertAndState.name}}" [(ngModel)]="eachAlertAndState.subscription"></ui-switch>
 																</div>
 															</div>
 														</div>
@@ -171,7 +171,7 @@
 																	<p style="padding-left: 2%;display: flex;">{{eachAlertAndState.name}}</p>
 																</div>
 																<div class="col-md- center-elements">
-																	<ui-switch id="enabled" (change)="subscriptionchangedEvent(eachAlertAndState, $event)" name="{{eachAlertAndState.name}}" [(ngModel)]="eachAlertAndState.subscription"></ui-switch>
+																	<ui-switch color="#d71920" id="enabled" (change)="subscriptionchangedEvent(eachAlertAndState, $event)" name="{{eachAlertAndState.name}}" [(ngModel)]="eachAlertAndState.subscription"></ui-switch>
 																</div>
 															</div>
 														</div>
@@ -188,7 +188,7 @@
 																	<p style="padding-left: 2%;display: flex;">{{eachAlertAndState.name}}</p>
 																</div>
 																<div class="col-md- center-elements">
-																	<ui-switch id="enabled" (change)="subscriptionchangedEvent(eachAlertAndState, $event)" name="{{eachAlertAndState.name}}" [(ngModel)]="eachAlertAndState.subscription"></ui-switch>
+																	<ui-switch color="#d71920" id="enabled" (change)="subscriptionchangedEvent(eachAlertAndState, $event)" name="{{eachAlertAndState.name}}" [(ngModel)]="eachAlertAndState.subscription"></ui-switch>
 																</div>
 															</div>
 														</div>
@@ -206,7 +206,7 @@
 												</div>
 											</div>
 											<div class="form-actions center">
-												<button type="button" (click)="resetAlertsSubscriptions()" class="btn btn-raised btn-raised btn-warning mr-1">
+												<button type="button" (click)="resetAlertsSubscriptions()" class="btn btn-raised btn-raised btn-secondary mr-1">
 													<i class="ft-x"></i> {{'generics.Cancel' | translate }}
 												</button>
 												<div *ngIf="f.valid;then formValid else formError"></div>
@@ -214,7 +214,7 @@
 												<ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
 											</div>
 											<div class="col-md-12 center-elements" *ngIf="sending">
-												<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+												<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 											</div>
 										</form>
 									</div>

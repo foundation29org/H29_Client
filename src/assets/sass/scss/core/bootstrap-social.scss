@@ -121,7 +121,7 @@ $bs-height-xs:   (floor($font-size-sm * 1.2) + $padding-small-vertical + 1) !def
 .btn-dropbox       { @include btn-social(#1087dd); }
 .btn-facebook      { @include btn-social(#3b5998); }
 .btn-flickr        { @include btn-social(#ff0084); }
-.btn-foursquare    { @include btn-social(#f94877); }
+.btn-foursquare    { @include btn-social(#d71920); }
 .btn-github        { @include btn-social(#444444); }
 .btn-google        { @include btn-social(#dd4b39); }
 .btn-instagram     { @include btn-social(#3f729b); }
@@ -144,7 +144,7 @@ $bs-height-xs:   (floor($font-size-sm * 1.2) + $padding-small-vertical + 1) !def
 .btn-outline-dropbox       { @include btn-social-outline(#1087dd); }
 .btn-outline-facebook      { @include btn-social-outline(#3b5998); }
 .btn-outline-flickr        { @include btn-social-outline(#ff0084); }
-.btn-outline-foursquare    { @include btn-social-outline(#f94877); }
+.btn-outline-foursquare    { @include btn-social-outline(#d71920); }
 .btn-outline-github        { @include btn-social-outline(#444444); }
 .btn-outline-google        { @include btn-social-outline(#dd4b39); }
 .btn-outline-instagram     { @include btn-social-outline(#3f729b); }
@@ -167,7 +167,7 @@ $bs-height-xs:   (floor($font-size-sm * 1.2) + $padding-small-vertical + 1) !def
 .btn-outline-dropbox:hover       { @include btn-hover-outline(#1087dd); }
 .btn-outline-facebook:hover      { @include btn-hover-outline(#3b5998); }
 .btn-outline-flickr:hover        { @include btn-hover-outline(#ff0084); }
-.btn-outline-foursquare:hover    { @include btn-hover-outline(#f94877); }
+.btn-outline-foursquare:hover    { @include btn-hover-outline(#d71920); }
 .btn-outline-github:hover        { @include btn-hover-outline(#444444); }
 .btn-outline-google:hover        { @include btn-hover-outline(#dd4b39); }
 .btn-outline-instagram:hover     { @include btn-hover-outline(#3f729b); }
@@ -190,7 +190,7 @@ $bs-height-xs:   (floor($font-size-sm * 1.2) + $padding-small-vertical + 1) !def
 .btn-dropbox-flat       { @include btn-social-flat(#1087dd); }
 .btn-facebook-flat      { @include btn-social-flat(#3b5998); }
 .btn-flickr-flat        { @include btn-social-flat(#ff0084); }
-.btn-foursquare-flat    { @include btn-social-flat(#f94877); }
+.btn-foursquare-flat    { @include btn-social-flat(#d71920); }
 .btn-github-flat        { @include btn-social-flat(#444444); }
 .btn-google-flat        { @include btn-social-flat(#dd4b39); }
 .btn-instagram-flat     { @include btn-social-flat(#3f729b); }
@@ -214,7 +214,7 @@ $bs-height-xs:   (floor($font-size-sm * 1.2) + $padding-small-vertical + 1) !def
 .btn-dropbox-flat.active, .btn-dropbox-flat:active, .btn-dropbox-flat:focus, .btn-dropbox-flat:active:focus, .btn-dropbox-flat:active:hover       { @include btn-social-flat-active(#1087dd); }
 .btn-facebook-flat.active, .btn-facebook-flat:active, .btn-facebook-flat:focus, .btn-facebook-flat:active:focus, .btn-facebook-flat:active:hover      { @include btn-social-flat-active(#3b5998); }
 .btn-flickr-flat.active, .btn-flickr-flat:active, .btn-flickr-flat:focus, .btn-flickr-flat:active:focus, .btn-flickr-flat:active:hover        { @include btn-social-flat-active(#ff0084); }
-.btn-foursquare-flat.active, .btn-foursquare-flat:active, .btn-foursquare-flat:focus, .btn-foursquare-flat:active:focus, .btn-foursquare-flat:active:hover    { @include btn-social-flat-active(#f94877); }
+.btn-foursquare-flat.active, .btn-foursquare-flat:active, .btn-foursquare-flat:focus, .btn-foursquare-flat:active:focus, .btn-foursquare-flat:active:hover    { @include btn-social-flat-active(#d71920); }
 .btn-github-flat.active, .btn-github-flat:active, .btn-github-flat:focus, .btn-github-flat:active:focus, .btn-github-flat:active:hover        { @include btn-social-flat-active(#444444); }
 .btn-google-flat.active, .btn-google-flat:active, .btn-google-flat:focus, .btn-google-flat:active:focus, .btn-google-flat:active:hover        { @include btn-social-flat-active(#dd4b39); }
 .btn-instagram-flat.active, .btn-instagram-flat:active, .btn-instagram-flat:focus, .btn-instagram-flat:active:focus, .btn-instagram-flat:active:hover     { @include btn-social-flat-active(#3f729b); }

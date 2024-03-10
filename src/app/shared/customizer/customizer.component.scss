@@ -97,17 +97,17 @@
 
 }
 ::ng-deep  .wc-card button {
-	color: #FF586B !important;
+	color: #d71920 !important;
 	background-color: white !important;
 }
 ::ng-deep  .wc-card button:hover {
-	color: #FF586B !important;
-	border-color: #FF586B !important;
+	color: #d71920 !important;
+	border-color: #d71920 !important;
 	background-color: transparent !important;
 }
 ::ng-deep  .wc-card button:active {
-	background-color: #FF586B !important;
-	border-color: #FF586B !important;
+	background-color: #d71920 !important;
+	border-color: #d71920 !important;
 	color: white !important;
 }
 ::ng-deep .ac-pushButton{
@@ -118,10 +118,10 @@
 }
 /* Message from me*/
 ::ng-deep  .wc-message-from-me .wc-message-content {
-	background-color: #FF586B !important;
+	background-color: #d71920 !important;
 }
 ::ng-deep  .wc-message-from-me svg.wc-message-callout path {
-	fill: #FF586B !important;
+	fill: #d71920 !important;
 }
 
 /* Header*/
@@ -138,13 +138,13 @@
 	display: none;
 }
 ::ng-deep  .wc-console.has-text .wc-send svg {
-	fill: #FF586B !important;
+	fill: #d71920 !important;
 }
 ::ng-deep  .wc-console .wc-textbox {
 	left: 15px !important;
 }
 ::ng-deep  .wc-console.has-text .wc-send svg {
-	fill: #FF586B !important;
+	fill: #d71920 !important;
 }
 
 @media ( max-width: 380px ){

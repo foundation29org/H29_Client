@@ -2,7 +2,7 @@
 <section id="basic-form-layouts" *ngIf="!editingWeightHistory && !editingHeightHistory">
 	<div class="row">
       <div class="col-sm-12">
-          <div class="content-header mt-2">{{'clinicalinfo.Anthropometry' | translate }}
+          <div class="content-header mt-2 primary">{{'clinicalinfo.Anthropometry' | translate }}
 						<span *ngIf="!settingWeight && !settingHeight && !loadingWeight">
 							<button *ngIf="!actualWeight._id" type="button" class="mt-1 ml-2 btn btn-outline-primary" (click)="setWeight()">{{'anthropometry.Add weight' | translate }}</button>
 
@@ -12,12 +12,12 @@
       </div>
   </div>
 	<div class="col-md-12 center-elements" *ngIf="loadingWeight">
-	  <div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+	  <div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 	</div>
 	<!--Statistics cards Starts-->
 <div class="row" *ngIf="!settingWeight && !settingHeight && !loadingWeight">
 	<div class="col-xl-3 col-lg-6 col-md-6 col-12" *ngIf="actualWeight._id">
-		<div class="card bg-secondary">
+		<div class="card gradient-red-pink">
 			<div class="card-body">
 				<div class="card-block pt-2 pb-0">
 					<div class="media">
@@ -32,14 +32,14 @@
 					</div>
 				</div>
 				<div class="pt-2 mb-2 center-elements">
-					<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="updateWeight()">{{'generics.Update' | translate }}</button>
-					<button *ngIf="weightHistory.length>1" type="button" class="ml-1 btn btn-raised btn-raised btn-primary" (click)="openWeightHistory(contentWeightHistory)">{{'anthropometry.Weight history' | translate }}</button>
+					<button type="button" class="btn btn-light" (click)="updateWeight()">{{'generics.Update' | translate }}</button>
+					<button *ngIf="weightHistory.length>1" type="button" class="ml-1 btn btn-light" (click)="openWeightHistory(contentWeightHistory)">{{'anthropometry.Weight history' | translate }}</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="col-xl-3 col-lg-6 col-md-6 col-12" *ngIf="actualHeight._id">
-		<div class="card bg-secondary">
+		<div class="card gradient-red-pink">
 			<div class="card-body">
 				<div class="card-block pt-2 pb-0">
 					<div class="media">
@@ -54,8 +54,8 @@
 					</div>
 				</div>
 				<div class="pt-2 mb-2 center-elements">
-					<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="updateHeight()">{{'generics.Update' | translate }}</button>
-					<button *ngIf="heightHistory.length>1" type="button" class="ml-1 btn btn-raised btn-raised btn-primary" (click)="openHeightHistory(contentHeightHistory)">{{'anthropometry.Height history' | translate }}</button>
+					<button type="button" class="btn btn-light" (click)="updateHeight()">{{'generics.Update' | translate }}</button>
+					<button *ngIf="heightHistory.length>1" type="button" class="ml-1 btn btn-light" (click)="openHeightHistory(contentHeightHistory)">{{'anthropometry.Height history' | translate }}</button>
 				</div>
 			</div>
 		</div>
@@ -161,18 +161,8 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="dateTime">* {{'generics.Date' | translate }}</label>
-											<!--<div *ngIf="!isSafari && !isIeOrEdge">
-												<input type="date" id="dateTime" class="form-control" name="dateTime" [(ngModel)]="selectedWeight.dateTime" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel">
-												<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.required' | translate }}</small>
-											</div>
-											<div *ngIf="isSafari || isIeOrEdge">
-											  <input  class="form-control w-75 d-inline" id="dateTime" name="dateTime"  matInput [matDatepicker]="picker" [(ngModel)]="selectedWeight.dateTime" required dateTime #dateTime="ngModel">
-											  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-											  <mat-datepicker touchUi="true" #picker></mat-datepicker>
-												<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.required' | translate }}</small>
-											</div>-->
 											<div>
-												<input  class="form-control w-75 d-inline" id="dateTime" name="dateTime"  matInput [matDatepicker]="picker" [(ngModel)]="selectedWeight.dateTime" required dateTime #dateTime="ngModel">
+												<input readonly (focus)="picker.open()" class="form-control w-75 d-inline pointer" id="dateTime" name="dateTime"  matInput [matDatepicker]="picker" [(ngModel)]="selectedWeight.dateTime" required dateTime #dateTime="ngModel">
 												<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 												<mat-datepicker touchUi="true" #picker></mat-datepicker>
 												<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.required' | translate }}</small>
@@ -182,7 +172,7 @@
 								</div>
 							</div>
 							<div class="form-actions center">
-								<button type="button" (click)="resetFormWeight()" class="btn btn-raised btn-raised btn-warning mr-1">
+								<button type="button" (click)="resetFormWeight()" class="btn btn-raised btn-raised btn-secondary mr-1">
 									<i class="ft-x"></i> {{'generics.Cancel' | translate }}
 								</button>
 								<div *ngIf="fWeight.valid;then formValid else formError"></div>
@@ -245,18 +235,8 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="dateTime">* {{'generics.Date' | translate }}</label>
-											<!--<div *ngIf="!isSafari && !isIeOrEdge">
-												<input type="date" id="dateTime" class="form-control" name="dateTime" [(ngModel)]="selectedHeight.dateTime" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel">
-												<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.required' | translate }}</small>
-											</div>
-											<div *ngIf="isSafari || isIeOrEdge">
-												<input  class="form-control w-75 d-inline" id="dateTime" name="dateTime"  matInput [matDatepicker]="picker" [(ngModel)]="selectedHeight.dateTime" required dateTime #dateTime="ngModel">
-												<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-												<mat-datepicker touchUi="true" #picker></mat-datepicker>
-												<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.required' | translate }}</small>
-											</div>-->
 											<div>
-												<input  class="form-control w-75 d-inline" id="dateTime" name="dateTime"  matInput [matDatepicker]="picker" [(ngModel)]="selectedHeight.dateTime" required dateTime #dateTime="ngModel">
+												<input readonly (focus)="picker.open()" class="form-control w-75 d-inline pointer" id="dateTime" name="dateTime"  matInput [matDatepicker]="picker" [(ngModel)]="selectedHeight.dateTime" required dateTime #dateTime="ngModel">
 												<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 												<mat-datepicker touchUi="true" #picker></mat-datepicker>
 												<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.required' | translate }}</small>
@@ -266,7 +246,7 @@
 								</div>
 							</div>
 							<div class="form-actions center">
-								<button type="button" (click)="resetFormHeight()" class="btn btn-raised btn-raised btn-warning mr-1">
+								<button type="button" (click)="resetFormHeight()" class="btn btn-raised btn-raised btn-secondary mr-1">
 									<i class="ft-x"></i> {{'generics.Cancel' | translate }}
 								</button>
 								<div *ngIf="fHeight.valid;then formValid else formError"></div>
@@ -285,10 +265,10 @@
 <section *ngIf="editingWeightHistory || editingHeightHistory">
 	<div class="row">
       <div class="col-sm-12" *ngIf="editingWeightHistory">
-          <div class="content-header">{{'anthropometry.Weight history' | translate }}<button type="button" class="float-right btn btn-raised btn-danger" (click)="back()">{{'generics.Back' | translate }}</button></div>
+          <div class="content-header primary">{{'anthropometry.Weight history' | translate }}<button type="button" class="float-right btn btn-raised btn-danger" (click)="back()">{{'generics.Back' | translate }}</button></div>
       </div>
 			<div class="col-sm-12" *ngIf="editingHeightHistory">
-          <div class="content-header">{{'anthropometry.Height history' | translate }}<button type="button" class="float-right btn btn-raised btn-danger" (click)="back()">{{'generics.Back' | translate }}</button></div>
+          <div class="content-header primary">{{'anthropometry.Height history' | translate }}<button type="button" class="float-right btn btn-raised btn-danger" (click)="back()">{{'generics.Back' | translate }}</button></div>
       </div>
   </div>
 	<div class="row" *ngIf="weightHistory.length > 0 && editingWeightHistory">

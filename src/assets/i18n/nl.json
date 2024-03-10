@@ -46,7 +46,13 @@
     "Deselect all": "Deselecteer alles",
     "NoSubscriptions":"Nog geen abonnementen beschikbaar",
     "Your file is being generated":"Je bestand wordt gemaakt",
-    "File created":"Bestand gemaakt"
+    "File created":"Bestand gemaakt",
+    "Delete account": "Account verwijderen",
+    "We just sent you a code to continue deleting the account. Please check your inbox. Cant find it?": "We hebben je zojuist een code gestuurd om het account te verwijderen. Controleer je inbox. Kun je het niet vinden?",
+    "Paste deleting code": "Plak de verwijderingscode",
+    "I confirm that I want to delete the account": "Ik bevestig dat ik het account wil verwijderen",
+    "Account deleted successfully": "Account succesvol verwijderd",
+    "Something has gone wrong, for your safety, we are going to close the session": "Er is iets misgegaan, voor uw veiligheid gaan we de sessie sluiten"
   },
   "login": {
     "Login": "Inloggen",
@@ -89,7 +95,12 @@
     "consent4": "1) Lees het bijgewerkte privacybeleid",
     "consent5": "2) Geef (opnieuw) toestemming door op de relevante vakjes te klikken",
     "consent6": "Dit is verplicht en duurt slechts <strong>een paar minuten.</strong>",
-    "consent7": "Dank u!"
+    "consent7": "Dank u!",
+    "Continue with email": "Doorgaan met e-mail",
+    "We just sent you a temporary login code. Please check your inbox. Cant find it?": "We hebben je zojuist een tijdelijke inlogcode gestuurd. Controleer je inbox. Kun je het niet vinden?",
+    "Try again": "Probeer opnieuw",
+    "Paste login code": "Plak de inlogcode",
+    "Continue with login code": "Doorgaan met inlogcode"
   },
   "registration": {
     "Registration": "Registratie",
@@ -98,7 +109,7 @@
     "Security Policy": "Beveiligingsbeleid",
     "Get Started": "Begin",
     "email already exists": "Er bestaat al een account met dit e-mailadres",
-    "Check the email": "Controleer je e-mail om het account te activeren",
+    "Check the email": "Account aangemaakt. Nu kunt u inloggen",
     "could not be sent to activate": "Geregistreerd account, maar de e-mail kon niet verstuurd worden om het te activeren. Neem contact op met: info@foundation29.org",
     "Please select a group": "Selecteer jouw patiëntenorganisatie",
     "Please select a organization": "Selecteer de patiëntenorganisatie waartoe u behoort",
@@ -189,6 +200,7 @@
     "Sending": "Bezig met verzenden",
     "Add": "Toevoegen",
     "Saved": "Opgeslagen",
+    "Saving": "Opslaan",
     "Not saved": "Niet opgeslagen",
     "Saved on": "Opgeslagen op",
     "Edit": "Bewerk",

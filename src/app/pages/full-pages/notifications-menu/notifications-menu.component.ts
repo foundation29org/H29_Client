@@ -62,7 +62,6 @@ export class NotificationsMenuComponent implements OnInit, OnDestroy {
     snoozeMonths:any = [];
     tittleNotifications: string = '';
     tittleSubscriptions: string = '';
-    credentials: any = {};
     alertsNotRead: any = [];
     alertsRead: any = [];
     userGroup: any;
@@ -128,12 +127,6 @@ export class NotificationsMenuComponent implements OnInit, OnDestroy {
       }));
 
       this.loadTranslations();
-
-      this.credentials = {
-        password: '',
-        password2: '',
-        actualpassword: ''
-      };
 
       //cargar los datos del usuario
       this.subscription.add( this.http.get(environment.api+'/api/users/'+this.authService.getIdUser())

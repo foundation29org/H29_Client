@@ -634,8 +634,17 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
 
   goTo(url){
     this.setSection(url);
-    document.getElementById(url).scrollIntoView(true);
+    const element = document.getElementById(url);
+    const yOffset = -50; // Altura de tu barra de navegación
+    const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    window.scrollTo({top: y, behavior: 'smooth'});
+  }
 
+  positionUrl(url){
+    const element = document.getElementById(url);
+    const yOffset = -50; // Altura de tu barra de navegación
+    const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    window.scrollTo({top: y, behavior: 'smooth'});
   }
 
   newData(index, info){
@@ -675,7 +684,7 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
               type: 'warning',
               showCancelButton: true,
               confirmButtonColor: '#0CC27E',
-              cancelButtonColor: '#FF586B',
+              cancelButtonColor: '#d71920',
               confirmButtonText: this.translate.instant("generics.Yes"),
               cancelButtonText: this.translate.instant("generics.No"),
               showLoaderOnConfirm: true,
@@ -716,7 +725,7 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#0CC27E',
-            cancelButtonColor: '#FF586B',
+            cancelButtonColor: '#d71920',
             confirmButtonText: this.translate.instant("generics.Yes"),
             cancelButtonText: this.translate.instant("generics.No"),
             showLoaderOnConfirm: true,
@@ -959,7 +968,7 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
               type: 'warning',
               showCancelButton: true,
               confirmButtonColor: '#0CC27E',
-              cancelButtonColor: '#FF586B',
+              cancelButtonColor: '#d71920',
               confirmButtonText: this.translate.instant("generics.Yes"),
               cancelButtonText: this.translate.instant("generics.No"),
               showLoaderOnConfirm: true,
@@ -992,7 +1001,7 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#0CC27E',
-            cancelButtonColor: '#FF586B',
+            cancelButtonColor: '#d71920',
             confirmButtonText: this.translate.instant("generics.Yes"),
             cancelButtonText: this.translate.instant("generics.No"),
             showLoaderOnConfirm: true,
@@ -1358,7 +1367,7 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
                   this.bonehealthtestActivation=false;
                   this.bloodtestActivation=false;
                   this.surgeryActivation=false;
-                  document.getElementById("general").scrollIntoView(true);
+                  this.positionUrl('general');
                 break;
                 case 'Specific visit':
                   this.clinicalActivation=false;
@@ -1370,7 +1379,7 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
                   this.bonehealthtestActivation=false;
                   this.bloodtestActivation=false;
                   this.surgeryActivation=false;
-                  document.getElementById("specificVisit").scrollIntoView(true);
+                  this.positionUrl('specificVisit');
                 break;
                 case 'Hospitalization':
                   this.clinicalActivation=false;
@@ -1382,7 +1391,7 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
                   this.bonehealthtestActivation=false;
                   this.bloodtestActivation=false;
                   this.surgeryActivation=false;
-                  document.getElementById("hospitalization").scrollIntoView(true);
+                  this.positionUrl('hospitalization');
                 break;
                 case 'Emergencies':
                   this.clinicalActivation=false;
@@ -1394,7 +1403,7 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
                   this.bonehealthtestActivation=false;
                   this.bloodtestActivation=false;
                   this.surgeryActivation=false;
-                  document.getElementById("emergencies").scrollIntoView(true);
+                  this.positionUrl('emergencies');
                 break;
                 case 'Cardio test':
                   this.clinicalActivation=false;
@@ -1406,7 +1415,7 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
                   this.bonehealthtestActivation=false;
                   this.bloodtestActivation=false;
                   this.surgeryActivation=false;
-                  document.getElementById("cardiotest").scrollIntoView(true);
+                  this.positionUrl('cardiotest');
                 break;
                 case 'Respiratory tests':
                   this.clinicalActivation=false;
@@ -1418,7 +1427,7 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
                   this.bonehealthtestActivation=false;
                   this.bloodtestActivation=false;
                   this.surgeryActivation=false;
-                  document.getElementById("respiratorytests").scrollIntoView(true);
+                  this.positionUrl('respiratorytests');
                 break;
                 case 'Bonehealth test':
                   this.clinicalActivation=false;
@@ -1430,7 +1439,7 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
                   this.bonehealthtestActivation=true;
                   this.bloodtestActivation=false;
                   this.surgeryActivation=false;
-                  document.getElementById("bonehealthtest").scrollIntoView(true);
+                  this.positionUrl('bonehealthtest');
                 break;
                 case 'Blood test':
                   this.clinicalActivation=false;
@@ -1442,7 +1451,7 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
                   this.bonehealthtestActivation=false;
                   this.bloodtestActivation=true;
                   this.surgeryActivation=false;
-                  document.getElementById("bloodtest").scrollIntoView(true);
+                  this.positionUrl('bloodtest');
                 break;
                 case 'Surgery':
                   this.clinicalActivation=false;
@@ -1454,7 +1463,7 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
                   this.bonehealthtestActivation=false;
                   this.bloodtestActivation=false;
                   this.surgeryActivation=true;
-                  document.getElementById("surgery").scrollIntoView(true);
+                  this.positionUrl('surgery');
                 break;
                 }
               }));
@@ -1723,7 +1732,7 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
               type: 'warning',
               showCancelButton: true,
               confirmButtonColor: '#0CC27E',
-              cancelButtonColor: '#FF586B',
+              cancelButtonColor: '#d71920',
               confirmButtonText: this.translate.instant("generics.Update"),
               cancelButtonText: this.translate.instant("generics.No, cancel"),
               showLoaderOnConfirm: true,
@@ -1818,7 +1827,7 @@ export class MedicalCareComponent implements OnInit, OnDestroy{
           type: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#0CC27E',
-          cancelButtonColor: '#FF586B',
+          cancelButtonColor: '#d71920',
           confirmButtonText: this.translate.instant("generics.Update"),
           cancelButtonText: this.translate.instant("generics.No, cancel"),
           showLoaderOnConfirm: true,

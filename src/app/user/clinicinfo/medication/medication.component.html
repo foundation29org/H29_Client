@@ -2,7 +2,7 @@
 <section id="listMeditationSection" *ngIf="!viewMeditationSection">
 	<div class="row">
       <div class="col-sm-12">
-          <div class="content-header">{{'clinicalinfo.Drugs' | translate }}</div>
+          <div class="content-header primary">{{'clinicalinfo.Drugs' | translate }}</div>
       </div>
   </div>
   <div class="row">
@@ -19,7 +19,7 @@
 		</div>
 	</div>
 	<div class="center-elements" *ngIf="loading">
-		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 	</div>
 	<div *ngIf="!loading">
 		<div *ngIf="medications.length>0">
@@ -28,7 +28,7 @@
 					<h4>{{'medication.Current drugs' | translate }}</h4>
 				</div>
 				<div class="col-md-4" *ngFor="let medication of actualMedications; let i = index">
-					<div class="card bg-black bg-darken-4">
+					<div class="card gradient-red-pink">
 						<div class="card-body">
 							<div class="card-block pt-2 pb-0">
 								<div class="media">
@@ -41,7 +41,7 @@
 							<div class="pt-2 card-block pb-0">
 
 								<div ngbDropdown class="d-inline-block">
-									<button class="btn btn-primary btn-raised btn-round mr-1" id="dropdownBasic1" ngbDropdownToggle>{{'generics.Options' | translate }}</button>
+									<button class="btn btn-light mr-1" id="dropdownBasic1" ngbDropdownToggle>{{'generics.Options' | translate }}</button>
 	                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
 										<button class="dropdown-item" (click)="updateMedication(medication)">{{'generics.View' | translate }}</button>
 										<button class="dropdown-item" (click)="changeNotes(medication, contentNotes)">{{'generics.notes' | translate }}</button>
@@ -79,7 +79,7 @@
 							</div>
 							<div class="pt-2 card-block pb-0">
 								<div ngbDropdown class="d-inline-block">
-									<button class="btn btn-primary btn-raised btn-round mr-1" id="dropdownBasic1" ngbDropdownToggle>{{'generics.Options' | translate }}</button>
+									<button class="btn btn-primary btn-raised mr-1" id="dropdownBasic1" ngbDropdownToggle>{{'generics.Options' | translate }}</button>
 	                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
 										<button class="dropdown-item" (click)="updateMedication(medication)">{{'generics.View' | translate }}</button>
 										<button class="dropdown-item" (click)="deleteMedication(medication)">{{'generics.Delete' | translate }}</button>
@@ -105,7 +105,7 @@
 <section id="viewMeditationSection" *ngIf="viewMeditationSection">
 	<div class="row">
       <div class="col-sm-12">
-          <div class="content-header">{{'clinicalinfo.Drugs' | translate }}<button type="button" class="float-right btn btn-raised btn-danger" (click)="back()">{{'generics.Back' | translate }}</button></div>
+          <div class="content-header primary">{{'clinicalinfo.Drugs' | translate }}<button type="button" class="float-right btn btn-raised btn-danger" (click)="back()">{{'generics.Back' | translate }}</button></div>
       </div>
 
   </div>
@@ -126,7 +126,7 @@
 	</div>
 	<div class="row" *ngIf="actualMedication.startDate && !viewMedicationForm">
 		<div class="col-xl-3 col-lg-6 col-md-6 col-12">
-			<div class="card gradient-bloody-mary">
+			<div class="card gradient-red-pink">
 				<div class="card-body">
 					<div class="card-block pt-2 pb-0">
 						<div class="media">
@@ -141,7 +141,7 @@
 					</div>
 					<div class="pt-2 card-block pb-0">
 						<div ngbDropdown class="d-inline-block">
-							<button class="btn btn-primary btn-raised btn-round mr-1" id="dropdownBasic1" ngbDropdownToggle>{{'generics.Options' | translate }}</button>
+							<button class="btn btn-light mr-1" id="dropdownBasic1" ngbDropdownToggle>{{'generics.Options' | translate }}</button>
 							<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
 								<button class="dropdown-item" (click)="editDrug(actualMedication)">{{'generics.Edit' | translate }}</button>
 								<button class="dropdown-item" (click)="changeNotes(actualMedication, contentNotes)">{{'generics.notes' | translate }}</button>
@@ -185,11 +185,6 @@
 											<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 											<mat-datepicker touchUi="true" #picker></mat-datepicker>
 											<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-											<!--{{medication.startDate|date:timeformat}}
-											<input  class="form-control w-75 d-none" id="startDate" name="startDate"  matInput [value]="medication.startDate" [matDatepicker]="picker1" [max]="today" [(ngModel)]="medication.startDate" required startDate #startDate="ngModel">
-											<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-											<mat-datepicker touchUi="true" #picker1></mat-datepicker>
-											<small class="form-text text-muted danger" *ngIf="!startDate.valid && (startDate.dirty || startDate.touched)">{{'generics.required' | translate }}</small>-->
 									</div>
 								</div>
 								<div class="col-md-6 col-lg-6">
@@ -200,11 +195,6 @@
 											<input  class="col-md-6 col-lg-4 form-control w-75 d-none" name="endDate" [min]="startDate" matInput [matDatepicker]="picker2" [(ngModel)]="medication.endDate" (dateChange)="fieldchanged()">
 											<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
 											<mat-datepicker touchUi="true" #picker2></mat-datepicker>
-											<!--
-											{{medication.endDate|date:timeformat}}
-											<input  class="form-control w-75 d-none" id="endDate" name="endDate" [min]="medication.startDate" [max]="today" matInput [matDatepicker]="picker2" [(ngModel)]="medication.endDate" >
-											<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-											<mat-datepicker touchUi="true" #picker2></mat-datepicker>-->
 										</div>
 										<small class="form-text text-muted">{{'medication.If you are currently taking the drug, do not select end date' | translate }}</small>
 									</div>
@@ -266,7 +256,7 @@
 						</div>
 						<span *ngIf="!f.valid" class="form-text text-muted danger">{{'generics.requiredfieldsmissing' | translate }}</span>
 						<div class="form-actions center" *ngIf="!sending">
-							<button type="button" (click)="cancel()" class="btn btn-raised btn-raised btn-warning mr-1">
+							<button type="button" (click)="cancel()" class="btn btn-raised btn-raised btn-secondary mr-1">
 								<i class="ft-x"></i> {{'generics.Cancel' | translate }}
 							</button>
 							<div *ngIf="f.valid;then formValid else formError"></div>
@@ -274,7 +264,7 @@
 							<ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
 						</div>
 						<div class="col-md-12 center-elements" *ngIf="sending">
-							<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+							<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 						</div>
 					</form>
 				</div>
@@ -306,7 +296,7 @@
 								<tr *ngFor="let drug of historyDrugSelected ; let i = index">
 									<td>
 										<div ngbDropdown class="ml-1 d-inline-block">
-											<button class="btn btn-primary btn-raised btn-round mr-1" id="dropdownBasic1" ngbDropdownToggle><i class="icon-settings font-medium-4 fa  white align-middle"></i></button>
+											<button class="btn btn-primary btn-raised mr-1" id="dropdownBasic1" ngbDropdownToggle><i class="icon-settings font-medium-4 fa  white align-middle"></i></button>
 											<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
 												<button class="dropdown-item" (click)="changeNotes(drug, contentNotes)">{{'generics.notes' | translate }}</button>
 												<button *ngIf="!drug.endDate" class="dropdown-item" (click)="changeDose(drug, content)">{{'medication.Change Dose' | translate }}</button>
@@ -402,7 +392,7 @@
 					<ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
 				</div>
 				<div class="col-md-12 center-elements" *ngIf="sending">
-					<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+					<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 				</div>
 		</div>
 		</form>
@@ -446,7 +436,7 @@
 					<ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
 				</div>
 				<div class="col-md-12 center-elements" *ngIf="sending">
-					<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+					<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 				</div>
 		</div>
 		</form>
@@ -486,7 +476,7 @@
 					<ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
 				</div>
 				<div class="col-md-12 center-elements" *ngIf="sending">
-					<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+					<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 				</div>
 		</div>
 		</form>
@@ -535,7 +525,7 @@
 					<ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
 				</div>
 				<div class="col-md-12 center-elements" *ngIf="sending">
-					<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+					<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 				</div>
 		</div>
 		</form>

@@ -259,6 +259,10 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     private manageErrors(error,isExternalReq,authService,eventsService){
+      if (error.status === 403 && !isExternalReq && error.statusText == 'Forbidden') {
+          authService.logout();
+          this.router.navigate(['/login']);
+      }
       if (error.status === 401) {
         if(!isExternalReq){
           //logout users, redirect to login page

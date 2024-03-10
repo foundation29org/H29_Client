@@ -126,7 +126,7 @@ export class GroupComponent implements OnInit, OnDestroy{
             swal(this.translate.instant("groups.Group created"), '', "success");
           }else if(res.message=="Group exists"){
             swal(this.translate.instant("generics.Warning"), this.translate.instant("groups.Group already exists"), "error");
-          }else if(res.message=="user exists"){
+          }else if(res.message=="fail"){
             swal(this.translate.instant("generics.Warning"), this.translate.instant("registration.email already exists"), "error");
           }else if(res.message=="Fail sending email"){
             swal(this.translate.instant("generics.Warning"), this.translate.instant("registration.could not be sent to activate"), "error");
@@ -195,7 +195,7 @@ export class GroupComponent implements OnInit, OnDestroy{
       inputPlaceholder: this.translate.instant("groups.Select group"),
       showCancelButton: true,
       confirmButtonColor: '#0CC27E',
-      cancelButtonColor: '#FF586B',
+      cancelButtonColor: '#d71920',
       confirmButtonText: 'cambiar subscrición!',
       cancelButtonText: this.translate.instant("generics.No, cancel")
     }).then((result) => {
@@ -215,7 +215,7 @@ export class GroupComponent implements OnInit, OnDestroy{
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#0CC27E',
-        cancelButtonColor: '#FF586B',
+        cancelButtonColor: '#d71920',
         confirmButtonText: this.translate.instant("generics.Delete"),
         cancelButtonText: this.translate.instant("generics.No, cancel"),
         showLoaderOnConfirm: true,

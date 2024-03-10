@@ -1,17 +1,50 @@
 /* You can add global styles to this file, and also import other style files */
 
-svg {
-  fill: #000 !important;
-}
-
 footer{
   margin-top: 1em;
+}
+
+.pointer{
+  cursor: pointer !important;
+}
+
+input[type="checkbox"] {
+  accent-color: #d71920;
+}
+
+input[type="radio"] {
+  accent-color: #d71920;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: #d71920 !important;
+  color: #d71920 !important;
+}
+
+.swal2-icon.swal2-info {
+  border-color: #d71920 !important;
+  color: #d71920 !important;
+}
+.swal2-modal .swal2-confirm {
+  border-color: #d71920 !important;
+  background-color: #d71920 !important;
+  color: #fff !important;
+}
+
+.swal2-modal .swal2-cancel {
+  border-color: #868e96 !important;
+  background-color: #868e96 !important;
+  color: #fff !important;
 }
 
 .fijado{
   position: sticky;
   top: 80px;
   height: 100%;
+}
+
+form .form-section{
+  font-weight: 500 !important;
 }
 
 .labelLower{
