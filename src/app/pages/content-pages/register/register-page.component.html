@@ -46,43 +46,6 @@
                       </div>
                       <small class="form-text text-muted danger" *ngIf="email2.errors?.equalTo">{{'registration.The email do not match' | translate }}</small>
                     </div>
-                    <div class="form-group">
-                      <div class="input-group mb-3">
-                        <span class="input-group-text">
-                          <i class="ft-lock"></i>
-                        </span>
-                        <input type="password" class="form-control" name="password" id="password"
-                          placeholder="{{'generics.Password' | translate }}" ngModel required #password="ngModel"
-                          minlength="8" maxlength="24" validatePassword="password">
-                      </div>
-                      <small *ngIf="password.invalid && (password.dirty || password.touched)"
-                        class="form-text text-muted danger">
-                        <div *ngIf="password.errors.invalidPassword">
-                          {{'recoverpass.Password must have' | translate }} {{'(!@#$%^&*(),.?\":{}|<>)'}}
-                        </div>
-                        <div *ngIf="password.errors.required">
-                          {{'recoverpass.Password is required' | translate }}
-                        </div>
-                        <div
-                          *ngIf="(password.errors.minlength || password.errors.maxlength) && !password.errors.required">
-                          {{'generics.Passwordlength' | translate }}
-                        </div>
-                      </small>
-
-                      <!--<small class="form-text text-muted danger" *ngIf="!password.valid && (password.dirty || password.touched)">{{'generics.Passwordlength' | translate }}</small>-->
-                    </div>
-                    <div class="form-group">
-                      <div class="input-group mb-3">
-                        <span class="input-group-text">
-                          <i class="ft-lock"></i>
-                        </span>
-                        <input type="password" class="form-control" name="password2" id="password2"
-                          placeholder="{{'generics.Repeat password' | translate }}" ngModel required
-                          #password2="ngModel" [equalTo]="password">
-                      </div>
-                      <small class="form-text text-muted danger"
-                        *ngIf="password2.errors?.equalTo">{{'generics.Passwordnomatch' | translate }}</small>
-                    </div>
                     <div class="row">
                       <div class="col-sm-6">
                         <div class="input-group mb-0">
@@ -181,24 +144,27 @@
                           style="margin-top: 1em;white-space: normal;letter-spacing: 0px;">{{'registration.Privacy Policy' | translate }}</small> <i class="ft-external-link"></i></a> {{'registration.IMPORTANT NOTE2' | translate }}
                     </p>-->
                     <div class="form-group col-sm-offset-1">
-                      <p>
-                        <mat-checkbox title="{{'registration.msgactivateterms' | translate }}" class="example-margin"
-                        [(indeterminate)]="indeterminate" [disabled]="!openedTerms" name="terms" ngModel required
-                        #terms="ngModel" id="terms">
-                        <label>
-                          <a (click)="openTerms()" class="btn-flat btn-primary"><small
-                              style="margin-top: 1em;white-space: normal;text-transform: none;letter-spacing: 0px;">{{'registration.I have read and understood the' | translate }}</small>
-  
-                            <i class="ft-external-link"></i></a>
-                        </label>
-                      </mat-checkbox>
+                      <span>
+                        <div (click)="openedTerms || openTerms()">
+                          <mat-checkbox title="{{'registration.msgactivateterms' | translate }}" class="example-margin"
+                          [(indeterminate)]="indeterminate" [disabled]="!openedTerms" name="terms" ngModel required
+                          #terms="ngModel" id="terms">
+                          <label>
+                            <a (click)="$event.stopPropagation(); openTerms()" class="btn-flat btn-primary"><small
+                                style="margin-top: 1em;white-space: normal;text-transform: none;letter-spacing: 0px;">{{'registration.I have read and understood the' | translate }}</small>
+    
+                              <i class="ft-external-link"></i></a>
+                          </label>
+                        </mat-checkbox>
+                        </div>
+                        
                       
                       <small class="form-text text-muted danger"
                         *ngIf="!terms.valid && (terms.dirty || terms.touched) && openedTerms">{{'generics.required' |
                         translate }}</small>
                       <small class="form-text text-muted danger"
                         *ngIf="!terms.valid && (terms.dirty || terms.touched) && !openedTerms">{{'registration.It is mandatory to read the privacy policy before continuing' | translate }}</small>
-                      </p>
+                      </span>
                       
                         <span *ngIf="group==duchenneinternational">
                           <p>
@@ -289,7 +255,7 @@
                   </div>
                   <div class="col-md-12">
                     <button (click)="goToLogin()" type="button"
-                      class="btn btn-orange btn-block btn-raised">{{'menu.Login' | translate }}</button>
+                      class="btn btn-primary btn-block btn-raised">{{'menu.Login' | translate }}</button>
                   </div>
                 </div>
                 <div *ngIf="isFailEmail" class="card-block mx-auto">

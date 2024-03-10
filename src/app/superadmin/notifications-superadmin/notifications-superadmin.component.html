@@ -14,7 +14,7 @@
 						</select>
 					</div>
 					<div class="center-elements" *ngIf="loadingNotifications">
-						<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+						<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 					</div>
 					<div *ngIf="groupSelected!=''">
 
@@ -92,7 +92,7 @@
 					<!--<button type="button" class="btn btn-secondary btn-raised" (click)="back()">{{'generics.Back' | translate }}</button>-->
 				</div>
 				<div class="center-elements" *ngIf="loadingNotifications">
-					<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+					<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 				</div>
 				<div class="card-body" *ngIf="!loadingNotifications">
 					<div class="px-3">
@@ -199,7 +199,7 @@
 							</div>
 
 							<div class="form-actions center" *ngIf="!sending">
-								<button type="button" (click)="back()" class="btn btn-raised btn-raised btn-warning mr-1">
+								<button type="button" (click)="back()" class="btn btn-raised btn-raised btn-secondary mr-1">
 									<i class="ft-x"></i> {{'generics.Cancel' | translate }}
 								</button>
 								<button type="button" type="submit" [disabled]="!f.valid || (alert._id && (alert.type=='6months' || alert.type=='12months' || alert.type=='currentGroup'))" class="btn btn-raised btn-raised btn-primary">
@@ -207,7 +207,7 @@
 								</button>
 							</div>
 							<div class="col-md-12 center-elements" *ngIf="sending">
-								<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+								<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 							</div>
 						</form>
 					</div>
@@ -219,6 +219,6 @@
 		</div>
 	</div>
 	<div class="col-lg-12 col-12 form-group" *ngIf="working">
-		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 		<div>{{'generics.Sending' | translate }}...</div>
 	</div>

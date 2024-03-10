@@ -2,7 +2,7 @@
 <section id="basic-form-layouts">
 	<div class="row">
       <div class="col-sm-12">
-          <div class="content-header">{{'generics.My Profile' | translate }}</div>
+          <div class="content-header primary">{{'generics.My Profile' | translate }}</div>
       </div>
   </div>
 </section>
@@ -27,8 +27,8 @@
 			<div class="chat-name p-2 bg-white" style="border-bottom: 1px solid #e4e7ed;">
 				<div class="media-body">
 					<h4 class="form-section">
-						<i [ngClass]="{'ft-user success': activeTittleMenu=='General'}"></i>
-						<i [ngClass]="{'ft-lock danger': activeTittleMenu=='Password'}"></i>
+						<i [ngClass]="{'ft-user primary': activeTittleMenu=='General'}"></i>
+						<i [ngClass]="{'ft-lock primary': activeTittleMenu=='Password'}"></i>
 						<i *ngIf="role=='User'" [ngClass]="{'ft-lock danger': activeTittleMenu=='ExportData'}"></i>
 						{{ msgActiveTittleMenu }}
 					</h4>
@@ -36,7 +36,7 @@
 			</div>
 				<div *ngIf="activeTittleMenu == 'General'">
 					<div class="center-elements" *ngIf="loading">
-						<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+						<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 					</div>
 					<div class="row" *ngIf="!loading">
 						<div class="col-md-12">
@@ -65,7 +65,7 @@
 														</div>
 													</div>
 												</div>
-												<h4 *ngIf="role=='User'" class="form-section"><i class="ft-settings warning"></i> {{'profile.Settings' | translate }}</h4>
+												<h4 *ngIf="role=='User'" class="form-section"><i class="ft-settings primary"></i> {{'profile.Settings' | translate }}</h4>
 												<div *ngIf="role=='User'" class="row">
 													<div class="col-md-6">
 														<div class="form-group">
@@ -98,7 +98,7 @@
 												</div>
 											</div>
 											<div class="form-actions center" *ngIf="!sending">
-												<button type="button" (click)="resetForm()" class="btn btn-raised btn-raised btn-warning mr-1">
+												<button type="button" (click)="resetForm()" class="btn btn-raised btn-raised btn-secondary mr-1">
 													<i class="ft-x"></i> {{'generics.Cancel' | translate }}
 												</button>
 												<div *ngIf="f.valid;then formValid else formError"></div>
@@ -106,9 +106,31 @@
 												<ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button></ng-template>
 											</div>
 											<div class="col-md-12 center-elements" *ngIf="sending">
-												<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+												<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 											</div>
 										</form>
+
+										<div class="mt-3">
+											<h4 *ngIf="role=='User'" class="form-section"><i class="fa fa-trash primary"></i> {{'profile.Delete account' | translate }}</h4>
+											<button *ngIf="!showInstructions" class="btn btn-raised btn-primary" (click)="startDeleting()">{{'generics.Delete' | translate }}</button>
+
+											<div class="form-group" *ngIf="showInstructions">
+												<form  (ngSubmit)="deleteAccount()" #deleteForm="ngForm" style="max-width: 400px;">
+													<div class="col-md-12">
+														<span>{{'profile.We just sent you a code to continue deleting the account. Please check your inbox. Cant find it?' | translate }}</span><span class="ml-1"><a (click)="backToLogin()" style="text-decoration: underline !important;">{{'login.Try again' | translate }}</a></span>
+														<input type="number" class="mt-2 form-control code-input" name="loginCode" id="loginCode" placeholder="{{'profile.Paste deleting code' | translate }}" ngModel required loginCode #loginCode="ngModel">
+														<small class="form-text text-muted danger" *ngIf="!loginCode.valid && (loginCode.dirty || loginCode.touched)">{{'login.enterValidCode' | translate }}</small>
+													  </div>
+													  <div class="col-md-12 mt-2">
+														<div *ngIf="deleteForm.valid;then formValid2 else formError2"></div>
+														<button class="btn btn-secondary" (click)="cancelDeleting()">{{'generics.Cancel' | translate }}</button>
+														<ng-template #formValid2><button class="btn btn-primary btn-foursquare" type="submit" title="{{'generics.Delete' | translate }}"> {{'generics.Delete' | translate }}</button></ng-template>
+														<ng-template #formError2><button class="btn btn-primary btn-foursquare" type="button" (click)="submitInvalidForm2()" title="{{'generics.Delete' | translate }}">{{'generics.Delete' | translate }}</button></ng-template>
+													  </div>
+												</form>
+												
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -196,7 +218,7 @@
 				</div>
 				<div class="form-group pt-2 text-center" *ngIf="loading && activeTittleMenu == 'ExportData'">
 					<span>
-						<i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i>
+						<i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i>
 					</span>
 					<br>
 					<div style="margin-top: 2%;">
@@ -223,7 +245,7 @@
 				<a (click)="selectSections('deselect')"><i class="fa fa-trash"></i>{{'profile.Deselect all' | translate }}</a>
 			</div>
 			<div *ngIf="loadingModalPDF">
-				<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+				<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 			</div>
 			<div *ngIf="!loadingModalPDF">
 				<div>

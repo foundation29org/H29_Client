@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
 import { HttpClient } from "@angular/common/http";
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import * as decode from 'jwt-decode';
 import { ICurrentPatient } from './ICurrentPatient.interface';
-import { Subscription } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -23,11 +21,8 @@ export class AuthService {
   private expToken: number = null;
   private currentPatient: ICurrentPatient = null;
   private patientList: Array<ICurrentPatient> = null;
-  private tock=0;
-  private cancelWaitingAuthy:Boolean=false;
 
   private isApp: boolean = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1 && location.hostname != "localhost" && location.hostname != "127.0.0.1";
-  private subscription: Subscription = new Subscription();
 
   constructor(private http: HttpClient) {
   }
@@ -65,6 +60,7 @@ export class AuthService {
     this.setAuthenticated(token);
     // decode the token to get its payload
     const tokenPayload = decode(token);
+    console.log(tokenPayload)
     this.setIdUser(tokenPayload.sub);
     this.setExpToken(tokenPayload.exp);
     this.setRole(tokenPayload.role);
@@ -83,10 +79,35 @@ export class AuthService {
     sessionStorage.setItem('token', token)
   }
 
+  sendCode(formValue: any){
+    //your code for signing up the new user
+    return this.http.post(environment.api+'/api/sendcode',formValue)
+    .map( (res : any) => {
+          if(res.message == "Check email"){
+            var msg = "";
+            this.isloggedIn = true;
+            return {logged:this.isloggedIn,reason:msg};
+          }else{
+            this.isloggedIn = false;
+            this.setMessage(res.message);
+            return {logged:this.isloggedIn,reason:"Response error"};
+          }
+        }, (err) => {
+          console.log(err);
+          //this.isLoginFailed = true;
+          this.setMessage("Login failed");
+          this.isloggedIn = false;
+          //return this.isloggedIn;
+          return {logged:this.isloggedIn,reason:"Response error"};
+        }
+     );
+  }
+
   signinUser(formValue: any){
     //your code for signing up the new user
     return this.http.post(environment.api+'/api/signin',formValue)
       .map( (res : any) => {
+        console.log(res)
           if(res.message == "You have successfully logged in"){
             //entrar en la app
             this.setLang(res.lang);
@@ -94,17 +115,8 @@ export class AuthService {
             this.setEnvironment(res.token);
             this.setMessage(res.message);
             var msg = "";
-            if(res.showPopup){
-              msg = "showPopup";
-              this.setMessage(msg);
-            }
             return {logged:this.isloggedIn,reason:msg};
 
-          }else if(res.type=="2FA request approval"){
-            return {logged:this.isloggedIn,reason:"2FA"};
-          }
-          else if(res.type=="Update Phone"){
-            return {logged:this.isloggedIn,reason:"Update Phone"};
           }
           else{
             this.isloggedIn = false;
@@ -121,61 +133,6 @@ export class AuthService {
          return {logged:this.isloggedIn,reason:"Response error"};
        }
     );
-  }
-
-  signin2FA(email,password,deviceId,deviceInformation){
-    this.cancelWaitingAuthy=false;
-    return Observable.create(subject => {
-      var body = {
-        "email": email,
-        "password": password,
-        "deviceInformation": deviceInformation,
-        "deviceId":deviceId
-      }
-      this.http.post(environment.api+'/api/signin2FA',body).timeout(60000).catch(err => {
-          this.isloggedIn=false;
-          this.setMessage("Authy time out");
-          subject.next(false);
-          subject.complete();
-          return Observable.throw(err);
-        }).subscribe( (response:any) => {
-        if(response.message == "You have successfully logged in"){
-          if (response.token!=null){
-            this.setLang(response.lang);
-            sessionStorage.setItem('lang', response.lang)
-            this.setEnvironment(response.token);
-            var msg = "";
-            if(response.showPopup){
-              msg = "showPopup";
-              this.setMessage(msg);
-            }else{
-              this.setMessage(response.message);
-            }
-            this.isloggedIn=true;
-            subject.next(true);
-            subject.complete();
-          }
-          
-        }
-        else if(response.message == "Authentication denied"){
-          this.isloggedIn=false;
-          this.setMessage("Authy access denied");
-          subject.next(false);
-          subject.complete();
-        }
-        else if(this.cancelWaitingAuthy==true){
-          this.isloggedIn=false;
-          this.setMessage("Cancel Authy");
-          this.subscription.unsubscribe();
-          subject.next(false);
-          subject.complete();
-        }
-      });
-    });
-  }
-
-  stopPetition(){
-    this.cancelWaitingAuthy=true;
   }
 
   logout() {

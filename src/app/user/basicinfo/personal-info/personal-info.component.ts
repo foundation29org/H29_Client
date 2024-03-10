@@ -361,9 +361,11 @@ export class PersonalInfoComponent implements OnInit, OnDestroy{
                     type: 'info'
                     }).then((result) => {
                       if (result.value) {
+                        this.loadData();
                         //location.reload();
-                        this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
-                        this.router.navigate([this.router.url]));
+                        //aqui ha habido un fallo creo
+                        //this.router.navigateByUrl('/', {skipLocationChange: true}).then(() =>
+                        //this.router.navigate([this.router.url]));
                       }
                     }).catch(swal.noop);
 

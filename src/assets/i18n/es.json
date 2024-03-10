@@ -46,7 +46,13 @@
     "Deselect all": "Deseleccionar todo",
     "NoSubscriptions":"No hay subscripciones disponibles aún",
     "Your file is being generated":"Su archivo está siendo generado",
-    "File created":"Archivo creado"
+    "File created":"Archivo creado",
+    "Delete account": "Eliminar cuenta",
+    "We just sent you a code to continue deleting the account. Please check your inbox. Cant find it?": "Acabamos de enviarle un código para continuar con la eliminación de la cuenta. Por favor, compruebe su bandeja de entrada. ¿No lo encuentra?",
+    "Paste deleting code": "Pegue el código de eliminación",
+    "I confirm that I want to delete the account": "Confirmo que quiero eliminar la cuenta",
+    "Account deleted successfully": "Cuenta eliminada con éxito",
+    "Something has gone wrong, for your safety, we are going to close the session": "Algo ha ido mal, por su seguridad, vamos a cerrar la sesión"
   },
   "login":{
     "Login": "Iniciar sesión",
@@ -54,7 +60,7 @@
     "Recover Password": "Recuperar contraseña",
     "Create User": "Crear usuario",
     "Account is temporarily locked": "La cuenta está temporalmente bloqueada, por favor inténtelo de nuevo en 2 horas.",
-    "Login failed": "El usuario/password que introdujo es incorrecto, por favor inténtelo de nuevo.",
+    "Login failed": "Inicio de sesión fallido",
     "Account activated": "Cuenta activada",
     "could not be activated": "La cuenta no pudo ser activada. Haga clic nuevamente en 'Activar cuenta' del correo electrónico de verificación.",
     "The account is not activated": "La cuenta aún no ha sido activada. Haz clic en 'Activar cuenta' en el correo electrónico de verificación que has recibido.",
@@ -89,7 +95,12 @@
     "consent4": "1) Lea la política de privacidad actualizada",
     "consent5": "2) (Re)consienta haciendo clic en las casillas correspondientes",
     "consent6": "Esto es obligatorio y sólo lleva <strong>unos minutos.</strong>",
-    "consent7": "Gracias!"
+    "consent7": "Gracias!",
+    "Continue with email": "Continuar con correo electrónico",
+    "We just sent you a temporary login code. Please check your inbox. Cant find it?": "Acabamos de enviarle un código de inicio de sesión temporal. Por favor, compruebe su bandeja de entrada. ¿No lo encuentra?",
+    "Try again": "Inténtalo de nuevo",
+    "Paste login code": "Pegue el código de inicio de sesión",
+    "Continue with login code": "Continuar con el código de inicio de sesión"
   },
   "registration":{
     "Registration": "Registro",
@@ -98,7 +109,7 @@
     "Security Policy": "Politica de seguridad",
     "Get Started": "Empezar",
     "email already exists": "Ya existe una cuenta con este correo electrónico",
-    "Check the email": "Verifique el correo electrónico para activar la cuenta",
+    "Check the email": "Cuenta creada. Ahora puedes iniciar sesión",
     "could not be sent to activate": "Cuenta registrada, pero no se pudo enviar el correo electrónico para activarla. Por favor, póngase en contacto con el administrador: info@foundation29.org",
     "Please select a group": "Por favor, seleccione el grupo de pacientes al que pertenece",
     "Please select a organization": "Por favor, seleccione la organización de pacientes a la que pertenece",
@@ -189,6 +200,7 @@
     "Sending": "Enviando",
     "Add": "Añadir",
     "Saved": "Guardado",
+    "Saving": "Guardando",
     "Not saved": "No guardado",
     "Saved on": "Guardado el",
     "Edit": "Editar",

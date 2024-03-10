@@ -2,7 +2,7 @@
 <section id="basic-form-layouts">
 	<div class="row">
       <div class="col-sm-12">
-          <div class="content-header">{{'clinicalinfo.Medication' | translate }}</div>
+          <div class="content-header primary">{{'clinicalinfo.Medication' | translate }}</div>
       </div>
   </div>
 	<div class="row">
@@ -16,7 +16,7 @@
 	</div>
 	</div>
 	<div class="center-elements" *ngIf="loading">
-		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 	</div>
 	<div class="row" *ngIf="!loading && groupSelected._id">
 
@@ -66,7 +66,7 @@
 										</tbody>
 									</table>
 									<div class="center-elements" *ngIf="!sending">
-										<button type="button" class="btn btn-raised btn-raised btn-warning" (click)="deleteAllDrugs()">Eliminar todos los fármacos</button>
+										<button type="button" class="btn btn-raised btn-raised btn-secondary" (click)="deleteAllDrugs()">Eliminar todos los fármacos</button>
 									</div>
 								</div>
 								<div *ngIf="medications.drugs.length == 0 ">
@@ -76,7 +76,7 @@
 									<button type="button" class="btn btn-raised btn-raised btn-primary" (click)="onSubmit()"><i class="fa fa-check-square-o"></i> {{'generics.Save' | translate }}</button>
 								</div>-->
 								<div class="col-md-12 center-elements" *ngIf="sending">
-									<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+									<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 								</div>
 							</div>
 						</div>
@@ -116,7 +116,7 @@
 										</div>
 									</div>
 									<div class="col-md-12 center-elements" *ngIf="sending">
-										<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+										<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 									</div>
 								</form>
 							</div>
@@ -167,14 +167,14 @@
 										</tbody>
 									</table>
 									<div class="center-elements" *ngIf="!sending">
-										<button type="button" class="btn btn-raised btn-raised btn-warning" (click)="deleteAllSideEffects()">Eliminar todos los sideEffect</button>
+										<button type="button" class="btn btn-raised btn-raised btn-secondary" (click)="deleteAllSideEffects()">Eliminar todos los sideEffect</button>
 									</div>
 								</div>
 								<div *ngIf="medications.sideEffects.length == 0 ">
 									No sideEffects, please add new.
 								</div>
 								<div class="col-md-12 center-elements" *ngIf="sending">
-									<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+									<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 								</div>
 							</div>
 						</div>
@@ -208,7 +208,7 @@
 										</div>
 									</div>
 									<div class="col-md-12 center-elements" *ngIf="sending">
-										<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+										<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 									</div>
 								</form>
 							</div>
@@ -259,14 +259,14 @@
 										</tbody>
 									</table>
 									<div class="center-elements" *ngIf="!sending">
-										<button type="button" class="btn btn-raised btn-raised btn-warning" (click)="deleteAllAdverseEffects()">Eliminar todos los efectos adversos</button>
+										<button type="button" class="btn btn-raised btn-raised btn-secondary" (click)="deleteAllAdverseEffects()">Eliminar todos los efectos adversos</button>
 									</div>
 								</div>
 								<div *ngIf="medications.adverseEffects.length == 0 ">
 									No adverseEffects, please add new.
 								</div>
 								<div class="col-md-12 center-elements" *ngIf="sending">
-									<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+									<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 								</div>
 							</div>
 						</div>
@@ -300,7 +300,7 @@
 										</div>
 									</div>
 									<div class="col-md-12 center-elements" *ngIf="sending">
-										<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+										<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 									</div>
 								</form>
 							</div>

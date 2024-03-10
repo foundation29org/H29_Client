@@ -47,7 +47,7 @@ export class TermsConditionsPageComponent implements OnInit{
           type: undefined,
           showCancelButton: false,
           confirmButtonColor: '#0CC27E',
-          cancelButtonColor: '#FF586B',
+          cancelButtonColor: '#d71920',
           confirmButtonText: this.translate.instant("generics.Close"),
           showLoaderOnConfirm: true,
           allowOutsideClick: false

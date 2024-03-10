@@ -1,34 +1,34 @@
 <div class="row">
   <div class="col-sm-12">
-    <div class="content-header">
+    <div class="content-header primary">
       {{'menu.Genotype' | translate }}
     </div>
     <div *ngIf="!uploadingGenotype">
       <br>
-      <p *ngIf="group==duchenneinternational" class="content-sub-header">{{'genotype.explanation of genotype 1 Duchenne' | translate }}</p>
-      <p *ngIf="group!=duchenneinternational" class="content-sub-header">{{'genotype.explanation of genotype 1' | translate }}</p>
+      <p *ngIf="group==duchenneinternational" class="">{{'genotype.explanation of genotype 1 Duchenne' | translate }}</p>
+      <p *ngIf="group!=duchenneinternational" class="">{{'genotype.explanation of genotype 1' | translate }}</p>
       <ol *ngIf="group!=duchenneinternational">
-        <li> <p class="content-sub-header">{{'genotype.explanation of genotype 1a' | translate }}</p> </li>
-        <li><p class="content-sub-header">{{'genotype.explanation of genotype 1b' | translate }}</p> </li>
+        <li> <p class="">{{'genotype.explanation of genotype 1a' | translate }}</p> </li>
+        <li><p class="">{{'genotype.explanation of genotype 1b' | translate }}</p> </li>
       </ol>
-      <p class="content-sub-header">{{'genotype.explanation of genotype 2' | translate }}&nbsp;
+      <p class="">{{'genotype.explanation of genotype 2' | translate }}&nbsp;
         <a href="https://rareuniversity.com/p/genetic-concepts-for-rare-disease-patients-and-families" target="_blank">https://rareuniversity.com/p/genetic-concepts-for-rare-disease-patients-and-families</a>
       </p>
-      <p class="content-sub-header">
+      <p class="">
         <a class="primary" (click)="showInfo()">
           <i *ngIf="!showinformation" class="ft-chevron-down"></i>
           <i *ngIf="showinformation" class="ft-chevron-up"></i>
           {{'genotype.Click to display/hide information about genomics' | translate }}
         </a>
       </p>
-      <ngb-accordion *ngIf="showinformation" class="content-sub-header" [closeOthers]="true">
+      <ngb-accordion *ngIf="showinformation" class="" [closeOthers]="true">
         <ngb-panel id="genome">
           <ng-template ngbPanelTitle>
               <p><i class="icon-question mr-2"></i> {{'genotype.What is the genome' | translate}}</p>
           </ng-template>
           <ng-template ngbPanelContent>
             <div class="card-block">
-              <p class="content-sub-header" id="genome">{{'genotype.Answer genome' | translate}}</p>
+              <p class="" id="genome">{{'genotype.Answer genome' | translate}}</p>
             </div>
           </ng-template>
         </ngb-panel>
@@ -97,7 +97,7 @@
       <label class="question">{{'stats.geneticFileQuestion' | translate }}</label>
       <input id="yesAnswer" type="checkbox" (change)="setAnswer($event)" style="margin-left: 0.2rem"><label class="answer ml-1 mr-1" style="margin-left: 0.2rem">{{'generics.Yes' | translate }}</label>
       <input id="noAnswer" type="checkbox" (change)="setAnswer($event)" style="margin-left: 0.3rem"><label class="answer ml-1" style="margin-left: 0.2rem">{{'generics.No' | translate }}</label>
-      <!--<ui-switch id="answer" (change)="setAnswer($event)"></ui-switch>-->
+      <!--<ui-switch color="#d71920" id="answer" (change)="setAnswer($event)"></ui-switch>-->
       <div class="right-elements" *ngIf="genotype.data.length>0 || editingGenotype || filesOnBlob.length > 0">
         <button type="button" *ngIf="!editingGenotype && group != duchenneinternational" class="btn btn-raised btn-primary" (click)="editGenotype()">{{'genotype.Modify' | translate }}</button>
         <div *ngIf="!editingGenotype && group == duchenneinternational">
@@ -129,7 +129,7 @@
 
 <section id="panel-editing-genotype" *ngIf="editingGenotype">
 	<div class="row">
-		<div class="col-md-12 content-sub-header">
+		<div class="col-md-12 ">
 
       <!--INICIO SECCIONES<-->
       <div class="row" id="sectionsOfGenotype" matchHeight ="card">
@@ -148,10 +148,10 @@
                   </div>
               </div>
               <div class="card-footer bt-n">
-                <label *ngIf="!uploadingGenotype && !isApp" class="btn btn-outline-primary btn-lg btn-block btn-round">
+                <label *ngIf="!uploadingGenotype && !isApp" class="btn btn-outline-primary btn-lg btn-block">
                     {{'generics.Upload' | translate }} <input type="file" (change)="onFileChange($event)" style="display: none;">
                 </label>
-                <label *ngIf="!uploadingGenotype && isApp" class="btn btn-outline-primary btn-lg btn-block btn-round">
+                <label *ngIf="!uploadingGenotype && isApp" class="btn btn-outline-primary btn-lg btn-block">
                     {{'generics.Upload' | translate }} <input type="file" (change)="onFileChange($event)" style="display: none;">
                 </label>
                 <h4 *ngIf="uploadingGenotype" class="center-elements">{{'generics.Upload Progress' | translate }}: {{uploadProgress | async}}%</h4>
@@ -172,7 +172,7 @@
                     </div>
                 </div>
                 <div class="card-footer bt-n">
-                  <button type="button" class="btn btn-outline-danger btn-lg btn-block btn-round" (click)="showPanelManual()">{{'generics.View' | translate }}</button>
+                  <button type="button" class="btn btn-outline-danger btn-lg btn-block" (click)="showPanelManual()">{{'generics.View' | translate }}</button>
                 </div>
             </div>
         </div>
@@ -246,7 +246,7 @@
       -->
       </div>
       <div id="panel-bam-fastq" style="display:none;">
-        <p class="content-sub-header">{{'genotype.explanation of genotype 3' | translate }}</p>
+        <p class="">{{'genotype.explanation of genotype 3' | translate }}</p>
         <div class="right-elements">
           <label *ngIf="!uploadingGenotype" class="btn btn-raised btn-raised btn-primary">
               {{'generics.Upload' | translate }} <input type="file" (change)="onFileChange($event)" accept=".bam , .fq.gz" style="display: none;">
@@ -257,7 +257,7 @@
       </div>
 
       <div id="panel-vcf" style="display:none;">
-        <p class="content-sub-header">{{'genotype.explanation of genotype 3' | translate }}</p>
+        <p class="">{{'genotype.explanation of genotype 3' | translate }}</p>
         <div class="right-elements">
           <label *ngIf="!uploadingGenotype" class="btn btn-raised btn-raised btn-primary">
               {{'generics.Upload' | translate }} <input type="file" (change)="onFileChange($event)" accept=".vcf" style="display: none;">
@@ -372,7 +372,7 @@
 
 <section *ngIf="!editingGenotype">
   <div class="col-md-12 center-elements" *ngIf="uploadingGenotype">
-    <div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+    <div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
   </div>
 
   <div class="row" *ngIf="filesOnBlob.length > 0 && !uploadingGenotype && !showOnlyQuestion">
@@ -419,7 +419,7 @@
   </div>
 
   <div class="col-md-12 center-elements" *ngIf="loading">
-    <div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+    <div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
   </div>
   <div *ngIf="genotype.data.length>0">
     <div class="row" *ngIf="!uploadingGenotype">

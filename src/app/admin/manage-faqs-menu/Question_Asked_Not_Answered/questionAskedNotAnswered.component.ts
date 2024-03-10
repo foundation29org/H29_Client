@@ -102,6 +102,7 @@ export class QuestionAskedNotAnsweredComponent implements OnDestroy{
         this.subscription.add(this.http.delete((environment.api+'/api/bots/'+ this.groupId), {"params":paramssend})
           .subscribe( (res : any) => {
             //this.showPanelNewQnAPairs = false;
+            this.removeFilter();
             this.getNotAnsweredFAQs();
             return;
             //this.showPanelNewQnAPairs = true;
@@ -122,7 +123,7 @@ export class QuestionAskedNotAnsweredComponent implements OnDestroy{
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#0CC27E',
-        cancelButtonColor: '#FF586B',
+        cancelButtonColor: '#d71920',
         confirmButtonText: this.translate.instant("generics.Delete"),
         cancelButtonText: this.translate.instant("generics.No, cancel"),
         showLoaderOnConfirm: true,

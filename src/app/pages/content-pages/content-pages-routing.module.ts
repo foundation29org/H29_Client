@@ -3,8 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ErrorPageComponent } from "./error/error-page.component";
 import { LoadingPageComponent } from "./loading/loading-page.component";
-import { ForgotPasswordPageComponent } from "./forgot-password/forgot-password-page.component";
-import { NewPasswordPageComponent } from "./new-password/new-password-page.component";
 import { LoginPageComponent } from "./login/login-page.component";
 import { RegisterPageComponent } from "./register/register-page.component";
 import { PrivacyPolicyPageComponent } from "./privacy-policy/privacy-policy.component";
@@ -27,20 +25,6 @@ const routes: Routes = [
         component: LoadingPageComponent,
         data: {
           title: 'Loading Page'
-        }
-      },
-      {
-        path: 'forgotpassword',
-        component: ForgotPasswordPageComponent,
-        data: {
-          title: 'menu.Forgot Password'
-        }
-      },
-      {
-        path: 'newpassword',
-        component: NewPasswordPageComponent,
-        data: {
-          title: 'menu.New Password'
         }
       },
       {

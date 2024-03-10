@@ -1,7 +1,7 @@
 <section id="listMeditationSection">
 	<div class="row">
       <div class="col-sm-12">
-          <div class="content-header">
+          <div class="content-header primary">
 				<span *ngIf="!addedClinicalTrial && !saving">{{'clinicalinfo.Clinical Trials' | translate }}</span>
 				<span *ngIf="listClinicalTrials && addedClinicalTrial && !saving">{{'clinicaltrials.New Clinical Trial' | translate }}</span>
 			</div>
@@ -109,18 +109,8 @@
 			</div>
 			<div class="col-md-6">
 				<label for="multidisciplanary">{{'generics.Start date (or approximate)' | translate }}</label>
-				<!--<div *ngIf="!isSafari && !isIeOrEdge">
-					<input type="date" class="form-control" name="clinicalTrial.date" [(ngModel)]="clinicalTrial.date" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Date Opened" required dateTime #dateTime="ngModel">
-					<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-				</div>
-				<div *ngIf="isSafari || isIeOrEdge">
-					<input  class="form-control w-75 d-inline" name="clinicalTrial.date"  matInput [matDatepicker]="picker" [(ngModel)]="clinicalTrial.date" dateTime #dateTime="ngModel">
-					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-					<mat-datepicker touchUi="true" #picker></mat-datepicker>
-					<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
-				</div>-->
 				<div>
-					<input  class="form-control w-75 d-inline" name="clinicalTrial.date"  matInput [matDatepicker]="picker" [(ngModel)]="clinicalTrial.date" dateTime #dateTime="ngModel">
+					<input readonly (focus)="picker.open()" class="form-control w-75 d-inline pointer" name="clinicalTrial.date"  matInput [matDatepicker]="picker" [(ngModel)]="clinicalTrial.date" dateTime #dateTime="ngModel">
 					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 					<mat-datepicker touchUi="true" #picker></mat-datepicker>
 					<small class="form-text text-muted danger" *ngIf="!dateTime.valid && (dateTime.dirty || dateTime.touched)">{{'generics.Invalid' | translate }}</small>
@@ -129,7 +119,7 @@
 			<div class="col-md-6">
 				<label for="multidisciplanary2">{{'generics.End Date' | translate }}</label>
 				<div>
-					<input  class="form-control w-75 d-inline" name="clinicalTrial.endDate"  matInput [matDatepicker]="picker2" [(ngModel)]="clinicalTrial.endDate" dateTime2 #dateTime2="ngModel">
+					<input readonly (focus)="picker2.open()" class="form-control w-75 d-inline pointer" name="clinicalTrial.endDate"  matInput [matDatepicker]="picker2" [(ngModel)]="clinicalTrial.endDate" dateTime2 #dateTime2="ngModel">
 					<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
 					<mat-datepicker touchUi="true" #picker2></mat-datepicker>
 					<small class="form-text text-muted danger" *ngIf="!dateTime2.valid && (dateTime2.dirty || dateTime2.touched)">{{'generics.Invalid' | translate }}</small>
@@ -145,7 +135,7 @@
   </div>
 
 	<div class="col-lg-12 col-12 form-group" *ngIf="saving">
-		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 	</div>
 </div>
 </section>

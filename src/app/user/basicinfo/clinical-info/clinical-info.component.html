@@ -2,7 +2,7 @@
 <section id="basic-form-layouts">
 	<div class="row">
         <div class="col-sm-12">
-            <div class="content-header">Información Clínica</div>
+            <div class="content-header primary">Información Clínica</div>
         </div>
     </div>
 	<div class="row">
@@ -51,7 +51,7 @@
 								</div>
                 <div class="row">
                 </div>
-								<h4 class="form-section"><i class="ft-map-pin warning"></i> Otros</h4>
+								<h4 class="form-section"><i class="ft-map-pin primary"></i> Otros</h4>
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group">
@@ -106,7 +106,7 @@
 														<label ngbButtonLabel class="btn-raised btn-danger">
 																<input ngbButton type="radio" value="Muy triste"> <img src="assets/img/icons/muytriste.png">
 														</label>
-														<label ngbButtonLabel class="btn-raised btn-warning">
+														<label ngbButtonLabel class="btn-raised btn-secondary">
 																<input ngbButton type="radio" value="Triste"> <img src="assets/img/icons/triste.png">
 														</label>
 														<label ngbButtonLabel class="btn-raised btn-secondary">
@@ -177,7 +177,7 @@
 							</div>
 							<span *ngIf="!f.valid" class="form-text text-muted danger">{{'generics.requiredfieldsmissing' | translate }}</span>
 							<div class="form-actions center">
-								<button type="button" (click)="resetForm()" class="btn btn-raised btn-raised btn-warning mr-1">
+								<button type="button" (click)="resetForm()" class="btn btn-raised btn-raised btn-secondary mr-1">
 									<i class="ft-x"></i> {{'generics.Cancel' | translate }}
 								</button>
 								<div *ngIf="f.valid;then formValid else formError"></div>

@@ -2,12 +2,12 @@
 <section id="basic-form-layouts">
 	<div class="row">
 		<div class="col-sm-12">
-			<div class="content-header">{{'social.Social patient information' | translate }}</div>
+			<div class="content-header primary">{{'social.Social patient information' | translate }}</div>
 		</div>
 	</div>
 	<div class="center-elements" *ngIf="loading">
 		<div>
-			<p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p>
+			<p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p>
 		</div>
 	</div>
 	<div class="row" *ngIf="!loading">
@@ -210,7 +210,7 @@
 										</div>
 									</div>
 								</div>
-								<h4 class="form-section"><i class="icon-users warning"></i> {{'social.LivingSupport' |
+								<h4 class="form-section"><i class="icon-users primary"></i> {{'social.LivingSupport' |
 									translate }}</h4>
 								<div class="row">
 									<div class="col-md-6">
@@ -353,7 +353,7 @@
 
 							<div class="form-actions center" *ngIf="!sending">
 								<button type="button" (click)="resetForm()"
-									class="btn btn-raised btn-raised btn-warning mr-1">
+									class="btn btn-raised btn-raised btn-secondary mr-1">
 									<i class="ft-x"></i> {{'generics.Cancel' | translate }}
 								</button>
 								<button type="button" type="submit" [disabled]="!f.valid"
@@ -363,7 +363,7 @@
 							</div>
 							<div class="col-md-12 center-elements" *ngIf="sending">
 								<div>
-									<p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p>
+									<p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p>
 								</div>
 							</div>
 						</form>

@@ -145,9 +145,6 @@ export class RegisterPageComponent implements OnDestroy{
       this.isVerifyemail = false;
       this.isEmailBusy = false;
       this.isFailEmail = false;
-      //codificar el password
-      this.registerForm.value.password = sha512(this.registerForm.value.password);
-      this.registerForm.value.password2 = sha512(this.registerForm.value.password2);
       this.registerForm.value.email = (this.registerForm.value.email).toLowerCase();
       this.registerForm.value.lang=this.translate.store.currentLang;
       this.registerForm.value.countryCode=this.phoneCodeSelected[1]
@@ -163,10 +160,11 @@ export class RegisterPageComponent implements OnDestroy{
           if(res.message == 'Account created'){
             this.isVerifyemail = true;
             swal('', this.translate.instant("registration.Check the email"), "success");
+            this.router.navigate(['/login']);
           }else if(res.message == 'Fail sending email'){
             this.isFailEmail = true;
             swal(this.translate.instant("generics.Warning"), this.translate.instant("registration.could not be sent to activate"), "error");
-          }else if(res.message == 'user exists'){
+          }else if(res.message == 'fail'){
             this.isEmailBusy = true;
             swal(this.translate.instant("generics.Warning"), this.translate.instant("registration.email already exists"), "error");
           }

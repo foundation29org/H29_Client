@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-sm-12">
-    <div class="content-header">{{'menu.Translations' | translate }}</div>
+    <div class="content-header primary">{{'menu.Translations' | translate }}</div>
     <p class="content-sub-header">{{'lang.Help on the translation section of the administrator' | translate }}</p>
   </div>
 </div>
@@ -24,7 +24,7 @@
   </div>
 </div>
 <div class="center-elements" *ngIf="loadingTranslations">
-  <div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+  <div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 </div>
 <div class="row" *ngIf="datadest && !loadingTranslations">
   <div class="col-12">
@@ -64,7 +64,7 @@
         <ng-template #formError><button class="btn btn-raised btn-raised btn-primary" type="button" (click)="submitInvalidForm()"><i class="fa fa-check-square-o"></i> {{'lang.Request new translation' | translate }}</button> <p *ngIf="!form.valid" class="form-text text-muted danger">{{'generics.requiredfieldsmissing' | translate }}</p></ng-template>
       </div>
       <div class="col-md-12 center-elements" *ngIf="sendingTranslations">
-        <div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+        <div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
       </div>
     </form>
   </div>

@@ -2,13 +2,13 @@
 
 <div class="row">
   <div class="col-sm-12">
-    <div class="content-header"><div class="content-header">{{'menu.Groups' | translate }}</div></div>
+    <div class="content-header primary"><div class="content-header primary">{{'menu.Groups' | translate }}</div></div>
   </div>
 </div>
 
 <div class="row" >
 	<div class="col-sm-12 center-elements" *ngIf="loading">
-		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 	</div>
 	<div class="col-xl-8 col-lg-12 col-12" *ngIf="groups.length>0 && !addedgroup && !workinggroup && !loading">
 		<div class="card">
@@ -100,7 +100,7 @@
   </div>
 
 	<div class="col-lg-12 col-12 form-group" *ngIf="workinggroup">
-		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw pink"></i></p></div>
+		<div><p class="centerSpinner"><i class="fa fa-spinner fa-spin fa-3x fa-fw primary"></i></p></div>
 		<div>{{'groups.Generating new group' | translate }}</div>
 	</div>
 </div>
