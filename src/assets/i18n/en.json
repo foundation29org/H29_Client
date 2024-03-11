@@ -24,6 +24,21 @@
     "Notifications":"Notifications",
     "Manage FAQ":"Manage frequently asked questions"
   },
+  "deleteinfo": {
+    "deleteAccountHeader": "Account Deletion at Health29",
+    "deleteAccountIntro": "If you wish to delete your Health29 account and all associated data, please follow the steps below:",
+    "step1": "Log in to the Health29 app.",
+    "step2": "Navigate to your profile section:",
+    "step3": "At the bottom of the page, you will find the 'Delete Account' option. Click on the corresponding button.",
+    "step4": "You will receive a confirmation code to your email associated with the account. Enter this code in the requested field to proceed with the deletion.",
+    "completionNotice": "Upon completing these steps, your account and all associated data will be permanently deleted. Please note that this process is irreversible.",
+    "dataDeletedHeader": "Data that will be deleted:",
+    "dataList1": "Profile information",
+    "dataList2": "Stored health and medical records",
+    "dataList3": "Account preferences and settings",
+    "noDataRetained": "After deletion, no data will be retained on our part.",
+    "supportInfo": "For more information or assistance, please <a href='mailto:support@foundation29.org'>contact Health29 support</a>."
+  },
   "profile":{
     "Save the changes": "Please save your changes",
     "General": "General",

@@ -4,6 +4,7 @@ import { LangService } from 'app/shared/services/lang.service';
 import { Subscription } from 'rxjs/Subscription';
 import { AuthService } from 'app/shared/auth/auth.service';
 import { Title } from '@angular/platform-browser';
+import { EventsService} from 'app/shared/services/events.service';
 
 @Component({
     selector: 'app-navbar-nolog',
@@ -19,7 +20,7 @@ export class NavbarComponentNolog implements OnDestroy{
     title: any;
     private subscription: Subscription = new Subscription();
 
-    constructor(public translate: TranslateService, private langService:LangService,private authService: AuthService, private titleService: Title) {
+    constructor(public translate: TranslateService, private langService:LangService,private authService: AuthService, private titleService: Title, private eventsService: EventsService) {
       this.translate.use('en');
       this.loadLanguages();
       this.title= this.titleService
@@ -56,6 +57,7 @@ export class NavbarComponentNolog implements OnDestroy{
         this.authService.setLang(language);
         this.translate.use(language);
         //location.reload();
+        this.eventsService.broadcast('changelang', language);
     }
 
 }

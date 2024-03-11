@@ -24,6 +24,21 @@
     "Notifications":"Notificaciones",
     "Manage FAQ":"Administrar preguntas frequentes"
   },
+  "deleteinfo": {
+    "deleteAccountHeader": "Eliminación de cuenta en Health29",
+    "deleteAccountIntro": "Si deseas eliminar tu cuenta en Health29 y todos los datos asociados, sigue los siguientes pasos:",
+    "step1": "Inicia sesión en la aplicación Health29.",
+    "step2": "Dirígete a la sección de tu perfil:",
+    "step3": "En la parte inferior de la página, encontrarás la opción \"Eliminar cuenta\". Haz clic en el botón correspondiente.",
+    "step4": "Recibirás un código de confirmación en tu correo electrónico asociado a la cuenta. Introduce este código en el campo solicitado para proceder con la eliminación.",
+    "completionNotice": "Al completar estos pasos, tu cuenta y todos los datos asociados serán eliminados permanentemente. Ten en cuenta que este proceso es irreversible.",
+    "dataDeletedHeader": "Datos que serán eliminados:",
+    "dataList1": "Información del perfil",
+    "dataList2": "Registros médicos y de salud almacenados",
+    "dataList3": "Preferencias y configuraciones de la cuenta",
+    "noDataRetained": "Tras la eliminación, ningún dato será conservado por nuestra parte.",
+    "supportInfo": "Para más información o asistencia, por favor <a href='mailto:support@foundation29.org'>contacta al soporte de Health29</a>."
+  },
   "profile":{
     "Save the changes": "Por favor, guarde los cambios",
     "General": "General",

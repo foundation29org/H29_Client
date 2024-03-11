@@ -1,0 +1,31 @@
+<!--Error page starts-->
+<section id="error">
+    <div class="container-fluid bg-grey bg-lighten-3">
+        <div class="container mt-3 pb-3">
+            <h1 class="pt-3">{{ 'deleteinfo.deleteAccountHeader' | translate }}</h1>
+            <p>{{ 'deleteinfo.deleteAccountIntro' | translate }}</p>
+            <ol>
+            <li>{{ 'deleteinfo.step1' | translate }}</li>
+            <li>
+                {{ 'deleteinfo.step2' | translate }}
+                <img class="w-100" [src]="urlimg" alt="steps delete account"/>
+            </li>
+            <li>{{ 'deleteinfo.step3' | translate }}</li>
+            <li>{{ 'deleteinfo.step4' | translate }}</li>
+            </ol>
+            <p>{{ 'deleteinfo.completionNotice' | translate }}</p>
+            <h2>{{ 'deleteinfo.dataDeletedHeader' | translate }}</h2>
+            <ul>
+            <li>{{ 'deleteinfo.dataList1' | translate }}</li>
+            <li>{{ 'deleteinfo.dataList2' | translate }}</li>
+            <li>{{ 'deleteinfo.dataList3' | translate }}</li>
+            </ul>
+            <p>{{ 'deleteinfo.noDataRetained' | translate }}</p>
+            <div>
+                <p [innerHTML]="'deleteinfo.supportInfo' | translate"></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
