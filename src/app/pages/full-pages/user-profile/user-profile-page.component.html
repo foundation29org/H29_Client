@@ -110,8 +110,8 @@
 											</div>
 										</form>
 
-										<div class="mt-3">
-											<h4 *ngIf="role=='User'" class="form-section"><i class="fa fa-trash primary"></i> {{'profile.Delete account' | translate }}</h4>
+										<div class="mt-3" *ngIf="role=='User'">
+											<h4 class="form-section"><i class="fa fa-trash primary"></i> {{'profile.Delete account' | translate }}</h4>
 											<button *ngIf="!showInstructions" class="btn btn-raised btn-primary" (click)="startDeleting()">{{'generics.Delete' | translate }}</button>
 
 											<div class="form-group" *ngIf="showInstructions">

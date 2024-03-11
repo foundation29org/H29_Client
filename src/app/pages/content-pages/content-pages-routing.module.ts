@@ -7,7 +7,7 @@ import { LoginPageComponent } from "./login/login-page.component";
 import { RegisterPageComponent } from "./register/register-page.component";
 import { PrivacyPolicyPageComponent } from "./privacy-policy/privacy-policy.component";
 import { DataPrivacySecurityPageComponent } from "./data-privacy-security/data-privacy-security.component";
-
+import { DeleteAccountPageComponent } from "./deleteaccount/deleteaccount-page.component";
 
 const routes: Routes = [
   {
@@ -53,6 +53,13 @@ const routes: Routes = [
         component: DataPrivacySecurityPageComponent,
         data: {
           title: 'Data Privacy and Security'
+        }
+      },
+      {
+        path: 'delete-account',
+        component: DeleteAccountPageComponent,
+        data: {
+          title: 'Delete account info'
         }
       }
 

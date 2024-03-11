@@ -24,6 +24,21 @@
     "Notifications":"Meldingen",
     "Manage FAQ":"Beheer FAQ"
   },
+  "deleteinfo": {
+    "deleteAccountHeader": "Accountverwijdering bij Health29",
+    "deleteAccountIntro": "Als je je Health29-account en alle bijbehorende gegevens wilt verwijderen, volg dan de onderstaande stappen:",
+    "step1": "Log in op de Health29-app.",
+    "step2": "Ga naar je profielsectie:",
+    "step3": "Onderaan de pagina vind je de optie 'Account verwijderen'. Klik op de bijbehorende knop.",
+    "step4": "Je ontvangt een bevestigingscode op je e-mailadres dat gekoppeld is aan het account. Voer deze code in het gevraagde veld in om door te gaan met de verwijdering.",
+    "completionNotice": "Na het voltooien van deze stappen wordt je account en alle bijbehorende gegevens permanent verwijderd. Let op: dit proces is onomkeerbaar.",
+    "dataDeletedHeader": "Gegevens die zullen worden verwijderd:",
+    "dataList1": "Profielinformatie",
+    "dataList2": "Opgeslagen gezondheids- en medische gegevens",
+    "dataList3": "Voorkeuren en instellingen van het account",
+    "noDataRetained": "Na verwijdering worden er geen gegevens bewaard van onze kant.",
+    "supportInfo": "Voor meer informatie of assistentie, neem alstublieft <a href='mailto:support@foundation29.org'>contact op met de Health29 support</a>."
+  },
   "profile": {
     "Save the changes": "Sla de wijzigingen op",
     "General": "Algemeen",
